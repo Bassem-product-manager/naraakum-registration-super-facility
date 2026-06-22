@@ -101,6 +101,24 @@
         object-fit:contain;
         flex:0 0 28px;
       }
+      .provider-type-icon{
+        width:28px;
+        height:28px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:rgba(15,140,140,.08);
+        color:#0b6f6f;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        flex:0 0 28px;
+      }
+      .provider-type-icon svg{
+        width:17px;
+        height:17px;
+        display:block;
+        stroke:currentColor;
+      }
       .facility-inline-badge{
         width:28px;
         height:28px;
@@ -521,7 +539,11 @@
                       <td><span class="staff-code num-code">2</span></td>
                       <td class="cell-name">
                         <div class="facility-name-cell">
-                          <span class="facility-inline-badge" aria-label="Al Noor Medical Center initials">AL</span>
+                          <span class="provider-type-icon" aria-label="Facility icon">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 21h16M6 21V7.8L12 4l6 3.8V21M9 21v-5h6v5M9 10h.01M12 10h.01M15 10h.01M9 13h.01M12 13h.01M15 13h.01" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
                           <span class="provider-name">Al Noor Medical Center</span>
                         </div>
                       </td>
@@ -546,7 +568,11 @@
                       <td><span class="staff-code num-code">3</span></td>
                       <td class="cell-name">
                         <div class="facility-name-cell">
-                          <span class="facility-inline-badge" aria-label="Green Valley Clinic initials">GR</span>
+                          <span class="provider-type-icon" aria-label="Facility icon">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 21h16M6 21V7.8L12 4l6 3.8V21M9 21v-5h6v5M9 10h.01M12 10h.01M15 10h.01M9 13h.01M12 13h.01M15 13h.01" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </span>
                           <span class="provider-name">Green Valley Clinic</span>
                         </div>
                       </td>
