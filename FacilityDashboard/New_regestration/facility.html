@@ -1,0 +1,1488 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>نرعاكم | بيانات المنشأة</title>
+
+  <!-- Cairo (Arabic-friendly) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --nk-teal:#0f8c8c;
+      --nk-teal-2:#14a1a1;
+      --nk-bg:#e9f4f4;
+      --nk-border:#dfe6ea;
+      --nk-text:#1f2a37;
+      --nk-muted:#6b7280;
+      --nk-danger:#d92d20;
+      --card-radius:18px;
+      --input-radius:10px;
+      --shadow:0 18px 40px rgba(15,140,140,.12);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--nk-text);
+      background:#0f8c8c;
+    }
+
+    /* ==== Top bar (simple replica) ==== */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:#fff;
+      border-bottom:1px solid rgba(0,0,0,.04);
+    }
+    .topbar-inner{
+      max-width:100%;
+      margin:0 auto;
+      padding:10px 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:nowrap;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:700;
+      color:var(--nk-teal);
+      user-select:none;
+    }
+    .brand .logo{
+      width:220px;
+      height:64px;
+      display:block;
+      padding:0;
+      border:0;
+      background:transparent;
+    }
+    .brand .logo img{width:100%;height:100%;object-fit:contain;display:block}
+    .nav{
+      display:flex; align-items:center; gap:18px;
+      color:#334155;
+      font-size:14px;
+      white-space:nowrap;
+      flex:1 1 520px;
+      flex-wrap:wrap;
+    }
+    .nav a{
+      color:#334155; text-decoration:none;
+      padding:6px 2px;
+    }
+    .nav a:hover{color:var(--nk-teal)}
+    .top-actions{
+      display:flex; align-items:center; gap:10px;
+      white-space:nowrap;
+      flex-wrap:wrap;
+    }
+    .pill{
+      height:34px;
+      border-radius:10px;
+      border:1px solid var(--nk-border);
+      background:#fff;
+      padding:0 10px;
+      display:flex; align-items:center; gap:8px;
+      font-size:13px;
+      color:#111827;
+    }
+    .pill .chev{font-size:12px;color:#64748b}
+    .pill .flag{font-size:16px}
+    .flag-ksa{
+      width:20px;height:14px;
+      background-image:url("../assets/images/flags.png");
+      background-repeat:no-repeat;
+      background-size:5652px 15px;
+      background-position:-4339px 0;
+      box-shadow:0 0 1px rgba(0,0,0,.35);
+      border-radius:2px;
+      display:inline-block;
+    }
+    .btn{
+      height:36px;
+      border-radius:10px;
+      border:1px solid transparent;
+      padding:0 14px;
+      font-family:inherit;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .btn-primary{
+      background:var(--nk-teal);
+      color:#fff;
+      box-shadow:0 10px 18px rgba(15,140,140,.18);
+    }
+    .btn-primary:hover{background:#0d7d7d}
+    .btn-ghost{
+      background:#fff;
+      border-color:var(--nk-border);
+      color:#0f172a;
+    }
+    .btn-ghost:hover{border-color:#cfd8dd}
+    .btn-outline{
+      background:#fff;
+      border-color:rgba(15,140,140,.35);
+      color:var(--nk-teal);
+      font-weight:700;
+    }
+    .btn-outline:hover{border-color:var(--nk-teal)}
+    .icon{font-size:16px;line-height:1}
+    .icon-svg{width:18px;height:18px;display:block}
+    .cart-btn{
+      width:36px;
+      height:36px;
+      border-radius:10px;
+      border:1px solid var(--nk-border);
+      background:#fff;
+      position:relative;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      color:var(--nk-teal);
+    }
+    .cart-btn .badge{
+      position:absolute;
+      top:-6px;
+      right:-6px;
+      background:#ef4444;
+      color:#fff;
+      border-radius:999px;
+      font-size:10px;
+      font-weight:700;
+      line-height:1;
+      padding:3px 5px;
+      min-width:16px;
+      text-align:center;
+      border:2px solid #fff;
+    }
+
+    /* ==== Background hero ==== */
+    .hero{
+      position:relative;
+      padding:34px 14px 60px;
+      background:
+        radial-gradient(900px 520px at 20% 10%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(720px 420px at 90% 30%, rgba(255,255,255,.12), transparent 55%),
+        linear-gradient(135deg, var(--nk-teal), #118f8f 55%, #0f8c8c);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(0deg, rgba(255,255,255,.88), rgba(255,255,255,.88));
+      opacity:.92;
+      clip-path:polygon(0 62%, 100% 62%, 100% 100%, 0 100%);
+      pointer-events:none;
+    }
+
+    /* ==== Wizard Card ==== */
+    .wizard-wrap{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin:0 auto;
+      background:#fff;
+      border-radius:var(--card-radius);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.04);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 38% 62%;
+      min-height:520px;
+    }
+
+    /* Left visual panel */
+    .visual{
+      background:linear-gradient(180deg, rgba(15,140,140,.08), rgba(15,140,140,.04));
+      padding:18px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+    }
+    .visual-card{
+      width:100%;
+      height:100%;
+      border-radius:14px;
+      background:#e9f4f4;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:18px 18px 14px;
+      border:1px solid rgba(15,140,140,.08);
+    }
+    .visual-card img{
+      width:100%;
+      height:280px;
+      max-width:none;
+      border-radius:16px;
+      object-fit:cover;
+      object-position:center bottom;
+      box-shadow:none;
+      transform:none;
+    }
+
+    /* Right content */
+    .content{
+      padding:22px 26px 20px;
+    }
+
+    /* Stepper */
+    .stepper{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      padding:10px 0 18px;
+    }
+    .step{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .dot{
+      width:30px;height:30px;
+      border-radius:999px;
+      display:grid; place-items:center;
+      font-weight:700;
+      font-size:13px;
+      border:1px solid #d8e2e6 remembering;
+    }
+    .dot.done{
+      background:#e5f4f4;
+      border-color:rgba(15,140,140,.25);
+      color:var(--nk-teal);
+    }
+    .dot.active{
+      background:var(--nk-teal);
+      border-color:var(--nk-teal);
+      color:#fff;
+    }
+    .dot.idle{
+      background:#f3f4f6;
+      border-color:#e5e7eb;
+      color:#6b7280;
+    }
+    .line{
+      width:70px;height:2px;
+      background:#e5e7eb;
+      border-radius:99px;
+    }
+    .line.done{background:rgba(15,140,140,.25)}
+    .line.active{background:rgba(15,140,140,.35)}
+
+    .title{
+      margin:2px 0 18px;
+      text-align:right;
+      font-size:18px;
+      font-weight:700;
+      color:#111827;
+    }
+
+    /* Form */
+    .form{
+      padding-top:6px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+    .grid-1{grid-template-columns:1fr}
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:7px;
+    }
+    label{
+      font-size:13px;
+      color:#0f172a;
+      font-weight:600;
+    }
+    .req{
+      color:var(--nk-danger);
+      font-weight:700;
+      margin-right:4px;
+    }
+    .input, select{
+      height:44px;
+      border-radius:var(--input-radius);
+      border:1px solid var(--nk-border);
+      padding:0 12px;
+      outline:none;
+      font-family:inherit;
+      font-size:14px;
+      background:#fff;
+      color:#0f172a;
+      transition:.15s ease;
+    }
+    select{
+      appearance:none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #9aa6af 50%),
+        linear-gradient(135deg, #9aa6af 50%, transparent 50%);
+      background-position:
+        calc(14px) 18px,
+        calc(20px) 18px;
+      background-size:6px 6px, 6px 6px;
+      background-repeat:no-repeat;
+      padding-left:34px; /* for arrow on left in RTL */
+    }
+    .input:focus, select:focus{
+      border-color:rgba(15,140,140,.55);
+      box-shadow:0 0 0 4px rgba(15,140,140,.12);
+    }
+    .map-input-wrap{
+      position:relative;
+      display:flex;
+      align-items:center;
+    }
+    .map-input-wrap .input{
+      width:100%;
+      padding-left:48px;
+    }
+    .map-open-btn{
+      position:absolute;
+      left:6px;
+      top:50%;
+      width:34px;
+      height:34px;
+      transform:translateY(-50%);
+      border:1px solid rgba(15,140,140,.22);
+      border-radius:9px;
+      background:rgba(15,140,140,.08);
+      color:var(--nk-teal);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    .map-open-btn:hover,
+    .map-open-btn:focus{
+      border-color:rgba(15,140,140,.45);
+      background:rgba(15,140,140,.14);
+      outline:none;
+    }
+    .map-open-btn svg{
+      width:17px;
+      height:17px;
+      fill:none;
+      stroke:currentColor;
+      stroke-width:2;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+    }
+    .map-hint{
+      margin-top:-2px;
+      font-size:11px;
+      color:#64748b;
+      line-height:1.5;
+    }
+    .map-suggestions{
+      display:none;
+      margin-top:6px;
+      border:1px solid var(--nk-border);
+      border-radius:10px;
+      background:#fff;
+      overflow:hidden;
+      box-shadow:0 14px 30px rgba(15,23,42,.08);
+      z-index:10;
+    }
+    .map-suggestions.is-open{display:block}
+    .map-suggestion{
+      width:100%;
+      border:0;
+      border-bottom:1px solid #eef2f4;
+      background:#fff;
+      padding:10px 12px;
+      text-align:right;
+      font-family:inherit;
+      cursor:pointer;
+      color:#0f172a;
+    }
+    .map-suggestion:last-child{border-bottom:0}
+    .map-suggestion:hover,
+    .map-suggestion:focus{
+      background:rgba(15,140,140,.06);
+      outline:none;
+    }
+    .map-suggestion b{
+      display:block;
+      font-size:12px;
+      margin-bottom:3px;
+    }
+    .map-suggestion span{
+      display:block;
+      font-size:11px;
+      color:#64748b;
+      line-height:1.5;
+    }
+    .file-control{
+      display:flex;
+      align-items:center;
+      gap:0;
+      flex-direction:row;
+      height:44px;
+      border:1px solid var(--nk-border);
+      border-radius:10px;
+      background:#fff;
+      overflow:hidden;
+    }
+    .file-display{
+      flex:1;
+      height:44px;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      padding:0 12px;
+    }
+    .file-display.has-file{
+      color:#0f172a;
+    }
+    .file-display::placeholder{color:#9aa6af}
+    .file-display:focus{
+      box-shadow:none;
+      border-color:transparent;
+    }
+    .file-btn{
+      height:44px;
+      border:0;
+      border-radius:0;
+      border-right:1px solid var(--nk-border);
+      background:#eef2f7;
+      padding:0 22px;
+      min-width:110px;
+      font-weight:700;
+      color:#0f172a;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+    }
+    .file-btn:hover{background:#e5ebf3}
+    .file-input{display:none}
+    .upload-meta{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:6px;
+      font-size:12px;
+      color:#475569;
+    }
+    .upload-status{
+      font-weight:700;
+      color:#0f8c8c;
+    }
+    .file-action{
+      border:1px solid var(--nk-border);
+      background:#fff;
+      border-radius:8px;
+      padding:4px 10px;
+      font-size:12px;
+      cursor:pointer;
+    }
+    .file-action:hover{border-color:#cfd8dd}
+    .hint{
+      font-size:12px;
+      color:var(--nk-muted);
+      margin-top:-2px;
+      line-height:1.5;
+    }
+    .error{
+      display:none;
+      font-size:12px;
+      color:var(--nk-danger);
+      line-height:1.4;
+      margin-top:-2px;
+    }
+    .has-error .error{display:block}
+    .has-error .input,
+    .has-error select{
+      border-color:rgba(217,45,32,.55);
+      box-shadow:0 0 0 4px rgba(217,45,32,.10);
+    }
+
+    .section-title{
+      margin:12px 0 8px;
+      color:var(--nk-teal);
+      font-weight:800;
+      font-size:14px;
+    }
+    .divider{
+      height:1px;
+      background:#edf2f4;
+      margin:10px 0 14px;
+    }
+
+    .step-panel{display:none}
+    .step-panel.active{display:block}
+    .step-title{
+      margin:0 0 14px;
+      font-size:18px;
+      font-weight:800;
+      color:#111827;
+    }
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:12px;
+    }
+    .card-option{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:14px;
+      background:#fff;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .card-option input{display:none}
+    .card-option .dot{
+      width:18px;height:18px;border-radius:999px;border:2px solid #cbd5e1;
+      display:inline-block;position:relative;
+    }
+    .card-option input:checked + .dot{
+      border-color:var(--nk-teal);
+    }
+    .card-option input:checked + .dot::after{
+      content:"";position:absolute;inset:3px;border-radius:999px;background:var(--nk-teal);
+    }
+    .card-option.active{
+      border-color:rgba(15,140,140,.45);
+      background:rgba(15,140,140,.05);
+    }
+    .success-box{
+      display:none;
+      margin-top:14px;
+      border:1px solid rgba(15,140,140,.25);
+      background:rgba(15,140,140,.05);
+      border-radius:12px;
+      padding:12px 14px;
+    }
+    .success-box h3{
+      margin:0 0 6px;
+      font-size:16px;
+      color:#0f172a;
+    }
+    .summary{
+      margin-top:8px;
+      display:grid;
+      gap:6px;
+      font-size:13px;
+      color:#475569;
+    }
+
+    /* Actions */
+    .actions{
+      margin-top:18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding-top:6px;
+    }
+    .btn-wide{
+      min-width:190px;
+      height:44px;
+      border-radius:10px;
+      font-weight:700;
+    }
+    .btn-primary:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .wizard-wrap{grid-template-columns:1fr}
+      .visual{display:none}
+      .content{padding:18px 16px}
+      .line{width:46px}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns:1fr}
+      .btn-wide{min-width:0; width:100%}
+      .actions{flex-direction:column}
+      .stepper{justify-content:flex-start}
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top bar (keep style similar to old design) -->
+  <header class="topbar">
+    <div class="topbar-inner">
+        <div class="brand">
+          <div class="logo">
+            <img src="../assets/images/logo.svg" alt="نرعاكم" />
+          </div>
+        </div>
+
+      <nav class="nav" aria-label="Main">
+        <a href="#">الرئيسية</a>
+        <a href="#">الخدمات الطبية</a>
+        <a href="#">مقدمي الرعاية</a>
+        <a href="#">الأسئلة الشائعة</a>
+        <a href="#">عن نرعاكم</a>
+      </nav>
+
+      <div class="top-actions">
+        <button class="btn btn-outline" type="button">انضم كمقدم خدمة</button>
+        <div class="pill country-pill" title="الدولة">
+          <span class="flag-ksa" aria-hidden="true"></span>
+          <span>السعودية</span>
+          <span class="chev" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <button class="btn btn-primary" type="button">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          تسجيل الدخول
+        </button>
+        <button class="cart-btn" type="button" aria-label="سلة المشتريات">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M3 4h2l2.2 9.5a2 2 0 0 0 2 1.5h7.7a2 2 0 0 0 2-1.6l1.2-6.4H7.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="10" cy="19" r="1.6" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="17.5" cy="19" r="1.6" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+          <span class="badge">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <section class="wizard-wrap" aria-label="Provider Onboarding - Step 2">
+      <!-- Left visual -->
+      <aside class="visual" aria-hidden="true">
+        <div class="visual-card">
+          <!-- Replace with your real image path -->
+          <img src="../assets/images/Screenshot (1286).png"
+               alt="واجهة نرعاكم" />
+        </div>
+      </aside>
+
+      <!-- Right content -->
+      <div class="content">
+        <!-- Stepper (3 steps) -->
+        <div class="stepper" role="navigation" aria-label="الخطوات">
+          <div class="step" data-step-dot="1">
+            <div class="dot active" title="الحالية">1</div>
+          </div>
+          <div class="line" data-step-line="1" aria-hidden="true"></div>
+          <div class="step" data-step-dot="2">
+            <div class="dot idle">2</div>
+          </div>
+          <div class="line" data-step-line="2" aria-hidden="true"></div>
+          <div class="step" data-step-dot="3">
+            <div class="dot idle">3</div>
+          </div>
+        </div>
+
+        <h1 class="title">انضمام المؤسسات الصحية</h1>
+
+        <form class="form" id="step2Form" novalidate>
+          <div class="step-panel active" data-step="1">
+            <div class="section-title">اختيار نوع المنشأة</div>
+            <div class="grid grid-1">
+              <div class="field" data-field="facilityType">
+                <label>نوع المنشأة</label>
+                <div class="card-grid" role="radiogroup" aria-label="نوع المنشأة">
+                  <!-- Default: Hospital mode -->
+                  <label class="card-option active">
+                    <input type="radio" name="facilityType" value="hospital" data-target="facility.html" checked />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>مستشفى</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="clinic" data-target="facility.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>عيادة</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="pharmacy" data-target="Pharmacy.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>صيدلية</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="lab" data-target="lap.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>مختبر</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="ambulance" data-target="Ambulance.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>نقل إسعافي</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="insurer" data-target="sponsr.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>شركة تأمين</span>
+                  </label>
+                </div>
+                <div class="error">يرجى اختيار نوع المنشأة</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-panel" data-step="2">
+            <div class="section-title">بيانات المؤسسة</div>
+            <div class="grid">
+              <div class="field" data-field="facilityNameAr">
+                <label for="facilityNameAr">اسم المنشأة بالعربية</label>
+                <input class="input" id="facilityNameAr" name="facilityNameAr" type="text" placeholder="مثال: مستشفى الرعاية الطبية" autocomplete="organization" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="facilityNameEn">
+                <label for="facilityNameEn">Facility Name in English</label>
+                <input class="input" id="facilityNameEn" name="facilityNameEn" type="text" placeholder="Example: Medical Care Hospital" autocomplete="organization" dir="ltr" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="licenseNumber">
+                <label for="licenseNumber">رقم الترخيص</label>
+                <input class="input" id="licenseNumber" name="licenseNumber" type="text" placeholder="LIC-XXXXX" autocomplete="off" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="licenseExpiryDate">
+                <label for="licenseExpiryDate">تاريخ انتهاء الترخيص</label>
+                <input class="input" id="licenseExpiryDate" name="licenseExpiryDate" type="date" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="commercialRegistrationNumber">
+                <label for="commercialRegistrationNumber">رقم السجل التجاري</label>
+                <input class="input" id="commercialRegistrationNumber" name="commercialRegistrationNumber" type="text" inputmode="numeric" placeholder="أدخل رقم السجل التجاري" autocomplete="off" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="taxNumber">
+                <label for="taxNumber">الرقم الضريبي</label>
+                <input class="input" id="taxNumber" name="taxNumber" type="text" inputmode="numeric" placeholder="اختياري" autocomplete="off" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section-title"></div>
+            <div class="grid">
+              <div class="field" data-field="country">
+                <label for="country">الدولة</label>
+                <select class="input" id="country" name="country">
+                  <option value="السعودية" selected>السعودية</option>
+                  <option value="الإمارات">الإمارات</option>
+                  <option value="الكويت">الكويت</option>
+                  <option value="قطر">قطر</option>
+                  <option value="البحرين">البحرين</option>
+                  <option value="عمان">عمان</option>
+                  <option value="مصر">مصر</option>
+                  <option value="الأردن">الأردن</option>
+                </select>
+              
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="city">
+                <label for="city">المدينة</label>
+                <select id="city" name="city">
+                  <option value="">اختر المدينة</option>
+                  <option value="الرياض" selected>الرياض</option>
+                  <option value="جدة">جدة</option>
+                  <option value="الدمام">الدمام</option>
+                  <option value="مكة">مكة</option>
+                  <option value="المدينة">المدينة</option>
+                </select>
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="district">
+                <label for="district">الحي</label>
+                <div class="map-input-wrap">
+                  <input class="input" id="district" name="district" type="text" placeholder="مثال: حي المروج" autocomplete="off" aria-controls="districtMapSuggestions" />
+                  <button class="map-open-btn" id="openDistrictMap" type="button" title="فتح الموقع على Google Maps" aria-label="فتح الموقع على Google Maps">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 21s7-5.1 7-11a7 7 0 1 0-14 0c0 5.9 7 11 7 11Z"></path>
+                      <circle cx="12" cy="10" r="2.4"></circle>
+                    </svg>
+                  </button>
+                </div>
+                <div class="map-suggestions" id="districtMapSuggestions" role="listbox" aria-label="اقتراحات المواقع"></div>
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="street">
+                <label for="street">اسم الشارع</label>
+                <input class="input" id="street" name="street" type="text" placeholder="مثال: شارع العليا" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="buildingNo">
+                <label for="buildingNo">رقم المبنى</label>
+                <input class="input" id="buildingNo" name="buildingNo" type="text" inputmode="numeric" placeholder="مثال: 12" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="postalCode">
+                <label for="postalCode">الرمز البريدي</label>
+                <input class="input" id="postalCode" name="postalCode" type="text" inputmode="numeric" placeholder="مثال: 12345" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="section-title">مرفقات المؤسسة </div>
+            <div class="grid">
+              <div class="field" data-field="proofOfAddress">
+                <label for="proofOfAddress">إثبات العنوان</label>
+                <div class="file-control">
+                  <input class="input file-display" id="proofOfAddressName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="proofOfAddress">تحميل</button>
+                  <input class="file-input" id="proofOfAddress" name="proofOfAddress" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="proofOfAddress">
+                  <span class="upload-status" id="proofOfAddressStatus"></span>
+                </div>
+                <div class="error">يرجى رفع الملف المطلوب بصيغة PDF</div>
+              </div>
+
+              <div class="field" data-field="taxRegistration">
+                <label for="taxRegistration">السجل الضريبي</label>
+                <div class="file-control">
+                  <input class="input file-display" id="taxRegistrationName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="taxRegistration">تحميل</button>
+                  <input class="file-input" id="taxRegistration" name="taxRegistration" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="taxRegistration">
+                  <span class="upload-status" id="taxRegistrationStatus"></span>
+                </div>
+                <div class="error">يرجى رفع الملف المطلوب بصيغة PDF</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="commercialRegistration">
+                <label for="commercialRegistration">السجل التجاري</label>
+                <div class="file-control">
+                  <input class="input file-display" id="commercialRegistrationName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="commercialRegistration">تحميل</button>
+                  <input class="file-input" id="commercialRegistration" name="commercialRegistration" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="commercialRegistration">
+                  <span class="upload-status" id="commercialRegistrationStatus"></span>
+                </div>
+                <div class="error">يرجى رفع الملف المطلوب بصيغة PDF</div>
+              </div>
+
+              <div class="field" data-field="medicalLicense">
+                <label for="medicalLicense">الرخصه الطبيه</label>
+                <div class="file-control">
+                  <input class="input file-display" id="medicalLicenseName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="medicalLicense">تحميل</button>
+                  <input class="file-input" id="medicalLicense" name="medicalLicense" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="medicalLicense">
+                  <span class="upload-status" id="medicalLicenseStatus"></span>
+                </div>
+                <div class="error">يرجى رفع الملف المطلوب بصيغة PDF</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="bankAccountLetter">
+                <label for="bankAccountLetter">خطاب حساب بنكي</label>
+                <div class="file-control">
+                  <input class="input file-display" id="bankAccountLetterName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="bankAccountLetter">تحميل</button>
+                  <input class="file-input" id="bankAccountLetter" name="bankAccountLetter" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="bankAccountLetter">
+                  <span class="upload-status" id="bankAccountLetterStatus"></span>
+                </div>
+                <div class="error">يرجى رفع الملف المطلوب بصيغة PDF</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-panel" data-step="3">
+            <div class="section-title">بيانات المالك/المسؤول</div>
+            <div class="grid">
+              <div class="field" data-field="managerName">
+                <label for="managerName">اسم المسؤول</label>
+                <input class="input" id="managerName" name="managerName" type="text" placeholder="مثال: أحمد محمد" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+              <div class="field" data-field="managerPhone">
+                <label for="managerPhone">رقم جوال المسؤول</label>
+                <input class="input" id="managerPhone" name="managerPhone" type="tel" inputmode="tel" placeholder="+966 5xxxxxxxx" />
+                <div class="error">يرجى إدخال رقم جوال صحيح</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="managerEmail">
+                <label for="managerEmail">البريد الإلكتروني</label>
+                <input class="input" id="managerEmail" name="managerEmail" type="email" placeholder="مثال: name@email.com" />
+                <div class="error">يرجى إدخال بريد إلكتروني صحيح</div>
+              </div>
+              <div class="field" data-field="password">
+                <label for="password">كلمة المرور</label>
+                <input class="input" id="password" name="password" type="password" placeholder="أدخل كلمة المرور" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="confirmPassword">
+                <label for="confirmPassword">تأكيد كلمة المرور</label>
+                <input class="input" id="confirmPassword" name="confirmPassword" type="password" placeholder="أعد إدخال كلمة المرور" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="section-title">ملفات المالك/المسؤول</div>
+       
+            <div class="grid">
+              <div class="field" data-field="ownerIds">
+                <label for="ownerIds">هوية المالك/الملاك</label>
+                <div class="file-control">
+                  <input class="input file-display" id="ownerIdsName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="ownerIds">تحميل</button>
+                  <input class="file-input" id="ownerIds" name="ownerIds" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta" data-file-meta="ownerIds">
+                  <span class="upload-status" id="ownerIdsStatus"></span>
+                </div>
+                <div class="error">يرجى رفع ملف بصيغة PDF</div>
+              </div>
+</div>
+
+            <div class="success-box" id="successBox" aria-live="polite">
+              <h3>تم إرسال الطلب بنجاح</h3>
+              <div class="hint">سيتم التواصل معك بعد مراجعة المعلومات.</div>
+              <div class="summary">
+                <div>اسم المنشأة: <span id="summaryFacility"></span></div>
+                <div>المدينة: <span id="summaryCity"></span></div>
+                <div>رقم الجوال: <span id="summaryOwnerPhone"></span></div>
+                <div>البريد الإلكتروني: <span id="summaryEmail"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <!-- Back to Step 1 (adjust link as needed) -->
+            <button class="btn btn-ghost btn-wide" type="button" id="backBtn">السابق</button>
+
+            <!-- Next to Step 3 -->
+            <button class="btn btn-primary btn-wide" type="submit" id="nextBtn">التالي</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById("step2Form");
+      const nextBtn = document.getElementById("nextBtn");
+      const backBtn = document.getElementById("backBtn");
+      const openDistrictMap = document.getElementById("openDistrictMap");
+      const districtMapSuggestions = document.getElementById("districtMapSuggestions");
+      let selectedMapLocation = null;
+      let mapSearchTimer = null;
+
+      const stepPanels = Array.from(document.querySelectorAll(".step-panel"));
+      const stepDots = Array.from(document.querySelectorAll("[data-step-dot]"));
+      const stepLines = Array.from(document.querySelectorAll("[data-step-line]"));
+      const successBox = document.getElementById("successBox");
+      const summaryFacility = document.getElementById("summaryFacility");
+      const summaryCity = document.getElementById("summaryCity");
+      const summaryOwnerPhone = document.getElementById("summaryOwnerPhone");
+      const summaryEmail = document.getElementById("summaryEmail");
+
+      const fields = {
+        facilityType: document.querySelectorAll('input[name="facilityType"]'),
+        facilityNameAr: document.getElementById("facilityNameAr"),
+        facilityNameEn: document.getElementById("facilityNameEn"),
+        licenseNumber: document.getElementById("licenseNumber"),
+        licenseExpiryDate: document.getElementById("licenseExpiryDate"),
+        commercialRegistrationNumber: document.getElementById("commercialRegistrationNumber"),
+        taxNumber: document.getElementById("taxNumber"),
+        country: document.getElementById("country"),
+        city: document.getElementById("city"),
+        district: document.getElementById("district"),
+        street: document.getElementById("street"),
+        buildingNo: document.getElementById("buildingNo"),
+        postalCode: document.getElementById("postalCode"),
+        managerName: document.getElementById("managerName"),
+        managerPhone: document.getElementById("managerPhone"),
+        managerEmail: document.getElementById("managerEmail"),
+        password: document.getElementById("password"),
+        confirmPassword: document.getElementById("confirmPassword"),
+      };
+      const fileFields = {
+        proofOfAddress: document.getElementById("proofOfAddress"),
+        taxRegistration: document.getElementById("taxRegistration"),
+        commercialRegistration: document.getElementById("commercialRegistration"),
+        medicalLicense: document.getElementById("medicalLicense"),
+        bankAccountLetter: document.getElementById("bankAccountLetter"),
+        ownerIds: document.getElementById("ownerIds"),
+      };
+      const fileDisplays = {
+        proofOfAddress: document.getElementById("proofOfAddressName"),
+        taxRegistration: document.getElementById("taxRegistrationName"),
+        commercialRegistration: document.getElementById("commercialRegistrationName"),
+        medicalLicense: document.getElementById("medicalLicenseName"),
+        bankAccountLetter: document.getElementById("bankAccountLetterName"),
+        ownerIds: document.getElementById("ownerIdsName"),
+      };
+
+      // Utility: set error state on a field wrapper
+      function setError(key, on, customMsg) {
+        const wrap = form.querySelector(`[data-field="${key}"]`);
+        if (!wrap) return;
+        wrap.classList.toggle("has-error", !!on);
+        const err = wrap.querySelector(".error");
+        if (err && customMsg) err.textContent = customMsg;
+      }
+
+      // Simple validators
+      function isEmpty(el) {
+        return !String(el.value || "").trim();
+      }
+
+      function digitsOnly(value) {
+        return String(value || "").replace(/[^\d]/g, "");
+      }
+
+      function validPdfFiles(input) {
+        const files = input && input.files ? Array.from(input.files) : [];
+        if (!files.length) return false;
+        return files.every((file) => {
+          const name = String(file.name || "").toLowerCase();
+          return file.type === "application/pdf" || name.endsWith(".pdf");
+        });
+      }
+
+      function validPhone(value) {
+        const v = digitsOnly(value);
+        return /^(\+9665|05)\d{8}$/.test(String(value || "").replace(/\s+/g, ""));
+      }
+
+      function validEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+      }
+
+      function isNumeric(value, minLen = 4) {
+        const v = digitsOnly(value);
+        return v.length >= minLen;
+      }
+
+      function overSize(input, maxBytes) {
+        const files = input && input.files ? Array.from(input.files) : [];
+        return files.some((f) => f.size > maxBytes);
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes) return "";
+        const mb = bytes / (1024 * 1024);
+        return `${mb.toFixed(1)}MB`;
+      }
+
+      function setMapSuggestionsState(items, message) {
+        if (!districtMapSuggestions) return;
+
+        if (message) {
+          districtMapSuggestions.innerHTML = `<div class="map-suggestion" role="option"><span>${message}</span></div>`;
+          districtMapSuggestions.classList.add("is-open");
+          return;
+        }
+
+        if (!items || !items.length) {
+          districtMapSuggestions.innerHTML = "";
+          districtMapSuggestions.classList.remove("is-open");
+          return;
+        }
+
+        districtMapSuggestions.innerHTML = items.map((item, index) => {
+          const title = item.name || item.display_name.split(",")[0] || "موقع";
+          const subtitle = item.display_name || "";
+          return `
+            <button class="map-suggestion" type="button" role="option" data-map-index="${index}">
+              <b>${title}</b>
+              <span>${subtitle}</span>
+            </button>
+          `;
+        }).join("");
+
+        districtMapSuggestions.classList.add("is-open");
+        districtMapSuggestions.querySelectorAll("[data-map-index]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const item = items[Number(btn.getAttribute("data-map-index"))];
+            selectMapSuggestion(item);
+          });
+        });
+      }
+
+      function selectMapSuggestion(item) {
+        if (!item) return;
+
+        selectedMapLocation = {
+          lat: item.lat,
+          lon: item.lon,
+          label: item.display_name
+        };
+
+        const address = item.address || {};
+        const districtValue = address.suburb || address.neighbourhood || address.quarter || address.city_district || item.name || fields.district.value;
+        const streetValue = address.road || fields.street.value;
+
+        if (districtValue && fields.district) fields.district.value = districtValue;
+        if (streetValue && fields.street && !fields.street.value.trim()) fields.street.value = streetValue;
+        setError("district", false);
+        setMapSuggestionsState([]);
+      }
+
+      async function searchMapSuggestions() {
+        if (!fields.district || !districtMapSuggestions) return;
+
+        const queryParts = [
+          fields.district.value,
+          fields.street && fields.street.value,
+          fields.city && fields.city.value,
+          fields.country && fields.country.value
+        ]
+          .map((part) => String(part || "").trim())
+          .filter(Boolean);
+
+        if (!fields.district.value.trim() || fields.district.value.trim().length < 2) {
+          selectedMapLocation = null;
+          setMapSuggestionsState([]);
+          return;
+        }
+
+        setMapSuggestionsState(null, "جاري البحث عن مواقع...");
+
+        try {
+          const params = new URLSearchParams({
+            format: "jsonv2",
+            addressdetails: "1",
+            limit: "5",
+            countrycodes: "sa",
+            q: queryParts.join("، ")
+          });
+          const response = await fetch(`https://nominatim.openstreetmap.org/search?${params.toString()}`, {
+            headers: { "Accept": "application/json" }
+          });
+          if (!response.ok) throw new Error("map search failed");
+          const items = await response.json();
+          setMapSuggestionsState(items, items.length ? "" : "لا توجد نتائج مطابقة. يمكنك فتح Google Maps بالعنوان المكتوب.");
+        } catch (e) {
+          setMapSuggestionsState(null, "تعذر تحميل الاقتراحات الآن. يمكنك فتح Google Maps بالعنوان المكتوب.");
+        }
+      }
+
+      function openDistrictInMaps() {
+        if (selectedMapLocation && selectedMapLocation.lat && selectedMapLocation.lon) {
+          const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${selectedMapLocation.lat},${selectedMapLocation.lon}`)}`;
+          window.open(url, "_blank", "noopener");
+          return;
+        }
+
+        const parts = [
+          fields.buildingNo && fields.buildingNo.value,
+          fields.street && fields.street.value,
+          fields.district && fields.district.value,
+          fields.city && fields.city.value,
+          fields.country && fields.country.value
+        ]
+          .map((part) => String(part || "").trim())
+          .filter(Boolean);
+
+        const query = parts.length ? parts.join("، ") : "الرياض، السعودية";
+        const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+        window.open(url, "_blank", "noopener");
+      }
+
+      function validateStep(step) {
+        let ok = true;
+
+        const validateOptionalFile = (key, input, maxBytes) => {
+          const files = input && input.files ? Array.from(input.files) : [];
+          if (!files.length) {
+            setError(key, false);
+            return true;
+          }
+          if (!validPdfFiles(input)) {
+            setError(key, true, "يرجى رفع ملف بصيغة PDF");
+            return false;
+          }
+          if (overSize(input, maxBytes)) {
+            setError(key, true, "حجم الملف يجب ألا يتجاوز 10MB");
+            return false;
+          }
+          setError(key, false);
+          return true;
+        };
+
+        if (step === 1) {
+          setError("facilityType", false);
+        }
+
+        if (step === 2) {
+          setError("facilityNameAr", false);
+          setError("facilityNameEn", false);
+          setError("licenseNumber", false);
+          setError("licenseExpiryDate", false);
+          setError("commercialRegistrationNumber", false);
+          setError("taxNumber", false);
+          setError("country", false);
+          setError("city", false);
+          setError("district", false);
+          setError("street", false);
+          setError("buildingNo", false);
+          setError("postalCode", false);
+
+          const maxBytes = 10 * 1024 * 1024;
+          const entries = [
+            ["proofOfAddress", fileFields.proofOfAddress],
+            ["taxRegistration", fileFields.taxRegistration],
+            ["commercialRegistration", fileFields.commercialRegistration],
+            ["medicalLicense", fileFields.medicalLicense],
+            ["bankAccountLetter", fileFields.bankAccountLetter]
+          ];
+
+          entries.forEach(([key, input]) => {
+            if (!validateOptionalFile(key, input, maxBytes)) {
+              ok = false;
+            }
+          });
+        }
+
+        if (step === 3) {
+          // No required checks in this step
+        }
+
+        if (step === 4) {
+          setError("managerName", false);
+
+          const phoneValue = (fields.managerPhone && fields.managerPhone.value ? fields.managerPhone.value : "").trim();
+          if (phoneValue && !validPhone(phoneValue)) {
+            setError("managerPhone", true, "يرجى إدخال رقم جوال صحيح");
+            ok = false;
+          } else {
+            setError("managerPhone", false);
+          }
+
+          const emailValue = (fields.managerEmail && fields.managerEmail.value ? fields.managerEmail.value : "").trim();
+          if (emailValue && !validEmail(emailValue)) {
+            setError("managerEmail", true, "يرجى إدخال بريد إلكتروني صحيح");
+            ok = false;
+          } else {
+            setError("managerEmail", false);
+          }
+
+          const hasPassword = !isEmpty(fields.password);
+          const hasConfirm = !isEmpty(fields.confirmPassword);
+
+          if (hasPassword || hasConfirm) {
+            if (!hasPassword) {
+              setError("password", true, "هذا الحقل مطلوب");
+              ok = false;
+            } else {
+              setError("password", false);
+            }
+
+            if (!hasConfirm) {
+              setError("confirmPassword", true, "هذا الحقل مطلوب");
+              ok = false;
+            } else {
+              setError("confirmPassword", false);
+            }
+
+            if (hasPassword && hasConfirm && fields.password.value !== fields.confirmPassword.value) {
+              setError("confirmPassword", true, "كلمتا المرور غير متطابقتين");
+              ok = false;
+            }
+          } else {
+            setError("password", false);
+            setError("confirmPassword", false);
+          }
+
+          const maxBytes = 10 * 1024 * 1024;
+          if (!validateOptionalFile("ownerIds", fileFields.ownerIds, maxBytes)) {
+            ok = false;
+          }
+        }
+
+        return ok;
+      }
+
+      // Live validation (lightweight)
+      Object.entries(fields).forEach(([key, el]) => {
+        if (!el || el instanceof NodeList) return;
+        el.addEventListener("input", () => setError(key, false));
+        el.addEventListener("change", () => setError(key, false));
+      });
+
+      if (fields.facilityType) {
+        fields.facilityType.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            setError("facilityType", false);
+            const group = radio.closest(".card-grid");
+            if (group) {
+              group.querySelectorAll(".card-option").forEach((el) => el.classList.remove("active"));
+            }
+            const wrap = radio.closest(".card-option");
+            if (wrap) wrap.classList.add("active");
+
+            const target = radio.dataset.target;
+            if (target && target !== "facility.html") {
+              window.location.href = target;
+              return;
+            }
+          });
+        });
+      }
+
+      if (openDistrictMap) {
+        openDistrictMap.addEventListener("click", openDistrictInMaps);
+      }
+
+      if (fields.district) {
+        fields.district.addEventListener("input", () => {
+          selectedMapLocation = null;
+          window.clearTimeout(mapSearchTimer);
+          mapSearchTimer = window.setTimeout(searchMapSuggestions, 450);
+        });
+      }
+
+      document.addEventListener("click", (event) => {
+        if (!districtMapSuggestions || !fields.district) return;
+        const target = event.target;
+        const clickedInside = districtMapSuggestions.contains(target) || target === fields.district;
+        if (!clickedInside) setMapSuggestionsState([]);
+      });
+
+      function syncFileDisplay(key) {
+        const input = fileFields[key];
+        const display = fileDisplays[key];
+        if (!input || !display) return;
+        const files = input.files ? Array.from(input.files) : [];
+        if (files.length) {
+          if (files.length === 1) {
+            display.value = `${files[0].name} (${formatBytes(files[0].size)})`;
+          } else {
+            const total = files.reduce((sum, f) => sum + f.size, 0);
+            display.value = `${files.length} ملفات (${formatBytes(total)})`;
+          }
+          display.classList.add("has-file");
+          const status = document.getElementById(`${key}Status`);
+          if (status) status.textContent = "تم الرفع";
+        } else {
+          display.value = "";
+          display.classList.remove("has-file");
+          const status = document.getElementById(`${key}Status`);
+          if (status) status.textContent = "";
+        }
+      }
+
+      Object.entries(fileFields).forEach(([key, input]) => {
+        const btn = form.querySelector(`[data-file-btn="${key}"]`);
+        const display = fileDisplays[key];
+        if (btn) btn.addEventListener("click", () => input.click());
+        if (display) display.addEventListener("click", () => input.click());
+        input.addEventListener("change", () => {
+          syncFileDisplay(key);
+          setError(key, false);
+        });
+      });
+
+      let currentStep = 1;
+      function renderStep() {
+        stepPanels.forEach((p) => p.classList.toggle("active", Number(p.dataset.step) === currentStep));
+        stepDots.forEach((d) => {
+          const idx = Number(d.dataset.stepDot);
+          const dot = d.querySelector(".dot");
+          if (idx < currentStep) { dot.className = "dot done"; }
+          else if (idx === currentStep) { dot.className = "dot active"; }
+          else { dot.className = "dot idle"; }
+        });
+        stepLines.forEach((l) => {
+          const idx = Number(l.dataset.stepLine);
+          l.className = idx < currentStep ? "line done" : (idx === currentStep ? "line active" : "line");
+        });
+        nextBtn.textContent = currentStep === 4 ? "إرسال الطلب" : "التالي";
+      }
+
+      nextBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const ok = validateStep(currentStep);
+        if (!ok) {
+          const firstErr = form.querySelector(".has-error .input, .has-error select");
+          if (firstErr) firstErr.focus();
+          return;
+        }
+        if (currentStep < 4) {
+          currentStep += 1;
+          renderStep();
+        } else {
+          // Submit (demo)
+                  if (summaryFacility) summaryFacility.textContent = fields.facilityNameAr.value.trim() || fields.facilityNameEn.value.trim() || "—";
+          if (summaryCity) summaryCity.textContent = fields.city.value || "—";
+          if (summaryOwnerPhone) summaryOwnerPhone.textContent = fields.managerPhone.value.trim() || "—";
+          if (summaryEmail) summaryEmail.textContent = fields.managerEmail.value.trim() || "—";
+          if (successBox) successBox.style.display = "block";
+          nextBtn.disabled = true;
+        }
+      });
+
+      backBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (currentStep > 1) {
+          currentStep -= 1;
+          renderStep();
+        }
+      });
+
+      // Prefill (if returning)
+      renderStep();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+

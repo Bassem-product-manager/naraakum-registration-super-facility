@@ -1,0 +1,1009 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>نرعاكم | تسجيل شركة تأمين / TPA</title>
+
+  <!-- Cairo (Arabic-friendly) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --nk-teal:#0f8c8c;
+      --nk-bg:#e9f4f4;
+      --nk-border:#dfe6ea;
+      --nk-text:#1f2a37;
+      --nk-muted:#6b7280;
+      --nk-danger:#d92d20;
+      --card-radius:18px;
+      --input-radius:10px;
+      --shadow:0 18px 40px rgba(15,140,140,.12);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Cairo",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+      color:var(--nk-text);
+      background:#0f8c8c;
+    }
+
+    /* ==== Top bar ==== */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:#fff;
+      border-bottom:1px solid rgba(0,0,0,.04);
+    }
+    .topbar-inner{
+      max-width:100%;
+      margin:0 auto;
+      padding:10px 28px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:nowrap;
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--nk-teal);user-select:none}
+    .brand .logo{width:220px;height:64px;display:block}
+    .brand .logo img{width:100%;height:100%;object-fit:contain;display:block}
+
+    .nav{
+      display:flex;align-items:center;gap:18px;
+      color:#334155;font-size:14px;white-space:nowrap;
+      flex:1 1 520px;flex-wrap:wrap;
+    }
+    .nav a{color:#334155;text-decoration:none;padding:6px 2px}
+    .nav a:hover{color:var(--nk-teal)}
+
+    .top-actions{
+      display:flex;align-items:center;gap:10px;
+      white-space:nowrap;flex-wrap:wrap;
+    }
+    .pill{
+      height:34px;border-radius:10px;border:1px solid var(--nk-border);
+      background:#fff;padding:0 10px;display:flex;align-items:center;gap:8px;
+      font-size:13px;color:#111827;
+    }
+    .pill .chev{font-size:12px;color:#64748b}
+    .flag-ksa{
+      width:20px;height:14px;
+      background-image:url("../assets/images/flags.png");
+      background-repeat:no-repeat;
+      background-size:5652px 15px;
+      background-position:-4339px 0;
+      box-shadow:0 0 1px rgba(0,0,0,.35);
+      border-radius:2px;
+      display:inline-block;
+    }
+    .btn{
+      height:36px;border-radius:10px;border:1px solid transparent;
+      padding:0 14px;font-family:inherit;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      transition:.15s ease;user-select:none;
+    }
+    .btn-primary{
+      background:var(--nk-teal);color:#fff;
+      box-shadow:0 10px 18px rgba(15,140,140,.18);
+    }
+    .btn-primary:hover{background:#0d7d7d}
+    .btn-outline{
+      background:#fff;border-color:rgba(15,140,140,.35);
+      color:var(--nk-teal);font-weight:700;
+    }
+    .btn-outline:hover{border-color:var(--nk-teal)}
+    .btn-ghost{background:#fff;border-color:var(--nk-border);color:#0f172a}
+    .btn-ghost:hover{border-color:#cfd8dd}
+
+    .icon-svg{width:18px;height:18px;display:block}
+
+    /* ==== Background hero ==== */
+    .hero{
+      position:relative;
+      padding:34px 14px 60px;
+      background:
+        radial-gradient(900px 520px at 20% 10%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(720px 420px at 90% 30%, rgba(255,255,255,.12), transparent 55%),
+        linear-gradient(135deg, var(--nk-teal), #118f8f 55%, #0f8c8c);
+    }
+    .hero::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(0deg, rgba(255,255,255,.88), rgba(255,255,255,.88));
+      opacity:.92;
+      clip-path:polygon(0 62%, 100% 62%, 100% 100%, 0 100%);
+      pointer-events:none;
+    }
+
+    /* ==== Wizard Card ==== */
+    .wizard-wrap{
+      position:relative;
+      z-index:2;
+      max-width:1100px;
+      margin:0 auto;
+      background:#fff;
+      border-radius:var(--card-radius);
+      box-shadow:var(--shadow);
+      border:1px solid rgba(0,0,0,.04);
+      overflow:hidden;
+      display:grid;
+      grid-template-columns: 38% 62%;
+      min-height:520px;
+    }
+
+    /* Left visual panel */
+    .visual{
+      background:linear-gradient(180deg, rgba(15,140,140,.08), rgba(15,140,140,.04));
+      padding:18px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+    }
+    .visual-card{
+      width:100%;
+      height:100%;
+      border-radius:14px;
+      background:#e9f4f4;
+      overflow:hidden;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:18px 18px 14px;
+      border:1px solid rgba(15,140,140,.08);
+    }
+    .visual-card img{
+      width:100%;
+      height:280px;
+      border-radius:16px;
+      object-fit:cover;
+      object-position:center bottom;
+    }
+
+    /* Right content */
+    .content{padding:22px 26px 20px}
+
+    /* Stepper */
+    .stepper{
+      display:flex;align-items:center;justify-content:center;
+      gap:14px;padding:10px 0 18px;
+    }
+    .step{display:flex;align-items:center;gap:10px}
+    .dot{
+      width:30px;height:30px;border-radius:999px;display:grid;place-items:center;
+      font-weight:700;font-size:13px;border:1px solid #d8e2e6;
+    }
+    .dot.done{background:#e5f4f4;border-color:rgba(15,140,140,.25);color:var(--nk-teal)}
+    .dot.active{background:var(--nk-teal);border-color:var(--nk-teal);color:#fff}
+    .dot.idle{background:#f3f4f6;border-color:#e5e7eb;color:#6b7280}
+    .line{width:70px;height:2px;background:#e5e7eb;border-radius:99px}
+    .line.done{background:rgba(15,140,140,.25)}
+    .line.active{background:rgba(15,140,140,.35)}
+
+    .title{
+      margin:2px 0 18px;
+      text-align:right;
+      font-size:18px;
+      font-weight:700;
+      color:#111827;
+    }
+
+    /* Form */
+    .form{padding-top:6px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .grid-1{grid-template-columns:1fr}
+    .field{display:flex;flex-direction:column;gap:7px}
+    label{font-size:13px;color:#0f172a;font-weight:600}
+    .req{color:var(--nk-danger);font-weight:700;margin-right:4px}
+
+    .input, select{
+      height:44px;border-radius:var(--input-radius);
+      border:1px solid var(--nk-border);
+      padding:0 12px;outline:none;font-family:inherit;font-size:14px;
+      background:#fff;color:#0f172a;transition:.15s ease;
+    }
+    .input-compact{
+      height:40px;
+      max-width:420px;
+      width:100%;
+      align-self:flex-start;
+    }
+    select{
+      appearance:none;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #9aa6af 50%),
+        linear-gradient(135deg, #9aa6af 50%, transparent 50%);
+      background-position: calc(14px) 18px, calc(20px) 18px;
+      background-size:6px 6px, 6px 6px;
+      background-repeat:no-repeat;
+      padding-left:34px;
+    }
+    .input:focus, select:focus{
+      border-color:rgba(15,140,140,.55);
+      box-shadow:0 0 0 4px rgba(15,140,140,.12);
+    }
+
+    .file-control{
+      display:flex;align-items:center;height:44px;
+      border:1px solid var(--nk-border);
+      border-radius:10px;background:#fff;overflow:hidden;
+    }
+    .file-display{
+      flex:1;height:44px;border:0;border-radius:0;background:transparent;
+      padding:0 12px;
+    }
+    .file-display.has-file{color:#0f172a}
+    .file-display::placeholder{color:#9aa6af}
+    .file-display:focus{box-shadow:none;border-color:transparent}
+    .file-btn{
+      height:44px;border:0;border-radius:0;border-right:1px solid var(--nk-border);
+      background:#eef2f7;padding:0 22px;min-width:110px;
+      font-weight:700;color:#0f172a;cursor:pointer;
+      display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+    }
+    .file-btn:hover{background:#e5ebf3}
+    .file-input{display:none}
+    .upload-meta{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:12px;color:#475569}
+    .upload-status{font-weight:700;color:#0f8c8c}
+
+    .hint{font-size:12px;color:var(--nk-muted);margin-top:-2px;line-height:1.5}
+    .error{display:none;font-size:12px;color:var(--nk-danger);line-height:1.4;margin-top:-2px}
+    .has-error .error{display:block}
+    .has-error .input,.has-error select{
+      border-color:rgba(217,45,32,.55);
+      box-shadow:0 0 0 4px rgba(217,45,32,.10);
+    }
+
+    .section-title{margin:12px 0 8px;color:var(--nk-teal);font-weight:800;font-size:14px}
+    .divider{height:1px;background:#edf2f4;margin:10px 0 14px}
+
+    .step-panel{display:none}
+    .step-panel.active{display:block}
+
+    .card-grid{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:12px}
+    .card-option{
+      border:1px solid var(--nk-border);
+      border-radius:12px;padding:14px;background:#fff;
+      cursor:pointer;display:flex;align-items:center;gap:10px;
+      transition:.15s ease;user-select:none;
+    }
+    .card-option input{display:none}
+    .card-option .dot{
+      width:18px;height:18px;border-radius:999px;border:2px solid #cbd5e1;
+      display:inline-block;position:relative;
+    }
+    .card-option input:checked + .dot{border-color:var(--nk-teal)}
+    .card-option input:checked + .dot::after{
+      content:"";position:absolute;inset:3px;border-radius:999px;background:var(--nk-teal);
+    }
+    .card-option.active{
+      border-color:rgba(15,140,140,.45);
+      background:rgba(15,140,140,.05);
+    }
+
+    .success-box{
+      display:none;margin-top:14px;
+      border:1px solid rgba(15,140,140,.25);
+      background:rgba(15,140,140,.05);
+      border-radius:12px;padding:12px 14px;
+    }
+    .success-box h3{margin:0 0 6px;font-size:16px;color:#0f172a}
+    .summary{margin-top:8px;display:grid;gap:6px;font-size:13px;color:#475569}
+
+    .actions{
+      margin-top:18px;display:flex;align-items:center;justify-content:space-between;
+      gap:10px;padding-top:6px;
+    }
+    .btn-wide{min-width:190px;height:44px;border-radius:10px;font-weight:700}
+    .btn-primary:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+
+    .insurer-only{display:none}
+    .insurer-only.show{display:block}
+    .field.insurer-only.show{display:flex}
+    .tpa-only{display:none}
+    .tpa-only.show{display:block}
+
+    @media (max-width: 980px){
+      .wizard-wrap{grid-template-columns:1fr}
+      .visual{display:none}
+      .content{padding:18px 16px}
+      .line{width:46px}
+    }
+    @media (max-width: 560px){
+      .grid{grid-template-columns:1fr}
+      .btn-wide{min-width:0; width:100%}
+      .actions{flex-direction:column}
+      .stepper{justify-content:flex-start}
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo">
+          <img src="../assets/images/logo.svg" alt="نرعاكم" />
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Main">
+        <a href="#">الرئيسية</a>
+        <a href="#">الخدمات الطبية</a>
+        <a href="#">مقدمي الرعاية</a>
+        <a href="#">الأسئلة الشائعة</a>
+        <a href="#">عن نرعاكم</a>
+      </nav>
+
+      <div class="top-actions">
+        <button class="btn btn-outline" type="button">انضم كمقدم خدمة</button>
+        <div class="pill country-pill" title="الدولة">
+          <span class="flag-ksa" aria-hidden="true"></span>
+          <span>السعودية</span>
+          <span class="chev" aria-hidden="true">
+            <svg class="icon-svg" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+        <button class="btn btn-primary" type="button">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          تسجيل الدخول
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <section class="wizard-wrap" aria-label="Sponsor Onboarding">
+      <aside class="visual" aria-hidden="true">
+        <div class="visual-card">
+          <img src="../assets/images/Screenshot (1286).png" alt="واجهة نرعاكم" />
+        </div>
+      </aside>
+
+      <div class="content">
+        <div class="stepper" role="navigation" aria-label="الخطوات">
+          <div class="step" data-step-dot="1"><div class="dot active">1</div></div>
+          <div class="line" data-step-line="1" aria-hidden="true"></div>
+          <div class="step" data-step-dot="2"><div class="dot idle">2</div></div>
+          <div class="line" data-step-line="2" aria-hidden="true"></div>
+          <div class="step" data-step-dot="3"><div class="dot idle">3</div></div>
+        </div>
+
+        <h1 class="title">انضمام شركات التأمين </h1>
+
+        <form class="form" id="sponsorForm" novalidate>
+          <!-- Step 1 -->
+          <div class="step-panel active" data-step="1">
+            <div class="section-title">اختيار نوع المنشأة</div>
+            <div class="grid grid-1">
+              <div class="field" data-field="facilityType">
+                <label>نوع المنشأة</label>
+                <div class="card-grid" role="radiogroup" aria-label="نوع المنشأة">
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="hospital" data-target="facility.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>مستشفى</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="clinic" data-target="facility.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>عيادة</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="pharmacy" data-target="Pharmacy.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>صيدلية</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="lab" data-target="lap.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>مختبر</span>
+                  </label>
+                  <label class="card-option">
+                    <input type="radio" name="facilityType" value="ambulance" data-target="Ambulance.html" />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>نقل إسعافي</span>
+                  </label>
+                  <label class="card-option active">
+                    <input type="radio" name="facilityType" value="insurer" data-target="sponsr.html" checked />
+                    <span class="dot" aria-hidden="true"></span>
+                    <span>شركة تأمين</span>
+                  </label>
+                </div>
+                <div class="error">يرجى اختيار نوع المنشأة</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="step-panel" data-step="2">
+            <div class="section-title">بيانات الجهة</div>
+
+            <div class="grid">
+              <div class="field" data-field="sponsorName">
+                <label for="sponsorName">اسم الجهة</label>
+                <input class="input input-compact" id="sponsorName" name="sponsorName" type="text" placeholder="مثال: شركة BMC للتأمين" autocomplete="organization" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+              <div class="field insurer-only show" id="insurerFields" data-field="payerLicense">
+                <label for="payerLicense">رقم ترخيص لشركة التأمين (Payer License)</label>
+                <input class="input input-compact" id="payerLicense" name="payerLicense" type="text" placeholder="أدخل رقم Payer License" />
+          
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <!-- TPA -->
+            <div class="grid tpa-only" id="tpaFields">
+              <div class="field" data-field="tpaLicense">
+                <label for="tpaLicense">رقم ترخيص نفيس للـTPA (TPA License)</label>
+                <input class="input input-compact" id="tpaLicense" name="tpaLicense" type="text" placeholder="أدخل رقم TPA License" />
+                <div class="hint">يستخدم لربط جهة الـTPA مع نفيس عند التشغيل.</div>
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field">
+                <label class="hint" style="margin-top:28px">إذا كانت الجهة TPA فقط، أدخل رقم ترخيصها في نفيس.</label>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="grid">
+              <div class="field" data-field="country">
+                <label for="country">الدولة</label>
+                <select class="input" id="country" name="country">
+                  <option value="السعودية" selected>السعودية</option>
+                  <option value="الإمارات">الإمارات</option>
+                  <option value="الكويت">الكويت</option>
+                  <option value="قطر">قطر</option>
+                  <option value="البحرين">البحرين</option>
+                  <option value="عمان">عمان</option>
+                  <option value="مصر">مصر</option>
+                  <option value="الأردن">الأردن</option>
+                </select>
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="city">
+                <label for="city">المدينة</label>
+                <select id="city" name="city">
+                  <option value="">اختر المدينة</option>
+                  <option value="الرياض" selected>الرياض</option>
+                  <option value="جدة">جدة</option>
+                  <option value="الدمام">الدمام</option>
+                  <option value="مكة">مكة</option>
+                  <option value="المدينة">المدينة</option>
+                </select>
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="district">
+                <label for="district">الحي</label>
+                <input class="input" id="district" name="district" type="text" placeholder="مثال: حي المروج" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="street">
+                <label for="street">اسم الشارع</label>
+                <input class="input" id="street" name="street" type="text" placeholder="مثال: شارع العليا" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="buildingNo">
+                <label for="buildingNo">رقم المبنى</label>
+                <input class="input" id="buildingNo" name="buildingNo" type="text" inputmode="numeric" placeholder="مثال: 12" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="postalCode">
+                <label for="postalCode">الرمز البريدي</label>
+                <input class="input" id="postalCode" name="postalCode" type="text" inputmode="numeric" placeholder="مثال: 12345" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="section-title">مرفقات الجهة</div>
+            <div class="error" id="attachmentsError">???? ?????? ?? ???? ??????? ???????? ??????</div>
+
+            <div class="grid">
+              <div class="field" data-field="commercialLicense">
+                <label for="commercialLicense">السجل التجاري</label>
+                <div class="file-control">
+                  <input class="input file-display" id="commercialLicenseName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="commercialLicense">تحميل</button>
+                  <input class="file-input" id="commercialLicense" name="commercialLicense" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta"><span class="upload-status" id="commercialLicenseStatus"></span></div>
+                <div class="error">يرجى رفع ملف بصيغة PDF</div>
+              </div>
+
+              <div class="field" data-field="bankLetter">
+                <label for="bankLetter">خطاب حساب بنكي (IBAN)</label>
+                <div class="file-control">
+                  <input class="input file-display" id="bankLetterName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="bankLetter">تحميل</button>
+                  <input class="file-input" id="bankLetter" name="bankLetter" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta"><span class="upload-status" id="bankLetterStatus"></span></div>
+                <div class="error">يرجى رفع ملف بصيغة PDF</div>
+              </div>
+
+              <div class="field" data-field="nphiesProof">
+                <label for="nphiesProof" id="nphiesProofLabel">إثبات ترخيص  (Payer License Proof)</label>
+                <div class="file-control">
+                  <input class="input file-display" id="nphiesProofName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="nphiesProof">تحميل</button>
+                  <input class="file-input" id="nphiesProof" name="nphiesProof" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta"><span class="upload-status" id="nphiesProofStatus"></span></div>
+         
+                <div class="error">يرجى رفع ملف بصيغة PDF</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="step-panel" data-step="3">
+            <div class="section-title">بيانات المسؤول</div>
+
+            <div class="grid">
+              <div class="field" data-field="managerName">
+                <label for="managerName">اسم المسؤول</label>
+                <input class="input" id="managerName" name="managerName" type="text" placeholder="مثال: أحمد محمد" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+              <div class="field" data-field="managerPhone">
+                <label for="managerPhone">رقم جوال المسؤول</label>
+                <input class="input" id="managerPhone" name="managerPhone" type="tel" inputmode="tel" placeholder="+966 5xxxxxxxx" />
+                <div class="error">يرجى إدخال رقم جوال صحيح</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="managerEmail">
+                <label for="managerEmail">البريد الإلكتروني</label>
+                <input class="input" id="managerEmail" name="managerEmail" type="email" placeholder="مثال: name@email.com" />
+                <div class="error">يرجى إدخال بريد إلكتروني صحيح</div>
+              </div>
+              <div class="field" data-field="password">
+                <label for="password">كلمة المرور</label>
+                <input class="input" id="password" name="password" type="password" placeholder="أدخل كلمة المرور" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field" data-field="confirmPassword">
+                <label for="confirmPassword">تأكيد كلمة المرور</label>
+                <input class="input" id="confirmPassword" name="confirmPassword" type="password" placeholder="أعد إدخال كلمة المرور" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
+            <div class="section-title">ملفات المسؤول</div>
+            <div class="grid">
+              <div class="field" data-field="ownerIds">
+                <label for="ownerIds">هوية المفوض/المسؤول</label>
+                <div class="file-control">
+                  <input class="input file-display" id="ownerIdsName" type="text" placeholder="إرفاق الملفات" readonly />
+                  <button class="file-btn" type="button" data-file-btn="ownerIds">تحميل</button>
+                  <input class="file-input" id="ownerIds" name="ownerIds" type="file" accept=".pdf,application/pdf" />
+                </div>
+                <div class="upload-meta"><span class="upload-status" id="ownerIdsStatus"></span></div>
+                <div class="error">يرجى رفع ملف بصيغة PDF</div>
+              </div>
+</div>
+
+            <div class="success-box" id="successBox" aria-live="polite">
+              <h3>تم إرسال الطلب بنجاح</h3>
+              <div class="hint">سيتم التواصل معك بعد مراجعة المعلومات.</div>
+              <div class="summary">
+                <div>اسم الجهة: <span id="summarySponsor"></span></div>
+                <div>المدينة: <span id="summaryCity"></span></div>
+                <div>رقم الجوال: <span id="summaryPhone"></span></div>
+                <div>البريد الإلكتروني: <span id="summaryEmail"></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-ghost btn-wide" type="button" id="backBtn">السابق</button>
+            <button class="btn btn-primary btn-wide" type="submit" id="nextBtn">التالي</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById("sponsorForm");
+      const nextBtn = document.getElementById("nextBtn");
+      const backBtn = document.getElementById("backBtn");
+      const attachmentsError = document.getElementById("attachmentsError");
+      const successBox = document.getElementById("successBox");
+
+      const stepPanels = Array.from(document.querySelectorAll(".step-panel"));
+      const stepDots = Array.from(document.querySelectorAll("[data-step-dot]"));
+      const stepLines = Array.from(document.querySelectorAll("[data-step-line]"));
+
+      const insurerFields = document.getElementById("insurerFields");
+      const tpaFields = document.getElementById("tpaFields");
+      const nphiesProofLabel = document.getElementById("nphiesProofLabel");
+
+      const summarySponsor = document.getElementById("summarySponsor");
+      const summaryCity = document.getElementById("summaryCity");
+      const summaryPhone = document.getElementById("summaryPhone");
+      const summaryEmail = document.getElementById("summaryEmail");
+
+      const fields = {
+        facilityType: document.querySelectorAll('input[name="facilityType"]'),
+        sponsorType: document.querySelectorAll('input[name="sponsorType"]'),
+        sponsorName: document.getElementById("sponsorName"),
+        country: document.getElementById("country"),
+        city: document.getElementById("city"),
+        district: document.getElementById("district"),
+        street: document.getElementById("street"),
+        buildingNo: document.getElementById("buildingNo"),
+        postalCode: document.getElementById("postalCode"),
+
+        payerLicense: document.getElementById("payerLicense"),
+        tpaLicense: document.getElementById("tpaLicense"),
+
+        managerName: document.getElementById("managerName"),
+        managerPhone: document.getElementById("managerPhone"),
+        managerEmail: document.getElementById("managerEmail"),
+        password: document.getElementById("password"),
+        confirmPassword: document.getElementById("confirmPassword"),
+      };
+
+      const fileFields = {
+        commercialLicense: document.getElementById("commercialLicense"),
+        bankLetter: document.getElementById("bankLetter"),
+        nphiesProof: document.getElementById("nphiesProof"),
+        ownerIds: document.getElementById("ownerIds"),
+      };
+
+      const fileDisplays = {
+        commercialLicense: document.getElementById("commercialLicenseName"),
+        bankLetter: document.getElementById("bankLetterName"),
+        nphiesProof: document.getElementById("nphiesProofName"),
+        ownerIds: document.getElementById("ownerIdsName"),
+      };
+
+      function setError(key, on, customMsg) {
+        const wrap = form.querySelector(`[data-field="${key}"]`);
+        if (!wrap) return;
+        wrap.classList.toggle("has-error", !!on);
+        const err = wrap.querySelector(".error");
+        if (err && customMsg) err.textContent = customMsg;
+      }
+
+      function isEmpty(el) { return !String(el?.value || "").trim(); }
+
+      function validPdfFiles(input) {
+        const files = input && input.files ? Array.from(input.files) : [];
+        if (!files.length) return false;
+        return files.every((file) => {
+          const name = String(file.name || "").toLowerCase();
+          return file.type === "application/pdf" || name.endsWith(".pdf");
+        });
+      }
+
+      function overSize(input, maxBytes) {
+        const files = input && input.files ? Array.from(input.files) : [];
+        return files.some((f) => f.size > maxBytes);
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes) return "";
+        const mb = bytes / (1024 * 1024);
+        return `${mb.toFixed(1)}MB`;
+      }
+
+      function validPhone(value) {
+        return /^(\+9665|05)\d{8}$/.test(String(value || "").replace(/\s+/g, ""));
+      }
+
+      function validEmail(value) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
+      }
+
+      function getSponsorType() {
+        if (!fields.sponsorType || !fields.sponsorType.length) return "insurer";
+        const checked = Array.from(fields.sponsorType).find(r => r.checked);
+        return checked ? checked.value : "insurer";
+      }
+
+      function updateSponsorMode() {
+        const type = getSponsorType();
+
+        // Show/Hide sections
+        insurerFields.classList.toggle("show", type === "insurer");
+        insurerFields.classList.toggle("insurer-only", true);
+
+        tpaFields.classList.toggle("show", type === "tpa");
+        tpaFields.classList.toggle("tpa-only", true);
+
+        if (type === "insurer") {
+          tpaFields.classList.remove("show");
+          if (fields.tpaLicense) fields.tpaLicense.value = "";
+          if (nphiesProofLabel) nphiesProofLabel.textContent = "إثبات ترخيص  (Payer License Proof)";
+        } else if (type === "tpa") {
+          insurerFields.classList.remove("show");
+          if (fields.payerLicense) fields.payerLicense.value = "";
+          if (nphiesProofLabel) nphiesProofLabel.textContent = "إثبات ترخيص  (TPA License Proof)";
+        } else {
+          // corporate: hide both licenses
+          insurerFields.classList.remove("show");
+          tpaFields.classList.remove("show");
+          if (fields.payerLicense) fields.payerLicense.value = "";
+          if (fields.tpaLicense) fields.tpaLicense.value = "";
+          if (nphiesProofLabel) nphiesProofLabel.textContent = "إثبات ترخيص  (إن وجد)";
+        }
+      }
+
+            function validateStep(step) {
+        let ok = true;
+
+        const validateOptionalFile = (key, input, maxBytes) => {
+          const files = input && input.files ? Array.from(input.files) : [];
+          if (!files.length) {
+            setError(key, false);
+            return true;
+          }
+          if (!validPdfFiles(input)) {
+            setError(key, true, "يرجى رفع ملف بصيغة PDF");
+            return false;
+          }
+          if (overSize(input, maxBytes)) {
+            setError(key, true, "حجم الملف يجب ألا يتجاوز 10MB");
+            return false;
+          }
+          setError(key, false);
+          return true;
+        };
+
+        if (step === 1) {
+          setError("facilityType", false);
+        }
+
+        if (step === 2) {
+          setError("sponsorType", false);
+          setError("sponsorName", false);
+          setError("country", false);
+          setError("city", false);
+          setError("district", false);
+          setError("street", false);
+          setError("buildingNo", false);
+          setError("postalCode", false);
+          setError("payerLicense", false);
+          setError("tpaLicense", false);
+
+          const maxBytes = 10 * 1024 * 1024;
+          let attachmentsOk = true;
+          const entries = [
+            ["commercialLicense", fileFields.commercialLicense],
+            ["bankLetter", fileFields.bankLetter],
+            ["nphiesProof", fileFields.nphiesProof]
+          ];
+
+          entries.forEach(([key, input]) => {
+            if (!validateOptionalFile(key, input, maxBytes)) {
+              attachmentsOk = false;
+            }
+          });
+
+          if (attachmentsError) attachmentsError.style.display = attachmentsOk ? "none" : "block";
+          if (!attachmentsOk) ok = false;
+        }
+
+        if (step === 3) {
+          setError("managerName", false);
+
+          const phoneValue = (fields.managerPhone && fields.managerPhone.value ? fields.managerPhone.value : "").trim();
+          if (phoneValue && !validPhone(phoneValue)) {
+            setError("managerPhone", true, "يرجى إدخال رقم جوال صحيح");
+            ok = false;
+          } else {
+            setError("managerPhone", false);
+          }
+
+          const emailValue = (fields.managerEmail && fields.managerEmail.value ? fields.managerEmail.value : "").trim();
+          if (emailValue && !validEmail(emailValue)) {
+            setError("managerEmail", true, "يرجى إدخال بريد إلكتروني صحيح");
+            ok = false;
+          } else {
+            setError("managerEmail", false);
+          }
+
+          const hasPassword = !isEmpty(fields.password);
+          const hasConfirm = !isEmpty(fields.confirmPassword);
+
+          if (hasPassword || hasConfirm) {
+            if (!hasPassword) {
+              setError("password", true, "هذا الحقل مطلوب");
+              ok = false;
+            } else {
+              setError("password", false);
+            }
+
+            if (!hasConfirm) {
+              setError("confirmPassword", true, "هذا الحقل مطلوب");
+              ok = false;
+            } else {
+              setError("confirmPassword", false);
+            }
+
+            if (hasPassword && hasConfirm && fields.password.value !== fields.confirmPassword.value) {
+              setError("confirmPassword", true, "كلمتا المرور غير متطابقتين");
+              ok = false;
+            }
+          } else {
+            setError("password", false);
+            setError("confirmPassword", false);
+          }
+
+          const maxBytes = 10 * 1024 * 1024;
+          if (!validateOptionalFile("ownerIds", fileFields.ownerIds, maxBytes)) {
+            ok = false;
+          }
+        }
+
+        return ok;
+      }
+
+      // clear error on input
+      Object.entries(fields).forEach(([key, el]) => {
+        if (!el || el instanceof NodeList) return;
+        el.addEventListener("input", () => setError(key, false));
+        el.addEventListener("change", () => setError(key, false));
+      });
+
+      // sponsor type change
+      if (fields.sponsorType) {
+        fields.sponsorType.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            setError("sponsorType", false);
+            const group = radio.closest(".card-grid");
+            if (group) {
+              group.querySelectorAll(".card-option").forEach((el) => el.classList.remove("active"));
+            }
+            const wrap = radio.closest(".card-option");
+            if (wrap) wrap.classList.add("active");
+            updateSponsorMode();
+          });
+        });
+      }
+
+      // facility type navigation
+      if (fields.facilityType) {
+        fields.facilityType.forEach((radio) => {
+          radio.addEventListener("change", () => {
+            setError("facilityType", false);
+            const group = radio.closest(".card-grid");
+            if (group) {
+              group.querySelectorAll(".card-option").forEach((el) => el.classList.remove("active"));
+            }
+            const wrap = radio.closest(".card-option");
+            if (wrap) wrap.classList.add("active");
+
+            const target = radio.dataset.target;
+            if (target && target !== "sponsr.html") {
+              window.location.href = target;
+            }
+          });
+        });
+      }
+
+      function syncFileDisplay(key) {
+        const input = fileFields[key];
+        const display = fileDisplays[key];
+        if (!input || !display) return;
+
+        const files = input.files ? Array.from(input.files) : [];
+        const status = document.getElementById(`${key}Status`);
+
+        if (files.length) {
+          if (files.length === 1) {
+            display.value = `${files[0].name} (${formatBytes(files[0].size)})`;
+          } else {
+            const total = files.reduce((sum, f) => sum + f.size, 0);
+            display.value = `${files.length} ملفات (${formatBytes(total)})`;
+          }
+          display.classList.add("has-file");
+          if (status) status.textContent = "تم الرفع";
+        } else {
+          display.value = "";
+          display.classList.remove("has-file");
+          if (status) status.textContent = "";
+        }
+      }
+
+      Object.entries(fileFields).forEach(([key, input]) => {
+        if (!input) return;
+        const btn = form.querySelector(`[data-file-btn="${key}"]`);
+        const display = fileDisplays[key];
+        if (btn) btn.addEventListener("click", () => input.click());
+        if (display) display.addEventListener("click", () => input.click());
+        input.addEventListener("change", () => {
+          syncFileDisplay(key);
+          setError(key, false);
+        });
+      });
+
+      let currentStep = 1;
+
+      function renderStep() {
+        stepPanels.forEach((p) => p.classList.toggle("active", Number(p.dataset.step) === currentStep));
+        stepDots.forEach((d) => {
+          const idx = Number(d.dataset.stepDot);
+          const dot = d.querySelector(".dot");
+          if (idx < currentStep) dot.className = "dot done";
+          else if (idx === currentStep) dot.className = "dot active";
+          else dot.className = "dot idle";
+        });
+        stepLines.forEach((l) => {
+          const idx = Number(l.dataset.stepLine);
+          l.className = idx < currentStep ? "line done" : (idx === currentStep ? "line active" : "line");
+        });
+        nextBtn.textContent = currentStep === 3 ? "إرسال الطلب" : "التالي";
+      }
+
+      nextBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const ok = validateStep(currentStep);
+        if (!ok) {
+          const firstErr = form.querySelector(".has-error .input, .has-error select");
+          if (firstErr) firstErr.focus();
+          return;
+        }
+
+        if (currentStep < 3) {
+          currentStep += 1;
+          renderStep();
+        } else {
+          // demo submit
+          summarySponsor.textContent = (fields.sponsorName.value || "").trim() || "—";
+          summaryCity.textContent = fields.city.value || "—";
+          summaryPhone.textContent = (fields.managerPhone.value || "").trim() || "—";
+          summaryEmail.textContent = (fields.managerEmail.value || "").trim() || "—";
+          if (successBox) successBox.style.display = "block";
+          nextBtn.disabled = true;
+        }
+      });
+
+      backBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (currentStep > 1) {
+          currentStep -= 1;
+          renderStep();
+        }
+      });
+
+      // init
+      updateSponsorMode();
+      renderStep();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+
+
