@@ -687,6 +687,20 @@
               </div>
             </div>
 
+            <div class="grid">
+              <div class="field" data-field="taxNumber">
+                <label for="taxNumber">الرقم الضريبي</label>
+                <input class="input" id="taxNumber" name="taxNumber" type="text" inputmode="numeric" placeholder="مثال: 300000000000003" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+
+              <div class="field" data-field="commercialRegistrationNumber">
+                <label for="commercialRegistrationNumber">رقم السجل التجاري</label>
+                <input class="input" id="commercialRegistrationNumber" name="commercialRegistrationNumber" type="text" inputmode="numeric" placeholder="مثال: 1010000000" />
+                <div class="error">هذا الحقل مطلوب</div>
+              </div>
+            </div>
+
             <div class="section-title">مرفقات الصيدلية</div>
             <div class="error" id="attachmentsError">???? ?????? ?? ???? ??????? ???????? ??????</div>
 
@@ -838,6 +852,8 @@
         street: document.getElementById("street"),
         buildingNo: document.getElementById("buildingNo"),
         postalCode: document.getElementById("postalCode"),
+        taxNumber: document.getElementById("taxNumber"),
+        commercialRegistrationNumber: document.getElementById("commercialRegistrationNumber"),
 
         managerName: document.getElementById("managerName"),
         managerPhone: document.getElementById("managerPhone"),
@@ -950,6 +966,8 @@
           setError("street", false);
           setError("buildingNo", false);
           setError("postalCode", false);
+          setError("taxNumber", false);
+          setError("commercialRegistrationNumber", false);
 
           const maxBytes = 10 * 1024 * 1024;
           let attachmentsOk = true;
