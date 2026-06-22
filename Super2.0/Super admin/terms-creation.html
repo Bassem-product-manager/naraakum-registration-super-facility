@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Create Term</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .page-intro h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 900;
+        color: #101828;
+      }
+      .page-intro p {
+        margin: 6px 0 0;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .form-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .form-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .form-head h3 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .form-body {
+        padding: 16px;
+      }
+      .field-wrap {
+        margin-bottom: 12px;
+      }
+      .field-wrap label {
+        display: block;
+        margin-bottom: 6px;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .field-wrap .form-control {
+        height: 42px;
+      }
+      .field-wrap textarea.form-control {
+        height: auto;
+        min-height: 110px;
+        resize: vertical;
+      }
+      .file-meta {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .hint-box {
+        margin-top: 10px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        border-radius: 10px;
+        background: #f8fafc;
+        color: #344054;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+      .hint-box.success {
+        color: #067647;
+        border-color: rgba(18, 183, 106, 0.3);
+        background: rgba(18, 183, 106, 0.08);
+      }
+      .hint-box.error {
+        color: #b42318;
+        border-color: rgba(240, 68, 56, 0.3);
+        background: rgba(240, 68, 56, 0.08);
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-more">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base=""></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Create Term</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">More</li>
+              <li class="breadcrumb-item active" aria-current="page">Create Term</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="page-intro mb-16">
+            <h1>Create Term</h1>
+            <p>Create a term with PDF upload, then return to Terms table.</p>
+          </div>
+
+          <section class="form-card">
+            <div class="form-head">
+              <h3>Term Form</h3>
+              <a href="terms-library.html" class="btn btn-primary-revers btn-32">
+                <i class="fi fi-rr-list"></i>
+                <span>Back to Terms</span>
+              </a>
+            </div>
+            <div class="form-body">
+              <div class="field-wrap">
+                <label for="termNameInput">Term Name</label>
+                <input id="termNameInput" type="text" class="form-control" placeholder="Enter term name" />
+              </div>
+
+              <div class="field-wrap">
+                <label for="termPdfInput">Upload Term PDF</label>
+                <input id="termPdfInput" type="file" class="form-control" accept="application/pdf,.pdf" />
+                <div class="file-meta" id="termPdfMeta">No file selected.</div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="termDescriptionInput">Description</label>
+                <textarea id="termDescriptionInput" class="form-control" placeholder="Enter term description"></textarea>
+              </div>
+
+              <div class="actions">
+                <button id="saveTermBtn" type="button" class="btn btn-primary btn-32">Save Term</button>
+                <button id="clearTermBtn" type="button" class="btn btn-secondary btn-32">Clear</button>
+              </div>
+
+              <div id="termsFormHint" class="hint-box">After save, you will be redirected to Terms page.</div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/adminSideMenu.js"></script>
+    <script src="assets/js/terms-creation.js"></script>
+  </body>
+</html>

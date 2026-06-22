@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Branch Calendar</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Calendar modal styles (your fixed file) -->
+    <link rel="stylesheet" href="../assets/css/date-picker-styles.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-green-2: #0b6f6f;
+      }
+
+      /* Top buttons */
+      .btn-nk {
+        background: var(--nk-green);
+        border: 1px solid var(--nk-green);
+        color: #fff;
+        border-radius: 14px;
+        height: 42px;
+        padding: 0 16px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+      }
+      .btn-nk:hover {
+        background: var(--nk-green-2);
+        border-color: var(--nk-green-2);
+      }
+      .btn-soft {
+        background: #fff;
+        border: 1px solid #e7eaee;
+        color: #101828;
+        border-radius: 14px;
+        height: 42px;
+        padding: 0 14px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap;
+      }
+      .btn-soft:hover {
+        background: rgba(15, 140, 140, 0.06);
+        border-color: rgba(15, 140, 140, 0.25);
+      }
+
+      /* Table wrap */
+      .table-wrap {
+        border: 1px solid #eef1f4;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+      table.nk-table {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: fixed;
+      }
+      table.nk-table thead th {
+        background: rgba(15, 140, 140, 0.95);
+        color: #fff;
+        font-weight: 900;
+        font-size: 14px;
+        padding: 14px 16px;
+        white-space: nowrap;
+        border: none;
+        vertical-align: middle;
+      }
+      table.nk-table tbody td {
+        padding: 16px 16px;
+        border-bottom: 1px solid #f0f2f5;
+        font-size: 14px;
+        vertical-align: middle;
+        color: #101828;
+      }
+      table.nk-table tbody tr:hover {
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      /* Branch cell */
+      .branch-cell {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-width: 0;
+      }
+      .nk-iconbox {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        flex: 0 0 44px;
+      }
+      .nk-iconbox svg {
+        width: 20px;
+        height: 20px;
+        fill: var(--nk-green);
+      }
+      .branch-cell .name {
+        margin: 0;
+        font-weight: 900;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .branch-cell .code {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #7a8594;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      /* Schedule column */
+      th.schedule-th,
+      td.schedule-td {
+        width: 90px;
+        min-width: 90px;
+        max-width: 90px;
+        text-align: center;
+        vertical-align: middle;
+      }
+      .schedule-icon-btn {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 12px;
+        color: #667085;
+        margin: 0 auto;
+      }
+      .schedule-icon-btn svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+      }
+      .schedule-icon-btn:hover {
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green);
+      }
+
+      /* Toolbar */
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .toolbar-left {
+        flex: 1;
+        min-width: 280px;
+        position: relative;
+      }
+      .toolbar-left .nk-search-icon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 14px;
+        color: #999;
+      }
+      .toolbar-left input {
+        padding-left: 42px;
+      }
+
+      .count-line {
+        color: #667085;
+        font-weight: 800;
+        font-size: 13px;
+        margin-top: 10px;
+      }
+
+      /* Filter modal (same style you used) */
+      .btn-filter {
+        height: 40px;
+        border-radius: 14px;
+        border: 2px solid rgba(15, 140, 140, .35);
+        background: #fff;
+        color: #0b7a7a;
+        font-weight: 900;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 16px;
+        transition: all 0.2s;
+      }
+      .btn-filter:hover {
+        background: rgba(15, 140, 140, .06);
+        border-color: rgba(15, 140, 140, .5);
+      }
+      .nk-hamburger-ico {
+        width: 20px;
+        height: 16px;
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+      }
+      .nk-hamburger-ico span {
+        display: block;
+        height: 2px;
+        border-radius: 2px;
+        background: #0b7a7a;
+      }
+      .nk-hamburger-ico span:nth-child(1) { width: 18px; opacity: .95; }
+      .nk-hamburger-ico span:nth-child(2) { width: 14px; opacity: .85; }
+      .nk-hamburger-ico span:nth-child(3) { width: 10px; opacity: .75; }
+
+      .nk-filter-modal .modal-content { border-radius: 14px; overflow: hidden; border: none; }
+      .nk-filter-modal .nk-modal-top {
+        background: #eaf6f5;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(0, 0, 0, .06);
+      }
+      .nk-filter-modal .nk-modal-title { font-weight: 900; font-size: 16px; color: rgba(0, 0, 0, .75); }
+      .nk-filter-modal .nk-modal-x {
+        width: 34px; height: 34px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, .10);
+        background: #fff;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: .85;
+        color: #000;
+      }
+      .nk-filter-modal .nk-modal-x:hover {
+        background: rgba(15, 140, 140, .06);
+        border-color: rgba(15, 140, 140, .25);
+        opacity: 1;
+      }
+      .nk-filter-modal .modal-body { padding: 16px; }
+      .nk-filter-modal .modal-footer {
+        padding: 14px 16px;
+        border-top: 1px solid rgba(0, 0, 0, .06);
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Branch Calendar</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Branch Calendar</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="surface-light-50 p-16 radius-12">
+            <div class="toolbar">
+              <div class="toolbar-left">
+                <i class="fi fi-rr-search nk-search-icon"></i>
+                <input id="qSearch" type="text" class="form-control form-control-40" placeholder="Search branch..." />
+              </div>
+
+              <div class="d-flex gap-2 align-items-center">
+                <button id="btnShowBranchFilter" class="btn-filter" type="button" data-bs-toggle="modal" data-bs-target="#modalFilterBranches">
+                  <div class="nk-hamburger-ico"><span></span><span></span><span></span></div>
+                  Filter
+                </button>
+                <!-- Back to Branches removed per request -->
+              </div>
+            </div>
+
+            <div class="count-line">
+              Showing <span id="countLabel">0</span> of <span id="totalLabel">0</span> entries
+            </div>
+
+            <div class="mt-16 table-wrap">
+              <table class="nk-table">
+                <thead>
+                  <tr>
+                    <th style="width: 50%;">Branch Name</th>
+                    <th style="width: 20%;">City</th>
+                    <th style="width: 30%;">Timezone</th>
+                    <th class="schedule-th">Schedule</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyBranches"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal: Branches -->
+    <div class="modal fade nk-filter-modal" id="modalFilterBranches" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width:420px;">
+        <div class="modal-content">
+          <div class="nk-modal-top">
+            <div class="nk-modal-title">Filter Options</div>
+            <button type="button" class="nk-modal-x" data-bs-dismiss="modal" aria-label="Close">×</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">City</label>
+                <select class="form-select form-control-40" id="cityFilter">
+                  <option value="All" selected>All Cities</option>
+                  <option value="Riyadh">Riyadh</option>
+                  <option value="Khobar">Khobar</option>
+                  <option value="Taif">Taif</option>
+                  <option value="Yanbu">Yanbu</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Timezone</label>
+                <select class="form-select form-control-40" id="tzFilter">
+                  <option value="All" selected>All Timezones</option>
+                  <option value="(GMT+03:00) Riyadh">(GMT+03:00) Riyadh</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-light btn-40" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-40" style="background:var(--nk-green);color:#fff;font-weight:900;" type="button" id="btnApplyBranches">
+              Apply Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch Hours Modal -->
+    <div class="modal fade bh-modal" id="hoursModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="bh-header">
+            <div>
+              <h3 class="bh-title">Business Hours</h3>
+              <p class="bh-sub">Configuring schedule for <b id="bhBranchName">Branch</b></p>
+            </div>
+
+            <div class="bh-right">
+              <div class="bh-enable">
+                <span>Enable</span>
+                <div class="nk-toggle on" id="toggleEnable"></div>
+              </div>
+              <button class="x-close" type="button" data-bs-dismiss="modal" aria-label="Close">×</button>
+            </div>
+          </div>
+
+          <div class="bh-body">
+            <div class="bh-section">
+              <p class="bh-label">Branch Timezone</p>
+              <select class="bh-select" id="bhTimezone">
+                <option>(GMT+03:00) Riyadh, Saudi Arabia</option>
+              </select>
+            </div>
+
+            <div class="bh-section">
+              <p class="bh-label">WEEKLY SCHEDULE</p>
+
+              <div class="day-card">
+                <div class="day-head">
+                  <div class="day-name"><span>Monday</span><span class="pill-open" id="mondayPill">OPEN</span></div>
+                  <div class="nk-toggle on" id="toggleMonday"></div>
+                </div>
+                <div class="intervals" id="mondayIntervals"></div>
+                <div class="add-interval" id="btnAddInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Tuesday</span><span class="pill-closed" id="tuesdayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleTuesday"></div>
+                </div>
+                <div class="intervals" id="tuesdayIntervals"></div>
+                <div class="add-interval" id="btnAddTuesdayInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Wednesday</span><span class="pill-closed" id="wednesdayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleWednesday"></div>
+                </div>
+                <div class="intervals" id="wednesdayIntervals"></div>
+                <div class="add-interval" id="btnAddWednesdayInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Thursday</span><span class="pill-closed" id="thursdayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleThursday"></div>
+                </div>
+                <div class="intervals" id="thursdayIntervals"></div>
+                <div class="add-interval" id="btnAddThursdayInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Friday</span><span class="pill-closed" id="fridayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleFriday"></div>
+                </div>
+                <div class="intervals" id="fridayIntervals"></div>
+                <div class="add-interval" id="btnAddFridayInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Saturday</span><span class="pill-closed" id="saturdayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleSaturday"></div>
+                </div>
+                <div class="intervals" id="saturdayIntervals"></div>
+                <div class="add-interval" id="btnAddSaturdayInterval">+ Add Interval</div>
+              </div>
+
+              <div class="day-card" style="margin-top:16px;">
+                <div class="day-head">
+                  <div class="day-name"><span>Sunday</span><span class="pill-closed" id="sundayPill">CLOSED</span></div>
+                  <div class="nk-toggle" id="toggleSunday"></div>
+                </div>
+                <div class="intervals" id="sundayIntervals"></div>
+                <div class="add-interval" id="btnAddSundayInterval">+ Add Interval</div>
+              </div>
+            </div>
+
+            <div class="bh-section">
+              <div class="exceptions-head">
+                <p class="bh-label" style="margin:0;">EXCEPTIONS</p>
+                <span class="add-date" id="btnAddException">+ Add Date</span>
+              </div>
+              <div id="exceptionsList"></div>
+            </div>
+          </div>
+
+          <div class="bh-footer">
+            <button class="btn-cancel" type="button" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn-save" type="button" id="btnSaveHours">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4z" stroke="white" stroke-width="2" />
+                <path d="M17 21v-8H7v8" stroke="white" stroke-width="2" />
+                <path d="M7 3v4h8" stroke="white" stroke-width="2" />
+              </svg>
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const BR_KEY = "naraakum_branches";
+        const DEFAULT_TZ = "(GMT+03:00) Riyadh";
+
+        const els = {
+          q: document.getElementById("qSearch"),
+          city: document.getElementById("cityFilter"),
+          tz: document.getElementById("tzFilter"),
+          btnApply: document.getElementById("btnApplyBranches"),
+          tbody: document.getElementById("tbodyBranches"),
+          count: document.getElementById("countLabel"),
+          total: document.getElementById("totalLabel"),
+
+          // modal
+          modalEl: document.getElementById("hoursModal"),
+          bhBranchName: document.getElementById("bhBranchName"),
+          toggleEnable: document.getElementById("toggleEnable"),
+          bhTimezone: document.getElementById("bhTimezone"),
+
+          toggleMonday: document.getElementById("toggleMonday"),
+          toggleTuesday: document.getElementById("toggleTuesday"),
+          toggleWednesday: document.getElementById("toggleWednesday"),
+          toggleThursday: document.getElementById("toggleThursday"),
+          toggleFriday: document.getElementById("toggleFriday"),
+          toggleSaturday: document.getElementById("toggleSaturday"),
+          toggleSunday: document.getElementById("toggleSunday"),
+
+          mondayPill: document.getElementById("mondayPill"),
+          tuesdayPill: document.getElementById("tuesdayPill"),
+          wednesdayPill: document.getElementById("wednesdayPill"),
+          thursdayPill: document.getElementById("thursdayPill"),
+          fridayPill: document.getElementById("fridayPill"),
+          saturdayPill: document.getElementById("saturdayPill"),
+          sundayPill: document.getElementById("sundayPill"),
+
+          mondayIntervals: document.getElementById("mondayIntervals"),
+          tuesdayIntervals: document.getElementById("tuesdayIntervals"),
+          wednesdayIntervals: document.getElementById("wednesdayIntervals"),
+          thursdayIntervals: document.getElementById("thursdayIntervals"),
+          fridayIntervals: document.getElementById("fridayIntervals"),
+          saturdayIntervals: document.getElementById("saturdayIntervals"),
+          sundayIntervals: document.getElementById("sundayIntervals"),
+
+          btnAddInterval: document.getElementById("btnAddInterval"),
+          btnAddTuesdayInterval: document.getElementById("btnAddTuesdayInterval"),
+          btnAddWednesdayInterval: document.getElementById("btnAddWednesdayInterval"),
+          btnAddThursdayInterval: document.getElementById("btnAddThursdayInterval"),
+          btnAddFridayInterval: document.getElementById("btnAddFridayInterval"),
+          btnAddSaturdayInterval: document.getElementById("btnAddSaturdayInterval"),
+          btnAddSundayInterval: document.getElementById("btnAddSundayInterval"),
+
+          exceptionsList: document.getElementById("exceptionsList"),
+          btnAddException: document.getElementById("btnAddException"),
+          btnSaveHours: document.getElementById("btnSaveHours"),
+        };
+
+        const DAYS = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+        let currentBranchId = null;
+
+        function esc(s) {
+          return (s || "").toString()
+            .replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+        }
+        function norm(s) { return (s || "").toString().trim().toLowerCase(); }
+
+        function setToggle(el, on) { on ? el.classList.add("on") : el.classList.remove("on"); }
+        function getToggle(el) { return el.classList.contains("on"); }
+
+        function iconBoxSVG() {
+          return `
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2 3 7v15h18V7l-9-5zm0 2.3L19 8v12H5V8l7-3.7z"></path>
+              <path d="M8 10h3v3H8v-3zm5 0h3v3h-3v-3zM8 15h3v3H8v-3zm5 0h3v3h-3v-3z"></path>
+            </svg>`;
+        }
+        function calendarOutlineSVG() {
+          return `
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 3v3M16 3v3"></path>
+              <path d="M4.5 9.5h15"></path>
+              <path d="M6.5 6h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
+            </svg>`;
+        }
+
+        function loadBranches() {
+          const raw = localStorage.getItem(BR_KEY);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) {}
+          }
+          // Seed with your 4 branches
+          const seed = [
+            { id: "BR-001", name: "Main Branch", city: "Yanbu", timezone: DEFAULT_TZ, phone: "0548877493", address: "8451 King Abdullah Street, Yanbu", hours: {} },
+            { id: "BR-002", name: "Downtown Branch", city: "Khobar", timezone: DEFAULT_TZ, phone: "0551192238", address: "1112 King Abdullah Street, Khobar", hours: {} },
+            { id: "BR-003", name: "North Branch", city: "Taif", timezone: DEFAULT_TZ, phone: "0531419320", address: "2212 Tahlia Street, Taif", hours: {} },
+            { id: "BR-004", name: "South Branch", city: "Taif", timezone: DEFAULT_TZ, phone: "0519200474", address: "3266 King Abdullah Street, Taif", hours: {} },
+          ];
+          localStorage.setItem(BR_KEY, JSON.stringify(seed));
+          return seed;
+        }
+        function saveBranches(arr) { localStorage.setItem(BR_KEY, JSON.stringify(arr)); }
+
+        function applyFilters(list) {
+          const q = norm(els.q.value);
+          const city = els.city.value;
+          const tz = els.tz.value;
+
+          return list.filter(b => {
+            if (q) {
+              const hay = norm(b.name + " " + b.id + " " + (b.city || ""));
+              if (!hay.includes(q)) return false;
+            }
+            if (city !== "All" && (b.city || "") !== city) return false;
+            if (tz !== "All" && (b.timezone || DEFAULT_TZ) !== tz) return false;
+            return true;
+          });
+        }
+
+        function renderBranches() {
+          const all = loadBranches();
+          const rows = applyFilters(all);
+
+          els.total.textContent = all.length;
+          els.count.textContent = rows.length;
+
+          els.tbody.innerHTML = rows.map((b) => `
+            <tr>
+              <td>
+                <div class="branch-cell">
+                  <div class="nk-iconbox">${iconBoxSVG()}</div>
+                  <div style="min-width:0;">
+                    <p class="name">${esc(b.name)}</p>
+                    <p class="code">${esc(b.id)}</p>
+                  </div>
+                </div>
+              </td>
+              <td>${esc(b.city || "")}</td>
+              <td style="color:#6b7280; font-weight:800;">${esc(b.timezone || DEFAULT_TZ)}</td>
+              <td class="schedule-td">
+                <button class="schedule-icon-btn" type="button" data-action="branchHours" data-id="${esc(b.id)}" aria-label="Business Hours">
+                  ${calendarOutlineSVG()}
+                </button>
+              </td>
+            </tr>
+          `).join("");
+
+          if (!rows.length) {
+            els.tbody.innerHTML = `
+              <tr>
+                <td colspan="4" class="text-center text-grey" style="padding: 26px;">
+                  No branches found.
+                </td>
+              </tr>
+            `;
+          }
+        }
+
+        function intervalRow(from = "08:00", to = "12:00") {
+          return `
+            <div class="interval">
+              <input class="time-input" type="time" value="${esc(from)}" />
+              <span class="to-label">to</span>
+              <input class="time-input" type="time" value="${esc(to)}" />
+              <button class="trash" type="button" data-action="delBranchInterval" title="Delete">🗑</button>
+            </div>
+          `;
+        }
+
+        function exceptionItem(name, date) {
+          return `
+            <div class="exception-item">
+              <div>
+                <p class="ex-title">${esc(name)}</p>
+                <p class="ex-sub">${esc(date)} • All day</p>
+              </div>
+              <button class="trash" type="button" data-action="delBranchException" title="Delete" style="width:40px;">🗑</button>
+            </div>
+          `;
+        }
+
+        function updateDayUI(day) {
+          const on = getToggle(els["toggle" + day]);
+          const pill = els[day.toLowerCase() + "Pill"];
+          const intervals = els[day.toLowerCase() + "Intervals"];
+          const addBtn = els["btnAdd" + day + "Interval"] || els["btnAddInterval"];
+
+          if (pill) {
+            pill.textContent = on ? "OPEN" : "CLOSED";
+            pill.className = on ? "pill-open" : "pill-closed";
+          }
+          if (intervals) intervals.style.opacity = on ? "1" : "0.5";
+          if (addBtn) {
+            addBtn.style.pointerEvents = on ? "auto" : "none";
+            addBtn.style.opacity = on ? "1" : "0.5";
+          }
+        }
+
+        function openBranchModal(branchId) {
+          currentBranchId = branchId;
+          const all = loadBranches();
+          const br = all.find(x => x.id === branchId);
+          if (!br) return;
+
+          els.bhBranchName.textContent = br.name;
+          els.bhTimezone.value = br.timezone || DEFAULT_TZ;
+
+          const saved = br.hours || {};
+
+          setToggle(els.toggleEnable, saved.enabled !== false);
+
+          const dayMap = [
+            ["Monday", els.toggleMonday, els.mondayPill, els.mondayIntervals, els.btnAddInterval],
+            ["Tuesday", els.toggleTuesday, els.tuesdayPill, els.tuesdayIntervals, els.btnAddTuesdayInterval],
+            ["Wednesday", els.toggleWednesday, els.wednesdayPill, els.wednesdayIntervals, els.btnAddWednesdayInterval],
+            ["Thursday", els.toggleThursday, els.thursdayPill, els.thursdayIntervals, els.btnAddThursdayInterval],
+            ["Friday", els.toggleFriday, els.fridayPill, els.fridayIntervals, els.btnAddFridayInterval],
+            ["Saturday", els.toggleSaturday, els.saturdayPill, els.saturdayIntervals, els.btnAddSaturdayInterval],
+            ["Sunday", els.toggleSunday, els.sundayPill, els.sundayIntervals, els.btnAddSundayInterval],
+          ];
+
+          dayMap.forEach(([name, toggle, pill, box, addBtn]) => {
+            const key = name.toLowerCase();
+            const openKey = key + "Open";
+            const intervalsKey = key + "Intervals";
+
+            setToggle(toggle, saved[openKey] !== false);
+
+            const intervals = Array.isArray(saved[intervalsKey]) ? saved[intervalsKey] : [];
+            const defaultIntervals = (key === "monday" ? [{from:"08:00",to:"12:00"},{from:"13:00",to:"17:00"}] : []);
+            const use = intervals.length ? intervals : defaultIntervals;
+
+            box.innerHTML = use.map(x => intervalRow(x.from, x.to)).join("");
+
+            const isOn = getToggle(toggle);
+            pill.textContent = isOn ? "OPEN" : "CLOSED";
+            pill.className = isOn ? "pill-open" : "pill-closed";
+            box.style.opacity = isOn ? "1" : "0.5";
+            addBtn.style.pointerEvents = isOn ? "auto" : "none";
+            addBtn.style.opacity = isOn ? "1" : "0.5";
+          });
+
+          const ex = Array.isArray(saved.exceptions) ? saved.exceptions : [];
+          els.exceptionsList.innerHTML = ex.map(x => exceptionItem(x.name, x.date)).join("");
+
+          bootstrap.Modal.getOrCreateInstance(els.modalEl).show();
+        }
+
+        function saveBranchHours() {
+          const all = loadBranches();
+          const br = all.find(x => x.id === currentBranchId);
+          if (!br) return;
+
+          const hours = {
+            enabled: getToggle(els.toggleEnable),
+            timezone: els.bhTimezone.value,
+            exceptions: Array.from(els.exceptionsList.querySelectorAll(".exception-item")).map(item => {
+              const t = item.querySelector(".ex-title")?.textContent?.trim() || "Exception";
+              const s = item.querySelector(".ex-sub")?.textContent?.split("•")[0]?.trim() || "Date";
+              return { name: t, date: s };
+            })
+          };
+
+          const dayRows = [
+            ["monday", els.toggleMonday, els.mondayIntervals],
+            ["tuesday", els.toggleTuesday, els.tuesdayIntervals],
+            ["wednesday", els.toggleWednesday, els.wednesdayIntervals],
+            ["thursday", els.toggleThursday, els.thursdayIntervals],
+            ["friday", els.toggleFriday, els.fridayIntervals],
+            ["saturday", els.toggleSaturday, els.saturdayIntervals],
+            ["sunday", els.toggleSunday, els.sundayIntervals],
+          ];
+
+          dayRows.forEach(([day, toggle, box]) => {
+            hours[day + "Open"] = getToggle(toggle);
+            hours[day + "Intervals"] = Array.from(box.querySelectorAll(".interval")).map(row => {
+              const inputs = row.querySelectorAll('input[type="time"]');
+              return { from: inputs[0]?.value || "08:00", to: inputs[1]?.value || "12:00" };
+            });
+          });
+
+          br.hours = hours;
+          br.timezone = hours.timezone || DEFAULT_TZ;
+
+          saveBranches(all);
+
+          bootstrap.Modal.getInstance(els.modalEl)?.hide();
+          renderBranches();
+        }
+
+        // Events: search
+        els.q.addEventListener("input", renderBranches);
+
+        // Apply filters
+        els.btnApply.addEventListener("click", () => {
+          renderBranches();
+          bootstrap.Modal.getInstance(document.getElementById("modalFilterBranches"))?.hide();
+        });
+
+        // Reset behavior removed (Reset button deleted)
+
+        // Table click: open schedule
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-action='branchHours']");
+          if (!btn) return;
+          openBranchModal(btn.getAttribute("data-id"));
+        });
+
+        // Toggle enable
+        els.toggleEnable.addEventListener("click", () => setToggle(els.toggleEnable, !getToggle(els.toggleEnable)));
+
+        // Day toggles
+        [
+          ["Monday", els.toggleMonday], ["Tuesday", els.toggleTuesday], ["Wednesday", els.toggleWednesday],
+          ["Thursday", els.toggleThursday], ["Friday", els.toggleFriday], ["Saturday", els.toggleSaturday], ["Sunday", els.toggleSunday]
+        ].forEach(([d, el]) => {
+          el.addEventListener("click", () => {
+            setToggle(el, !getToggle(el));
+            updateDayUI(d);
+          });
+        });
+
+        // Add interval buttons
+        els.btnAddInterval.addEventListener("click", () => els.mondayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddTuesdayInterval.addEventListener("click", () => els.tuesdayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddWednesdayInterval.addEventListener("click", () => els.wednesdayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddThursdayInterval.addEventListener("click", () => els.thursdayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddFridayInterval.addEventListener("click", () => els.fridayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddSaturdayInterval.addEventListener("click", () => els.saturdayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+        els.btnAddSundayInterval.addEventListener("click", () => els.sundayIntervals.insertAdjacentHTML("beforeend", intervalRow("09:00","13:00")));
+
+        // Exceptions add
+        els.btnAddException.addEventListener("click", () => {
+          const name = prompt("Exception name:", "Holiday");
+          if (name === null) return;
+          const date = prompt("Date (e.g. Dec 25, 2026):", "Dec 25, 2026");
+          if (date === null) return;
+          els.exceptionsList.insertAdjacentHTML("beforeend", exceptionItem(name, date));
+        });
+
+        // Delete handlers inside modal
+        els.modalEl.addEventListener("click", (e) => {
+          const btn = e.target.closest("button[data-action]");
+          if (!btn) return;
+          const action = btn.getAttribute("data-action");
+          if (action === "delBranchInterval") btn.closest(".interval")?.remove();
+          if (action === "delBranchException") btn.closest(".exception-item")?.remove();
+        });
+
+        // Save hours
+        els.btnSaveHours.addEventListener("click", saveBranchHours);
+
+        // Init
+        renderBranches();
+
+        // Auto-open by query param: ?branch=BR-001
+        const params = new URLSearchParams(window.location.search);
+        const openId = params.get("branch");
+        if (openId) {
+          setTimeout(() => openBranchModal(openId), 200);
+        }
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

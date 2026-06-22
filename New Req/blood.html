@@ -1,0 +1,3501 @@
+﻿<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>نراكم | لوحة متابعة ضغط الدم</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --nk-teal: #11979a;
+      --nk-teal-dark: #0a7f82;
+      --nk-bg: #edf2f3;
+      --nk-card: #ffffff;
+      --nk-line: #e3e9ea;
+      --nk-text: #223636;
+      --nk-muted: #708586;
+      --nk-soft: #f3f7f8;
+      --nk-soft-2: #eef5f6;
+      --nk-ok: #1aa05c;
+      --nk-warn: #f0a100;
+      --nk-danger: #db4949;
+      --nk-sys: #2b7de8;
+      --nk-dia: #0f9d58;
+      --nk-pulse: #f08c00;
+      --nk-shadow: 0 10px 20px rgba(28, 89, 89, 0.08);
+      --nk-radius: 12px;
+      --nk-font: "Cairo", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--nk-font);
+      color: var(--nk-text);
+      background: var(--nk-bg);
+    }
+
+    button, input, select, textarea { font-family: inherit; }
+
+    a { color: inherit; text-decoration: none; }
+
+    .hidden { display: none !important; }
+
+    .nk-topbar {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: #fff;
+      border-bottom: 1px solid #dfe4e7;
+      box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02);
+    }
+
+    .nk-topbar-inner {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 8px 18px;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+    }
+
+    .brand-block {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      min-width: 198px;
+      margin-inline-start: 4px;
+    }
+
+    .brand-block img {
+      width: auto;
+      height: 46px;
+      display: block;
+    }
+
+    .menu-links {
+      display: inline-flex;
+      align-items: center;
+      gap: 18px;
+      margin-inline-start: 10px;
+      color: #222f32;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .nav-link {
+      color: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.16s ease;
+    }
+
+    .nav-link:hover { color: #0b8488; }
+
+    .nav-link.has-dd::after {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-inline-end: 1.4px solid currentColor;
+      border-bottom: 1.4px solid currentColor;
+      transform: translateY(-1px) rotate(45deg);
+      opacity: 0.75;
+    }
+
+    .join-btn {
+      border: 1px solid #3faeb2;
+      background: #fff;
+      color: #1c989c;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1;
+      padding: 10px 14px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .country-pill,
+    .icon-btn {
+      border: 1px solid #d6dbdf;
+      background: #fff;
+      border-radius: 7px;
+    }
+
+    .country-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1;
+      color: #232f31;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .sa-flag {
+      width: 18px;
+      height: 12px;
+      border-radius: 2px;
+      background: #158f54;
+      position: relative;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+      flex: 0 0 18px;
+    }
+
+    .sa-flag::before {
+      content: "";
+      position: absolute;
+      right: 2px;
+      left: 2px;
+      top: 4px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .sa-flag::after {
+      content: "";
+      position: absolute;
+      right: 6px;
+      left: 6px;
+      bottom: 2px;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    .mini-caret {
+      width: 5px;
+      height: 5px;
+      border-inline-end: 1.4px solid #536365;
+      border-bottom: 1.4px solid #536365;
+      transform: rotate(45deg) translateY(-1px);
+      opacity: 0.85;
+      display: inline-block;
+    }
+
+    .user-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding-inline: 2px;
+    }
+
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      min-width: 142px;
+    }
+
+    .user-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid #cde5e6;
+      overflow: hidden;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #39b1b7;
+      flex: 0 0 38px;
+    }
+
+    .user-avatar svg { width: 100%; height: 100%; display: block; }
+
+    .user-meta {
+      line-height: 1.05;
+      display: grid;
+      justify-items: start;
+      gap: 2px;
+    }
+
+    .user-meta .hello {
+      font-size: 12px;
+      color: #667a7b;
+      font-weight: 700;
+    }
+
+    .user-meta .name {
+      font-size: 14px;
+      color: #29393b;
+      font-weight: 700;
+    }
+
+    .user-caret {
+      width: 18px;
+      height: 18px;
+      border: 0;
+      background: transparent;
+      color: #2f3e40;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .user-caret svg { width: 11px; height: 11px; display: block; }
+
+    .quick-actions {
+      margin-inline-start: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      direction: rtl;
+    }
+
+    .icon-btn {
+      width: 42px;
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #1d2324;
+      cursor: pointer;
+      position: relative;
+      padding: 0;
+    }
+
+    .icon-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+    }
+
+    .badge-dot {
+      position: absolute;
+      top: -6px;
+      inset-inline-end: -5px;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      padding: 0 5px;
+      background: #ef4444;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #fff;
+    }
+
+    .nk-hero {
+      background: var(--nk-teal);
+      color: #fff;
+      padding: 18px 16px 54px;
+    }
+
+    .nk-hero-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .nk-hero-help {
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.92;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nk-hero-title {
+      text-align: right;
+    }
+
+    .nk-hero-title h1 {
+      margin: 0;
+      font-size: 36px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .nk-hero-title p {
+      margin: 3px 0 0;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0.92;
+    }
+
+    .nk-page {
+      max-width: 1280px;
+      margin: -32px auto 0;
+      padding: 0 16px 28px;
+    }
+
+    .nk-shell {
+      background: #fff;
+      border: 1px solid var(--nk-line);
+      border-radius: 10px;
+      box-shadow: var(--nk-shadow);
+      padding: 10px;
+    }
+
+    .tabs-row {
+      grid-area: tabs;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      direction: rtl;
+      border: 0;
+      border-bottom: 1px solid #d7dcde;
+      border-radius: 0;
+      background: transparent;
+      padding: 6px 0 10px;
+      margin: 0;
+      overflow-x: auto;
+    }
+
+    .tab-pill {
+      border: 1px solid #d6dee0;
+      background: #e9eff0;
+      border-radius: 7px;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #647a7c;
+      white-space: nowrap;
+      flex: 0 0 auto;
+    }
+
+    .tab-pill.active {
+      background: #fff;
+      border-color: #c2cbce;
+      border-bottom-color: #fff;
+      color: #0f8f93;
+      box-shadow: 0 1px 0 #fff inset;
+    }
+
+    .tab-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 0;
+      border: 0;
+      background: transparent;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #88a0a1;
+      flex: 0 0 18px;
+    }
+
+    .tab-icon svg { width: 14px; height: 14px; }
+
+    .tab-icon img {
+      width: 15px;
+      height: 15px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .plus-tab {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #d9e1e3;
+      border-radius: 50%;
+      background: #fff;
+      color: #259ba0;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex: 0 0 auto;
+      margin-inline-start: 2px;
+      padding-bottom: 2px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      direction: ltr;
+      grid-template-columns: 250px minmax(0, 1fr) 290px;
+      grid-template-areas:
+        "tabs tabs side"
+        "devices middle side";
+      gap: 10px;
+      align-items: start;
+    }
+
+    .dashboard-grid > * { direction: rtl; }
+
+    .devices-col { grid-area: devices; }
+    .mid-stack { grid-area: middle; }
+    .side-col { grid-area: side; }
+
+    .card {
+      border: 1px solid var(--nk-line);
+      border-radius: 9px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .card-hd {
+      min-height: 38px;
+      border-bottom: 1px solid var(--nk-line);
+      background: #f5f8f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #345050;
+    }
+
+    .card-bd { padding: 10px; }
+
+    .muted { color: var(--nk-muted); font-size: 11px; font-weight: 700; }
+
+    .devices-col {
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .devices-col .card-hd { display: none; }
+    .devices-col .card-bd { padding: 0; }
+
+    .left-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0 2px 8px;
+      direction: ltr;
+      line-height: 1;
+    }
+
+    .left-actions .legacy-label {
+      color: #8a8f91;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .left-actions .devices-title {
+      color: #179ca0;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .device-list { display: block; }
+
+    .device-panel {
+      border: 1px solid #cfd5d7;
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .device-panel-row {
+      direction: ltr;
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr);
+      min-height: 78px;
+    }
+
+    .device-panel-row + .device-panel-row {
+      border-top: 1px solid #d7dcde;
+    }
+
+    .device-status-col {
+      direction: rtl;
+      padding: 11px 8px 9px;
+      display: grid;
+      align-content: start;
+      justify-items: start;
+      gap: 8px;
+    }
+
+    .device-status-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #505a5c;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .state-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .state-dot.on { background: #13b441; }
+    .state-dot.off { background: #b7bdc0; }
+
+    .device-delete-link {
+      border: 0;
+      background: transparent;
+      color: #ef2f2f;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .device-info-col {
+      direction: rtl;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      min-width: 0;
+    }
+
+    .device-copy { min-width: 0; }
+
+    .device-kind {
+      color: #676e70;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+
+    .device-model {
+      color: #24282a;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.25;
+      white-space: normal;
+      overflow: hidden;
+      text-overflow: clip;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .device-model {
+      direction: ltr;
+      unicode-bidi: plaintext;
+      text-align: right;
+    }
+
+    .device-model:not(.en) {
+      direction: rtl;
+      unicode-bidi: embed;
+    }
+
+    .device-thumb {
+      width: 24px;
+      height: 30px;
+      object-fit: contain;
+      display: block;
+      margin-inline-end: 1px;
+    }
+
+    .device-add-slot {
+      align-content: center;
+      justify-items: center;
+      padding: 0;
+      gap: 0;
+    }
+
+    .device-add-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 0;
+      background: #e8f0f2;
+      color: #1b9aa0;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 0;
+      padding: 0 0 1px;
+      cursor: pointer;
+    }
+
+    .device-panel-row.secondary .device-model {
+      color: #6a7173;
+    }
+
+    .device-empty-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #d4d4d6;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-inline-end: 1px;
+    }
+
+    .device-empty-circle::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #f0f0f1;
+      display: block;
+    }
+
+    .manual-box {
+      margin-top: 8px;
+      border: 0;
+      border-radius: 8px;
+      background: #e7eff1;
+      padding: 8px;
+    }
+
+    .manual-box .head,
+    .manual-box .desc {
+      display: none;
+    }
+
+    .manual-read-btn {
+      border: 1px solid #d5e3e4;
+      background: #fff;
+      border-radius: 12px;
+      color: #19969b;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1;
+      padding: 6px 10px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .manual-read-btn .icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #25a4a8;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .tiny-btn {
+      border: 1px solid #cbe0e2;
+      background: #fff;
+      color: #0f7f83;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 8px;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    .mid-stack { display: grid; gap: 10px; }
+
+    .hint-line {
+      border: 1px solid #d7ece1;
+      background: #f2fbf6;
+      border-radius: 8px;
+      color: #24875a;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 7px 10px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      direction: ltr;
+      grid-template-columns: 1fr 1fr 1fr 170px;
+      grid-template-areas: "status target map latest";
+      gap: 8px;
+    }
+
+    .kpi-grid > * { direction: rtl; }
+
+    .kpi-status { grid-area: status; }
+    .kpi-target { grid-area: target; }
+    .kpi-map { grid-area: map; }
+    .kpi-latest { grid-area: latest; }
+
+    .kpi {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      background: #fff;
+      min-height: 78px;
+      padding: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .kpi .label { font-size: 11px; color: var(--nk-muted); font-weight: 700; }
+    .kpi .value { margin-top: 2px; font-size: 13px; font-weight: 900; color: #2f4c4d; }
+
+    .kpi-edit {
+      width: 26px;
+      height: 26px;
+      border: 1px solid #d4e5e6;
+      border-radius: 7px;
+      background: #f3f9f9;
+      color: #1b8d90;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .latest-box {
+      border: 1px solid #f3debb;
+      border-radius: 8px;
+      background: #fff5e8;
+      min-height: 78px;
+      text-align: center;
+      padding: 8px;
+      display: grid;
+      align-content: center;
+      gap: 2px;
+    }
+
+    .latest-box .t { font-size: 11px; font-weight: 700; color: #8b6a46; }
+    .latest-box .n { font-size: 26px; font-weight: 900; color: #e68715; line-height: 1; }
+    .latest-box .u { font-size: 10px; color: #957354; font-weight: 700; }
+    .latest-box .tm { font-size: 10px; color: var(--nk-muted); font-weight: 700; }
+
+    .chart-card .card-bd { padding: 8px 10px 10px; }
+
+    .chart-top {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      direction: rtl;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+
+    .mini-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: nowrap;
+    }
+
+    .range-pills {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: nowrap;
+    }
+
+    .range-btn {
+      border: 1px solid #d3e4e6;
+      border-radius: 7px;
+      background: #fff;
+      color: #486364;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .range-btn.active {
+      border-color: #74bcc0;
+      color: #0f7f83;
+      background: #eaf7f7;
+    }
+
+    .pulse-toggle {
+      border: 1px solid #d3e4e6;
+      border-radius: 999px;
+      background: #fff;
+      padding: 4px 8px;
+      font-size: 11px;
+      color: #486364;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse-toggle input { accent-color: #128b8f; margin: 0; }
+
+    .chart-layout {
+      display: grid;
+      direction: ltr;
+      grid-template-columns: minmax(0, 1fr) 175px;
+      grid-template-areas: "graph scale";
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .chart-layout .chart-wrap { grid-area: graph; direction: ltr; }
+    .chart-layout .scale-box { grid-area: scale; direction: rtl; }
+
+    .chart-wrap,
+    .pulse-wrap {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      background: #fff;
+      position: relative;
+      overflow: hidden;
+      min-height: 220px;
+    }
+
+    .chart-wrap svg,
+    .pulse-wrap svg {
+      width: 100%;
+      height: 220px;
+      display: block;
+    }
+
+    .chart-empty,
+    .pulse-empty {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, #fff, #f8fbfb);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 12px;
+      color: var(--nk-muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .chart-tip,
+    .pulse-tip {
+      position: absolute;
+      border: 1px solid #d6e3e4;
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.1);
+      padding: 7px 9px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #2f4b4c;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, calc(-100% - 8px));
+      min-width: 120px;
+      z-index: 3;
+      white-space: nowrap;
+    }
+
+    .scale-box {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      display: grid;
+      gap: 8px;
+      align-content: start;
+    }
+
+    .scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 7px;
+      font-size: 10px;
+      color: #445e5f;
+      font-weight: 700;
+      border-bottom: 1px dashed #edf3f4;
+      padding-bottom: 7px;
+    }
+
+    .scale-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .scale-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .scale-bar {
+      width: 5px;
+      height: 18px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .scale-bar.low { background: rgba(219, 73, 73, 0.55); }
+    .scale-bar.mid { background: rgba(26, 160, 92, 0.55); }
+    .scale-bar.high { background: rgba(240, 161, 0, 0.55); }
+
+    .legend-row {
+      margin-top: 7px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: #3f5a5b;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .legend-row .line {
+      width: 16px;
+      height: 3px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-inline-end: 4px;
+      vertical-align: middle;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    .summary-note {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      background: #f2f7f8;
+      padding: 10px;
+    }
+
+    .summary-note .h {
+      font-size: 18px;
+      font-weight: 900;
+      color: #e57f15;
+      line-height: 1;
+    }
+
+    .summary-note .sub {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #d27a1f;
+      font-weight: 800;
+    }
+
+    .summary-note .txt {
+      margin-top: 9px;
+      color: var(--nk-muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.65;
+    }
+
+    .summary-metrics {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+      background: #fff;
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #2f4c4d;
+    }
+
+    .s-orange { color: var(--nk-warn); }
+    .s-green { color: var(--nk-ok); }
+    .s-red { color: var(--nk-danger); }
+
+    .donut-wrap {
+      margin-top: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .donut {
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background:
+        conic-gradient(
+          var(--nk-ok) 0deg,
+          var(--nk-ok) calc(var(--p-in) * 3.6deg),
+          var(--nk-warn) calc(var(--p-in) * 3.6deg),
+          var(--nk-warn) calc((var(--p-in) + var(--p-high)) * 3.6deg),
+          var(--nk-danger) calc((var(--p-in) + var(--p-high)) * 3.6deg),
+          var(--nk-danger) 360deg
+        );
+      position: relative;
+      flex: 0 0 86px;
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      background: #fff;
+      border-radius: 50%;
+      border: 1px solid #edf2f3;
+    }
+
+    .donut-stats {
+      font-size: 11px;
+      color: #4e696a;
+      font-weight: 700;
+      display: grid;
+      gap: 4px;
+    }
+
+    .metric-grid {
+      margin-top: 3px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .metric {
+      border: 1px solid #edf2f3;
+      border-radius: 7px;
+      padding: 6px;
+      background: #f9fcfc;
+    }
+
+    .metric .k { font-size: 10px; color: var(--nk-muted); font-weight: 700; }
+    .metric .v { font-size: 12px; color: #2f4c4d; font-weight: 900; margin-top: 1px; }
+
+    .table-wrap {
+      margin-top: 8px;
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 680px;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid #eef3f4;
+      padding: 7px 8px;
+      text-align: right;
+      font-size: 11px;
+      font-weight: 700;
+      color: #365152;
+      white-space: nowrap;
+    }
+
+    th {
+      background: #f7fafb;
+      font-size: 10px;
+      font-weight: 900;
+      color: #4a6465;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      border-radius: 999px;
+      padding: 2px 7px;
+      border: 1px solid #dde7e8;
+      font-size: 10px;
+      font-weight: 800;
+      background: #fff;
+    }
+
+    .tag.ok { color: var(--nk-ok); background: rgba(26, 160, 92, 0.08); border-color: rgba(26, 160, 92, 0.22); }
+    .tag.warn { color: var(--nk-warn); background: rgba(240, 161, 0, 0.08); border-color: rgba(240, 161, 0, 0.24); }
+    .tag.danger { color: var(--nk-danger); background: rgba(219, 73, 73, 0.08); border-color: rgba(219, 73, 73, 0.25); }
+
+    .side-stack { display: grid; gap: 10px; }
+
+    .edit-icon {
+      width: 24px;
+      height: 24px;
+      border: 1px solid #d5e5e6;
+      border-radius: 7px;
+      background: #f3f9f9;
+      color: #15868a;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 9px;
+      font-size: 12px;
+      color: #395455;
+      font-weight: 700;
+    }
+
+    .profile-grid .k { color: var(--nk-muted); font-weight: 700; }
+
+    .doc-list,
+    .mini-list { display: grid; gap: 7px; }
+
+    .doc-item {
+      border: 1px solid var(--nk-line);
+      border-radius: 8px;
+      padding: 7px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #fff;
+    }
+
+    .doc-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+    .doc-avatar {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      border: 1px solid #d6e3e4;
+      background: #f0f7f8;
+      color: #177f83;
+      font-size: 11px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 31px;
+    }
+
+    .doc-name {
+      font-size: 11px;
+      font-weight: 800;
+      color: #304b4c;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-spec {
+      font-size: 10px;
+      color: var(--nk-muted);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-top: 1px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mini-row {
+      border-bottom: 1px solid #ecf2f3;
+      padding-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #334f50;
+    }
+
+    .mini-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .mini-row .t {
+      font-size: 10px;
+      color: var(--nk-muted);
+      font-weight: 700;
+    }
+
+    .more-wrap {
+      margin-top: 8px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .more-wrap button {
+      border: 1px solid #cde1e2;
+      background: #fff;
+      color: #168287;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .nk-footer {
+      margin-top: 20px;
+      background: linear-gradient(180deg, #0ea4a6, #0e8b8d);
+      color: #fff;
+      padding-top: 34px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nk-footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 16px 26px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .foot-box {
+      border: 1px solid rgba(255, 255, 255, 0.23);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px;
+      min-height: 96px;
+    }
+
+    .nk-footer h4 {
+      margin: 0 0 9px;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .nk-footer .list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .nk-footer a {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      opacity: 0.95;
+    }
+
+    .nk-footer a:hover { text-decoration: underline; opacity: 1; }
+
+    .payment-strip {
+      max-width: 1280px;
+      margin: 0 auto;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.09);
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: #eaf9f9;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .cards-row,
+    .apps-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pay-chip,
+    .app-chip {
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 7px;
+      line-height: 1;
+    }
+
+    .copy-row {
+      max-width: 1280px;
+      margin: 10px auto 0;
+      padding: 0 16px 16px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.24);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 80;
+      padding: 14px;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(560px, 100%);
+      border-radius: 11px;
+      border: 1px solid var(--nk-line);
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #f6fafb;
+      border-bottom: 1px solid var(--nk-line);
+      padding: 10px 12px;
+      color: #335050;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .modal-hd .sub {
+      margin-top: 2px;
+      font-size: 10px;
+      color: var(--nk-muted);
+      font-weight: 700;
+    }
+
+    .modal-body { padding: 10px 12px 12px; }
+
+    .x-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #d6e4e5;
+      border-radius: 8px;
+      background: #fff;
+      color: #476364;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .form-grid { display: grid; gap: 9px; }
+
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--nk-muted);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid #d7e4e6;
+      border-radius: 8px;
+      background: #fff;
+      color: #2f4b4c;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 8px 10px;
+      outline: none;
+    }
+
+    .field textarea { min-height: 70px; resize: vertical; }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: rgba(18, 142, 146, 0.45);
+      box-shadow: 0 0 0 3px rgba(18, 142, 146, 0.12);
+    }
+
+    .flow-step { display: grid; gap: 8px; }
+
+    .choice-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+
+    .choice-card {
+      border: 1px solid #d7e5e6;
+      border-radius: 8px;
+      background: #fff;
+      padding: 9px;
+      text-align: right;
+      cursor: pointer;
+    }
+
+    .choice-card.active {
+      border-color: #8ec9cc;
+      background: #edf8f8;
+    }
+
+    .choice-title { color: #355253; font-size: 12px; font-weight: 900; }
+    .choice-sub { margin-top: 2px; color: var(--nk-muted); font-size: 10px; font-weight: 700; line-height: 1.5; }
+
+    .provider-list { display: grid; gap: 7px; }
+
+    .provider-item {
+      border: 1px solid #d7e5e6;
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .provider-item.active {
+      border-color: #8ec9cc;
+      background: #edf8f8;
+    }
+
+    .provider-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+
+    .provider-logo {
+      width: 34px;
+      height: 34px;
+      border: 1px solid #d4e3e5;
+      border-radius: 9px;
+      background: #f3f9fa;
+      color: #138388;
+      font-size: 12px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 34px;
+    }
+
+    .provider-name { font-size: 12px; font-weight: 900; color: #334f50; }
+    .provider-desc { margin-top: 1px; font-size: 10px; color: var(--nk-muted); font-weight: 700; }
+
+    .check-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #456264;
+    }
+
+    .actions {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .btn {
+      border: 1px solid #d2e1e2;
+      border-radius: 8px;
+      background: #fff;
+      color: #375354;
+      padding: 7px 10px;
+      min-width: 90px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .btn.primary {
+      border-color: rgba(18, 142, 146, 0.35);
+      background: rgba(18, 142, 146, 0.12);
+      color: #0f7f83;
+    }
+
+    .btn.soft {
+      background: #f3f9fa;
+      color: #2f4f50;
+    }
+
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .err-box {
+      margin-bottom: 8px;
+      border: 1px solid rgba(219, 73, 73, 0.3);
+      border-radius: 8px;
+      background: rgba(219, 73, 73, 0.08);
+      color: #b73434;
+      padding: 7px 8px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .info-box {
+      border: 1px solid rgba(18, 142, 146, 0.25);
+      border-radius: 8px;
+      background: rgba(18, 142, 146, 0.08);
+      color: #127a7d;
+      padding: 7px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .toast {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 100;
+      border: 1px solid #d2e2e3;
+      border-radius: 8px;
+      background: #fff;
+      color: #2f4f50;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+      padding: 8px 10px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.ok { border-color: rgba(26, 160, 92, 0.32); background: rgba(26, 160, 92, 0.1); color: #1c7e4f; }
+    .toast.warn { border-color: rgba(240, 161, 0, 0.32); background: rgba(240, 161, 0, 0.1); color: #9b6207; }
+
+    @media (max-width: 1240px) {
+      .nk-topbar-inner { flex-wrap: wrap; }
+      .quick-actions { margin-inline-start: 0; }
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "tabs"
+          "side"
+          "middle"
+          "devices";
+      }
+      .kpi-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+          "latest latest"
+          "status target"
+          "map map";
+      }
+      .chart-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "graph"
+          "scale";
+      }
+      .summary-grid { grid-template-columns: 1fr; }
+      .nk-footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .tab-pill {
+        min-height: 34px;
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      .tab-icon {
+        width: 18px;
+        height: 18px;
+        flex-basis: 18px;
+      }
+
+      .tab-icon svg { width: 14px; height: 14px; }
+      .tab-icon img { width: 15px; height: 15px; }
+
+      .plus-tab {
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+      }
+
+      .kpi-grid,
+      .row-2,
+      .choice-grid { grid-template-columns: 1fr; }
+      .kpi-grid {
+        grid-template-areas:
+          "latest"
+          "status"
+          "target"
+          "map";
+      }
+      .nk-hero-title h1 { font-size: 30px; }
+      .menu-links { order: 6; width: 100%; overflow-x: auto; }
+      .nk-footer-inner { grid-template-columns: 1fr; }
+      .payment-strip { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nk-topbar">
+    <div class="nk-topbar-inner">
+      <div class="brand-block">
+        <img src="assets/images/logo.svg" alt="Naraakum" />
+      </div>
+
+      <nav class="menu-links" aria-label="Main nav">
+        <a class="nav-link" href="#">الرئيسية</a>
+        <a class="nav-link" href="#">الخدمات الطبية</a>
+        <a class="nav-link has-dd" href="#">مقدمي الرعاية</a>
+        <a class="nav-link has-dd" href="#">الأسئلة الشائعة</a>
+        <a class="nav-link has-dd" href="#">عن نراكم</a>
+      </nav>
+
+      <button class="join-btn" type="button">انضم كمقدم خدمة</button>
+
+      <button class="country-pill" type="button">
+        <span class="sa-flag" aria-hidden="true"></span>
+        السعودية
+        <span class="mini-caret" aria-hidden="true"></span>
+      </button>
+
+      <div class="user-wrap">
+        <div class="user-pill">
+          <span class="user-avatar" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none">
+              <circle cx="20" cy="20" r="20" fill="#38AFB5"/>
+              <circle cx="20" cy="13.8" r="7.2" fill="#F4C796"/>
+              <path d="M12.5 13.8c0-4.6 3.3-8 7.5-8s7.5 3.4 7.5 8c-1.9-1.2-3.6-2-7.5-2s-5.6.8-7.5 2z" fill="#2D3A3F"/>
+              <path d="M9.8 33.5c1.2-6 5-10 10.2-10s9 4 10.2 10" fill="#EAF3F4"/>
+              <path d="M15 29.8c1.4 2 3 3 5 3s3.6-1 5-3" stroke="#D6E4E6" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <div class="user-meta">
+            <span class="hello">مرحبا</span>
+            <span class="name">سرور رشاد</span>
+          </div>
+        </div>
+        <button class="user-caret" type="button" aria-label="قائمة المستخدم">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <div class="quick-actions">
+        <button class="icon-btn" type="button" title="السلة" aria-label="السلة">
+          <span class="badge-dot">1</span>
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 6h2l1.4 8.2a2 2 0 0 0 2 1.7h6.8a2 2 0 0 0 2-1.6L21 8H8" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="11" cy="19" r="1.3" fill="currentColor"/><circle cx="17" cy="19" r="1.3" fill="currentColor"/></svg>
+        </button>
+        <button class="icon-btn" type="button" title="التنبيهات" aria-label="التنبيهات">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M18 10a6 6 0 1 0-12 0c0 6-2.5 7-2.5 7h17S18 16 18 10z" stroke-width="1.7"/><path d="M10 20a2 2 0 0 0 4 0" stroke-width="1.7"/></svg>
+        </button>
+        <button class="icon-btn" type="button" title="الرسائل" aria-label="الرسائل">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 15a3 3 0 0 1-3 3H8l-4 3V6a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v9z" stroke-width="1.7" stroke-linejoin="round"/></svg>
+        </button>
+        <button class="icon-btn" type="button" title="التقويم" aria-label="التقويم">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="3.5" y="5.5" width="17" height="15" rx="2.5" stroke-width="1.7"/>
+            <path d="M7.5 3.8v3.1M16.5 3.8v3.1M3.5 9.5h17M7.8 13h2.8M13.4 13h2.8M7.8 16.5h2.8" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <section class="nk-hero">
+    <div class="nk-hero-inner">
+      <div class="nk-hero-title">
+        <h1>المراقبة عن بعد</h1>
+        <p>لوحة متابعة ضغط الدم</p>
+      </div>
+      <div class="nk-hero-help">محتاج مساعدة؟ <span style="font-size:11px;">ⓘ</span></div>
+    </div>
+  </section>
+
+  <main class="nk-page">
+    <div class="nk-shell">
+      <div class="dashboard-grid">
+        <div class="tabs-row">
+          <div class="tab-pill active">
+            <span class="tab-icon"><img src="assets/device-3.png" alt="ضغط الدم" /></span>
+            ضغط الدم
+          </div>
+          <div class="tab-pill">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-4 4 8 2-4h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            سكر الدم
+          </div>
+          <div class="tab-pill">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </span>
+            الوزن / النظام الغذائي
+          </div>
+          <div class="tab-pill">
+            <span class="tab-icon">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M3 14c2.6 0 2.6-4 5.2-4s2.6 4 5.2 4 2.6-4 5.2-4 2.6 4 2.6 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </span>
+            النشاط البدني
+          </div>
+          <button class="plus-tab" type="button" id="btnOpenAddBeneficiary">+</button>
+        </div>
+        <aside class="card devices-col">
+          <div class="card-hd">
+            <span>أجهزة القياس الذكية</span>
+            <span class="muted">BPM</span>
+          </div>
+          <div class="card-bd">
+            <div class="left-actions">
+              <span class="legacy-label">BGM&amp;CGM</span>
+              <span class="devices-title">أجهزة القياس الذكية</span>
+            </div>
+
+            <div class="device-list" id="deviceList"></div>
+
+            <div class="manual-box">
+              <button class="manual-read-btn" type="button" id="btnOpenManual">
+                <span>تسجيل قراءة</span>
+                <span class="icon">✎</span>
+              </button>
+            </div>
+          </div>
+        </aside>
+
+        <section class="mid-stack">
+          <div class="hint-line" id="hintMessage">جاري تحليل قراءات ضغط الدم...</div>
+
+          <div class="kpi-grid">
+            <div class="kpi kpi-status">
+              <div>
+                <div class="label">تصنيف الحالة (ESC/ESH)</div>
+                <div class="value" id="kpiStatus">-</div>
+              </div>
+              <span class="tag" id="kpiStatusTag">-</span>
+            </div>
+
+            <div class="kpi kpi-target">
+              <div>
+                <div class="label">النطاق المستهدف</div>
+                <div class="value" id="kpiTarget">-</div>
+              </div>
+              <button class="kpi-edit" type="button" id="btnEditTargetTop">✎</button>
+            </div>
+
+            <div class="kpi kpi-map">
+              <div>
+                <div class="label">MAP / Pulse Pressure</div>
+                <div class="value"><span id="kpiMap">-</span> | <span id="kpiPP">-</span></div>
+              </div>
+              <div style="text-align:left;">
+                <div class="label">النبض</div>
+                <div class="value"><span id="kpiPulse">-</span> bpm</div>
+              </div>
+            </div>
+
+            <div class="latest-box kpi-latest">
+              <div class="t">قراءة ضغط الدم</div>
+              <div class="n" id="kpiLatest">-</div>
+              <div class="u">mmHg</div>
+              <div class="tm" id="kpiLatestTime">-</div>
+            </div>
+          </div>
+
+          <article class="card chart-card">
+            <div class="card-hd">
+              <span>مخطط ضغط الدم خلال اليوم</span>
+              <span class="muted" id="mainRangeLabel">اليوم / -</span>
+            </div>
+            <div class="card-bd">
+              <div class="chart-top">
+                <div class="mini-actions">
+                  <button class="tiny-btn" type="button" id="btnOpenManualChart">تسجيل قراءة</button>
+                  <button class="tiny-btn" type="button" id="btnEditTargetMid">تحرير الهدف</button>
+                </div>
+
+                <div class="range-pills" id="mainRangeFilters">
+                  <button class="range-btn" type="button" data-range="24h">24h</button>
+                  <button class="range-btn active" type="button" data-range="7d">7d</button>
+                  <button class="range-btn" type="button" data-range="30d">30d</button>
+                  <button class="range-btn" type="button" data-range="90d">90d</button>
+                </div>
+
+                <label class="pulse-toggle">
+                  <input type="checkbox" id="togglePulse" checked />
+                  Pulse
+                </label>
+              </div>
+
+              <div class="chart-layout">
+                <div class="chart-wrap main-graph" id="mainChartWrap">
+                  <svg id="mainChart" viewBox="0 0 760 220" preserveAspectRatio="none"></svg>
+                  <div class="chart-empty hidden" id="mainChartEmpty">لا توجد قراءات ضمن المدى المحدد.</div>
+                  <div class="chart-tip" id="mainChartTip"></div>
+                </div>
+
+                <div class="scale-box main-scale">
+                  <div class="scale-item">
+                    <span class="scale-label"><span class="scale-bar high"></span> مرتفع</span>
+                    <span>أعلى من الهدف</span>
+                  </div>
+                  <div class="scale-item">
+                    <span class="scale-label"><span class="scale-bar mid"></span> ضمن الهدف</span>
+                    <span id="targetBandLabel">SYS/DIA target</span>
+                  </div>
+                  <div class="scale-item">
+                    <span class="scale-label"><span class="scale-bar low"></span> منخفض</span>
+                    <span>أقل من الهدف</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="legend-row">
+                <span><span class="line" style="background:var(--nk-sys);"></span>SYS</span>
+                <span><span class="line" style="background:var(--nk-dia);"></span>DIA</span>
+                <span id="pulseLegend"><span class="line" style="background:var(--nk-pulse);"></span>Pulse</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card chart-card">
+            <div class="card-hd">
+              <span>مخطط النبض خلال اليوم</span>
+              <span class="muted" id="pulseRangeLabel">اليوم / -</span>
+            </div>
+            <div class="card-bd">
+              <div class="pulse-wrap" id="pulseChartWrap">
+                <svg id="pulseChart" viewBox="0 0 760 220" preserveAspectRatio="none"></svg>
+                <div class="pulse-empty hidden" id="pulseChartEmpty">لا توجد بيانات نبض للعرض.</div>
+                <div class="pulse-tip" id="pulseChartTip"></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <span>ملخص مستوى التحكم في ضغط الدم</span>
+              <span class="muted">المدى الحالي</span>
+            </div>
+            <div class="card-bd">
+              <div class="summary-grid">
+                <div class="summary-note">
+                  <div class="h" id="insightHeadline">الحالة مستقرة</div>
+                  <div class="sub" id="avgSysDiaNote">متوسط SYS/DIA -</div>
+                  <div class="txt" id="insightNarrative">يتم تحديث التوصية بناءً على قراءاتك الحالية، والنطاق المستهدف، ومعدل عدم انتظام النبض.</div>
+                  <div style="margin-top:10px;">
+                    <button class="tiny-btn" type="button">احجز استشارة عن بعد</button>
+                  </div>
+                </div>
+
+                <div class="summary-metrics">
+                  <div class="summary-row"><span>ضمن الهدف</span><span class="s-green" id="inRangePct">0%</span></div>
+                  <div class="summary-row"><span>مرتفع</span><span class="s-orange" id="highPct">0%</span></div>
+                  <div class="summary-row"><span>منخفض</span><span class="s-red" id="lowPct">0%</span></div>
+
+                  <div class="donut-wrap">
+                    <div class="donut" id="statusDonut" style="--p-in:0; --p-high:0;"></div>
+                    <div class="donut-stats">
+                      <div>القراءات: <b id="readCount">0</b></div>
+                      <div>MAP: <b id="avgMap">-</b></div>
+                      <div>PP: <b id="avgPP">-</b></div>
+                      <div>Pulse: <b id="avgPulse">-</b></div>
+                      <div>Irregular: <b id="irregularRate">0%</b></div>
+                    </div>
+                  </div>
+
+                  <div class="metric-grid">
+                    <div class="metric"><div class="k">متوسط SYS/DIA</div><div class="v" id="avgSysDia">-</div></div>
+                    <div class="metric"><div class="k">آخر مصدر</div><div class="v" id="lastSource">-</div></div>
+                    <div class="metric"><div class="k">الهدف</div><div class="v" id="targetMini">-</div></div>
+                    <div class="metric"><div class="k">التصنيف</div><div class="v" id="latestCategory">-</div></div>
+                  </div>
+
+                  <div style="display:flex; justify-content:flex-start;">
+                    <button class="btn soft" type="button">تحميل التقرير PDF</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>التاريخ</th>
+                      <th>SYS/DIA</th>
+                      <th>Pulse</th>
+                      <th>MAP</th>
+                      <th>PP</th>
+                      <th>الفئة</th>
+                      <th>المصدر</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentTable"></tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+        </section>
+
+        <aside class="side-stack side-col">
+          <article class="card">
+            <div class="card-hd">
+              <span>بيانات المستفيد</span>
+              <button class="edit-icon" type="button">✎</button>
+            </div>
+            <div class="card-bd">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:9px;">
+                <strong style="font-size:13px;">سعود ناصر العصافي</strong>
+                <span class="muted">صلة القرابة</span>
+              </div>
+              <div class="profile-grid">
+                <div class="k">الجنس</div><div>ذكر</div>
+                <div class="k">العمر</div><div>52 سنة</div>
+                <div class="k">الوزن</div><div>80 كجم</div>
+                <div class="k">الطول</div><div>177 سم</div>
+                <div class="k">الهدف</div><div id="sideTarget">SYS 90-129 / DIA 60-84</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd"><span>تواصل مع طبيبك</span><span class="muted">&nbsp;</span></div>
+            <div class="card-bd">
+              <div class="doc-list">
+                <div class="doc-item">
+                  <div class="doc-left">
+                    <span class="doc-avatar">د</span>
+                    <div>
+                      <div class="doc-name">رياض حماد المالكي</div>
+                      <div class="doc-spec">استشاري - الطب الباطني وأمراض الضغط</div>
+                    </div>
+                  </div>
+                  <span class="muted">‹</span>
+                </div>
+                <div class="doc-item">
+                  <div class="doc-left">
+                    <span class="doc-avatar">د</span>
+                    <div>
+                      <div class="doc-name">عائشة محمد عسيري</div>
+                      <div class="doc-spec">استشاري - القلب والأوعية الدموية</div>
+                    </div>
+                  </div>
+                  <span class="muted">‹</span>
+                </div>
+                <div class="doc-item">
+                  <div class="doc-left">
+                    <span class="doc-avatar">د</span>
+                    <div>
+                      <div class="doc-name">مصطفى سيد أحمد</div>
+                      <div class="doc-spec">استشاري - الطب الباطني</div>
+                    </div>
+                  </div>
+                  <span class="muted">‹</span>
+                </div>
+              </div>
+              <div class="more-wrap"><button type="button">المزيد</button></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd">
+              <span>تذكيرات الأدوية</span>
+              <button class="edit-icon" type="button">✎</button>
+            </div>
+            <div class="card-bd">
+              <div class="mini-list">
+                <div class="mini-row"><div><div class="t">11:00 صباحًا</div><div>أملوديبين</div></div><span class="muted">•</span></div>
+                <div class="mini-row"><div><div class="t">06:00 مساءً</div><div>لوسارتان</div></div><span class="muted">•</span></div>
+                <div class="mini-row"><div><div class="t">10:00 مساءً</div><div>مدر البول</div></div><span class="muted">•</span></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-hd"><span>التقارير الأسبوعية</span><span class="muted">&nbsp;</span></div>
+            <div class="card-bd">
+              <div class="mini-list" id="reportsList"></div>
+              <div class="more-wrap"><button type="button">المزيد</button></div>
+            </div>
+          </article>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <footer class="nk-footer">
+    <div class="nk-footer-inner">
+      <div class="foot-box">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <img src="assets/images/logo.svg" alt="Naraakum" style="height:34px; filter:brightness(0) invert(1); opacity:.95;" />
+          <strong style="font-size:14px;">نراكم</strong>
+        </div>
+        <div style="margin-top:8px; font-size:12px; line-height:1.65; opacity:.95;">
+          منصة موثوقة لمتابعة المؤشرات الحيوية عن بعد وتسهيل التواصل المباشر مع مقدمي الرعاية الصحية.
+        </div>
+      </div>
+
+      <div>
+        <h4>نراكم</h4>
+        <div class="list">
+          <a href="#">من نحن؟</a>
+          <a href="#">أخبار الشركة</a>
+          <a href="#">المدونة</a>
+          <a href="#">اتصل بنا</a>
+        </div>
+      </div>
+
+      <div>
+        <h4>الأعضاء</h4>
+        <div class="list">
+          <a href="#">تسجيل العملاء</a>
+          <a href="#">الأطباء/المؤسسات</a>
+          <a href="#">الأسئلة الشائعة</a>
+          <a href="#">الخدمات الطبية</a>
+        </div>
+      </div>
+
+      <div>
+        <h4>السياسات</h4>
+        <div class="list">
+          <a href="#">سياسة الخصوصية</a>
+          <a href="#">سياسة الإلغاء</a>
+          <a href="#">الشروط والأحكام</a>
+          <a href="#">حقوق المريض</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-strip">
+      <div class="cards-row">
+        <span class="pay-chip">Apple Pay</span>
+        <span class="pay-chip">mada</span>
+        <span class="pay-chip">VISA</span>
+        <span class="pay-chip">Mastercard</span>
+      </div>
+      <div class="apps-row">
+        <span class="app-chip">App Store</span>
+        <span class="app-chip">Google Play</span>
+        <span class="app-chip">AppGallery</span>
+      </div>
+    </div>
+
+    <div class="copy-row">حقوق النشر 2026 | شركة نراكم | كل الحقوق محفوظة</div>
+  </footer>
+
+  <div class="modal" id="modalDeviceFlow" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="deviceFlowTitle">
+      <div class="modal-hd">
+        <div>
+          <div id="deviceFlowTitle">ربط جهاز ضغط الدم</div>
+          <div class="sub" id="deviceFlowStepLabel">الخطوة 1 من 3: اختيار نوع الجهاز</div>
+        </div>
+        <button class="x-btn" type="button" data-close="modalDeviceFlow">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="err-box hidden" id="deviceFlowError"></div>
+
+        <section class="flow-step" data-step="1">
+          <div class="info-box">اختر نوع جهاز ضغط الدم أولًا، ثم سيظهر لك مزودو الربط المباشر.</div>
+          <div class="choice-grid" id="deviceTypeChoices">
+            <button class="choice-card active" type="button" data-device-type="upper_arm">
+              <div class="choice-title">Upper-arm cuff</div>
+              <div class="choice-sub">أجهزة الذراع العلوي لقياس منزلي أدق.</div>
+            </button>
+            <button class="choice-card" type="button" data-device-type="wrist">
+              <div class="choice-title">Wrist cuff</div>
+              <div class="choice-sub">أجهزة المعصم خفيفة وسهلة الحمل.</div>
+            </button>
+            <button class="choice-card" type="button" data-device-type="abpm">
+              <div class="choice-title">24-hour monitor (ABPM)</div>
+              <div class="choice-sub">متابعة ضغط الدم المتنقلة لمدة 24 ساعة.</div>
+            </button>
+          </div>
+        </section>
+
+        <section class="flow-step hidden" data-step="2">
+          <div class="info-box">اختر مزود الجهاز. التكامل عبر API مباشر مع المزود.</div>
+          <div class="provider-list" id="providerList"></div>
+        </section>
+
+        <section class="flow-step hidden" data-step="3">
+          <div class="info-box" id="providerAuthInfo">يتم التفويض مباشرة مع المزود المختار.</div>
+          <div class="form-grid">
+            <div class="field"><label>البريد الإلكتروني</label><input type="email" id="authEmail" placeholder="name@example.com" /></div>
+            <div class="field"><label>كلمة المرور</label><input type="password" id="authPassword" placeholder="********" /></div>
+            <div class="field"><label>رمز التحقق</label><input type="text" id="authCode" placeholder="في الديمو استخدم 1234" /></div>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button class="btn" type="button" id="deviceFlowBack">السابق</button>
+          <button class="btn primary" type="button" id="deviceFlowNext">التالي</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalManual" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="manualTitle">
+      <div class="modal-hd">
+        <div>
+          <div id="manualTitle">تسجيل قراءة ضغط الدم يدويًا</div>
+          <div class="sub">SYS / DIA / Pulse / Time + تفاصيل القياس</div>
+        </div>
+        <button class="x-btn" type="button" data-close="modalManual">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="err-box hidden" id="manualError"></div>
+        <div class="form-grid">
+          <div class="row-2">
+            <div class="field"><label>SYS (مطلوب)</label><input type="number" id="inSys" min="60" max="260" placeholder="مثال: 120" /></div>
+            <div class="field"><label>DIA (مطلوب)</label><input type="number" id="inDia" min="30" max="160" placeholder="مثال: 80" /></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>Pulse</label><input type="number" id="inPulse" min="20" max="240" placeholder="مثال: 72" /></div>
+            <div class="field"><label>وقت القياس (مطلوب)</label><input type="datetime-local" id="inMeasuredAt" /></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>الذراع</label><select id="inArm"><option value="unknown">غير محدد</option><option value="left">اليسرى</option><option value="right">اليمنى</option></select></div>
+            <div class="field"><label>الوضعية</label><select id="inPosition"><option value="unknown">غير محدد</option><option value="sitting">جلوس</option><option value="standing">وقوف</option><option value="lying">استلقاء</option></select></div>
+          </div>
+          <div class="field"><label>المكان</label><input type="text" id="inLocation" placeholder="مثال: المنزل" /></div>
+          <label class="check-line"><input type="checkbox" id="inIrregular" /> irregular heartbeat</label>
+          <div class="field"><label>ملاحظات</label><textarea id="inNotes" placeholder="ملاحظات إضافية"></textarea></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" type="button" id="btnSaveManual">حفظ</button>
+          <button class="btn" type="button" data-close="modalManual">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalTarget" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="targetTitle">
+      <div class="modal-hd">
+        <div>
+          <div id="targetTitle">تحرير النطاق المستهدف</div>
+          <div class="sub">SYS min/max و DIA min/max</div>
+        </div>
+        <button class="x-btn" type="button" data-close="modalTarget">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="err-box hidden" id="targetError"></div>
+        <div class="form-grid">
+          <div class="row-2">
+            <div class="field"><label>SYS Min</label><input type="number" id="targetSysMin" min="70" max="220" /></div>
+            <div class="field"><label>SYS Max</label><input type="number" id="targetSysMax" min="80" max="250" /></div>
+          </div>
+          <div class="row-2">
+            <div class="field"><label>DIA Min</label><input type="number" id="targetDiaMin" min="40" max="140" /></div>
+            <div class="field"><label>DIA Max</label><input type="number" id="targetDiaMax" min="50" max="160" /></div>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" type="button" id="btnSaveTarget">حفظ النطاق</button>
+          <button class="btn" type="button" data-close="modalTarget">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modalBeneficiary" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-hd">
+        <div>إضافة مستفيد</div>
+        <button class="x-btn" type="button" data-close="modalBeneficiary">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="row-2">
+          <div class="field"><label>اسم المستفيد</label><input type="text" placeholder="الاسم الكامل" /></div>
+          <div class="field"><label>رقم الهوية</label><input type="text" placeholder="10xxxxxxxx" /></div>
+        </div>
+        <div class="actions">
+          <button class="btn primary" type="button" data-close="modalBeneficiary">حفظ</button>
+          <button class="btn" type="button" data-close="modalBeneficiary">إلغاء</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const AR_LOCALE = "ar-SA-u-ca-gregory-nu-latn";
+    const REFERENCE_NOW = new Date("2026-02-08T10:38:00+03:00");
+
+    const numAr = new Intl.NumberFormat(AR_LOCALE);
+    const dtAr = new Intl.DateTimeFormat(AR_LOCALE, {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    });
+    const dateAr = new Intl.DateTimeFormat(AR_LOCALE, {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
+
+    const RANGE_CONFIG = {
+      "24h": { hours: 24, label: "آخر 24 ساعة" },
+      "7d": { hours: 24 * 7, label: "آخر 7 أيام" },
+      "30d": { hours: 24 * 30, label: "آخر 30 يوم" },
+      "90d": { hours: 24 * 90, label: "آخر 90 يوم" }
+    };
+
+    const DEVICE_TYPE_ORDER = ["upper_arm", "wrist", "abpm"];
+    const DEVICE_TYPE_LABEL = {
+      upper_arm: "Upper-arm cuff",
+      wrist: "Wrist cuff",
+      abpm: "24-hour monitor (ABPM)"
+    };
+
+    const PROVIDERS = {
+      upper_arm: [
+        { provider_id: "withings", name: "Withings", model: "Upper-arm cuff", desc: "Upper-arm cuff / Bluetooth" },
+        { provider_id: "microlife", name: "Microlife", model: "Upper-arm cuff", desc: "Upper-arm cuff / Home use" },
+        { provider_id: "beurer", name: "Beurer", model: "Upper-arm cuff", desc: "Upper-arm cuff / Medical grade" }
+      ],
+      wrist: [
+        { provider_id: "omron", name: "OMRON", model: "Wrist cuff", desc: "Wrist cuff / Intelli IT" },
+        { provider_id: "beurer", name: "Beurer", model: "Wrist cuff", desc: "Wrist cuff / Portable" }
+      ],
+      abpm: [
+        { provider_id: "spacelabs", name: "Spacelabs", model: "24-hour monitor (ABPM)", desc: "ABPM / 24-hour tracking" },
+        { provider_id: "suntech", name: "SunTech", model: "24-hour monitor (ABPM)", desc: "ABPM / Ambulatory monitoring" }
+      ]
+    };
+
+    const app = {
+      chartRange: "7d",
+      showPulse: true,
+      targetRange: {
+        sys_min: 90,
+        sys_max: 129,
+        dia_min: 60,
+        dia_max: 84
+      },
+      devices: [
+        {
+          device_id: "dev_accu_001",
+          device_model: "Upper-arm cuff",
+          provider_id: "withings",
+          device_type: "upper_arm",
+          connected: true,
+          last_sync: new Date(REFERENCE_NOW.getTime() - 15 * 60 * 1000).toISOString()
+        },
+        {
+          device_id: "dev_omron_002",
+          device_model: "Wrist cuff",
+          provider_id: "omron",
+          device_type: "wrist",
+          connected: false,
+          last_sync: null
+        },
+        {
+          device_id: "dev_abpm_003",
+          device_model: "24-hour monitor (ABPM)",
+          provider_id: "spacelabs",
+          device_type: "abpm",
+          connected: false,
+          last_sync: null
+        }
+      ],
+      readings: [],
+      deviceFlow: {
+        step: 1,
+        device_type: "upper_arm",
+        providers: [],
+        selected_provider: null,
+        loading: false
+      }
+    };
+
+    const providerApiHooks = {
+      listProviders: async (deviceType) => {
+        await sleep(300);
+        return PROVIDERS[deviceType] || [];
+      },
+      startAuth: async ({ provider_id, device_type }) => {
+        await sleep(240);
+        return {
+          session_id: `auth_${provider_id}_${Date.now()}`,
+          provider_id,
+          device_type
+        };
+      },
+      completeAuth: async ({ provider_id, device_type, email, password, code }) => {
+        await sleep(360);
+        if (!email || !email.includes("@")) throw new Error("البريد الإلكتروني غير صحيح.");
+        if (!password || password.length < 4) throw new Error("كلمة المرور قصيرة.");
+        if (String(code || "").trim() !== "1234") throw new Error("رمز التحقق غير صحيح. استخدم 1234 في الديمو.");
+        if (String(email).toLowerCase().includes("fail")) throw new Error("فشل التفويض من المزود. حاول مرة أخرى.");
+
+        const p = (PROVIDERS[device_type] || []).find((x) => x.provider_id === provider_id);
+
+        return {
+          device_id: `dev_${provider_id}_${Date.now()}`,
+          device_model: p ? p.model : "BPM Device",
+          provider_id,
+          device_type,
+          connected: true,
+          last_sync: new Date(REFERENCE_NOW).toISOString()
+        };
+      },
+      fetchReadings: async ({ provider_id, device_id, device_model }) => {
+        await sleep(340);
+
+        const base = provider_id === "omron"
+          ? { sys: 128, dia: 83, pulse: 75 }
+          : provider_id === "microlife"
+            ? { sys: 132, dia: 85, pulse: 74 }
+            : provider_id === "beurer"
+              ? { sys: 126, dia: 82, pulse: 72 }
+              : { sys: 124, dia: 80, pulse: 71 };
+
+        const offsets = [48, 42, 36, 30, 24, 18, 12, 6, 2];
+
+        return offsets.map((h, i) => {
+          const ts = new Date(REFERENCE_NOW.getTime() - h * 60 * 60 * 1000);
+          const sys = base.sys + ((i % 4) - 1) + (i > 5 ? 1 : 0);
+          const dia = base.dia + ((i % 3) - 1);
+          const pulse = base.pulse + ((i % 5) - 2);
+
+          return enrichReading({
+            id: `${provider_id}_${device_id}_${ts.getTime()}`,
+            systolic_mmhg: sys,
+            diastolic_mmhg: dia,
+            pulse_bpm: pulse,
+            measured_at: ts.toISOString(),
+            source: "device",
+            provider_id,
+            device_id,
+            device_model,
+            irregular_heartbeat: i === 3 || i === 7,
+            arm: "left",
+            position: "sitting",
+            location: "المنزل",
+            notes: "قراءة مستوردة من مزود الجهاز"
+          });
+        });
+      }
+    };
+
+    function sleep(ms) {
+      return new Promise((resolve) => setTimeout(resolve, ms));
+    }
+
+    function uid(prefix) {
+      return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+    }
+
+    function fmtNum(v) { return numAr.format(v); }
+    function fmtDateTime(iso) { return dtAr.format(new Date(iso)); }
+    function fmtDate(iso) { return dateAr.format(new Date(iso)); }
+
+    function fmtRelative(iso) {
+      const diffMin = Math.max(0, Math.floor((REFERENCE_NOW.getTime() - new Date(iso).getTime()) / 60000));
+      if (diffMin < 1) return "الآن";
+      if (diffMin < 60) return `منذ ${fmtNum(diffMin)} دقيقة`;
+      const diffHour = Math.floor(diffMin / 60);
+      if (diffHour < 24) return `منذ ${fmtNum(diffHour)} ساعة`;
+      const diffDay = Math.floor(diffHour / 24);
+      return `منذ ${fmtNum(diffDay)} يوم`;
+    }
+
+    function toLocalDateTimeInput(date) {
+      const d = new Date(date);
+      const offset = d.getTimezoneOffset();
+      return new Date(d.getTime() - offset * 60000).toISOString().slice(0, 16);
+    }
+
+    function esc(v) {
+      return String(v ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+
+    function classifyEscEsh(sys, dia) {
+      if (sys < 90 || dia < 60) {
+        return { key: "low", label: "منخفض", tone: "danger", color: "var(--nk-danger)" };
+      }
+      if (sys >= 180 || dia >= 110) {
+        if (sys >= 180 && dia < 90) {
+          return { key: "isolated_3", label: "ارتفاع انقباضي معزول (درجة 3)", tone: "danger", color: "var(--nk-danger)" };
+        }
+        return { key: "grade_3", label: "ارتفاع ضغط (درجة 3)", tone: "danger", color: "var(--nk-danger)" };
+      }
+      if (sys >= 160 || dia >= 100) {
+        if (sys >= 160 && dia < 90) {
+          return { key: "isolated_2", label: "ارتفاع انقباضي معزول (درجة 2)", tone: "warn", color: "var(--nk-warn)" };
+        }
+        return { key: "grade_2", label: "ارتفاع ضغط (درجة 2)", tone: "warn", color: "var(--nk-warn)" };
+      }
+      if (sys >= 140 || dia >= 90) {
+        if (sys >= 140 && dia < 90) {
+          return { key: "isolated_1", label: "ارتفاع انقباضي معزول (درجة 1)", tone: "warn", color: "var(--nk-warn)" };
+        }
+        return { key: "grade_1", label: "ارتفاع ضغط (درجة 1)", tone: "warn", color: "var(--nk-warn)" };
+      }
+      if ((sys >= 130 && sys <= 139) || (dia >= 85 && dia <= 89)) {
+        return { key: "high_normal", label: "High Normal", tone: "warn", color: "var(--nk-warn)" };
+      }
+      if ((sys >= 120 && sys <= 129) || (dia >= 80 && dia <= 84)) {
+        return { key: "normal", label: "Normal", tone: "ok", color: "var(--nk-ok)" };
+      }
+      return { key: "optimal", label: "Optimal", tone: "ok", color: "var(--nk-ok)" };
+    }
+
+    function enrichReading(raw) {
+      const sys = Number(raw.systolic_mmhg);
+      const dia = Number(raw.diastolic_mmhg);
+      const pulse = raw.pulse_bpm === undefined || raw.pulse_bpm === null || raw.pulse_bpm === ""
+        ? undefined
+        : Number(raw.pulse_bpm);
+
+      const map = Math.round((sys + 2 * dia) / 3);
+      const pp = sys - dia;
+      const c = classifyEscEsh(sys, dia);
+
+      return {
+        ...raw,
+        systolic_mmhg: sys,
+        diastolic_mmhg: dia,
+        pulse_bpm: pulse,
+        map_mmhg: map,
+        pulse_pressure: pp,
+        bp_category: c.key,
+        bp_category_label: c.label
+      };
+    }
+
+    function evaluateAgainstTarget(reading, targetRange) {
+      const inTarget =
+        reading.systolic_mmhg >= targetRange.sys_min &&
+        reading.systolic_mmhg <= targetRange.sys_max &&
+        reading.diastolic_mmhg >= targetRange.dia_min &&
+        reading.diastolic_mmhg <= targetRange.dia_max;
+
+      if (inTarget) return "in";
+      if (reading.systolic_mmhg < targetRange.sys_min || reading.diastolic_mmhg < targetRange.dia_min) return "low";
+      return "high";
+    }
+
+    function getReadingsSorted() {
+      return [...app.readings].sort((a, b) => new Date(a.measured_at) - new Date(b.measured_at));
+    }
+
+    function getLatestReading() {
+      const all = getReadingsSorted();
+      return all.length ? all[all.length - 1] : null;
+    }
+
+    function getFilteredReadings() {
+      const all = getReadingsSorted();
+      const cfg = RANGE_CONFIG[app.chartRange] || RANGE_CONFIG["7d"];
+      const cutoff = REFERENCE_NOW.getTime() - cfg.hours * 60 * 60 * 1000;
+      return all.filter((r) => new Date(r.measured_at).getTime() >= cutoff);
+    }
+
+    function mergeReadings(current, incoming) {
+      const map = new Map();
+      current.forEach((r) => map.set(r.id, r));
+      incoming.forEach((r) => map.set(r.id, r));
+      return [...map.values()];
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.add("open");
+      el.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.classList.remove("open");
+      el.setAttribute("aria-hidden", "true");
+      if (!document.querySelector(".modal.open")) {
+        document.body.style.overflow = "";
+      }
+    }
+
+    function clearError(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = "";
+      el.classList.add("hidden");
+    }
+
+    function setError(id, message) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = message;
+      el.classList.remove("hidden");
+    }
+
+    function showToast(message, tone = "ok") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast ${tone}`;
+      toast.classList.add("show");
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toast.classList.remove("show"), 2400);
+    }
+
+    function toneClassFromCategory(cat) {
+      if (cat.tone === "ok") return "ok";
+      if (cat.tone === "warn") return "warn";
+      return "danger";
+    }
+
+    function svgEl(tag, attrs = {}, text = "") {
+      const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, String(v)));
+      if (text) el.textContent = text;
+      return el;
+    }
+
+    function renderReports() {
+      const list = document.getElementById("reportsList");
+      const rows = [];
+      const now = new Date(REFERENCE_NOW);
+      for (let i = 0; i < 3; i += 1) {
+        const end = new Date(now.getTime() - i * 7 * 86400000);
+        const start = new Date(end.getTime() - 6 * 86400000);
+        rows.push({ start, end });
+      }
+
+      list.innerHTML = rows.map((r) => `
+        <div class="mini-row">
+          <div>
+            <div class="t">${fmtDate(r.start.toISOString())} - ${fmtDate(r.end.toISOString())}</div>
+            <div>PDF</div>
+          </div>
+          <span style="color:#1a8b8e; font-weight:900;">⬇</span>
+        </div>
+      `).join("");
+    }
+
+    function renderDevices() {
+      const container = document.getElementById("deviceList");
+      const rowsHtml = DEVICE_TYPE_ORDER.map((deviceType) => {
+        const connectedDevice = app.devices.find((d) => d.device_type === deviceType && d.connected) || null;
+        const fallbackDevice = app.devices.find((d) => d.device_type === deviceType) || null;
+        const isConnected = Boolean(connectedDevice);
+        const current = connectedDevice || fallbackDevice;
+        const rowClass = isConnected ? "is-connected" : "is-offline";
+        const slotLabel = DEVICE_TYPE_LABEL[deviceType] || deviceType;
+        const modelText = isConnected
+          ? esc(current.device_model || slotLabel)
+          : "لا يوجد جهاز متصل";
+        const modelClass = isConnected ? "device-model en" : "device-model";
+
+        const actionControl = isConnected
+          ? `<button class="device-delete-link" type="button" data-device-action="remove" data-id="${esc(current.device_id)}">حذف</button>`
+          : `<button class="device-add-btn" type="button" data-device-action="reconnect" data-type="${esc(deviceType)}" aria-label="إضافة جهاز">+</button>`;
+
+        const mediaNode = isConnected
+          ? `<img class="device-thumb" src="assets/image 76.png" alt="${esc(slotLabel)}" />`
+          : `<span class="device-empty-circle" aria-hidden="true"></span>`;
+
+        return `
+          <div class="device-panel-row ${rowClass}">
+            <div class="device-status-col">
+              <div class="device-status-line"><span>${isConnected ? "متصل" : "غير متصل"}</span><span class="state-dot ${isConnected ? "on" : "off"}"></span></div>
+              ${actionControl}
+            </div>
+            <div class="device-info-col">
+              <div class="device-copy">
+                <div class="device-kind">${esc(slotLabel)}</div>
+                <div class="${modelClass}">${modelText}</div>
+              </div>
+              ${mediaNode}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      container.innerHTML = `<div class="device-panel">${rowsHtml}</div>`;
+
+      container.querySelectorAll('[data-device-action="remove"]').forEach((btn) => {
+        btn.addEventListener("click", () => showToast("تم حذف الجهاز (عرض تجريبي).", "warn"));
+      });
+
+      container.querySelectorAll('[data-device-action="reconnect"]').forEach((btn) => {
+        btn.addEventListener("click", () => openDeviceFlow(btn.dataset.type));
+      });
+    }
+
+    function setRangeFilterButtons() {
+      document.querySelectorAll("#mainRangeFilters .range-btn").forEach((btn) => {
+        btn.classList.toggle("active", btn.dataset.range === app.chartRange);
+      });
+    }
+
+    function targetText() {
+      const t = app.targetRange;
+      return `SYS ${fmtNum(t.sys_min)}-${fmtNum(t.sys_max)} / DIA ${fmtNum(t.dia_min)}-${fmtNum(t.dia_max)}`;
+    }
+
+    function sourceText(reading) {
+      if (!reading) return "-";
+      if (reading.source === "manual") return "يدوي";
+      const p = String(reading.provider_id || "").toUpperCase();
+      return p ? `جهاز (${p})` : "جهاز";
+    }
+
+    function average(values) {
+      if (!values.length) return null;
+      return values.reduce((sum, v) => sum + v, 0) / values.length;
+    }
+
+    function updateTargetLabels() {
+      const label = targetText();
+      document.getElementById("kpiTarget").textContent = label;
+      document.getElementById("targetMini").textContent = label;
+      document.getElementById("sideTarget").textContent = label;
+      document.getElementById("targetBandLabel").textContent = label;
+    }
+
+    function renderKpis() {
+      updateTargetLabels();
+
+      const latest = getLatestReading();
+      if (!latest) {
+        document.getElementById("kpiStatus").textContent = "لا توجد قراءات";
+        const tag = document.getElementById("kpiStatusTag");
+        tag.textContent = "-";
+        tag.className = "tag";
+        document.getElementById("kpiMap").textContent = "-";
+        document.getElementById("kpiPP").textContent = "-";
+        document.getElementById("kpiPulse").textContent = "-";
+        document.getElementById("kpiLatest").textContent = "-";
+        document.getElementById("kpiLatestTime").textContent = "-";
+        document.getElementById("hintMessage").textContent = "لا توجد قراءات بعد. أضف قراءة يدوية أو اربط جهازًا لبدء التحليل.";
+        return;
+      }
+
+      const cls = classifyEscEsh(latest.systolic_mmhg, latest.diastolic_mmhg);
+      const toneClass = toneClassFromCategory(cls);
+      document.getElementById("kpiStatus").textContent = cls.label;
+      const tag = document.getElementById("kpiStatusTag");
+      tag.className = `tag ${toneClass}`;
+      tag.textContent = cls.label;
+
+      document.getElementById("kpiMap").textContent = fmtNum(latest.map_mmhg);
+      document.getElementById("kpiPP").textContent = fmtNum(latest.pulse_pressure);
+      document.getElementById("kpiPulse").textContent = Number.isFinite(latest.pulse_bpm) ? fmtNum(latest.pulse_bpm) : "-";
+      document.getElementById("kpiLatest").textContent = `${fmtNum(latest.systolic_mmhg)}/${fmtNum(latest.diastolic_mmhg)}`;
+      document.getElementById("kpiLatestTime").textContent = fmtDateTime(latest.measured_at);
+
+      const targetState = evaluateAgainstTarget(latest, app.targetRange);
+      const hint = targetState === "in"
+        ? "تنبيه: آخر قراءة ضمن النطاق المستهدف. استمر على نفس نمط القياس."
+        : targetState === "high"
+          ? "تنبيه: آخر قراءة أعلى من الهدف. راقب القياسات وتواصل مع الطبيب عند التكرار."
+          : "تنبيه: آخر قراءة أقل من الهدف. تأكد من القياس الصحيح وأعد القراءة عند الحاجة.";
+      document.getElementById("hintMessage").textContent = hint;
+    }
+
+    function pathFromPoints(points) {
+      if (!points.length) return "";
+      return points.map((p, i) => `${i ? "L" : "M"} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(" ");
+    }
+
+    function renderMainChart() {
+      const svg = document.getElementById("mainChart");
+      const empty = document.getElementById("mainChartEmpty");
+      const tip = document.getElementById("mainChartTip");
+      const wrap = document.getElementById("mainChartWrap");
+      const pulseLegend = document.getElementById("pulseLegend");
+
+      pulseLegend.classList.toggle("hidden", !app.showPulse);
+      document.getElementById("mainRangeLabel").textContent = `${RANGE_CONFIG[app.chartRange].label} / ${fmtDate(REFERENCE_NOW.toISOString())}`;
+
+      const readings = getFilteredReadings();
+      svg.innerHTML = "";
+      tip.style.opacity = "0";
+
+      if (!readings.length) {
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+
+      const vb = svg.viewBox.baseVal;
+      const width = vb && vb.width ? vb.width : 760;
+      const height = vb && vb.height ? vb.height : 220;
+      const m = { t: 14, r: 14, b: 28, l: 42 };
+      const plotW = width - m.l - m.r;
+      const plotH = height - m.t - m.b;
+
+      const tickValues = [52, 74, 95, 117, 138, 160];
+      const yMin = tickValues[0];
+      const yMax = tickValues[tickValues.length - 1];
+      const denom = Math.max(1, yMax - yMin);
+
+      const xAt = (i) => readings.length === 1 ? m.l + plotW / 2 : m.l + (i / (readings.length - 1)) * plotW;
+      const yAt = (v) => m.t + ((yMax - v) / denom) * plotH;
+
+      const lowLimit = Math.min(app.targetRange.sys_min, app.targetRange.dia_min);
+      const highLimit = Math.max(app.targetRange.sys_max, app.targetRange.dia_max);
+      const yHigh = Math.max(m.t, Math.min(m.t + plotH, yAt(highLimit)));
+      const yLow = Math.max(m.t, Math.min(m.t + plotH, yAt(lowLimit)));
+
+      svg.appendChild(svgEl("rect", { x: m.l, y: m.t, width: plotW, height: yHigh - m.t, fill: "rgba(240,161,0,.14)" }));
+      svg.appendChild(svgEl("rect", { x: m.l, y: yHigh, width: plotW, height: Math.max(0, yLow - yHigh), fill: "rgba(26,160,92,.12)" }));
+      svg.appendChild(svgEl("rect", { x: m.l, y: yLow, width: plotW, height: Math.max(0, (m.t + plotH) - yLow), fill: "rgba(219,73,73,.12)" }));
+
+      tickValues.forEach((val) => {
+        const y = yAt(val);
+        svg.appendChild(svgEl("line", { x1: m.l, y1: y, x2: m.l + plotW, y2: y, stroke: "#e8eff0", "stroke-width": 1 }));
+        svg.appendChild(svgEl("text", {
+          x: m.l - 5,
+          y: y + 3,
+          "text-anchor": "end",
+          "font-size": 9,
+          fill: "#6f8687",
+          "font-weight": 700
+        }, fmtNum(val)));
+      });
+
+      const sysPoints = readings.map((r, i) => ({ x: xAt(i), y: yAt(r.systolic_mmhg), reading: r }));
+      const diaPoints = readings.map((r, i) => ({ x: xAt(i), y: yAt(r.diastolic_mmhg), reading: r }));
+      const pulsePoints = app.showPulse
+        ? readings
+            .map((r, i) => Number.isFinite(r.pulse_bpm) ? ({ x: xAt(i), y: yAt(r.pulse_bpm), reading: r }) : null)
+            .filter(Boolean)
+        : [];
+
+      svg.appendChild(svgEl("path", {
+        d: pathFromPoints(sysPoints),
+        fill: "none",
+        stroke: "var(--nk-sys)",
+        "stroke-width": 2.3,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round"
+      }));
+      svg.appendChild(svgEl("path", {
+        d: pathFromPoints(diaPoints),
+        fill: "none",
+        stroke: "var(--nk-dia)",
+        "stroke-width": 2.3,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round"
+      }));
+
+      if (pulsePoints.length) {
+        svg.appendChild(svgEl("path", {
+          d: pathFromPoints(pulsePoints),
+          fill: "none",
+          stroke: "var(--nk-pulse)",
+          "stroke-width": 2,
+          "stroke-dasharray": "4 3",
+          "stroke-linecap": "round",
+          "stroke-linejoin": "round"
+        }));
+      }
+
+      const showTip = (ev, reading) => {
+        const rect = wrap.getBoundingClientRect();
+        tip.style.left = `${ev.clientX - rect.left}px`;
+        tip.style.top = `${ev.clientY - rect.top}px`;
+        tip.innerHTML =
+          `<div>${fmtDateTime(reading.measured_at)}</div>` +
+          `<div>SYS/DIA: ${fmtNum(reading.systolic_mmhg)}/${fmtNum(reading.diastolic_mmhg)} mmHg</div>` +
+          `<div>Pulse: ${Number.isFinite(reading.pulse_bpm) ? fmtNum(reading.pulse_bpm) : "-"}</div>` +
+          `<div>${reading.bp_category_label}</div>`;
+        tip.style.opacity = "1";
+      };
+      const hideTip = () => { tip.style.opacity = "0"; };
+
+      const drawDots = (pts, color, radius = 3.1) => {
+        pts.forEach((p) => {
+          const dot = svgEl("circle", {
+            cx: p.x,
+            cy: p.y,
+            r: radius,
+            fill: color,
+            stroke: "#fff",
+            "stroke-width": 1.2
+          });
+          dot.addEventListener("mousemove", (ev) => showTip(ev, p.reading));
+          dot.addEventListener("mouseenter", (ev) => showTip(ev, p.reading));
+          dot.addEventListener("mouseleave", hideTip);
+          svg.appendChild(dot);
+        });
+      };
+
+      drawDots(sysPoints, "var(--nk-sys)");
+      drawDots(diaPoints, "var(--nk-dia)");
+      if (pulsePoints.length) drawDots(pulsePoints, "var(--nk-pulse)", 2.8);
+
+      const timeFmt = new Intl.DateTimeFormat(AR_LOCALE, { hour: "2-digit", minute: "2-digit", hour12: true });
+      const idxSet = new Set([0, readings.length - 1]);
+      const step = Math.max(1, Math.floor(readings.length / 5));
+      for (let i = 0; i < readings.length; i += step) idxSet.add(i);
+      [...idxSet].sort((a, b) => a - b).forEach((i) => {
+        const x = xAt(i);
+        svg.appendChild(svgEl("text", {
+          x,
+          y: m.t + plotH + 14,
+          "text-anchor": "middle",
+          "font-size": 9,
+          fill: "#6f8687",
+          "font-weight": 700
+        }, timeFmt.format(new Date(readings[i].measured_at))));
+      });
+    }
+
+    function renderPulseChart() {
+      const svg = document.getElementById("pulseChart");
+      const empty = document.getElementById("pulseChartEmpty");
+      const tip = document.getElementById("pulseChartTip");
+      const wrap = document.getElementById("pulseChartWrap");
+
+      document.getElementById("pulseRangeLabel").textContent = `${RANGE_CONFIG[app.chartRange].label} / ${fmtDate(REFERENCE_NOW.toISOString())}`;
+
+      const readings = getFilteredReadings().filter((r) => Number.isFinite(r.pulse_bpm));
+      svg.innerHTML = "";
+      tip.style.opacity = "0";
+
+      if (!readings.length) {
+        empty.classList.remove("hidden");
+        return;
+      }
+      empty.classList.add("hidden");
+
+      const vb = svg.viewBox.baseVal;
+      const width = vb && vb.width ? vb.width : 760;
+      const height = vb && vb.height ? vb.height : 220;
+      const m = { t: 14, r: 14, b: 28, l: 42 };
+      const plotW = width - m.l - m.r;
+      const plotH = height - m.t - m.b;
+
+      const pulseValues = readings.map((r) => r.pulse_bpm);
+      let yMin = Math.max(20, Math.floor(Math.min(...pulseValues) - 8));
+      let yMax = Math.min(240, Math.ceil(Math.max(...pulseValues) + 8));
+      if (yMax - yMin < 20) {
+        yMin = Math.max(20, yMin - 10);
+        yMax = Math.min(240, yMax + 10);
+      }
+      const denom = Math.max(1, yMax - yMin);
+
+      const xAt = (i) => readings.length === 1 ? m.l + plotW / 2 : m.l + (i / (readings.length - 1)) * plotW;
+      const yAt = (v) => m.t + ((yMax - v) / denom) * plotH;
+
+      for (let i = 0; i <= 5; i += 1) {
+        const val = yMin + (i / 5) * (yMax - yMin);
+        const y = yAt(val);
+        svg.appendChild(svgEl("line", { x1: m.l, y1: y, x2: m.l + plotW, y2: y, stroke: "#e9f0f1", "stroke-width": 1 }));
+        svg.appendChild(svgEl("text", {
+          x: m.l - 5,
+          y: y + 3,
+          "text-anchor": "end",
+          "font-size": 9,
+          fill: "#6f8687",
+          "font-weight": 700
+        }, fmtNum(Math.round(val))));
+      }
+
+      const points = readings.map((r, i) => ({ x: xAt(i), y: yAt(r.pulse_bpm), reading: r }));
+      svg.appendChild(svgEl("path", {
+        d: pathFromPoints(points),
+        fill: "none",
+        stroke: "var(--nk-pulse)",
+        "stroke-width": 2.4,
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round"
+      }));
+
+      const showTip = (ev, reading) => {
+        const rect = wrap.getBoundingClientRect();
+        tip.style.left = `${ev.clientX - rect.left}px`;
+        tip.style.top = `${ev.clientY - rect.top}px`;
+        tip.innerHTML =
+          `<div>${fmtDateTime(reading.measured_at)}</div>` +
+          `<div>Pulse: ${fmtNum(reading.pulse_bpm)} bpm</div>` +
+          `<div>SYS/DIA: ${fmtNum(reading.systolic_mmhg)}/${fmtNum(reading.diastolic_mmhg)}</div>`;
+        tip.style.opacity = "1";
+      };
+      const hideTip = () => { tip.style.opacity = "0"; };
+
+      points.forEach((p) => {
+        const dot = svgEl("circle", {
+          cx: p.x,
+          cy: p.y,
+          r: 3.2,
+          fill: "var(--nk-pulse)",
+          stroke: "#fff",
+          "stroke-width": 1.2
+        });
+        dot.addEventListener("mousemove", (ev) => showTip(ev, p.reading));
+        dot.addEventListener("mouseenter", (ev) => showTip(ev, p.reading));
+        dot.addEventListener("mouseleave", hideTip);
+        svg.appendChild(dot);
+      });
+
+      const timeFmt = new Intl.DateTimeFormat(AR_LOCALE, { hour: "2-digit", minute: "2-digit", hour12: true });
+      const idxSet = new Set([0, readings.length - 1]);
+      const step = Math.max(1, Math.floor(readings.length / 5));
+      for (let i = 0; i < readings.length; i += step) idxSet.add(i);
+      [...idxSet].sort((a, b) => a - b).forEach((i) => {
+        const x = xAt(i);
+        svg.appendChild(svgEl("text", {
+          x,
+          y: m.t + plotH + 14,
+          "text-anchor": "middle",
+          "font-size": 9,
+          fill: "#6f8687",
+          "font-weight": 700
+        }, timeFmt.format(new Date(readings[i].measured_at))));
+      });
+    }
+
+    function renderInsights() {
+      const base = getFilteredReadings();
+      const rows = base.length ? base : getReadingsSorted();
+
+      if (!rows.length) {
+        document.getElementById("inRangePct").textContent = "0%";
+        document.getElementById("highPct").textContent = "0%";
+        document.getElementById("lowPct").textContent = "0%";
+        document.getElementById("readCount").textContent = "0";
+        document.getElementById("avgMap").textContent = "-";
+        document.getElementById("avgPP").textContent = "-";
+        document.getElementById("avgPulse").textContent = "-";
+        document.getElementById("avgSysDia").textContent = "-";
+        document.getElementById("avgSysDiaNote").textContent = "متوسط SYS/DIA -";
+        document.getElementById("lastSource").textContent = "-";
+        document.getElementById("latestCategory").textContent = "-";
+        document.getElementById("irregularRate").textContent = "0%";
+        document.getElementById("insightHeadline").textContent = "لا توجد قراءات";
+        document.getElementById("insightNarrative").textContent = "ابدأ بإضافة قراءة يدوية أو ربط جهاز للحصول على تحليلات ضغط الدم.";
+        const donut = document.getElementById("statusDonut");
+        donut.style.setProperty("--p-in", "0");
+        donut.style.setProperty("--p-high", "0");
+        return;
+      }
+
+      const total = rows.length;
+      const ordered = [...rows].sort((a, b) => new Date(a.measured_at) - new Date(b.measured_at));
+      const latest = ordered[ordered.length - 1];
+
+      const tally = { in: 0, high: 0, low: 0 };
+      rows.forEach((r) => { tally[evaluateAgainstTarget(r, app.targetRange)] += 1; });
+
+      const pctIn = Math.round((tally.in / total) * 100);
+      const pctHigh = Math.round((tally.high / total) * 100);
+      const pctLow = Math.round((tally.low / total) * 100);
+
+      document.getElementById("inRangePct").textContent = `${fmtNum(pctIn)}%`;
+      document.getElementById("highPct").textContent = `${fmtNum(pctHigh)}%`;
+      document.getElementById("lowPct").textContent = `${fmtNum(pctLow)}%`;
+
+      const donut = document.getElementById("statusDonut");
+      donut.style.setProperty("--p-in", String(pctIn));
+      donut.style.setProperty("--p-high", String(pctHigh));
+
+      const avgSys = Math.round(average(rows.map((r) => r.systolic_mmhg)) || 0);
+      const avgDia = Math.round(average(rows.map((r) => r.diastolic_mmhg)) || 0);
+      const avgMap = Math.round(average(rows.map((r) => r.map_mmhg)) || 0);
+      const avgPP = Math.round(average(rows.map((r) => r.pulse_pressure)) || 0);
+      const pulseValues = rows.map((r) => r.pulse_bpm).filter((v) => Number.isFinite(v));
+      const avgPulse = pulseValues.length ? Math.round(average(pulseValues)) : null;
+      const irregularCount = rows.filter((r) => r.irregular_heartbeat).length;
+      const irregularRate = Math.round((irregularCount / total) * 100);
+
+      document.getElementById("readCount").textContent = fmtNum(total);
+      document.getElementById("avgMap").textContent = fmtNum(avgMap);
+      document.getElementById("avgPP").textContent = fmtNum(avgPP);
+      document.getElementById("avgPulse").textContent = avgPulse === null ? "-" : fmtNum(avgPulse);
+      document.getElementById("irregularRate").textContent = `${fmtNum(irregularRate)}%`;
+
+      const avgSysDiaTxt = `${fmtNum(avgSys)}/${fmtNum(avgDia)} mmHg`;
+      document.getElementById("avgSysDia").textContent = avgSysDiaTxt;
+      document.getElementById("avgSysDiaNote").textContent = `متوسط SYS/DIA ${avgSysDiaTxt}`;
+      document.getElementById("lastSource").textContent = sourceText(latest);
+      document.getElementById("latestCategory").textContent = latest.bp_category_label;
+
+      if (pctIn >= 65 && pctHigh <= 25) {
+        document.getElementById("insightHeadline").textContent = "أداء ممتاز";
+        document.getElementById("insightNarrative").textContent = "معظم القراءات ضمن النطاق المستهدف. استمر على نفس الخطة العلاجية ووتيرة القياس الحالية.";
+      } else if (pctHigh >= 40) {
+        document.getElementById("insightHeadline").textContent = "يلزم ضبط أفضل";
+        document.getElementById("insightNarrative").textContent = "نسبة القراءات المرتفعة أعلى من المطلوب. راجع الأدوية ونمط الحياة وتواصل مع طبيبك عند استمرار الارتفاع.";
+      } else if (pctLow >= 20) {
+        document.getElementById("insightHeadline").textContent = "احتمال هبوط متكرر";
+        document.getElementById("insightNarrative").textContent = "هناك قراءات منخفضة ملحوظة. تأكد من طريقة القياس وأوقات الدواء، وناقش ذلك مع الطبيب.";
+      } else {
+        document.getElementById("insightHeadline").textContent = "استقرار نسبي";
+        document.getElementById("insightNarrative").textContent = "توجد تقلبات محدودة في القراءات. تابع القياس في نفس الأوقات لتحسين دقة التحليل.";
+      }
+    }
+
+    function renderRecentTable() {
+      const tbody = document.getElementById("recentTable");
+      const rows = getReadingsSorted().slice(-10).reverse();
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#6f8485;">لا توجد قراءات مسجلة بعد.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map((r) => `
+        <tr>
+          <td>${fmtDateTime(r.measured_at)}</td>
+          <td>${fmtNum(r.systolic_mmhg)}/${fmtNum(r.diastolic_mmhg)}</td>
+          <td>${Number.isFinite(r.pulse_bpm) ? fmtNum(r.pulse_bpm) : "-"}</td>
+          <td>${fmtNum(r.map_mmhg)}</td>
+          <td>${fmtNum(r.pulse_pressure)}</td>
+          <td>${esc(r.bp_category_label)}</td>
+          <td>${sourceText(r)}</td>
+        </tr>
+      `).join("");
+    }
+
+    async function loadProvidersForCurrentType() {
+      const flow = app.deviceFlow;
+      flow.loading = true;
+      renderDeviceFlowStep();
+      clearError("deviceFlowError");
+      try {
+        const providers = await providerApiHooks.listProviders(flow.device_type);
+        flow.providers = providers;
+        flow.selected_provider = providers.length ? providers[0] : null;
+      } catch (err) {
+        flow.providers = [];
+        flow.selected_provider = null;
+        setError("deviceFlowError", `تعذر تحميل مزودي الربط: ${err.message || "خطأ غير متوقع."}`);
+      } finally {
+        flow.loading = false;
+        renderProviderList();
+        renderDeviceFlowStep();
+      }
+    }
+
+    function renderProviderList() {
+      const list = document.getElementById("providerList");
+      const flow = app.deviceFlow;
+
+      if (flow.loading && !flow.providers.length) {
+        list.innerHTML = '<div class="ebox">جاري تحميل قائمة المزوّدين...</div>';
+        return;
+      }
+
+      if (!flow.providers.length) {
+        list.innerHTML = '<div class="ebox">لا توجد مزودات متاحة لهذا النوع.</div>';
+        return;
+      }
+
+      list.innerHTML = flow.providers.map((p) => {
+        const active = flow.selected_provider && flow.selected_provider.provider_id === p.provider_id;
+        const short = esc(p.name.slice(0, 2).toUpperCase());
+        return `
+          <button class="provider-item ${active ? "active" : ""}" type="button" data-provider-id="${esc(p.provider_id)}">
+            <div class="provider-left">
+              <span class="provider-logo">${short}</span>
+              <div>
+                <div class="provider-name">${esc(p.name)}</div>
+                <div class="provider-desc">${esc(p.desc)}</div>
+              </div>
+            </div>
+            <span class="muted">${esc(p.model)}</span>
+          </button>
+        `;
+      }).join("");
+
+      list.querySelectorAll("[data-provider-id]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (flow.loading) return;
+          const providerId = btn.dataset.providerId;
+          flow.selected_provider = flow.providers.find((p) => p.provider_id === providerId) || null;
+          renderProviderList();
+          renderDeviceFlowStep();
+        });
+      });
+    }
+
+    function renderDeviceFlowStep() {
+      const flow = app.deviceFlow;
+      document.querySelectorAll("#modalDeviceFlow .flow-step").forEach((el) => {
+        el.classList.toggle("hidden", Number(el.dataset.step) !== flow.step);
+      });
+
+      document.querySelectorAll("#deviceTypeChoices .choice-card").forEach((el) => {
+        el.classList.toggle("active", el.dataset.deviceType === flow.device_type);
+      });
+
+      const stepLabel = document.getElementById("deviceFlowStepLabel");
+      const nextBtn = document.getElementById("deviceFlowNext");
+      const backBtn = document.getElementById("deviceFlowBack");
+      const authInfo = document.getElementById("providerAuthInfo");
+      const title = document.getElementById("deviceFlowTitle");
+
+      if (flow.step === 1) {
+        stepLabel.textContent = "الخطوة 1 من 3: اختيار نوع الجهاز";
+        nextBtn.textContent = "التالي";
+      } else if (flow.step === 2) {
+        stepLabel.textContent = "الخطوة 2 من 3: اختيار المزوّد";
+        nextBtn.textContent = "التالي";
+      } else {
+        stepLabel.textContent = "الخطوة 3 من 3: تسجيل/تفويض المزوّد";
+        nextBtn.textContent = "إتمام الربط";
+      }
+
+      if (flow.selected_provider) {
+        title.textContent = `ربط جهاز ضغط الدم - ${flow.selected_provider.name}`;
+        authInfo.textContent = `سيتم التفويض مباشرة مع ${flow.selected_provider.name} عبر Provider API Auth.`;
+      } else {
+        title.textContent = "ربط جهاز ضغط الدم";
+        authInfo.textContent = "سيتم التفويض مباشرة مع المزوّد المختار.";
+      }
+
+      backBtn.style.visibility = flow.step === 1 ? "hidden" : "visible";
+      backBtn.disabled = flow.loading;
+      nextBtn.disabled = flow.loading;
+      if (flow.loading) nextBtn.textContent = "جاري التنفيذ...";
+    }
+
+    function openDeviceFlow(preferredType = "upper_arm") {
+      const initialType = DEVICE_TYPE_ORDER.includes(preferredType) ? preferredType : "upper_arm";
+      app.deviceFlow = {
+        step: 1,
+        device_type: initialType,
+        providers: [],
+        selected_provider: null,
+        loading: false
+      };
+      clearError("deviceFlowError");
+      document.getElementById("authEmail").value = "";
+      document.getElementById("authPassword").value = "";
+      document.getElementById("authCode").value = "";
+      renderProviderList();
+      renderDeviceFlowStep();
+      openModal("modalDeviceFlow");
+    }
+
+    async function goDeviceFlowNext() {
+      const flow = app.deviceFlow;
+      if (flow.loading) return;
+      clearError("deviceFlowError");
+
+      if (flow.step === 1) {
+        flow.step = 2;
+        renderDeviceFlowStep();
+        await loadProvidersForCurrentType();
+        return;
+      }
+
+      if (flow.step === 2) {
+        if (!flow.selected_provider) {
+          setError("deviceFlowError", "يرجى اختيار مزوّد من القائمة قبل المتابعة.");
+          return;
+        }
+        flow.step = 3;
+        renderDeviceFlowStep();
+        return;
+      }
+
+      const email = document.getElementById("authEmail").value.trim();
+      const password = document.getElementById("authPassword").value;
+      const code = document.getElementById("authCode").value.trim();
+
+      flow.loading = true;
+      renderDeviceFlowStep();
+
+      try {
+        await providerApiHooks.startAuth({
+          provider_id: flow.selected_provider.provider_id,
+          device_type: flow.device_type
+        });
+
+        const deviceConnection = await providerApiHooks.completeAuth({
+          provider_id: flow.selected_provider.provider_id,
+          device_type: flow.device_type,
+          email,
+          password,
+          code
+        });
+
+        app.devices = [deviceConnection, ...app.devices.filter((d) => d.device_id !== deviceConnection.device_id)];
+
+        const imported = await providerApiHooks.fetchReadings({
+          provider_id: deviceConnection.provider_id,
+          device_id: deviceConnection.device_id,
+          device_model: deviceConnection.device_model
+        });
+        app.readings = mergeReadings(app.readings, imported);
+
+        closeModal("modalDeviceFlow");
+        renderAll();
+        showToast(`تم ربط ${deviceConnection.device_model} واستيراد القراءات بنجاح.`, "ok");
+      } catch (err) {
+        setError("deviceFlowError", err.message || "فشل تفويض المزوّد. يرجى إعادة المحاولة.");
+      } finally {
+        flow.loading = false;
+        renderDeviceFlowStep();
+      }
+    }
+
+    function goDeviceFlowBack() {
+      const flow = app.deviceFlow;
+      if (flow.loading) return;
+      if (flow.step > 1) {
+        flow.step -= 1;
+        clearError("deviceFlowError");
+        renderDeviceFlowStep();
+      }
+    }
+
+    function openManualModal() {
+      clearError("manualError");
+      document.getElementById("inSys").value = "";
+      document.getElementById("inDia").value = "";
+      document.getElementById("inPulse").value = "";
+      document.getElementById("inMeasuredAt").value = toLocalDateTimeInput(REFERENCE_NOW);
+      document.getElementById("inArm").value = "unknown";
+      document.getElementById("inPosition").value = "unknown";
+      document.getElementById("inLocation").value = "";
+      document.getElementById("inNotes").value = "";
+      document.getElementById("inIrregular").checked = false;
+      openModal("modalManual");
+    }
+
+    function saveManualReading() {
+      clearError("manualError");
+
+      const sys = Number(document.getElementById("inSys").value);
+      const dia = Number(document.getElementById("inDia").value);
+      const pulseRaw = document.getElementById("inPulse").value.trim();
+      const pulse = pulseRaw === "" ? undefined : Number(pulseRaw);
+      const measuredLocal = document.getElementById("inMeasuredAt").value;
+      const arm = document.getElementById("inArm").value;
+      const position = document.getElementById("inPosition").value;
+      const location = document.getElementById("inLocation").value.trim();
+      const notes = document.getElementById("inNotes").value.trim();
+      const irregular = document.getElementById("inIrregular").checked;
+
+      if (!Number.isFinite(sys)) return setError("manualError", "حقل SYS مطلوب.");
+      if (!Number.isFinite(dia)) return setError("manualError", "حقل DIA مطلوب.");
+      if (!measuredLocal) return setError("manualError", "وقت القياس مطلوب.");
+      if (sys < 60 || sys > 260) return setError("manualError", "قيمة SYS يجب أن تكون بين 60 و 260.");
+      if (dia < 30 || dia > 160) return setError("manualError", "قيمة DIA يجب أن تكون بين 30 و 160.");
+      if (Number.isFinite(pulse) && (pulse < 20 || pulse > 240)) return setError("manualError", "قيمة Pulse يجب أن تكون بين 20 و 240.");
+      if (dia >= sys) return setError("manualError", "لا يمكن حفظ القراءة لأن DIA يجب أن تكون أقل من SYS.");
+
+      const measuredDate = new Date(measuredLocal);
+      if (Number.isNaN(measuredDate.getTime())) return setError("manualError", "صيغة وقت القياس غير صحيحة.");
+      if (measuredDate.getTime() > Date.now() + 5 * 60 * 1000) return setError("manualError", "وقت القياس لا يمكن أن يكون في المستقبل.");
+
+      const reading = enrichReading({
+        id: uid("manual"),
+        systolic_mmhg: sys,
+        diastolic_mmhg: dia,
+        pulse_bpm: Number.isFinite(pulse) ? pulse : undefined,
+        measured_at: measuredDate.toISOString(),
+        source: "manual",
+        irregular_heartbeat: irregular,
+        arm,
+        position,
+        location: location || undefined,
+        notes: notes || undefined
+      });
+
+      app.readings.push(reading);
+      closeModal("modalManual");
+      renderAll();
+      showToast("تم حفظ القراءة اليدوية وتحديث المؤشرات.", "ok");
+    }
+
+    function openTargetModal() {
+      clearError("targetError");
+      document.getElementById("targetSysMin").value = String(app.targetRange.sys_min);
+      document.getElementById("targetSysMax").value = String(app.targetRange.sys_max);
+      document.getElementById("targetDiaMin").value = String(app.targetRange.dia_min);
+      document.getElementById("targetDiaMax").value = String(app.targetRange.dia_max);
+      openModal("modalTarget");
+    }
+
+    function saveTargetRange() {
+      clearError("targetError");
+      const sysMin = Number(document.getElementById("targetSysMin").value);
+      const sysMax = Number(document.getElementById("targetSysMax").value);
+      const diaMin = Number(document.getElementById("targetDiaMin").value);
+      const diaMax = Number(document.getElementById("targetDiaMax").value);
+
+      if (![sysMin, sysMax, diaMin, diaMax].every(Number.isFinite)) {
+        return setError("targetError", "كل حقول النطاق مطلوبة.");
+      }
+      if (sysMin < 60 || sysMin > 230 || sysMax < 70 || sysMax > 260) {
+        return setError("targetError", "نطاق SYS غير صالح.");
+      }
+      if (diaMin < 30 || diaMin > 150 || diaMax < 40 || diaMax > 170) {
+        return setError("targetError", "نطاق DIA غير صالح.");
+      }
+      if (sysMin >= sysMax) return setError("targetError", "يجب أن يكون SYS Min أقل من SYS Max.");
+      if (diaMin >= diaMax) return setError("targetError", "يجب أن يكون DIA Min أقل من DIA Max.");
+
+      app.targetRange = {
+        sys_min: Math.round(sysMin),
+        sys_max: Math.round(sysMax),
+        dia_min: Math.round(diaMin),
+        dia_max: Math.round(diaMax)
+      };
+      closeModal("modalTarget");
+      renderAll();
+      showToast("تم تحديث النطاق المستهدف بنجاح.", "ok");
+    }
+
+    function renderAll() {
+      setRangeFilterButtons();
+      renderReports();
+      renderDevices();
+      renderKpis();
+      renderMainChart();
+      renderPulseChart();
+      renderInsights();
+      renderRecentTable();
+    }
+
+    function seedInitialReadings() {
+      const points = [
+        { h: 36, sys: 117, dia: 74, pulse: 66, source: "device" },
+        { h: 30, sys: 124, dia: 79, pulse: 68, source: "device" },
+        { h: 24, sys: 131, dia: 84, pulse: 71, source: "manual" },
+        { h: 18, sys: 138, dia: 88, pulse: 74, source: "device" },
+        { h: 12, sys: 132, dia: 85, pulse: 72, source: "device" },
+        { h: 6, sys: 127, dia: 82, pulse: 71, source: "manual" },
+        { h: 0, sys: 123, dia: 80, pulse: 70, source: "device" }
+      ];
+
+      const connectedDevice = app.devices.find((d) => d.connected) || app.devices[0] || null;
+
+      app.readings = points.map((p, i) => enrichReading({
+        id: `seed_${i + 1}`,
+        systolic_mmhg: p.sys,
+        diastolic_mmhg: p.dia,
+        pulse_bpm: p.pulse,
+        measured_at: new Date(REFERENCE_NOW.getTime() - p.h * 60 * 60 * 1000).toISOString(),
+        source: p.source,
+        provider_id: p.source === "device" ? connectedDevice?.provider_id : undefined,
+        device_id: p.source === "device" ? connectedDevice?.device_id : undefined,
+        device_model: p.source === "device" ? connectedDevice?.device_model : undefined,
+        irregular_heartbeat: false,
+        arm: "left",
+        position: "sitting",
+        location: "المنزل",
+        notes: p.source === "manual" ? "قراءة يدوية" : "قراءة مستوردة من الجهاز"
+      }));
+    }
+
+    function bindEvents() {
+      document.querySelectorAll("[data-close]").forEach((btn) => {
+        btn.addEventListener("click", () => closeModal(btn.dataset.close));
+      });
+
+      document.querySelectorAll(".modal").forEach((modal) => {
+        modal.addEventListener("click", (ev) => {
+          if (ev.target === modal) closeModal(modal.id);
+        });
+      });
+
+      document.addEventListener("keydown", (ev) => {
+        if (ev.key !== "Escape") return;
+        const opened = document.querySelector(".modal.open");
+        if (opened) closeModal(opened.id);
+      });
+
+      document.getElementById("btnOpenAddBeneficiary").addEventListener("click", () => openModal("modalBeneficiary"));
+      const openDeviceFlowBtn = document.getElementById("btnOpenDeviceFlow");
+      if (openDeviceFlowBtn) {
+        openDeviceFlowBtn.addEventListener("click", () => openDeviceFlow());
+      }
+      document.getElementById("btnOpenManual").addEventListener("click", openManualModal);
+      document.getElementById("btnOpenManualChart").addEventListener("click", openManualModal);
+      document.getElementById("btnSaveManual").addEventListener("click", saveManualReading);
+      document.getElementById("btnEditTargetTop").addEventListener("click", openTargetModal);
+      document.getElementById("btnEditTargetMid").addEventListener("click", openTargetModal);
+      document.getElementById("btnSaveTarget").addEventListener("click", saveTargetRange);
+
+      document.getElementById("deviceFlowNext").addEventListener("click", () => { goDeviceFlowNext(); });
+      document.getElementById("deviceFlowBack").addEventListener("click", goDeviceFlowBack);
+
+      document.querySelectorAll("#deviceTypeChoices [data-device-type]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          if (app.deviceFlow.loading) return;
+          const nextType = btn.dataset.deviceType;
+          if (!nextType || nextType === app.deviceFlow.device_type) return;
+          app.deviceFlow.device_type = nextType;
+          app.deviceFlow.providers = [];
+          app.deviceFlow.selected_provider = null;
+          renderDeviceFlowStep();
+          renderProviderList();
+          if (app.deviceFlow.step >= 2) {
+            loadProvidersForCurrentType();
+          }
+        });
+      });
+
+      document.querySelectorAll("#mainRangeFilters [data-range]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const range = btn.dataset.range;
+          if (!RANGE_CONFIG[range]) return;
+          app.chartRange = range;
+          renderAll();
+        });
+      });
+
+      document.getElementById("togglePulse").addEventListener("change", (ev) => {
+        app.showPulse = Boolean(ev.target.checked);
+        renderMainChart();
+      });
+    }
+
+    function init() {
+      seedInitialReadings();
+      bindEvents();
+      renderAll();
+    }
+
+    init();
+  </script>
+</body>
+</html>
+

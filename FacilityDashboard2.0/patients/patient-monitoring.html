@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Patient Monitoring</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      .assign-btn {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 7px 12px !important;
+        border-radius: 999px !important;
+        border: 1px solid #9fd0d6 !important;
+        background: #f2fbfc !important;
+        color: #0b6b78 !important;
+        font-weight: 800 !important;
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        width: auto !important;
+        height: auto !important;
+        text-decoration: none !important;
+      }
+
+      .assign-btn i {
+        font-size: 14px;
+        line-height: 1;
+        transform: translateY(0.5px);
+      }
+
+      .mh-btn {
+        background: #ffffff !important;
+        border-color: #bfe3e7 !important;
+      }
+
+      .fr-btn {
+        background: #f2fbfc !important;
+      }
+
+      .mh-btn:hover,
+      .fr-btn:hover {
+        filter: brightness(0.98) !important;
+      }
+
+      .monitor-tag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-width: 180px;
+      }
+
+      .monitor-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #d9e7ea;
+        background: #ffffff;
+        color: #0f172a;
+        font-size: 12px;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .monitor-tag.type {
+        background: #f2fbfc;
+        border-color: #c8e5e8;
+        color: #0b6b78;
+      }
+
+      .actions-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: nowrap;
+        gap: 8px;
+        min-width: 240px;
+      }
+
+      .monitor-search-col .search-box-group {
+        max-width: 620px;
+      }
+
+      .monitor-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .monitor-search-col {
+        flex: 1 1 640px;
+        max-width: 720px;
+      }
+
+      .monitor-actions {
+        margin-inline-start: auto;
+        flex: 0 0 auto;
+      }
+
+      .sort-icon {
+        font-size: 11px;
+        opacity: 0.72;
+        margin-inline-start: 4px;
+      }
+
+      .monitor-table-wrap .box-body {
+        padding: 0 !important;
+      }
+
+      .side-menu-logo .hospital-logo-big {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        background: #fff;
+        padding: 6px;
+        object-fit: contain;
+        display: block;
+        margin: 8px auto 10px;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-mini-logo {
+        width: 22px;
+        height: 22px;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        background: #fff;
+        padding: 3px;
+        object-fit: contain;
+        flex: 0 0 22px;
+      }
+
+      .facility-name {
+        font-weight: 900;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: #0f8c8c;
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .ksa-clock .time {
+        letter-spacing: 0.2px;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: #0f8c8c;
+      }
+
+      @media (max-width: 991px) {
+        .monitor-toolbar {
+          align-items: stretch;
+        }
+
+        .monitor-search-col,
+        .monitor-actions {
+          width: 100%;
+          max-width: none;
+          margin-inline-start: 0;
+        }
+
+        .monitor-actions .search-actions {
+          justify-content: flex-end;
+        }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Patient Monitoring</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="patients-list.html">Patients</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Patient Monitoring</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="monitor-toolbar">
+              <div class="monitor-search-col">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input
+                    id="monitoringSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by patient name / phone / patient code"
+                  />
+                  <button id="btnMonitoringSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+
+                  <button
+                    id="btnMonitoringReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="monitor-actions">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#monitoring-filter-modal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-24 monitor-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="monitoringTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq"># <span class="sort-icon">▲▼</span></th>
+                      <th class="col-code">Patient Code <span class="sort-icon">▲▼</span></th>
+                      <th>Patient Name <span class="sort-icon">▲▼</span></th>
+                      <th>Follow-up Types</th>
+                      <th>Plans / Packages</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="monitoringTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="monitoringRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="monitoringPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="monitoringFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="monitoringPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="monitoringCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="monitoringNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="monitoringLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="monitoring-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Patient Monitoring</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Follow-up Type</label>
+                <select id="fMonType" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Plan / Package</label>
+                <select id="fMonPlan" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Priority</label>
+                <select id="fMonPriority" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="stable">Stable</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnMonitoringFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnMonitoringApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            const fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const patients = [
+          {
+            code: "PT-00001",
+            name: "Bassem Ahmed",
+            phone: "+966 55 220 8104",
+            meta: "Male",
+            followups: ["Weight Follow-up", "Blood Sugar Follow-up", "Diet & Weight Follow-up"],
+            plans: ["Continuous Monitoring Package", "Blood Sugar Package", "Therapeutic Nutrition", "Smart Package"],
+            priority: "high",
+            medicalUrl: "patient-medical-history.html?patient=PT-00001"
+          },
+          {
+            code: "PT-00002",
+            name: "Abdulrahman Fares",
+            phone: "+966 53 111 2290",
+            meta: "Male",
+            followups: ["Blood Pressure Follow-up", "Medication Adherence"],
+            plans: ["Cardio Monitoring Package", "Medication Adherence Program"],
+            priority: "medium",
+            medicalUrl: "patient-medical-history.html?patient=PT-00002"
+          },
+          {
+            code: "PT-00003",
+            name: "Huda Nasser",
+            phone: "+966 55 220 8104",
+            meta: "Female",
+            followups: ["Weight Follow-up", "Therapeutic Nutrition"],
+            plans: ["Therapeutic Nutrition", "Smart Package"],
+            priority: "stable",
+            medicalUrl: "patient-medical-history.html?patient=PT-00003"
+          },
+          {
+            code: "PT-00004",
+            name: "Mohamed Saeed",
+            phone: "+966 56 440 2001",
+            meta: "Male",
+            followups: ["Home Care Follow-up", "Wound Care"],
+            plans: ["Home Visits Package", "Nursing Follow-up"],
+            priority: "medium",
+            medicalUrl: "patient-medical-history.html?patient=PT-00004"
+          },
+          {
+            code: "PT-00005",
+            name: "Lina Adel",
+            phone: "+966 59 320 7740",
+            meta: "Female",
+            followups: ["Post-Operation Follow-up", "Nutrition Follow-up"],
+            plans: ["Recovery Package", "Therapeutic Nutrition"],
+            priority: "high",
+            medicalUrl: "patient-medical-history.html?patient=PT-00005"
+          }
+        ];
+
+        const tbody = document.getElementById("monitoringTbody");
+        const searchInput = document.getElementById("monitoringSearchInput");
+        const btnSearch = document.getElementById("btnMonitoringSearch");
+        const btnReset = document.getElementById("btnMonitoringReset");
+
+        const filterType = document.getElementById("fMonType");
+        const filterPlan = document.getElementById("fMonPlan");
+        const filterPriority = document.getElementById("fMonPriority");
+        const btnApplyFilter = document.getElementById("btnMonitoringApplyFilter");
+        const btnFilterReset = document.getElementById("btnMonitoringFilterReset");
+
+        const rowsSelect = document.getElementById("monitoringRowsPerPage");
+        const indicator = document.getElementById("monitoringPageIndicator");
+        const currentBadge = document.getElementById("monitoringCurrentPageBadge");
+        const btnFirst = document.getElementById("monitoringFirstPage");
+        const btnPrev = document.getElementById("monitoringPrevPage");
+        const btnNext = document.getElementById("monitoringNextPage");
+        const btnLast = document.getElementById("monitoringLastPage");
+
+        let currentPage = 1;
+        let filteredPatients = patients.slice();
+
+        function norm(value) {
+          return (value || "").toString().trim().toLowerCase();
+        }
+
+        function slugify(value) {
+          return (value || "")
+            .toString()
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "");
+        }
+
+        function fillFilterOptions() {
+          const typeSet = new Set();
+          const planSet = new Set();
+
+          patients.forEach(function (patient) {
+            patient.followups.forEach(function (item) { typeSet.add(item); });
+            patient.plans.forEach(function (item) { planSet.add(item); });
+          });
+
+          Array.from(typeSet).sort().forEach(function (item) {
+            const option = document.createElement("option");
+            option.value = item;
+            option.textContent = item;
+            filterType.appendChild(option);
+          });
+
+          Array.from(planSet).sort().forEach(function (item) {
+            const option = document.createElement("option");
+            option.value = item;
+            option.textContent = item;
+            filterPlan.appendChild(option);
+          });
+        }
+
+        function matchesFilters(patient) {
+          const query = norm(searchInput.value);
+          const selectedType = filterType.value;
+          const selectedPlan = filterPlan.value;
+          const selectedPriority = filterPriority.value;
+
+          const searchable = [
+            patient.code,
+            patient.name,
+            patient.phone,
+            patient.meta,
+            patient.followups.join(" "),
+            patient.plans.join(" ")
+          ].join(" ").toLowerCase();
+
+          if (query && searchable.indexOf(query) === -1) return false;
+          if (selectedType && patient.followups.indexOf(selectedType) === -1) return false;
+          if (selectedPlan && patient.plans.indexOf(selectedPlan) === -1) return false;
+          if (selectedPriority && patient.priority !== selectedPriority) return false;
+
+          return true;
+        }
+
+        function rowsPerPageValue() {
+          if (!rowsSelect) return 10;
+          return rowsSelect.value === "all" ? Infinity : Math.max(parseInt(rowsSelect.value, 10) || 10, 1);
+        }
+
+        function updatePager(totalPages) {
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          if (currentPage > safeTotal) currentPage = safeTotal;
+
+          indicator.textContent = "Page " + currentPage + " of " + safeTotal;
+          currentBadge.textContent = currentPage;
+
+          btnFirst.disabled = currentPage <= 1;
+          btnPrev.disabled = currentPage <= 1;
+          btnNext.disabled = currentPage >= safeTotal;
+          btnLast.disabled = currentPage >= safeTotal;
+        }
+
+        function buildTags(list, typeClass) {
+          return list.map(function (item) {
+            return '<span class="monitor-tag ' + typeClass + '">' + item + "</span>";
+          }).join("");
+        }
+
+        function render() {
+          filteredPatients = patients.filter(matchesFilters);
+
+          const perPage = rowsPerPageValue();
+          const totalPages = perPage === Infinity ? 1 : Math.max(Math.ceil(filteredPatients.length / perPage), 1);
+
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? filteredPatients.length : start + perPage;
+          const visible = filteredPatients.slice(start, end);
+
+          if (!visible.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-grey">No data available</td></tr>';
+            updatePager(totalPages);
+            return;
+          }
+
+          tbody.innerHTML = visible.map(function (patient, index) {
+            const followUpUrl =
+              "follow-up-record.html?patient=" +
+              encodeURIComponent(slugify(patient.name)) +
+              "&code=" +
+              encodeURIComponent(patient.code);
+
+            return (
+              "<tr>" +
+                "<td>" + (start + index + 1) + "</td>" +
+                '<td><span class="staff-code">' + patient.code + "</span></td>" +
+                "<td>" +
+                  '<div class="staff-cell">' +
+                    '<div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>' +
+                    '<div class="staff-info">' +
+                      '<p class="name">' + patient.name + "</p>" +
+                      '<div class="meta">' + patient.meta + " - " + patient.phone + "</div>" +
+                    "</div>" +
+                  "</div>" +
+                "</td>" +
+                '<td><div class="monitor-tag-list">' + buildTags(patient.followups, "type") + "</div></td>" +
+                '<td><div class="monitor-tag-list">' + buildTags(patient.plans, "") + "</div></td>" +
+                "<td>" +
+                  '<div class="actions-cell">' +
+                    '<a class="assign-btn mh-btn" href="' + patient.medicalUrl + '" title="Medical History">' +
+                      '<i class="fi fi-rr-notebook"></i>' +
+                      "Medical History" +
+                    "</a>" +
+                    '<a class="assign-btn fr-btn" href="' + followUpUrl + '" title="Follow-up Record">' +
+                      '<i class="fi fi-rr-eye"></i>' +
+                      "Follow-up Record" +
+                    "</a>" +
+                  "</div>" +
+                "</td>" +
+              "</tr>"
+            );
+          }).join("");
+
+          updatePager(totalPages);
+        }
+
+        function applyFilters() {
+          currentPage = 1;
+          render();
+        }
+
+        function resetFilters() {
+          searchInput.value = "";
+          filterType.value = "";
+          filterPlan.value = "";
+          filterPriority.value = "";
+          currentPage = 1;
+          render();
+        }
+
+        fillFilterOptions();
+        render();
+
+        btnSearch.addEventListener("click", applyFilters);
+        searchInput.addEventListener("keydown", function (event) {
+          if (event.key === "Enter") applyFilters();
+        });
+        btnReset.addEventListener("click", resetFilters);
+        btnApplyFilter.addEventListener("click", applyFilters);
+        btnFilterReset.addEventListener("click", function () {
+          filterType.value = "";
+          filterPlan.value = "";
+          filterPriority.value = "";
+        });
+        rowsSelect.addEventListener("change", function () {
+          currentPage = 1;
+          render();
+        });
+
+        btnFirst.addEventListener("click", function () {
+          currentPage = 1;
+          render();
+        });
+
+        btnPrev.addEventListener("click", function () {
+          currentPage = Math.max(1, currentPage - 1);
+          render();
+        });
+
+        btnNext.addEventListener("click", function () {
+          const perPage = rowsPerPageValue();
+          const totalPages = perPage === Infinity ? 1 : Math.max(Math.ceil(filteredPatients.length / perPage), 1);
+          currentPage = Math.min(totalPages, currentPage + 1);
+          render();
+        });
+
+        btnLast.addEventListener("click", function () {
+          const perPage = rowsPerPageValue();
+          currentPage = perPage === Infinity ? 1 : Math.max(Math.ceil(filteredPatients.length / perPage), 1);
+          render();
+        });
+      })();
+    </script>
+  </body>
+</html>

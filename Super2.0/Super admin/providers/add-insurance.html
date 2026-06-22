@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Insurance</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root{
+        --nk-green:#0f8c8c;
+        --nk-border:#e6eaef;
+      }
+
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-name{
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.3px;
+        color:#0b6f6f;
+        line-height:1;
+        margin:0;
+      }
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+
+      .step-strip{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        margin-bottom:12px;
+      }
+      .step-chip{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-height:30px;
+        padding:0 12px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.24);
+        background:rgba(15,140,140,.08);
+        color:var(--nk-green);
+        font-size:12px;
+        font-weight:900;
+      }
+      .step-note{
+        color:#667085;
+        font-size:12px;
+        font-weight:800;
+      }
+
+      .nk-card{
+        border:1px solid var(--nk-border);
+        border-radius:14px;
+        background:#fff;
+        padding:14px;
+      }
+      .nk-card + .nk-card{ margin-top:12px; }
+      .nk-card-title{
+        margin:0 0 10px;
+        font-size:14px;
+        font-weight:1000;
+        color:#101828;
+      }
+      .nk-help{
+        margin:0 0 12px;
+        color:#667085;
+        font-weight:800;
+        font-size:12px;
+        line-height:1.4;
+      }
+
+      .nk-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:12px;
+      }
+      .nk-field label{
+        display:block;
+        margin-bottom:6px;
+        color:#667085;
+        font-weight:900;
+        font-size:12px;
+      }
+      .nk-field .required{ color:#b42318; }
+
+      .upload-grid{
+        display:grid;
+        grid-template-columns:repeat(3, minmax(180px, 1fr));
+        gap:12px;
+      }
+      .upload-item{
+        border:1px dashed rgba(15,140,140,.30);
+        border-radius:12px;
+        padding:12px;
+        background:linear-gradient(180deg,#fbfefe 0%,#f4fafa 100%);
+      }
+      .upload-item.single{ max-width:420px; }
+      .upload-title{
+        margin:0 0 8px;
+        color:#101828;
+        font-size:12px;
+        font-weight:900;
+      }
+      .upload-meta{
+        margin-top:8px;
+        color:#667085;
+        font-size:12px;
+        font-weight:800;
+        word-break:break-word;
+      }
+
+      .nk-actions{
+        display:flex;
+        justify-content:flex-end;
+        gap:10px;
+        margin-top:14px;
+        flex-wrap:wrap;
+      }
+
+      @media (max-width: 1100px){
+        .upload-grid{ grid-template-columns:1fr 1fr; }
+      }
+      @media (max-width: 992px){
+        .nk-grid{ grid-template-columns:1fr; }
+        .upload-grid{ grid-template-columns:1fr; }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Add Insurance</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="../providers/insurances.html">Insurance</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Insurance</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="step-strip">
+            <span class="step-chip" id="stepChip">Step 1 of 2: Insurance Information</span>
+            <span class="step-note" id="stepNote">Complete legal and responsible person data first.</span>
+          </div>
+
+          <form id="addInsuranceForm" novalidate>
+            <div id="step1Section">
+              <div class="nk-card">
+                <h3 class="nk-card-title">Insurance Entity Information</h3>
+                <p class="nk-help">Define the legal entity and address details exactly as official records.</p>
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label for="entityName">Entity Name <span class="required">*</span></label>
+                    <input id="entityName" type="text" class="form-control" placeholder="BMC Insurance Company" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="payerLicenseNo">Payer License Number <span class="required">*</span></label>
+                    <input id="payerLicenseNo" type="text" class="form-control" placeholder="PL-123456" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityCountry">Country <span class="required">*</span></label>
+                    <input id="entityCountry" type="text" class="form-control" value="Saudi Arabia" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityCity">City <span class="required">*</span></label>
+                    <input id="entityCity" type="text" class="form-control" placeholder="Riyadh" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityDistrict">District <span class="required">*</span></label>
+                    <input id="entityDistrict" type="text" class="form-control" placeholder="Al Muruj" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityStreet">Street Name <span class="required">*</span></label>
+                    <input id="entityStreet" type="text" class="form-control" placeholder="King Fahd Road" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityBuildingNo">Building Number <span class="required">*</span></label>
+                    <input id="entityBuildingNo" type="text" class="form-control" placeholder="12" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="entityPostalCode">Postal Code <span class="required">*</span></label>
+                    <input id="entityPostalCode" type="text" class="form-control" placeholder="12345" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-card">
+                <h3 class="nk-card-title">Entity Attachments</h3>
+                <p class="nk-help">Upload mandatory company documents for review and approval.</p>
+                <div class="upload-grid">
+                  <div class="upload-item">
+                    <p class="upload-title">Commercial Registration (CR) <span class="required">*</span></p>
+                    <input id="docCR" type="file" class="d-none" />
+                    <button type="button" class="btn btn-primary btn-40 upload-btn" data-input="docCR">Upload</button>
+                    <p class="upload-meta" id="docCRMeta">No file selected</p>
+                  </div>
+
+                  <div class="upload-item">
+                    <p class="upload-title">Bank Account Letter (IBAN) <span class="required">*</span></p>
+                    <input id="docIBAN" type="file" class="d-none" />
+                    <button type="button" class="btn btn-primary btn-40 upload-btn" data-input="docIBAN">Upload</button>
+                    <p class="upload-meta" id="docIBANMeta">No file selected</p>
+                  </div>
+
+                  <div class="upload-item">
+                    <p class="upload-title">Payer License Proof <span class="required">*</span></p>
+                    <input id="docPayerProof" type="file" class="d-none" />
+                    <button type="button" class="btn btn-primary btn-40 upload-btn" data-input="docPayerProof">Upload</button>
+                    <p class="upload-meta" id="docPayerProofMeta">No file selected</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-card">
+                <h3 class="nk-card-title">Responsible Person Information</h3>
+                <p class="nk-help">This account will receive onboarding communications and manage updates.</p>
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label for="responsibleName">Responsible Person Name <span class="required">*</span></label>
+                    <input id="responsibleName" type="text" class="form-control" placeholder="Ahmed Mohammed" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="responsiblePhone">Responsible Mobile Number <span class="required">*</span></label>
+                    <input id="responsiblePhone" type="tel" class="form-control" placeholder="+966 5xxxxxxxx" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="responsibleEmail">Email <span class="required">*</span></label>
+                    <input id="responsibleEmail" type="email" class="form-control" placeholder="name@email.com" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="responsiblePassword">Password <span class="required">*</span></label>
+                    <input id="responsiblePassword" type="password" class="form-control" placeholder="Enter password" required />
+                  </div>
+                  <div class="nk-field">
+                    <label for="responsibleConfirmPassword">Confirm Password <span class="required">*</span></label>
+                    <input id="responsibleConfirmPassword" type="password" class="form-control" placeholder="Re-enter password" required />
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-card">
+                <h3 class="nk-card-title">Responsible Attachments</h3>
+                <p class="nk-help">Upload responsible person identity or authorized signatory proof.</p>
+                <div class="upload-item single">
+                  <p class="upload-title">Owner ID <span class="required">*</span></p>
+                  <input id="docResponsibleID" type="file" class="d-none" />
+                  <button type="button" class="btn btn-primary btn-40 upload-btn" data-input="docResponsibleID">Upload</button>
+                  <p class="upload-meta" id="docResponsibleIDMeta">No file selected</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="step2Section" class="d-none">
+              <div class="nk-card">
+                <h3 class="nk-card-title">Step 2: Plan, Class, and Service Coverage</h3>
+                <p class="nk-help">Configure plans and class-level coverage for all active sub services.</p>
+                <div id="insurancePlanBuilderRoot"></div>
+              </div>
+            </div>
+
+            <div class="nk-actions">
+              <a href="../providers/insurances.html" class="btn btn-primary-revers btn-40">Cancel</a>
+              <button type="button" class="btn btn-secondary btn-40 d-none" id="btnBackStep">
+                <i class="fi fi-rr-angle-small-left"></i><span>Back to Step 1</span>
+              </button>
+              <button type="button" class="btn btn-primary btn-40" id="btnNextStep">
+                <i class="fi fi-rr-angle-small-right"></i><span>Next to Plans</span>
+              </button>
+              <button type="submit" class="btn btn-primary btn-40 d-none" id="btnCreateInsurance">
+                <i class="fi fi-rr-check"></i><span>Create Insurance</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-service-catalog.js"></script>
+    <script src="../assets/js/insurance-plan-store.js"></script>
+    <script src="../assets/js/insurance-plan-builder.js"></script>
+
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function(){
+        const stepChip = document.getElementById("stepChip");
+        const stepNote = document.getElementById("stepNote");
+        const step1Section = document.getElementById("step1Section");
+        const step2Section = document.getElementById("step2Section");
+        const btnNextStep = document.getElementById("btnNextStep");
+        const btnBackStep = document.getElementById("btnBackStep");
+        const btnCreateInsurance = document.getElementById("btnCreateInsurance");
+        let currentStep = 1;
+        let planBuilder = null;
+
+        function bindUpload(inputId, metaId){
+          const input = document.getElementById(inputId);
+          const meta = document.getElementById(metaId);
+          if (!input || !meta) return;
+          input.addEventListener("change", function(){
+            const file = input.files && input.files[0];
+            meta.textContent = file ? ("Selected: " + file.name) : "No file selected";
+          });
+        }
+
+        document.querySelectorAll(".upload-btn").forEach(function(btn){
+          btn.addEventListener("click", function(){
+            const inputId = btn.getAttribute("data-input");
+            const input = document.getElementById(inputId);
+            if (input) input.click();
+          });
+        });
+
+        bindUpload("docCR", "docCRMeta");
+        bindUpload("docIBAN", "docIBANMeta");
+        bindUpload("docPayerProof", "docPayerProofMeta");
+        bindUpload("docResponsibleID", "docResponsibleIDMeta");
+
+        function validateStep1(){
+          const requiredIds = [
+            "entityName","payerLicenseNo","entityCountry","entityCity","entityDistrict","entityStreet","entityBuildingNo","entityPostalCode",
+            "responsibleName","responsiblePhone","responsibleEmail","responsiblePassword","responsibleConfirmPassword"
+          ];
+
+          for (let i = 0; i < requiredIds.length; i += 1){
+            const el = document.getElementById(requiredIds[i]);
+            if (!el || !el.value.trim()){
+              alert("Please complete all required fields.");
+              el?.focus();
+              return false;
+            }
+          }
+
+          const pass = (document.getElementById("responsiblePassword")?.value || "").trim();
+          const confirm = (document.getElementById("responsibleConfirmPassword")?.value || "").trim();
+          if (pass !== confirm){
+            alert("Password and confirm password do not match.");
+            document.getElementById("responsibleConfirmPassword")?.focus();
+            return false;
+          }
+
+          const fileIds = ["docCR","docIBAN","docPayerProof","docResponsibleID"];
+          for (let i = 0; i < fileIds.length; i += 1){
+            const fileInput = document.getElementById(fileIds[i]);
+            if (!fileInput || !fileInput.files || !fileInput.files.length){
+              alert("Please upload all required documents.");
+              return false;
+            }
+          }
+          return true;
+        }
+
+        function ensureBuilder(){
+          if (planBuilder) return true;
+          if (!window.NKInsurancePlanBuilder || !window.NKInsurancePlanStore){
+            alert("Plan builder modules are missing.");
+            return false;
+          }
+
+          const root = document.getElementById("insurancePlanBuilderRoot");
+          if (!root){
+            alert("Plan builder root is missing.");
+            return false;
+          }
+
+          const store = window.NKInsurancePlanStore;
+          const initial = store.buildDefaultConfig("DRAFT");
+          planBuilder = window.NKInsurancePlanBuilder.create({
+            container: root,
+            insuranceCode: "DRAFT",
+            initialValue: initial
+          });
+          return !!planBuilder;
+        }
+
+        function setStep(stepNo){
+          currentStep = stepNo === 2 ? 2 : 1;
+          const isStep2 = currentStep === 2;
+
+          if (step1Section) step1Section.classList.toggle("d-none", isStep2);
+          if (step2Section) step2Section.classList.toggle("d-none", !isStep2);
+          if (btnNextStep) btnNextStep.classList.toggle("d-none", isStep2);
+          if (btnBackStep) btnBackStep.classList.toggle("d-none", !isStep2);
+          if (btnCreateInsurance) btnCreateInsurance.classList.toggle("d-none", !isStep2);
+
+          if (stepChip) {
+            stepChip.textContent = isStep2
+              ? "Step 2 of 2: Plans and Service Coverage"
+              : "Step 1 of 2: Insurance Information";
+          }
+          if (stepNote) {
+            stepNote.textContent = isStep2
+              ? "Define plans, classes, and rule coverage for every sub service."
+              : "Complete legal and responsible person data first.";
+          }
+        }
+
+        function gatherEntityPayload(code){
+          const today = window.NKInsurancePlanStore.toDateIsoOnly();
+          const payerProof = document.getElementById("docPayerProof")?.files?.[0]?.name || "Payer_License_Proof.pdf";
+
+          return {
+            code: code,
+            name: (document.getElementById("entityName")?.value || "").trim(),
+            type: "Insurance Company",
+            city: (document.getElementById("entityCity")?.value || "").trim(),
+            country: (document.getElementById("entityCountry")?.value || "").trim(),
+            district: (document.getElementById("entityDistrict")?.value || "").trim(),
+            street: (document.getElementById("entityStreet")?.value || "").trim(),
+            buildingNo: (document.getElementById("entityBuildingNo")?.value || "").trim(),
+            postalCode: (document.getElementById("entityPostalCode")?.value || "").trim(),
+            entityName: (document.getElementById("entityName")?.value || "").trim(),
+            payerLicenseNo: (document.getElementById("payerLicenseNo")?.value || "").trim(),
+            phone: (document.getElementById("responsiblePhone")?.value || "").trim(),
+            email: (document.getElementById("responsibleEmail")?.value || "").trim(),
+            responsibleName: (document.getElementById("responsibleName")?.value || "").trim(),
+            responsiblePhone: (document.getElementById("responsiblePhone")?.value || "").trim(),
+            responsibleEmail: (document.getElementById("responsibleEmail")?.value || "").trim(),
+            submittedAt: today,
+            updatedAt: today,
+            status: "pending",
+            contract: "pending",
+            completedOrders: 0,
+            totalOrders: 0,
+            license: {
+              number: (document.getElementById("payerLicenseNo")?.value || "").trim(),
+              issuer: "Council of Cooperative Health Insurance",
+              expiry: window.NKInsurancePlanStore.addDaysIso(365),
+              attachmentName: payerProof
+            },
+            documents: [
+              {
+                id: "doc_cr",
+                name: "Commercial Registration (CR)",
+                required: true,
+                critical: true,
+                status: "pending",
+                uploadedAt: today,
+                fileName: document.getElementById("docCR")?.files?.[0]?.name || "CR.pdf"
+              },
+              {
+                id: "doc_bank_iban",
+                name: "Bank Account Letter (IBAN)",
+                required: true,
+                critical: false,
+                status: "pending",
+                uploadedAt: today,
+                fileName: document.getElementById("docIBAN")?.files?.[0]?.name || "IBAN.pdf"
+              },
+              {
+                id: "doc_payer_license_proof",
+                name: "Payer License Proof",
+                required: true,
+                critical: true,
+                status: "pending",
+                uploadedAt: today,
+                fileName: payerProof
+              },
+              {
+                id: "doc_responsible_id",
+                name: "Owner ID",
+                required: true,
+                critical: true,
+                status: "pending",
+                uploadedAt: today,
+                fileName: document.getElementById("docResponsibleID")?.files?.[0]?.name || "Owner_ID.pdf"
+              }
+            ]
+          };
+        }
+
+        btnNextStep?.addEventListener("click", function(){
+          if (!validateStep1()) return;
+          if (!ensureBuilder()) return;
+          setStep(2);
+        });
+
+        btnBackStep?.addEventListener("click", function(){
+          setStep(1);
+        });
+
+        const form = document.getElementById("addInsuranceForm");
+        form?.addEventListener("submit", function(e){
+          e.preventDefault();
+          if (currentStep !== 2){
+            if (!validateStep1()) return;
+            if (!ensureBuilder()) return;
+            setStep(2);
+            return;
+          }
+          if (!validateStep1()) return;
+          if (!ensureBuilder()) return;
+
+          const store = window.NKInsurancePlanStore;
+          const code = store.nextInsuranceCode();
+          const entity = gatherEntityPayload(code);
+          const planConfig = planBuilder.getValue();
+          planConfig.insuranceCode = code;
+
+          const validation = store.validateConfig(planConfig);
+          if (!validation.ok){
+            alert("Please fix all plan validation issues before creating insurance.");
+            return;
+          }
+
+          store.upsertEntity(entity);
+          const saveResult = store.saveConfig(code, validation.config);
+          if (!saveResult.ok){
+            alert("Unable to save plan configuration.");
+            return;
+          }
+
+          try{
+            sessionStorage.setItem("lastInsuranceCode", code.toUpperCase());
+            sessionStorage.setItem("lastInsuranceContract", "pending");
+            sessionStorage.setItem("lastInsuranceStatusSync", "1");
+          }catch(err){}
+
+          window.location.href = "../providers/insurance-details.html?code=" + encodeURIComponent(code);
+        });
+
+        setStep(1);
+      })();
+    </script>
+  </body>
+</html>
+
+

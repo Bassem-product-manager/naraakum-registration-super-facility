@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Naraakm Packages</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .side-menu-logo .hospital-logo-big {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        background: #fff;
+        padding: 6px;
+        object-fit: contain;
+        display: block;
+        margin: 8px auto 10px;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-mini-logo {
+        width: 22px;
+        height: 22px;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        background: #fff;
+        padding: 3px;
+        object-fit: contain;
+        flex: 0 0 22px;
+      }
+
+      .facility-name {
+        font-weight: 900;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .ksa-clock .time {
+        letter-spacing: 0.2px;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .package-name {
+        font-weight: 900;
+        color: #101828;
+        line-height: 1.35;
+      }
+
+      .service-code-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        min-width: 106px;
+        padding: 0 12px;
+        border-radius: 11px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.2px;
+      }
+
+      .package-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .naraakm-table-wrap {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        background: #fff;
+        overflow-x: auto;
+        overflow-y: visible;
+      }
+
+      #naraakmPackagesTable {
+        min-width: 1220px;
+        table-layout: fixed;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      #naraakmPackagesTable thead th {
+        padding: 11px 12px;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      #naraakmPackagesTable tbody td {
+        padding: 12px;
+        font-size: 13px;
+        line-height: 1.45;
+        color: #101828;
+        vertical-align: top;
+        border-bottom: 1px solid #edf2f7;
+        overflow: visible;
+      }
+
+      #naraakmPackagesTable tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      #naraakmPackagesTable tbody tr:hover td {
+        background: #f9fcfc;
+      }
+
+      #naraakmPackagesTable .th-seq,
+      #naraakmPackagesTable .col-seq {
+        width: 44px;
+        min-width: 44px;
+        text-align: center;
+      }
+
+      #naraakmPackagesTable .th-name,
+      #naraakmPackagesTable .col-name {
+        width: 180px;
+        min-width: 180px;
+      }
+
+      #naraakmPackagesTable .th-code,
+      #naraakmPackagesTable .col-code {
+        width: 126px;
+        min-width: 126px;
+        text-align: center;
+      }
+
+      #naraakmPackagesTable .th-main,
+      #naraakmPackagesTable .col-main {
+        width: 130px;
+        min-width: 130px;
+      }
+
+      #naraakmPackagesTable .th-included,
+      #naraakmPackagesTable .col-included {
+        width: 250px;
+        min-width: 250px;
+      }
+
+      #naraakmPackagesTable .th-subtotal,
+      #naraakmPackagesTable .col-subtotal {
+        width: 120px;
+        min-width: 120px;
+      }
+
+      #naraakmPackagesTable .th-commission,
+      #naraakmPackagesTable .col-commission {
+        width: 130px;
+        min-width: 130px;
+      }
+
+      #naraakmPackagesTable .th-final,
+      #naraakmPackagesTable .col-final {
+        width: 120px;
+        min-width: 120px;
+      }
+
+      #naraakmPackagesTable .th-active,
+      #naraakmPackagesTable .col-active {
+        width: 82px;
+        min-width: 82px;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      #naraakmPackagesTable .th-actions,
+      #naraakmPackagesTable .col-actions {
+        width: 78px;
+        min-width: 78px;
+        text-align: center;
+        vertical-align: middle;
+        position: relative;
+      }
+
+      #naraakmPackagesTable .col-money,
+      #naraakmPackagesTable .col-commission {
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+
+      #naraakmPackagesTable .col-money {
+        text-align: left;
+      }
+
+      #naraakmPackagesTable .col-commission {
+        text-align: left;
+      }
+
+      #naraakmPackagesTable .main-services-text {
+        font-weight: 700;
+        color: #344054;
+      }
+
+      .naraakm-table-wrap .table-footer {
+        min-width: 1220px;
+        margin-top: 0;
+        border-top: 1px solid #edf2f7;
+        padding: 14px 12px 8px;
+      }
+
+      .action-dropdown {
+        position: relative;
+      }
+
+      .action-pencil-btn.dropdown-toggle::after {
+        display: none;
+      }
+
+      .action-dropdown-menu {
+        min-width: 136px;
+        padding: 6px;
+        border-radius: 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        box-shadow: 0 12px 24px rgba(16, 24, 40, 0.15);
+        margin-top: 0;
+        left: auto !important;
+        right: calc(100% + 8px) !important;
+        top: -2px !important;
+        z-index: 30;
+      }
+
+      .action-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 7px 10px;
+      }
+
+      .action-menu-item i {
+        font-size: 14px;
+      }
+
+      .action-menu-item-danger {
+        color: #b42318;
+      }
+
+      .action-menu-item-danger:hover,
+      .action-menu-item-danger:focus {
+        color: #8d1a12;
+        background: rgba(240, 68, 56, 0.1);
+      }
+
+      @media (hover: hover) {
+        .action-dropdown:hover .action-dropdown-menu,
+        .action-dropdown:focus-within .action-dropdown-menu {
+          display: block;
+        }
+      }
+
+      .included-services-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+        max-width: 100%;
+      }
+
+      .included-services-count {
+        font-size: 11px;
+        font-weight: 900;
+        color: #0f8c8c;
+        letter-spacing: 0.1px;
+      }
+
+      .included-services-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+
+      .included-service-item {
+        line-height: 1.35;
+        color: #101828;
+        margin: 0;
+      }
+
+      .included-services-toggle {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 900;
+        color: #0f8c8c;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+
+      .included-services-toggle:hover {
+        color: #0b7070;
+      }
+
+      .included-services-toggle:focus-visible {
+        outline: 2px solid rgba(15, 140, 140, 0.3);
+        outline-offset: 2px;
+      }
+
+      .table-icon-btn {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .table-icon-btn.btn-danger-soft {
+        border: 1px solid rgba(240, 68, 56, 0.25);
+        background: rgba(240, 68, 56, 0.08);
+        color: #b42318;
+      }
+
+      .table-icon-btn.btn-danger-soft:hover {
+        background: rgba(240, 68, 56, 0.14);
+      }
+
+      .naraakm-packages-search {
+        background: #fff;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+      }
+
+      .naraakm-packages-search .search-box-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        border-radius: 12px;
+        background: #f8fbfb;
+        padding: 4px;
+      }
+
+      .naraakm-packages-search .search-box-group .form-control {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+        min-width: 280px;
+      }
+
+      .naraakm-packages-search .search-box-group .form-control:focus {
+        box-shadow: none;
+      }
+
+      .naraakm-packages-search .search-box-group .btn {
+        min-width: 34px;
+      }
+
+      #naraakmPackagesTable .switch input:checked + .slider {
+        background: var(--nk-green);
+        box-shadow: inset 0 0 0 1px rgba(15, 140, 140, 0.28);
+      }
+
+      #naraakmPackagesTable .switch input:checked + .slider:before {
+        background: #fff;
+      }
+
+      @media (max-width: 992px) {
+        .naraakm-packages-search .search-box-group .form-control {
+          min-width: 0;
+        }
+      }
+
+      .empty-state {
+        padding: 30px 12px;
+        text-align: center;
+      }
+
+      .empty-state i {
+        display: inline-flex;
+        width: 44px;
+        height: 44px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        font-size: 18px;
+      }
+
+      .empty-state p {
+        margin: 10px 0 0;
+        color: #667085;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .page-toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 1080;
+        min-width: 220px;
+        max-width: 360px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        background: #101828;
+        box-shadow: 0 14px 30px rgba(16, 24, 40, 0.28);
+        opacity: 0;
+        transform: translateY(14px);
+        pointer-events: none;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .page-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-toast.info {
+        background: #0c8599;
+      }
+
+      .page-toast.danger {
+        background: #b42318;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Naraakm Packages</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Naraakm Package</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8 naraakm-packages-search">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="naraakmPackagesSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by package name, code or service"
+                  />
+                  <button id="btnNaraakmPackagesSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnNaraakmPackagesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#naraakm-packages-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <a href="naraakm-package-form.html" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-plus-small"></i>
+                  <span>Add Package</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive naraakm-table-wrap">
+                <table class="staff-table naraakum-table table-tight" id="naraakmPackagesTable">
+                  <thead>
+                    <tr>
+                      <th class="th-seq">#</th>
+                      <th class="th-name">Package Name</th>
+                      <th class="th-code">Package Code</th>
+                      <th class="th-main">Main Services</th>
+                      <th class="th-included">Included Services</th>
+                      <th class="th-subtotal">Subtotal</th>
+                      <th class="th-commission">Naraakm Commission</th>
+                      <th class="th-final">Final Total</th>
+                      <th class="th-active">Active</th>
+                      <th class="th-actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="naraakmPackagesTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="naraakmPackagesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="naraakmPackagesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="naraakmPackagesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="naraakmPackagesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="naraakmPackagesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="naraakmPackagesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="naraakmPackagesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="naraakm-packages-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Naraakm Packages</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="npfMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="npfStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnNaraakmPackagesFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnNaraakmPackagesApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="deleteNaraakmPackageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Delete Package</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="deleteNaraakmPackageMessage" class="mb-0 fsize-14">Are you sure you want to delete this package?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnConfirmDeleteNaraakmPackage" type="button" class="btn btn-secondary">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="naraakmPackagesToast" class="page-toast">Saved.</div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/naraakm-package-store.js"></script>
+    <script src="../assets/js/naraakm-packages-list.js"></script>
+  </body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Follow-Up Record</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <link rel="stylesheet" href="../assets/css/patient-followup.css" />
+
+    <style>
+      .preloader.hide,
+      .preloader.preloader-hide {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+    <script>
+      (function () {
+        function hideLoader() {
+          var pre = document.querySelector(".preloader");
+          if (!pre) return;
+          pre.classList.add("hide", "preloader-hide");
+          pre.style.display = "none";
+        }
+
+        window.addEventListener("load", hideLoader);
+        setTimeout(hideLoader, 1200);
+      })();
+    </script>
+
+    <div id="app"></div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/facility-dashboard-shell.js"></script>
+    <script src="../assets/js/patient-followup-data.js"></script>
+    <script>
+      (function () {
+        var store = window.patientFollowUpData;
+        if (!store || !window.renderFacilityDashboardShell) return;
+
+        var params = new URLSearchParams(window.location.search);
+        var patientSlug = params.get("patient") || store.patient.slug;
+        var patientCode = params.get("code") || store.patient.code;
+        var patientName = store.helpers.humanizePatient(patientSlug);
+        var landing = store.landing;
+
+        window.renderFacilityDashboardShell({
+          title: "Follow-Up Record",
+          breadcrumbs: [
+            { label: "Home", href: "../index.html" },
+            { label: "Patients", href: "patients-list.html" },
+            { label: "Follow-Up Record" }
+          ],
+          contentHtml:
+            '<div class="fu-shell" id="followUpRecordApp">' +
+            '<section class="fu-top-card">' +
+            '<div class="fu-profile">' +
+            '<div class="fu-profile-main">' +
+            '<div class="fu-avatar"><i class="fi fi-rr-user"></i></div>' +
+            '<div>' +
+            '<span class="fu-eyebrow">Patient</span>' +
+            '<h3 class="fu-title" id="fuLandingPatientName"></h3>' +
+            '<p class="fu-subtitle" id="fuLandingPatientSubtitle"></p>' +
+            "</div>" +
+            "</div>" +
+            '<div class="fu-btn-row" id="fuLandingReportButtons"></div>' +
+            "</div>" +
+            '<div class="fu-kv-grid">' +
+            '<div class="fu-kv"><span>Patient Code</span><strong id="fuLandingPatientCode"></strong></div>' +
+            '<div class="fu-kv"><span>Care Provider</span><strong id="fuLandingCareProvider"></strong></div>' +
+            '<div class="fu-kv"><span>Hospital</span><strong id="fuLandingHospital"></strong></div>' +
+            "</div>" +
+            "</section>" +
+            '<section class="fu-card">' +
+            '<div class="fu-card-head">' +
+            "<div>" +
+            "<h3>Visit / Session Records</h3>" +
+            "<p>Each service keeps its own record action while the patient stays inside one clear dashboard flow.</p>" +
+            "</div>" +
+            '<span class="fu-count" id="fuLandingCount"></span>' +
+            "</div>" +
+            '<div class="fu-card-body"><div class="fu-record-list" id="fuLandingList"></div></div>' +
+            "</section>" +
+            "</div>"
+        });
+
+        document.getElementById("fuLandingPatientName").textContent = patientName;
+        document.getElementById("fuLandingPatientSubtitle").textContent = store.patient.serviceName;
+        document.getElementById("fuLandingPatientCode").textContent = patientCode;
+        document.getElementById("fuLandingCareProvider").textContent = store.patient.careProvider;
+        document.getElementById("fuLandingHospital").textContent = store.patient.hospital;
+        document.getElementById("fuLandingCount").textContent = landing.sessionRecords.length + " records";
+
+        document.getElementById("fuLandingReportButtons").innerHTML = landing.reports
+          .map(function (report, index) {
+            return (
+              '<a class="fu-btn ' +
+              (index === 0 ? "is-primary" : "") +
+              '" href="visit-record.html?patient=' +
+              encodeURIComponent(patientSlug) +
+              "&code=" +
+              encodeURIComponent(patientCode) +
+              "&reportType=" +
+              encodeURIComponent(report.key) +
+              '">' +
+              report.label +
+              "</a>"
+            );
+          })
+          .join("");
+
+        document.getElementById("fuLandingList").innerHTML = landing.sessionRecords
+          .map(function (record) {
+            var targetPage = record.kind === "session" ? "Session-record.html" : "visit-record.html";
+            var targetType = record.kind === "session" ? "weight" : record.key;
+
+            return (
+              '<article class="fu-record-item">' +
+              '<div class="fu-record-top">' +
+              '<div class="fu-record-meta"><p>Care Provider</p><strong>' + record.careProvider + "</strong></div>" +
+              '<div class="fu-record-meta"><p>Hospital</p><strong>' + record.hospital + "</strong></div>" +
+              '<div class="fu-record-meta"><p>Record Date</p><strong>' + record.recordDate + "</strong></div>" +
+              '<div class="fu-record-actions">' +
+              '<a class="fu-btn is-primary" href="' +
+              targetPage +
+              "?patient=" +
+              encodeURIComponent(patientSlug) +
+              "&code=" +
+              encodeURIComponent(patientCode) +
+              "&reportType=" +
+              encodeURIComponent(targetType) +
+              '">' +
+              '<i class="fi fi-rr-eye"></i>' +
+              record.actionLabel +
+              "</a>" +
+              (record.statusLabel
+                ? '<span class="fu-status is-' + record.statusTone + '">' + record.statusLabel + "</span>"
+                : "") +
+              "</div>" +
+              "</div>" +
+              '<div class="fu-pill-row mt-16">' +
+              '<span class="fu-chip"><i class="fi fi-rr-file"></i> Report Type: <b>' + record.reportType + "</b></span>" +
+              "</div>" +
+              "</article>"
+            );
+          })
+          .join("");
+      })();
+    </script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+  </body>
+</html>

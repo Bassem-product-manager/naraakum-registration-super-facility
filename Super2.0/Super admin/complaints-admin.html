@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Complaints & Suggestions</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      body {
+        font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+      }
+
+      .page-intro h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .page-intro p {
+        margin: 6px 0 0;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .filter-bar {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .search-wrap {
+        position: relative;
+      }
+
+      .search-wrap i {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #667085;
+        z-index: 1;
+      }
+
+      .search-wrap .form-control {
+        padding-left: 40px;
+        padding-right: 38px;
+      }
+
+      .clear-search-btn {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        border: 0;
+        border-radius: 50%;
+        background: rgba(102, 112, 133, 0.12);
+        color: #667085;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+
+      .clear-search-btn.show {
+        display: inline-flex;
+      }
+
+      .clear-search-btn:hover {
+        background: rgba(15, 140, 140, 0.12);
+        color: #0b6f6f;
+      }
+
+      .filter-summary {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .filter-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 26px;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .toolbar-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .toolbar-grid {
+        display: grid;
+        grid-template-columns: minmax(240px, 1fr) repeat(3, minmax(150px, 180px)) auto;
+        gap: 10px;
+      }
+
+      .toolbar-grid .form-control {
+        height: 40px;
+        border-radius: 10px;
+      }
+
+      .toolbar-grid .btn {
+        height: 40px;
+      }
+
+      .tickets-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .tickets-table {
+        width: 100%;
+        min-width: 1320px;
+        table-layout: fixed;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 13px;
+      }
+
+      .tickets-table thead th {
+        font-size: 12px;
+        font-weight: 900;
+        color: #344054;
+        white-space: nowrap;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.1);
+        padding: 12px 10px;
+        background: #fff;
+      }
+
+      .tickets-table tbody td {
+        height: 66px;
+        padding: 10px 10px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+        vertical-align: middle;
+        font-weight: 700;
+        color: #101828;
+      }
+
+      .tickets-table .col-ticket {
+        width: 160px;
+      }
+
+      .tickets-table .col-submitter {
+        width: 190px;
+      }
+
+      .tickets-table .col-subject {
+        width: 310px;
+      }
+
+      .tickets-table .col-status {
+        width: 150px;
+      }
+
+      .tickets-table .col-priority {
+        width: 120px;
+      }
+
+      .tickets-table .col-date {
+        width: 180px;
+      }
+
+      .tickets-table .col-assigned {
+        width: 160px;
+      }
+
+      .tickets-table .col-actions {
+        width: 170px;
+      }
+
+      .cell-center {
+        text-align: center;
+      }
+
+      .cell-subject {
+        white-space: normal;
+        line-height: 1.45;
+      }
+
+      .cell-date {
+        white-space: nowrap;
+      }
+
+      .tickets-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .tickets-table tbody tr:hover td {
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      .ticket-id-chip {
+        display: inline-flex;
+        align-items: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.07);
+        color: #0b6f6f;
+        font-weight: 900;
+        font-size: 12px;
+      }
+
+      .submitter-name {
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .submitter-role {
+        display: block;
+        margin-top: 3px;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 96px;
+        height: 28px;
+        border-radius: 999px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid transparent;
+        white-space: nowrap;
+      }
+
+      .type-complaint {
+        color: #b42318;
+        background: rgba(240, 68, 56, 0.1);
+        border-color: rgba(240, 68, 56, 0.24);
+      }
+
+      .type-suggestion {
+        color: #155eef;
+        background: rgba(41, 112, 255, 0.1);
+        border-color: rgba(41, 112, 255, 0.24);
+      }
+
+      .st-new {
+        color: #175cd3;
+        background: #eff8ff;
+        border-color: #b2ddff;
+      }
+
+      .st-in-progress {
+        color: #b54708;
+        background: #fffaeb;
+        border-color: #fedf89;
+      }
+
+      .st-resolved {
+        color: #067647;
+        background: #ecfdf3;
+        border-color: #abefc6;
+      }
+
+      .st-closed {
+        color: #6941c6;
+        background: #f4f3ff;
+        border-color: #d9d6fe;
+      }
+
+      .priority-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 74px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .priority-dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        display: inline-block;
+      }
+
+      .pr-low .priority-dot {
+        background: #12b76a;
+      }
+
+      .pr-medium .priority-dot {
+        background: #f79009;
+      }
+
+      .pr-high .priority-dot {
+        background: #f04438;
+      }
+
+      .assign-cell {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-direction: column;
+      }
+
+      .assign-name {
+        max-width: 132px;
+        min-height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.08);
+        color: #0b6f6f;
+        text-align: center;
+        font-weight: 900;
+        font-size: 12px;
+        line-height: 1.2;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .btn-assign-mini {
+        height: 30px;
+        border-radius: 9px;
+        padding: 0 10px;
+        font-size: 12px;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-width: 82px;
+      }
+
+      .btn-assign-mini {
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green);
+      }
+
+      .table-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn-action {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 32px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 900;
+        padding: 0 10px;
+        text-decoration: none;
+      }
+
+      .btn-view {
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green);
+      }
+
+      .btn-msg {
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        background: #fff;
+        color: #344054;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 22px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .assign-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 40, 0.45);
+        z-index: 1050;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+      }
+
+      .assign-overlay.show {
+        display: flex;
+      }
+
+      .assign-panel {
+        width: min(640px, 100%);
+        max-height: 80vh;
+        overflow: auto;
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        padding: 14px;
+      }
+
+      .assign-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .assign-head h5 {
+        margin: 0;
+        font-weight: 900;
+      }
+
+      .agent-list {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .agent-item {
+        width: 100%;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .agent-item:hover {
+        border-color: rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      .agent-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.12);
+        color: #0b6f6f;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 12px;
+      }
+
+      .agent-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: #101828;
+      }
+
+      .agent-role {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      @media (max-width: 1200px) {
+        .toolbar-grid {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .filter-bar {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .table-actions {
+          justify-content: flex-start;
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-compliance">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base=""></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Complaints & Suggestions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="template.html">Dashboard</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Compliance</li>
+              <li class="breadcrumb-item active" aria-current="page">Complaints & Suggestions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="page-intro mb-16">
+            <h1>Complaints & Suggestions</h1>
+            <p>Manage and respond to customer feedback and issues.</p>
+          </div>
+
+          <section class="toolbar-card">
+            <div class="filter-bar">
+              <div class="search-wrap">
+                <i class="fi fi-rr-search"></i>
+                <input id="searchInput" type="search" class="form-control form-control-32" placeholder="Search by ticket, submitter, phone, subject, status, priority" autocomplete="off" />
+                <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Clear search">
+                  <i class="fi fi-rr-cross-small"></i>
+                </button>
+              </div>
+              <button id="openFilterBtn" class="btn btn-primary btn-icon btn-40" type="button" data-bs-toggle="modal" data-bs-target="#ticketsFilterModal">
+                <i class="fi fi-rr-bars-filter"></i>
+                <span>Filter</span>
+              </button>
+              <button id="exportBtn" class="btn btn-primary" type="button">
+                <i class="fi fi-rr-download"></i>
+                <span>Export</span>
+              </button>
+            </div>
+            <div id="filterSummary" class="filter-summary"></div>
+          </section>
+
+          <section class="tickets-card mt-16">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="tickets-table">
+                  <colgroup>
+                    <col class="col-ticket" />
+                    <col class="col-submitter" />
+                    <col class="col-subject" />
+                    <col class="col-status" />
+                    <col class="col-priority" />
+                    <col class="col-date" />
+                    <col class="col-assigned" />
+                    <col class="col-actions" />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Submitted By</th>
+                      <th>Subject</th>
+                      <th class="cell-center">Status</th>
+                      <th class="cell-center">Priority</th>
+                      <th class="cell-center">Created At</th>
+                      <th class="cell-center">Assigned To</th>
+                      <th class="cell-center">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ticketsBody"></tbody>
+                </table>
+              </div>
+              <div id="emptyState" class="empty-state d-none">No tickets found for current search/filter.</div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="ticketsFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="fsize-12 text-grey mb-6 d-block">Status</label>
+                <select id="statusFilter" class="form-control">
+                  <option value="">All Statuses</option>
+                  <option value="New">New</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Closed">Closed</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey mb-6 d-block">Type</label>
+                <select id="typeFilter" class="form-control">
+                  <option value="">All Types</option>
+                  <option value="Complaint">Complaint</option>
+                  <option value="Suggestion">Suggestion</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey mb-6 d-block">Channel</label>
+                <select id="channelFilter" class="form-control">
+                  <option value="">All Channels</option>
+                  <option value="Web">Web</option>
+                  <option value="App">App</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="resetFilterBtn" type="button" class="btn btn-primary-revers">Reset</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="applyFilterBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="assignOverlay" class="assign-overlay" aria-hidden="true">
+      <div class="assign-panel">
+        <div class="assign-head">
+          <h5>Select Support Agent</h5>
+          <button id="closeAssignBtn" class="btn btn-primary-revers btn-32" type="button">Close</button>
+        </div>
+        <div class="mt-10">
+          <input id="agentSearchInput" type="text" class="form-control" placeholder="Search by agent name or role" />
+        </div>
+        <div id="agentList" class="agent-list"></div>
+      </div>
+    </div>
+
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/adminSideMenu.js"></script>
+    <script>
+      const tickets = [
+        { id: "CMP-2026-000231", name: "Al Noor Medical Center", role: "Facility", phone: "+966 50 243 1122", subject: "Delay in claim approval for urgent case", type: "Complaint", status: "New", priority: "High", createdAt: "2026-02-15 09:12 AM", assignedTo: "Unassigned", channel: "Web" },
+        { id: "CMP-2026-000232", name: "Safa Pharmacy", role: "Pharmacy", phone: "+966 55 734 9014", subject: "Suggestion to add faster stock sync", type: "Suggestion", status: "In Progress", priority: "Medium", createdAt: "2026-02-15 11:28 AM", assignedTo: "Lina Fares", channel: "App" },
+        { id: "CMP-2026-000233", name: "Mariam Al-Harbi", role: "Client", phone: "+966 54 141 1010", subject: "Unable to upload insurance card image", type: "Complaint", status: "In Progress", priority: "Medium", createdAt: "2026-02-14 04:03 PM", assignedTo: "Hassan Qasem", channel: "Web" },
+        { id: "CMP-2026-000234", name: "Jeddah Care Hub", role: "Facility", phone: "+966 56 908 2281", subject: "Invoices page is slow in peak hours", type: "Complaint", status: "In Progress", priority: "High", createdAt: "2026-02-14 10:18 AM", assignedTo: "Rana Al-Khatib", channel: "App" },
+        { id: "CMP-2026-000235", name: "Al Baraka Pharmacy", role: "Pharmacy", phone: "+966 59 788 4011", subject: "Request dark text contrast improvement", type: "Suggestion", status: "New", priority: "Low", createdAt: "2026-02-13 08:51 PM", assignedTo: "Unassigned", channel: "Web" },
+        { id: "CMP-2026-000236", name: "Tariq Al-Qahtani", role: "Client", phone: "+966 58 973 5512", subject: "Status updates not received after submission", type: "Complaint", status: "Closed", priority: "Medium", createdAt: "2026-02-13 03:37 PM", assignedTo: "Sara Nabil", channel: "App" },
+        { id: "CMP-2026-000237", name: "Riyadh Diagnostic Lab", role: "Facility", phone: "+966 53 432 6720", subject: "Suggestion for bulk export in reports", type: "Suggestion", status: "In Progress", priority: "Low", createdAt: "2026-02-13 09:15 AM", assignedTo: "Yousef Salah", channel: "Web" },
+        { id: "CMP-2026-000238", name: "Blue Crescent Pharmacy", role: "Pharmacy", phone: "+966 52 498 3410", subject: "Repeated login timeout during dispensing", type: "Complaint", status: "New", priority: "High", createdAt: "2026-02-12 07:59 PM", assignedTo: "Unassigned", channel: "App" },
+        { id: "CMP-2026-000239", name: "Nawal Al-Otaibi", role: "Client", phone: "+966 57 782 2277", subject: "Suggestion to simplify profile update form", type: "Suggestion", status: "In Progress", priority: "Low", createdAt: "2026-02-12 01:44 PM", assignedTo: "Omar Hendi", channel: "Web" },
+        { id: "CMP-2026-000240", name: "Care One Facility", role: "Facility", phone: "+966 50 321 6009", subject: "Claim rejected without clear reason", type: "Complaint", status: "New", priority: "High", createdAt: "2026-02-11 10:02 AM", assignedTo: "Unassigned", channel: "Web" },
+        { id: "CMP-2026-000241", name: "Green Palm Pharmacy", role: "Pharmacy", phone: "+966 55 100 2881", subject: "Suggestion for Arabic-only invoice copy", type: "Suggestion", status: "Closed", priority: "Low", createdAt: "2026-02-10 05:34 PM", assignedTo: "Maha Jaber", channel: "App" }
+      ];
+
+      const agents = [
+        { name: "Lina Fares", role: "Senior Support Agent" },
+        { name: "Hassan Qasem", role: "Claims Support Specialist" },
+        { name: "Rana Al-Khatib", role: "Quality Assurance Agent" },
+        { name: "Sara Nabil", role: "Customer Success Officer" },
+        { name: "Yousef Salah", role: "Technical Support Agent" },
+        { name: "Omar Hendi", role: "Operations Support Agent" },
+        { name: "Maha Jaber", role: "Compliance Support Agent" },
+        { name: "Khaled Mansour", role: "Escalation Officer" }
+      ];
+
+      const statusClass = { "New": "st-new", "In Progress": "st-in-progress", "Closed": "st-closed" };
+      const typeClass = { "Complaint": "type-complaint", "Suggestion": "type-suggestion" };
+      const priorityClass = { "Low": "pr-low", "Medium": "pr-medium", "High": "pr-high" };
+
+      const ticketsBody = document.getElementById("ticketsBody");
+      const searchInput = document.getElementById("searchInput");
+      const clearSearchBtn = document.getElementById("clearSearchBtn");
+      const statusFilter = document.getElementById("statusFilter");
+      const typeFilter = document.getElementById("typeFilter");
+      const channelFilter = document.getElementById("channelFilter");
+      const emptyState = document.getElementById("emptyState");
+      const exportBtn = document.getElementById("exportBtn");
+      const resetFilterBtn = document.getElementById("resetFilterBtn");
+      const applyFilterBtn = document.getElementById("applyFilterBtn");
+      const filterSummary = document.getElementById("filterSummary");
+      const assignOverlay = document.getElementById("assignOverlay");
+      const closeAssignBtn = document.getElementById("closeAssignBtn");
+      const agentSearchInput = document.getElementById("agentSearchInput");
+      const agentList = document.getElementById("agentList");
+      let activeTicketId = null;
+
+      function escapeHtml(text) {
+        return String(text)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function initials(name) {
+        return name
+          .split(" ")
+          .slice(0, 2)
+          .map((s) => s[0])
+          .join("")
+          .toUpperCase();
+      }
+
+      function syncTicketStatus(ticket) {
+        if (ticket.status === "Closed") return;
+        ticket.status = ticket.assignedTo === "Unassigned" ? "New" : "In Progress";
+      }
+
+      tickets.forEach(syncTicketStatus);
+
+      function normalizeSearch(value) {
+        return String(value ?? "")
+          .toLowerCase()
+          .replace(/[\u2010-\u2015]/g, "-")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+
+      function compactSearch(value) {
+        return normalizeSearch(value).replace(/[^a-z0-9\u0600-\u06ff]+/g, "");
+      }
+
+      function ticketSearchText(ticket) {
+        const values = [
+          ticket.id,
+          ticket.name,
+          ticket.role,
+          ticket.phone,
+          ticket.subject,
+          ticket.type,
+          ticket.status,
+          ticket.priority,
+          ticket.createdAt,
+          ticket.assignedTo,
+          ticket.channel,
+          ticket.id.replace(/^CMP-/i, ""),
+          ticket.phone.replace(/\D/g, "")
+        ];
+        return {
+          normalized: normalizeSearch(values.join(" ")),
+          compact: compactSearch(values.join(" "))
+        };
+      }
+
+      function filterTickets() {
+        const q = normalizeSearch(searchInput.value);
+        const compactQ = compactSearch(searchInput.value);
+        const terms = q.split(" ").filter(Boolean);
+        const status = statusFilter.value;
+        const type = typeFilter.value;
+        const channel = channelFilter.value;
+
+        return tickets.filter((t) => {
+          const searchable = ticketSearchText(t);
+          const matchesSearch =
+            !q ||
+            terms.every((term) => searchable.normalized.includes(term)) ||
+            (compactQ && searchable.compact.includes(compactQ));
+          const matchesStatus = !status || t.status === status;
+          const matchesType = !type || t.type === type;
+          const matchesChannel = !channel || t.channel === channel;
+          return matchesSearch && matchesStatus && matchesType && matchesChannel;
+        });
+      }
+
+      function renderRows() {
+        const rows = filterTickets();
+        ticketsBody.innerHTML = rows
+          .map(
+            (t) => `
+          <tr>
+            <td><span class="ticket-id-chip">${escapeHtml(t.id)}</span></td>
+            <td>
+              <span class="submitter-name">${escapeHtml(t.name)}</span>
+              <span class="submitter-role">${escapeHtml(t.role)}</span>
+            </td>
+            <td class="cell-subject">${escapeHtml(t.subject)}</td>
+            <td class="cell-center"><span class="badge-pill ${statusClass[t.status]}">${escapeHtml(t.status)}</span></td>
+            <td class="cell-center">
+              <span class="priority-chip ${priorityClass[t.priority]}">
+                <span class="priority-dot"></span>${escapeHtml(t.priority)}
+              </span>
+            </td>
+            <td class="cell-center cell-date">${escapeHtml(t.createdAt)}</td>
+            <td class="cell-center">
+              <span class="assign-cell">
+                ${
+                  t.assignedTo === "Unassigned"
+                    ? `<button type="button" class="btn-assign-mini" data-assign-ticket="${escapeHtml(t.id)}">
+                        <i class="fi fi-rr-user-add"></i><span>Assign</span>
+                      </button>`
+                    : `<span class="assign-name" title="${escapeHtml(t.assignedTo)}">${escapeHtml(t.assignedTo)}</span>`
+                }
+              </span>
+            </td>
+            <td class="cell-center">
+              <div class="table-actions">
+                <a class="btn-action btn-view" href="complaint-details.html?id=${encodeURIComponent(t.id)}">
+                  <i class="fi fi-rr-eye"></i><span>View</span>
+                </a>
+                <a class="btn-action btn-msg" href="Massages/Staff-massages.html">
+                  <i class="fi fi-rr-comment"></i><span>Reply</span>
+                </a>
+              </div>
+            </td>
+          </tr>
+        `
+          )
+          .join("");
+
+        emptyState.classList.toggle("d-none", rows.length !== 0);
+        ticketsBody.querySelectorAll("[data-assign-ticket]").forEach((btn) => {
+          btn.addEventListener("click", () => openAssignPanel(btn.getAttribute("data-assign-ticket")));
+        });
+        renderFilterSummary(rows.length);
+      }
+
+      function renderFilterSummary(count) {
+        const chips = [];
+        if (searchInput.value.trim()) chips.push(`Search: ${searchInput.value.trim()}`);
+        if (statusFilter.value) chips.push(`Status: ${statusFilter.value}`);
+        if (typeFilter.value) chips.push(`Type: ${typeFilter.value}`);
+        if (channelFilter.value) chips.push(`Channel: ${channelFilter.value}`);
+        chips.unshift(`${count} tickets`);
+        filterSummary.innerHTML = chips.map((chip) => `<span class="filter-chip">${escapeHtml(chip)}</span>`).join("");
+        clearSearchBtn.classList.toggle("show", Boolean(searchInput.value.trim()));
+      }
+
+      function resetFilters() {
+        searchInput.value = "";
+        statusFilter.value = "";
+        typeFilter.value = "";
+        channelFilter.value = "";
+        renderRows();
+      }
+
+      function openAssignPanel(ticketId) {
+        activeTicketId = ticketId;
+        assignOverlay.classList.add("show");
+        assignOverlay.setAttribute("aria-hidden", "false");
+        agentSearchInput.value = "";
+        renderAgents();
+        agentSearchInput.focus();
+      }
+
+      function closeAssignPanel() {
+        assignOverlay.classList.remove("show");
+        assignOverlay.setAttribute("aria-hidden", "true");
+        activeTicketId = null;
+      }
+
+      function renderAgents() {
+        const q = agentSearchInput.value.trim().toLowerCase();
+        const filtered = agents.filter((a) => !q || a.name.toLowerCase().includes(q) || a.role.toLowerCase().includes(q));
+        agentList.innerHTML = filtered
+          .map(
+            (agent) => `
+            <button type="button" class="agent-item" data-agent="${escapeHtml(agent.name)}">
+              <span class="agent-left">
+                <span class="avatar-circle">${escapeHtml(initials(agent.name))}</span>
+                <span>
+                  <span class="agent-name d-block">${escapeHtml(agent.name)}</span>
+                  <span class="agent-role d-block">${escapeHtml(agent.role)}</span>
+                </span>
+              </span>
+              <span class="btn btn-primary-revers btn-32">Select</span>
+            </button>
+          `
+          )
+          .join("");
+
+        agentList.querySelectorAll(".agent-item").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const ticket = tickets.find((item) => item.id === activeTicketId);
+            if (ticket) {
+              ticket.assignedTo = btn.getAttribute("data-agent");
+              syncTicketStatus(ticket);
+            }
+            closeAssignPanel();
+            renderRows();
+          });
+        });
+      }
+
+      function csvEscape(value) {
+        const s = String(value ?? "").replace(/\r?\n/g, " ").trim();
+        return /[",]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+      }
+
+      function exportRows() {
+        const rows = filterTickets();
+        const headers = ["Ticket ID", "Submitted By", "Role", "Phone", "Subject", "Status", "Priority", "Created At", "Assigned To", "Channel"];
+        const lines = [headers.map(csvEscape).join(",")];
+        rows.forEach((r) => {
+          lines.push([r.id, r.name, r.role, r.phone, r.subject, r.status, r.priority, r.createdAt, r.assignedTo, r.channel].map(csvEscape).join(","));
+        });
+        const blob = new Blob(["\ufeff" + lines.join("\n")], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "complaints-suggestions.csv";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      searchInput.addEventListener("input", renderRows);
+      clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        renderRows();
+        searchInput.focus();
+      });
+      applyFilterBtn.addEventListener("click", renderRows);
+      resetFilterBtn.addEventListener("click", resetFilters);
+      exportBtn.addEventListener("click", exportRows);
+      closeAssignBtn.addEventListener("click", closeAssignPanel);
+      assignOverlay.addEventListener("click", (e) => {
+        if (e.target === assignOverlay) closeAssignPanel();
+      });
+      agentSearchInput.addEventListener("input", renderAgents);
+
+      renderRows();
+    </script>
+  </body>
+</html>

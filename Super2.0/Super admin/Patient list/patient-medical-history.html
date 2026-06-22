@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Patient Medical History</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-green-dark: #0b6b78;
+        --nk-border: #e7eff1;
+        --nk-soft: #f2fbfc;
+      }
+
+      .pmh-wrap { display: grid; gap: 16px; }
+
+      .patient-card {
+        border: 1px solid var(--nk-border);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .patient-card__top {
+        padding: 14px 14px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid var(--nk-border);
+        background: linear-gradient(0deg, #fff, var(--nk-soft));
+      }
+
+      .patient-profile { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+      .patient-avatar {
+        width: 44px; height: 44px; border-radius: 12px; overflow: hidden;
+        border: 1px solid var(--nk-border); background: #fff; flex: 0 0 auto;
+      }
+      .patient-avatar img { width: 100%; height: 100%; object-fit: cover; }
+
+      .patient-meta { min-width: 0; }
+      .patient-meta .name {
+        margin: 0; font-size: 16px; font-weight: 700; color: #1b2b34; line-height: 1.2;
+      }
+      .patient-meta .sub { margin: 2px 0 0; font-size: 12px; color: #6b7c86; }
+
+      .patient-card__body { padding: 14px; }
+
+      .patient-info-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 12px;
+      }
+
+      .info-item {
+        grid-column: span 4;
+        border: 1px dashed #d7e6ea;
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+
+      .info-item .lbl { display: block; font-size: 11px; color: #6b7c86; margin-bottom: 4px; }
+      .info-item .val { font-size: 13px; font-weight: 700; color: #1b2b34; }
+
+      @media (max-width: 992px) { .info-item { grid-column: span 6; } }
+      @media (max-width: 576px) { .info-item { grid-column: span 12; } }
+
+      .pmh-actions { display: flex; align-items: center; gap: 10px; flex: 0 0 auto; }
+
+      .nk-pill-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 8px 14px; border-radius: 999px;
+        border: 1px solid #9fd0d6; background: var(--nk-soft);
+        color: var(--nk-green-dark);
+        font-weight: 800; font-size: 12px; white-space: nowrap;
+      }
+      .nk-pill-btn i { font-size: 14px; line-height: 1; }
+      .nk-pill-btn:hover { filter: brightness(0.98); }
+
+      .nk-pill-btn--solid { border-color: transparent; background: var(--nk-green); color: #fff; }
+
+      .records-card {
+        border: 1px solid var(--nk-border);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .records-card__head {
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--nk-border);
+      }
+
+      .records-card__head h3 { margin: 0; font-size: 14px; font-weight: 800; color: #1b2b34; }
+
+      .records-list { padding: 12px 14px 14px; display: grid; gap: 12px; }
+
+      .record-item {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .record-item__top {
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 1.1fr 1.2fr 0.8fr 0.9fr auto;
+        gap: 12px;
+        align-items: center;
+        background: #fff;
+      }
+
+      @media (max-width: 992px) {
+        .record-item__top { grid-template-columns: 1fr 1fr; }
+        .record-item__actions { justify-content: flex-start; }
+      }
+      @media (max-width: 576px) {
+        .record-item__top { grid-template-columns: 1fr; }
+      }
+
+      .record-kv .k { font-size: 11px; color: #6b7c86; margin: 0 0 4px; }
+      .record-kv .v { margin: 0; font-size: 13px; font-weight: 800; color: #1b2b34; }
+
+      .record-item__actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .files-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        overflow: hidden;
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+      }
+
+      .files-table thead th {
+        background: #f7fbfc;
+        font-size: 12px;
+        font-weight: 800;
+        color: #2a3a42;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--nk-border);
+      }
+      .files-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--nk-border);
+        vertical-align: middle;
+        font-size: 13px;
+        color: #2a3a42;
+      }
+      .files-table tr:last-child td { border-bottom: 0; }
+
+      .file-type-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #cde3e7;
+        background: #ffffff;
+        color: var(--nk-green-dark);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .file-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn-32 { height: 32px; padding: 0 12px; display: inline-flex; align-items: center; gap: 8px; }
+      .btn-32 i { font-size: 14px; }
+
+      .divider-line { height: 1px; background: var(--nk-border); margin: 10px 0 0; }
+
+      .preview-box {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+        min-height: 220px;
+        display: grid;
+        place-items: center;
+      }
+      .preview-placeholder {
+        width: 100%;
+        max-width: 520px;
+        border: 1px dashed #cfe4e8;
+        border-radius: 12px;
+        padding: 16px;
+        text-align: center;
+      }
+      .preview-placeholder svg { width: 58px; height: 58px; opacity: 0.8; }
+      .preview-placeholder p { margin: 10px 0 0; color: #6b7c86; font-size: 12px; }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+  <body data-menu="menu-patients">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Patient Medical History</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+                <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="patients-list.html">Patients List</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a id="pmhBreadcrumbProfile" href="#">Patient Profile</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Patient Medical History</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div class="pmh-wrap">
+            <div class="patient-card">
+              <div class="patient-card__top">
+                <div class="patient-profile">
+                  <div class="patient-avatar">
+                    <img src="../assets/images/avatar.svg" alt="patient" />
+                  </div>
+                  <div class="patient-meta">
+                    <p class="name" id="pmhPatientName">-</p>
+                    <p class="sub" id="pmhPatientCodeLine">Patient Code: <b class="surface-secondary-400">-</b></p>
+                  </div>
+                </div>
+
+                <div class="pmh-actions">
+                  <button class="nk-pill-btn nk-pill-btn--solid" type="button" data-bs-toggle="modal" data-bs-target="#medicalReportModal">
+                    <i class="fi fi-rr-document"></i>
+                    Medical Report
+                  </button>
+
+                  <a class="nk-pill-btn" id="pmhBackToProfile" href="#" title="Back to Patient Profile">
+                    <i class="fi fi-rr-arrow-small-left"></i>
+                    Back to Profile
+                  </a>
+                </div>
+              </div>
+
+              <div class="patient-card__body">
+                <div class="patient-info-grid">
+                  <div class="info-item">
+                    <span class="lbl">Nationality</span>
+                    <div class="val" id="pmhNationality">-</div>
+                  </div>
+
+                  <div class="info-item">
+                    <span class="lbl">Phone Number</span>
+                    <div class="val" id="pmhPhone">-</div>
+                  </div>
+
+                  <div class="info-item">
+                    <span class="lbl">Gender</span>
+                    <div class="val" id="pmhGender">-</div>
+                  </div>
+                </div>
+                <div class="patient-info-grid" id="pmhKpiRow">
+                  <div class="info-item"><span class="lbl">Total Orders</span><div class="val" id="pmhTotalOrders">0</div></div>
+                  <div class="info-item"><span class="lbl">Pending/Ongoing</span><div class="val" id="pmhPendingOngoing">0 / 0</div></div>
+                  <div class="info-item"><span class="lbl">Completed/Canceled</span><div class="val" id="pmhCompletedCanceled">0 / 0</div></div>
+                  <div class="info-item"><span class="lbl">Total Services</span><div class="val" id="pmhTotalServices">0</div></div>
+                  <div class="info-item"><span class="lbl">Total Meds</span><div class="val" id="pmhTotalMeds">0</div></div>
+                  <div class="info-item"><span class="lbl">Total Visits</span><div class="val" id="pmhTotalVisits">0</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="records-card">
+              <div class="records-card__head">
+                <h3>Medical Records</h3>
+                <span class="fsize-12 text-grey" id="pmhRecordsCount">0 Records</span>
+              </div>
+
+              <div class="records-list" id="pmhRecordsList"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Medical Report Modal -->
+    <div class="modal fade" id="medicalReportModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Medical Report Files</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="files-table">
+                <thead>
+                  <tr>
+                    <th style="width: 40%">File Name</th>
+                    <th style="width: 22%">File Type</th>
+                    <th class="text-end" style="width: 38%">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>MRI - Ray</b></td>
+                    <td><span class="file-type-pill"><i class="fi fi-rr-search"></i> X-Ray</span></td>
+                    <td>
+                      <div class="file-actions">
+                        <button class="btn btn-primary-revers btn-32 js-preview-file" type="button" data-file="MRI - Ray" data-type="X-Ray">
+                          <i class="fi fi-rr-eye"></i> Preview
+                        </button>
+                        <button class="btn btn-primary btn-32 js-download-file" type="button" data-file="MRI - Ray" data-type="X-Ray">
+                          <i class="fi fi-rr-download"></i> Download
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td><b>MRI - Ray</b></td>
+                    <td><span class="file-type-pill"><i class="fi fi-rr-search"></i> X-Ray</span></td>
+                    <td>
+                      <div class="file-actions">
+                        <button class="btn btn-primary-revers btn-32 js-preview-file" type="button" data-file="MRI - Ray" data-type="X-Ray">
+                          <i class="fi fi-rr-eye"></i> Preview
+                        </button>
+                        <button class="btn btn-primary btn-32 js-download-file" type="button" data-file="MRI - Ray" data-type="X-Ray">
+                          <i class="fi fi-rr-download"></i> Download
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <span class="fsize-12 text-grey">Preview/Download are demo actions (wired with JS placeholders).</span>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Preview</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="preview-box">
+              <div class="preview-placeholder">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-6Z" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M8 13h8M8 16h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+                <p id="previewText">No preview loaded.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <span class="fsize-12 text-grey" id="previewMeta">—</span>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Record Info Modal -->
+    <div class="modal fade" id="recordInfoModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Record Information</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Care Provider</label>
+                <input id="riProvider" class="form-control form-control-32" readonly />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Hospital</label>
+                <input id="riHospital" class="form-control form-control-32" readonly />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Record Date</label>
+                <input id="riDate" class="form-control form-control-32" readonly />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Record ID</label>
+                <input id="riId" class="form-control form-control-32" readonly />
+              </div>
+            </div>
+
+            <div class="divider-line"></div>
+
+            <div class="mt-12">
+              <label class="fsize-12 text-grey">Notes</label>
+              <textarea id="riNotes" class="form-control" rows="4" readonly></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <span class="fsize-12 text-grey">This is a demo modal – connect it to your backend/API later.</span>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+    <script src="../assets/js/data.js"></script>
+    <script src="../assets/js/patient-medical-history.js"></script>
+
+    <script>
+      (function () {
+        const previewModalEl = document.getElementById("previewModal");
+        const previewText = document.getElementById("previewText");
+        const previewMeta = document.getElementById("previewMeta");
+
+        const riProvider = document.getElementById("riProvider");
+        const riHospital = document.getElementById("riHospital");
+        const riDate = document.getElementById("riDate");
+        const riId = document.getElementById("riId");
+        const riNotes = document.getElementById("riNotes");
+
+        const records = {
+          "rec-1": {
+            id: "REC-00001",
+            provider: "Dr. Sror Rashad",
+            hospital: "Bassam Medical Center",
+            date: "12/12/2023",
+            notes: "Patient visit record (demo). Connect notes/diagnosis/treatment plan from your backend."
+          },
+          "rec-2": {
+            id: "REC-00002",
+            provider: "Dr. Ahmed Ali",
+            hospital: "Sulayman Alhabib Center",
+            date: "12/12/2023",
+            notes: "Follow-up record (demo). Add vitals, lab results, imaging, prescriptions, etc."
+          }
+        };
+
+        document.addEventListener("click", function (e) {
+          const btnPreview = e.target.closest(".js-preview-file");
+          if (btnPreview) {
+            const name = btnPreview.getAttribute("data-file") || "File";
+            const type = btnPreview.getAttribute("data-type") || "—";
+
+            if (previewText) previewText.textContent = "Preview for: " + name;
+            if (previewMeta) previewMeta.textContent = "Type: " + type;
+
+            const inst = bootstrap.Modal.getOrCreateInstance(previewModalEl);
+            inst.show();
+            return;
+          }
+
+          const btnDownload = e.target.closest(".js-download-file");
+          if (btnDownload) {
+            const name = btnDownload.getAttribute("data-file") || "file";
+            const type = btnDownload.getAttribute("data-type") || "—";
+
+            const content = "Demo download for: " + name + " (" + type + ")";
+            const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = (name || "report").replace(/\s+/g, "-").toLowerCase() + ".txt";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+
+            setTimeout(() => URL.revokeObjectURL(url), 800);
+            return;
+          }
+
+          const btnRecord = e.target.closest('[data-bs-target="#recordInfoModal"]');
+          if (btnRecord) {
+            const key = btnRecord.getAttribute("data-record");
+            const rec = records[key] || null;
+
+            if (rec) {
+              if (riProvider) riProvider.value = rec.provider;
+              if (riHospital) riHospital.value = rec.hospital;
+              if (riDate) riDate.value = rec.date;
+              if (riId) riId.value = rec.id;
+              if (riNotes) riNotes.value = rec.notes;
+            }
+            return;
+          }
+        });
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+
+

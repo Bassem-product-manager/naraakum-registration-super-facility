@@ -1,0 +1,216 @@
+/* upload multiple images ------------- */
+.upload-button {
+  position: relative;
+  input {
+    visibility: hidden;
+    position: absolute;
+  }
+}
+
+.camera-icon {
+  position: absolute;
+  top: 0;
+  #{$left}: 0;
+
+  label {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+    margin: 7px 10px;
+
+    transition: all 0.4s ease;
+
+    &::after {
+      content: "";
+      width: 24px;
+      height: 24px;
+      background: url(../images/add-img.svg) no-repeat 50% 50%;
+      display: block;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.uploaded-style {
+  display: flex;
+
+  gap: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  flex-wrap: wrap;
+
+  span {
+    height: 100px;
+    width: 100px;
+    position: relative;
+
+    background-size: 32px 32px;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+
+    margin: 15px 0px;
+    background-color: #eee;
+
+    border-radius: $value-12;
+
+    img {
+      object-fit: cover;
+      object-position: 50% 50%;
+      height: 100%;
+      width: 100%;
+      border-radius: $value-12;
+    }
+
+    .remove_img_preview {
+      width: 22px;
+      height: 22px;
+      background: url(../images/remove.svg) no-repeat;
+      border: none;
+      padding: 0px;
+      position: absolute;
+      margin: 5px;
+      top: 0;
+      #{$right}: 0;
+      z-index: 10;
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .uploaded-style {
+    span {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
+/*/*/
+
+/*/*/
+
+.fileUploadBox {
+  border: 0.2rem dashed $lightBlue-500;
+  border-radius: 10px;
+  position: relative;
+
+  .upload-button {
+    display: flex;
+  }
+  label {
+    cursor: pointer;
+    padding: $value-12;
+    width: 100%;
+    transition: all ease-in-out 0.2s;
+    text-align: center;
+    padding-left: $value-20;
+
+    i {
+      color: $primary-500;
+      font-size: 1.6rem;
+    }
+    p {
+      color: $primary-500;
+      font-size: 1rem;
+      span {
+        font-size: 0.8rem;
+        color: #666;
+        display: block;
+      }
+    }
+    &:hover {
+      background-color: $lightBlue-300;
+    }
+  }
+
+  .uploaded-container {
+    background-color: #fafafa;
+  }
+}
+
+/*/*/
+
+.single-img {
+  .uploaded-container {
+    span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+
+      z-index: 4;
+      margin: 0px;
+      img {
+        height: 400px;
+      }
+    }
+  }
+}
+
+/*///////////////////////Single//////////////////////*/
+
+.preview-container {
+  height: $value-68;
+  width: $value-68;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: $value-4;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-color: $lightBlue-300;
+
+  border: 1px solid #ddd;
+  border-radius: $value-12;
+  padding: 0.1rem;
+
+  img {
+    object-fit: cover;
+    object-position: 50% 50%;
+    height: 100%;
+    width: 100%;
+    border-radius: $value-12;
+  }
+
+  .remove-btn {
+    width: $value-16;
+    height: $value-16;
+    background: url(../images/remove.svg) no-repeat;
+    background-size: contain;
+    border: none;
+    padding: 0px;
+    position: absolute;
+    margin: 0.2rem;
+    top: 0;
+    #{$right}: 0;
+    z-index: 10;
+    cursor: pointer;
+  }
+}
+
+/*/*/
+
+.inline-text {
+  display: flex;
+
+  align-items: center;
+  height: $value-76;
+  text-align: start;
+  gap: 1rem;
+  i {
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+  p {
+    span {
+      display: block;
+
+      text-align: start;
+    }
+  }
+}

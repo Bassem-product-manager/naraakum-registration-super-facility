@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Payment Method</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      /* ===== updated page-only layout (match reference UI) ===== */
+      :root {
+        --brand: #19a39a;
+        --brand-2: #0f8c8c;
+        --bg: #eef3f4;
+        --card: #ffffff;
+        --muted: #e6edf0;
+        --pale: #e9f6f3;
+        --text: #1f2933;
+        --sub: #6b7280;
+      }
+
+      body {
+        -webkit-font-smoothing: antialiased;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        color: var(--text);
+        background: var(--bg);
+      }
+
+      /* keep your global layout, just make the content area look like the reference */
+      .main-page {
+        background: transparent;
+      }
+
+      .page-root {
+        margin-bottom: 10px;
+      }
+
+      .page-content {
+        padding: 18px 18px 40px;
+        background: transparent;
+      }
+
+      /* ===== Card like reference ===== */
+      .pm-card {
+        max-width: 980px;
+        margin: 10px auto 0;
+        background: var(--card);
+        border: 1px solid var(--muted);
+        border-radius: 14px;
+        box-shadow: 0 10px 28px rgba(15, 23, 24, 0.06);
+        padding: 18px;
+        box-sizing: border-box;
+      }
+
+      /* header strip inside card (Payment Settings style) */
+      .pm-head {
+        background: var(--pale);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin: 0 0 18px 0;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .pm-head b {
+        display: block;
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      .pm-subtitle {
+        margin: 0;
+        color: #5b6770;
+        line-height: 1.4;
+        font-size: 13px;
+      }
+
+      /* body becomes just layout container (card already made) */
+      .pm-body {
+        padding: 0;
+        margin: 0;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      /* ===== Grid ===== */
+      .pm-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px 18px;
+        margin-top: 0;
+        align-items: start;
+      }
+      .pm-full {
+        grid-column: 1 / -1;
+      }
+
+      .pm-req {
+        color: #ef4444;
+        margin-left: 6px;
+        font-weight: 700;
+      }
+
+      /* labels like reference */
+      label.fsize-12 {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px !important;
+        font-weight: 600;
+        color: #2f3b43 !important;
+      }
+
+      /* ===== Inputs / Selects ===== */
+      .form-control-32 {
+        width: 100%;
+        height: 48px;
+        min-height: 48px;
+        padding: 0 14px;
+        border-radius: 10px;
+        border: 1px solid var(--muted);
+        background: #fff;
+        font-size: 14px;
+        color: var(--text);
+        box-sizing: border-box;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .form-control-32:focus {
+        outline: none;
+        border-color: var(--brand);
+        box-shadow: 0 0 0 3px rgba(25, 163, 154, 0.12);
+      }
+
+      /* select arrow like reference */
+      select.form-control-32 {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        background-size: 16px;
+        padding-right: 42px;
+      }
+
+      /* ===== Phone field (prefix + input) ===== */
+      .phone-wrap {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+        max-width: 560px;
+      }
+
+      .phone-prefix {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0 12px;
+        height: 48px;
+        border: 1px solid var(--muted);
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        background: #fff;
+        color: var(--brand);
+        font-weight: 700;
+        white-space: nowrap;
+        position: relative;
+      }
+
+      /* small caret like reference (visual only) */
+      .phone-prefix::after {
+        content: "";
+        width: 10px;
+        height: 10px;
+        margin-left: 6px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 10px;
+        opacity: 0.9;
+      }
+
+      .phone-wrap input.form-control-32 {
+        border-radius: 0 10px 10px 0;
+        border-left: none;
+        height: 48px;
+        min-height: 48px;
+      }
+
+      .helper-text {
+        font-size: 13px;
+        color: var(--sub);
+        margin-top: 6px;
+        display: block;
+      }
+
+      /* ===== Actions like reference ===== */
+      .pm-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 18px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        height: 40px;
+        padding: 0 18px;
+        border-radius: 10px; /* less pill, like reference */
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        border: 0;
+      }
+
+      .btn-primary-revers {
+        background: #fff;
+        border: 1px solid #dde6ea;
+        color: #111827;
+      }
+
+      .btn-primary-revers:hover {
+        background: #f8fafb;
+      }
+
+      .btn-primary {
+        background: var(--brand);
+        color: #fff;
+        border: 1px solid var(--brand);
+        box-shadow: 0 10px 22px rgba(25, 163, 154, 0.14);
+        padding: 0 22px;
+      }
+
+      .btn-primary:hover {
+        filter: brightness(0.98);
+      }
+
+      .input-error {
+        border-color: #ef4444 !important;
+        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+      }
+
+      .error-text {
+        color: #ef4444;
+        font-size: 13px;
+        margin-top: 6px;
+        display: none;
+      }
+
+      /* ===== responsive ===== */
+      @media (max-width: 992px) {
+        .page-content {
+          padding: 14px;
+        }
+        .pm-card {
+          padding: 14px;
+        }
+        .pm-grid {
+          grid-template-columns: 1fr;
+        }
+        .pm-actions {
+          justify-content: stretch;
+        }
+        .btn {
+          width: 100%;
+        }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Payment Method</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Payment Method</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <form id="paymentMethodForm">
+            <div class="pm-card">
+              <div class="pm-head">
+                <b class="fsize-14 semiBold">Payment Settings</b>
+                <p class="fsize-12 text-grey pm-subtitle">
+                  Please select the appropriate method for receiving your financial entitlements
+                </p>
+              </div>
+
+              <div class="pm-body">
+                <div class="pm-grid">
+                  <div class="pm-full">
+                    <label class="fsize-12 text-grey">Choose Payment Method:<span class="pm-req">*</span></label>
+                    <select id="paymentMethodSelect" class="form-control form-control-32">
+                      <option value="stcpay" selected>STCpay</option>
+                      <option value="bank">Bank Transfer</option>
+                    </select>
+                  </div>
+
+                  <!-- STCpay -->
+                  <div class="pm-full" id="stcpayFields">
+                    <label class="fsize-12 text-grey" for="stcPhone">Mobile Number: <span class="pm-req">*</span></label>
+                    <div class="phone-wrap">
+                      <div class="phone-prefix" aria-hidden="true">+966</div>
+                      <input
+                        id="stcPhone"
+                        name="stcPhone"
+                        class="form-control form-control-32"
+                        type="tel"
+                        inputmode="numeric"
+                        pattern="\d{9}"
+                        maxlength="9"
+                        placeholder="5xx xxx xxx (without country code)"
+                        aria-label="STCpay mobile number (without country code)"
+                        required
+                      />
+                    </div>
+                    <span class="error-text" id="stcPhoneError">Please enter a valid 9-digit mobile number.</span>
+                  </div>
+
+                  <!-- Bank Transfer -->
+                  <div class="pm-full" id="bankFields" style="display: none;">
+                    <div class="pm-grid" style="margin-top: 0;">
+                      <div>
+                        <label class="fsize-12 text-grey" for="bankName">Bank Name: <span class="pm-req">*</span></label>
+                        <input
+                          id="bankName"
+                          name="bankName"
+                          class="form-control form-control-32"
+                          type="text"
+                          placeholder="Bank name"
+                          aria-label="Bank name"
+                        />
+                        <span class="error-text" id="bankNameError">Please enter bank name.</span>
+                      </div>
+
+                      <div>
+                        <label class="fsize-12 text-grey" for="accountHolder">Account Holder: <span class="pm-req">*</span></label>
+                        <input
+                          id="accountHolder"
+                          name="accountHolder"
+                          class="form-control form-control-32"
+                          type="text"
+                          placeholder="Account holder name"
+                          aria-label="Account holder name"
+                        />
+                        <span class="error-text" id="accountHolderError">Please enter account holder name.</span>
+                      </div>
+
+                      <div class="pm-full">
+                        <label class="fsize-12 text-grey" for="iban">IBAN: <span class="pm-req">*</span></label>
+                        <input
+                          id="iban"
+                          name="iban"
+                          class="form-control form-control-32"
+                          type="text"
+                          inputmode="text"
+                          placeholder="SA00 0000 0000 0000 0000 0000"
+                          aria-label="IBAN"
+                        />
+                        <span class="error-text" id="ibanError">Please enter a valid IBAN.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pm-actions">
+                  <button type="button" class="btn btn-primary-revers" onclick="history.back()">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+    <script>
+      (function () {
+        const method = document.getElementById("paymentMethodSelect");
+        const stc = document.getElementById("stcpayFields");
+        const bank = document.getElementById("bankFields");
+
+        function sync() {
+          const v = method.value;
+          if (v === "bank") {
+            bank.style.display = "";
+            stc.style.display = "none";
+          } else {
+            bank.style.display = "none";
+            stc.style.display = "";
+          }
+          // reset errors when toggling
+          document.querySelectorAll(".error-text").forEach((e) => (e.style.display = "none"));
+          document.querySelectorAll(".form-control-32").forEach((i) => i.classList.remove("input-error"));
+        }
+
+        method.addEventListener("change", sync);
+        sync();
+
+        function showError(el, msgId) {
+          if (el) el.classList.add("input-error");
+          const msg = document.getElementById(msgId);
+          if (msg) msg.style.display = "block";
+        }
+
+        function clearError(el, msgId) {
+          if (el) el.classList.remove("input-error");
+          const msg = document.getElementById(msgId);
+          if (msg) msg.style.display = "none";
+        }
+
+        document.getElementById("paymentMethodForm").addEventListener("submit", function (e) {
+          e.preventDefault();
+          let valid = true;
+
+          if (method.value === "stcpay") {
+            const phone = document.getElementById("stcPhone");
+            const ok = phone && /^\d{9}$/.test(phone.value.trim());
+            if (!ok) {
+              showError(phone, "stcPhoneError");
+              valid = false;
+            } else clearError(phone, "stcPhoneError");
+          } else {
+            const bankName = document.getElementById("bankName");
+            const accountHolder = document.getElementById("accountHolder");
+            const iban = document.getElementById("iban");
+
+            if (!bankName.value.trim()) {
+              showError(bankName, "bankNameError");
+              valid = false;
+            } else clearError(bankName, "bankNameError");
+
+            if (!accountHolder.value.trim()) {
+              showError(accountHolder, "accountHolderError");
+              valid = false;
+            } else clearError(accountHolder, "accountHolderError");
+
+            if (!iban.value.trim() || iban.value.trim().length < 15) {
+              showError(iban, "ibanError");
+              valid = false;
+            } else clearError(iban, "ibanError");
+          }
+
+          if (!valid) {
+            const first = document.querySelector(".input-error");
+            if (first) first.focus();
+            return;
+          }
+
+          // TODO: connect backend (form submission)
+          this.querySelector(".btn-primary").textContent = "Saving...";
+          setTimeout(() => {
+            this.querySelector(".btn-primary").textContent = "Save";
+            alert("Saved (demo)");
+          }, 800);
+        });
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

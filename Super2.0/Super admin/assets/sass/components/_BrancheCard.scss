@@ -1,0 +1,14 @@
+.BrancheCard {
+  display: flex;
+  flex-direction: column;
+  gap: $value-12;
+
+  position: relative;
+
+  .options-icon {
+    position: absolute;
+    top: 0;
+    #{$left}: 0;
+    margin: 1rem;
+  }
+}

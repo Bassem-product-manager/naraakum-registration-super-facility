@@ -1,0 +1,120 @@
+.graph-filter-bar {
+  background-color: $primary-50;
+  border-radius: $value-8;
+  padding: $value-8;
+}
+
+.filter-row {
+  display: flex;
+  gap: $value-8;
+  align-items: center;
+
+  .btn {
+    min-width: $value-40 !important;
+    font-size: 0.9rem !important;
+    i {
+      padding-top: 0.2rem;
+    }
+  }
+}
+
+.graph-filter-result-bar {
+  padding-top: $value-8;
+
+  p {
+    display: flex;
+    align-items: center;
+    gap: $value-8;
+    span {
+      font-size: $value-16;
+      color: $text-body;
+    }
+    b {
+      font-size: $value-16;
+      color: $primary-500;
+      font-weight: 500;
+    }
+  }
+}
+/*/*/
+.mouse-pointer-note {
+  padding-top: $value-8;
+  font-size: $value-16;
+  color: $text-body;
+  display: flex;
+  align-items: flex-start;
+  gap: $value-8;
+  text-transform: capitalize;
+
+  i {
+    color: $primary-500;
+    margin-top: 0.2rem;
+  }
+}
+
+/*/*/
+.inline-graph {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: $value-12;
+  #examStatisticsChart {
+    padding: 0px !important;
+    width: 24rem;
+    height: 18rem;
+    margin-#{$right}: -1rem;
+  }
+
+  .chart-content-box {
+    width: 12.81588rem;
+    background-color: $surface-secondary-2;
+    padding: $value-12;
+    border-radius: $value-8;
+    display: flex;
+    flex-direction: column;
+    gap: $value-4;
+    .content-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    h6 {
+      background-color: rgba(255, 255, 255, 0.7);
+      border-radius: 0.2rem;
+      padding: 0.2rem 0.4rem 0rem 0.4rem;
+      margin-left: -$value-8;
+      margin-right: -$value-8;
+      font-weight: 700;
+      color: $primary-500;
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .inline-graph {
+    flex-direction: column-reverse;
+    .chart-content-box,
+    .pie-chart-box {
+      width: 100%;
+    }
+    .pie-chart-box {
+      text-align: center;
+      justify-content: center;
+      display: flex;
+      #examStatisticsChart {
+        margin-#{$right}: 0rem;
+      }
+    }
+  }
+}
+
+/*/*/
+#competitions-rate-chart {
+  height: 18.6rem;
+}
+#courses-rate-chart {
+  height: 18.6rem;
+}
+#sales-analytics-chart {
+  height: 27.4rem;
+}

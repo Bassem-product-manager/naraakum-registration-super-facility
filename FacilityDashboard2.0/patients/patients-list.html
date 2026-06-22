@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Patients List</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      /* Page-specific override: restore full Assign/Add Order button appearance
+         (undo global icon-only change just for this page) */
+      .assign-btn{
+        display:inline-flex !important;
+        align-items:center !important;
+        gap:8px !important;
+        padding:7px 12px !important;
+        border-radius:999px !important;
+        border:1px solid #9fd0d6 !important;
+        background:#f2fbfc !important;
+        color:#0b6b78 !important;
+        font-weight:800 !important;
+        font-size:12px !important;
+        white-space:nowrap !important;
+        width:auto !important;
+        height:auto !important;
+      }
+      .assign-btn i{font-size:14px;line-height:1;transform:translateY(0.5px);}
+    
+      /* Medical History button (same pill style as assign-btn) */
+      .mh-btn{
+        background:#ffffff !important;
+        border-color:#bfe3e7 !important;
+      }
+      .mh-btn:hover{filter:brightness(0.98) !important;}
+      .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Patients List</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Patients List</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Search + Filter -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input
+                    id="patientsSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by patient name / phone / patient code"
+                  />
+                  <button id="btnPatientsSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+
+                  <button
+                    id="btnPatientsReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#patients-filter-modal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Patients table -->
+          <div class="tabel-box-item mt-24 patients-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="patientsTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq"># <span class="sort-icon">▲▼</span></th>
+                      <th class="col-code">Patient Code <span class="sort-icon">▲▼</span></th>
+                      <th>Patient Name <span class="sort-icon">▲▼</span></th>
+
+                      <th>Last Order Status</th>
+
+                      <th class="text-center">Completed</th>
+                      <th class="text-center">Ongoing</th>
+                      <th class="text-center">Canceled</th>
+
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="patientsTbody">
+                    <!-- Patient 1 -->
+                    <tr
+                      class="patient-row"
+                      data-code="PT-00001"
+                      data-name="sara ibrahim"
+                      data-phone="+966500009911"
+                      data-branch="riyadh"
+                      data-laststatus="ongoing"
+                    >
+                      <td>1</td>
+                      <td><span class="staff-code">PT-00001</span></td>
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                          <div class="staff-info">
+                            <p class="name">Sara Ibrahim</p>
+                            <div class="meta">Saudi • +966 50 000 9911</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <span class="status-pill st-missed" data-role="statusLabel">Ongoing</span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-accepted js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00001"
+                          data-status="completed"
+                          aria-controls="collapseOrders-PT-00001"
+                        >
+                          <span class="js-count" data-status="completed">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-missed js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00001"
+                          data-status="ongoing"
+                          aria-controls="collapseOrders-PT-00001"
+                        >
+                          <span class="js-count" data-status="ongoing">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-cancel js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00001"
+                          data-status="canceled"
+                          aria-controls="collapseOrders-PT-00001"
+                        >
+                          <span class="js-count" data-status="canceled">0</span>
+                        </span>
+                      </td>
+
+                      <td>
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn js-add-order" type="button" title="Add Order">
+                            <i class="fi fi-rr-plus-small"></i>
+                            Add Order
+                          </button>
+                          <a class="assign-btn mh-btn" href="patient-medical-history.html?patient=PT-00001" title="Medical History">
+                            <i class="fi fi-rr-notebook"></i>
+                            Medical History
+                          </a>
+
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr class="patient-orders-row">
+                      <td colspan="8" class="p-0">
+                        <div class="collapse" id="collapseOrders-PT-00001">
+                          <div class="p-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <div>
+                                <b class="fsize-14 semiBold" id="ordersTitle-PT-00001">Orders</b>
+                                <div class="fsize-12 text-grey" id="ordersSub-PT-00001">—</div>
+                              </div>
+                            </div>
+
+                            <div class="table-responsive">
+                              <table class="staff-table naraakum-table table-tight" id="ordersTable-PT-00001">
+                                <thead>
+                                  <tr>
+                                    <th>Order No</th>
+                                    <th>Service</th>
+                                    <th>Scheduled Date</th>
+                                    <th>Price</th>
+                                    <th>Assign</th>
+                                    <th>Invoices</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="ordersTbody" data-patient="PT-00001"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Patient 2 -->
+                    <tr
+                      class="patient-row"
+                      data-code="PT-00002"
+                      data-name="mohamed said"
+                      data-phone="+966500004422"
+                      data-branch="jeddah"
+                      data-laststatus="completed"
+                    >
+                      <td>2</td>
+                      <td><span class="staff-code">PT-00002</span></td>
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                          <div class="staff-info">
+                            <p class="name">Mohamed Said</p>
+                            <div class="meta">Egyptian • +966 50 000 4422</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <span class="status-pill st-accepted" data-role="statusLabel">Completed</span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-accepted js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00002"
+                          data-status="completed"
+                          aria-controls="collapseOrders-PT-00002"
+                        >
+                          <span class="js-count" data-status="completed">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-missed js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00002"
+                          data-status="ongoing"
+                          aria-controls="collapseOrders-PT-00002"
+                        >
+                          <span class="js-count" data-status="ongoing">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-cancel js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00002"
+                          data-status="canceled"
+                          aria-controls="collapseOrders-PT-00002"
+                        >
+                          <span class="js-count" data-status="canceled">0</span>
+                        </span>
+                      </td>
+
+                      <td>
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn js-add-order" type="button" title="Add Order">
+                            <i class="fi fi-rr-plus-small"></i>
+                            Add Order
+                          </button>
+                          <a class="assign-btn mh-btn" href="patient-medical-history.html?patient=PT-00002" title="Medical History">
+                            <i class="fi fi-rr-notebook"></i>
+                            Medical History
+                          </a>
+
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr class="patient-orders-row">
+                      <td colspan="8" class="p-0">
+                        <div class="collapse" id="collapseOrders-PT-00002">
+                          <div class="p-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <div>
+                                <b class="fsize-14 semiBold" id="ordersTitle-PT-00002">Orders</b>
+                                <div class="fsize-12 text-grey" id="ordersSub-PT-00002">—</div>
+                              </div>
+                            </div>
+
+                            <div class="table-responsive">
+                              <table class="staff-table naraakum-table table-tight" id="ordersTable-PT-00002">
+                                <thead>
+                                  <tr>
+                                    <th>Order No</th>
+                                    <th>Service</th>
+                                    <th>Scheduled Date</th>
+                                    <th>Price</th>
+                                    <th>Assign</th>
+                                    <th>Invoices</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="ordersTbody" data-patient="PT-00002"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Patient 3 -->
+                    <tr
+                      class="patient-row"
+                      data-code="PT-00003"
+                      data-name="yousef adel"
+                      data-phone="+966500007733"
+                      data-branch="riyadh"
+                      data-laststatus="canceled"
+                    >
+                      <td>3</td>
+                      <td><span class="staff-code">PT-00003</span></td>
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                          <div class="staff-info">
+                            <p class="name">Yousef Adel</p>
+                            <div class="meta">Saudi • +966 50 000 7733</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <span class="status-pill st-cancel" data-role="statusLabel">Canceled</span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-accepted js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00003"
+                          data-status="completed"
+                          aria-controls="collapseOrders-PT-00003"
+                        >
+                          <span class="js-count" data-status="completed">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-missed js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00003"
+                          data-status="ongoing"
+                          aria-controls="collapseOrders-PT-00003"
+                        >
+                          <span class="js-count" data-status="ongoing">0</span>
+                        </span>
+                      </td>
+
+                      <td class="text-center">
+                        <span
+                          class="status-pill st-cancel js-open-orders"
+                          role="button"
+                          tabindex="0"
+                          data-patient="PT-00003"
+                          data-status="canceled"
+                          aria-controls="collapseOrders-PT-00003"
+                        >
+                          <span class="js-count" data-status="canceled">0</span>
+                        </span>
+                      </td>
+
+                      <td>
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn js-add-order" type="button" title="Add Order">
+                            <i class="fi fi-rr-plus-small"></i>
+                            Add Order
+                          </button>
+                          <a class="assign-btn mh-btn" href="patient-medical-history.html?patient=PT-00003" title="Medical History">
+                            <i class="fi fi-rr-notebook"></i>
+                            Medical History
+                          </a>
+
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr class="patient-orders-row">
+                      <td colspan="8" class="p-0">
+                        <div class="collapse" id="collapseOrders-PT-00003">
+                          <div class="p-12">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                              <div>
+                                <b class="fsize-14 semiBold" id="ordersTitle-PT-00003">Orders</b>
+                                <div class="fsize-12 text-grey" id="ordersSub-PT-00003">—</div>
+                              </div>
+                            </div>
+
+                            <div class="table-responsive">
+                              <table class="staff-table naraakum-table table-tight" id="ordersTable-PT-00003">
+                                <thead>
+                                  <tr>
+                                    <th>Order No</th>
+                                    <th>Service</th>
+                                    <th>Scheduled Date</th>
+                                    <th>Price</th>
+                                    <th>Assign</th>
+                                    <th>Invoices</th>
+                                  </tr>
+                                </thead>
+                                <tbody class="ordersTbody" data-patient="PT-00003"></tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="patientsRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="patientsPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="patientsFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="patientsPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="patientsCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="patientsNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="patientsLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Patients Filter Modal -->
+    <div class="modal fade" id="patients-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Patients</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Last Order Status</label>
+                <select id="pfStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="completed">Completed</option>
+                  <option value="ongoing">Ongoing</option>
+                  <option value="canceled">Canceled</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Branch</label>
+                <select id="pfBranch" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="riyadh">Riyadh Branch</option>
+                  <option value="jeddah">Jeddah Branch</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnPatientsFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnPatientsApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <!-- kept for project consistency -->
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+    <script>
+      (function () {
+        const table = document.getElementById("patientsTable");
+        if (!table) return;
+
+        const tbody = document.getElementById("patientsTbody") || table.querySelector("tbody");
+        const patientRows = Array.from(tbody.querySelectorAll("tr.patient-row"));
+
+        // Search
+        const searchInput = document.getElementById("patientsSearchInput");
+        const btnSearch = document.getElementById("btnPatientsSearch");
+        const btnReset = document.getElementById("btnPatientsReset");
+
+        // Pagination UI
+        const rowsSelect = document.getElementById("patientsRowsPerPage");
+        const indicator = document.getElementById("patientsPageIndicator");
+        const currentBadge = document.getElementById("patientsCurrentPageBadge");
+        const btnFirst = document.getElementById("patientsFirstPage");
+        const btnPrev = document.getElementById("patientsPrevPage");
+        const btnNext = document.getElementById("patientsNextPage");
+        const btnLast = document.getElementById("patientsLastPage");
+
+        // Filter fields
+        const pfStatus = document.getElementById("pfStatus");
+        const pfBranch = document.getElementById("pfBranch");
+        const btnApplyFilter = document.getElementById("btnPatientsApplyFilter");
+        const btnFilterReset = document.getElementById("btnPatientsFilterReset");
+
+        // Orders demo data
+        const orders = [
+          // PT-00001
+          {
+            patient: "PT-00001",
+            orderNo: "BR03-OR-3201",
+            service: "Doctor Visit",
+            scheduled: "2026-01-21 13:00",
+            price: "210.00 SAR",
+            status: "ongoing",
+            assignedTo: "",
+            invoice: "INV-90012",
+          },
+          {
+            patient: "PT-00001",
+            orderNo: "BR03-OR-3198",
+            service: "Laboratory Analysis",
+            scheduled: "2026-01-18 10:30",
+            price: "120.00 SAR",
+            status: "completed",
+            assignedTo: "Dr. Ahmed Ali",
+            invoice: "INV-89991",
+          },
+
+          // PT-00002
+          {
+            patient: "PT-00002",
+            orderNo: "BR03-OR-3180",
+            service: "Physiotherapy",
+            scheduled: "2026-01-10 16:00",
+            price: "180.00 SAR",
+            status: "completed",
+            assignedTo: "Omar Saleh",
+            invoice: "INV-89770",
+          },
+          {
+            patient: "PT-00002",
+            orderNo: "BR03-OR-3179",
+            service: "Nursing Visit",
+            scheduled: "2026-01-09 11:00",
+            price: "150.00 SAR",
+            status: "completed",
+            assignedTo: "Mona Hassan",
+            invoice: "INV-89765",
+          },
+
+          // PT-00003
+          {
+            patient: "PT-00003",
+            orderNo: "BR03-OR-3166",
+            service: "Remote Consultation",
+            scheduled: "2026-01-05 09:00",
+            price: "90.00 SAR",
+            status: "canceled",
+            assignedTo: "",
+            invoice: "—",
+          },
+        ];
+
+        let currentPage = 1;
+        let filteredPatients = [...patientRows];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function rowsPerPageVal() {
+          const v = rowsSelect ? rowsSelect.value : "10";
+          if (v === "all") return Infinity;
+          const n = parseInt(v, 10);
+          return Number.isFinite(n) ? n : 10;
+        }
+
+        function patientKeyText(tr) {
+          return [tr.getAttribute("data-code"), tr.getAttribute("data-name"), tr.getAttribute("data-phone")]
+            .map(norm)
+            .join(" ");
+        }
+
+        function applySearchAndFilter() {
+          const q = norm(searchInput ? searchInput.value : "");
+          const fStatus = norm(pfStatus ? pfStatus.value : "");
+          const fBranch = norm(pfBranch ? pfBranch.value : "");
+
+          filteredPatients = patientRows.filter((tr) => {
+            const txt = patientKeyText(tr);
+            const okSearch = !q || txt.includes(q);
+
+            const lastStatus = norm(tr.getAttribute("data-laststatus"));
+            const branch = norm(tr.getAttribute("data-branch"));
+
+            const okStatus = !fStatus || lastStatus === fStatus;
+            const okBranch = !fBranch || branch === fBranch;
+
+            return okSearch && okStatus && okBranch;
+          });
+
+          currentPage = 1;
+          render();
+        }
+
+        function setPatientRowVisible(tr, show) {
+          tr.style.display = show ? "" : "none";
+
+          const ordersRow = tr.nextElementSibling;
+          if (ordersRow && ordersRow.classList.contains("patient-orders-row")) {
+            ordersRow.style.display = show ? "" : "none";
+            const collapseEl = ordersRow.querySelector(".collapse");
+            if (collapseEl) {
+              const inst = bootstrap.Collapse.getInstance(collapseEl);
+              if (inst) inst.hide();
+              collapseEl.classList.remove("show");
+            }
+          }
+        }
+
+        function updatePager(totalPages) {
+          if (!indicator || !currentBadge) return;
+
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          const safeCurrent = Math.min(Math.max(currentPage, 1), safeTotal);
+
+          indicator.textContent = "Page " + safeCurrent + " of " + safeTotal;
+          currentBadge.textContent = safeCurrent;
+
+          const disable = (btn, state) => btn && (btn.disabled = !!state);
+
+          disable(btnFirst, safeCurrent <= 1);
+          disable(btnPrev, safeCurrent <= 1);
+          disable(btnNext, safeCurrent >= safeTotal);
+          disable(btnLast, safeCurrent >= safeTotal);
+        }
+
+        function render() {
+          patientRows.forEach((tr) => setPatientRowVisible(tr, false));
+
+          const perPage = rowsPerPageVal();
+          const total = filteredPatients.length;
+
+          const totalPages = perPage === Infinity ? 1 : Math.ceil(total / perPage) || 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? total : start + perPage;
+
+          filteredPatients.slice(start, end).forEach((tr) => setPatientRowVisible(tr, true));
+          updatePager(totalPages);
+        }
+
+        function countOrders(patientCode, status) {
+          return orders.filter((o) => o.patient === patientCode && o.status === status).length;
+        }
+
+        function syncCounts() {
+          patientRows.forEach((tr) => {
+            const code = tr.getAttribute("data-code");
+            const cCompleted = countOrders(code, "completed");
+            const cOngoing = countOrders(code, "ongoing");
+            const cCanceled = countOrders(code, "canceled");
+
+            tr.querySelectorAll(".js-count").forEach((el) => {
+              const st = el.getAttribute("data-status");
+              if (st === "completed") el.textContent = cCompleted;
+              if (st === "ongoing") el.textContent = cOngoing;
+              if (st === "canceled") el.textContent = cCanceled;
+            });
+          });
+        }
+
+        function renderOrders(patientCode, status) {
+          const targetTbody = tbody.querySelector('.ordersTbody[data-patient="' + patientCode + '"]');
+          if (!targetTbody) return;
+
+          const title = document.getElementById("ordersTitle-" + patientCode);
+          const sub = document.getElementById("ordersSub-" + patientCode);
+
+          const list = orders.filter((o) => o.patient === patientCode && o.status === status);
+
+          if (title) title.textContent = "Orders";
+          if (sub) sub.textContent = status.toUpperCase() + " • " + (list.length || 0);
+
+          targetTbody.innerHTML = "";
+
+          if (!list.length) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = '<td colspan="6" class="text-center text-grey">No data available</td>';
+            targetTbody.appendChild(tr);
+            return;
+          }
+
+          list.forEach((o) => {
+            const tr = document.createElement("tr");
+
+            const assignCell = o.assignedTo
+              ? '<span class="fsize-14">' + o.assignedTo + "</span>"
+              : '<button type="button" class="btn btn-primary btn-32">Assign</button>';
+
+            const invoiceCell =
+              o.invoice && o.invoice !== "—"
+                ? '<a class="staff-action-icon" href="#" title="Invoice"><i class="fi fi-rr-file-invoice"></i></a> <span class="fsize-12 text-grey">' +
+                  o.invoice +
+                  "</span>"
+                : '<span class="text-grey">—</span>';
+
+            tr.innerHTML =
+              "<td>" +
+              o.orderNo +
+              "</td>" +
+              "<td>" +
+              o.service +
+              "</td>" +
+              "<td>" +
+              o.scheduled +
+              "</td>" +
+              "<td>" +
+              o.price +
+              "</td>" +
+              "<td>" +
+              assignCell +
+              "</td>" +
+              "<td>" +
+              invoiceCell +
+              "</td>";
+
+            targetTbody.appendChild(tr);
+          });
+        }
+
+        // ✅ Toggle collapse on same click (same patient + same status)
+        let lastOpen = { patient: null, status: null };
+
+        function openOrders(patientCode, status) {
+          const collapseEl = document.getElementById("collapseOrders-" + patientCode);
+          if (!collapseEl) return;
+
+          const inst = bootstrap.Collapse.getOrCreateInstance(collapseEl, { toggle: false });
+
+          const isOpen = collapseEl.classList.contains("show");
+          const isSameClick = lastOpen.patient === patientCode && lastOpen.status === status;
+
+          // same patient + same status while open -> close
+          if (isOpen && isSameClick) {
+            inst.hide();
+            lastOpen = { patient: null, status: null };
+            return;
+          }
+
+          // close other patients collapses
+          tbody.querySelectorAll(".patient-orders-row .collapse.show").forEach((el) => {
+            if (el.id !== "collapseOrders-" + patientCode) {
+              const x = bootstrap.Collapse.getInstance(el);
+              if (x) x.hide();
+              el.classList.remove("show");
+            }
+          });
+
+          // update table content and open
+          renderOrders(patientCode, status);
+          inst.show();
+
+          lastOpen = { patient: patientCode, status: status };
+        }
+
+        // Events
+        if (btnSearch) btnSearch.addEventListener("click", applySearchAndFilter);
+
+        if (searchInput)
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") applySearchAndFilter();
+          });
+
+        if (btnReset)
+          btnReset.addEventListener("click", function () {
+            if (searchInput) searchInput.value = "";
+            if (pfStatus) pfStatus.value = "";
+            if (pfBranch) pfBranch.value = "";
+            applySearchAndFilter();
+          });
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", applySearchAndFilter);
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", function () {
+            if (pfStatus) pfStatus.value = "";
+            if (pfBranch) pfBranch.value = "";
+          });
+
+        if (rowsSelect) rowsSelect.addEventListener("change", render);
+
+        if (btnFirst) btnFirst.addEventListener("click", () => ((currentPage = 1), render()));
+        if (btnPrev) btnPrev.addEventListener("click", () => ((currentPage = Math.max(1, currentPage - 1)), render()));
+        if (btnNext) btnNext.addEventListener("click", () => ((currentPage = currentPage + 1), render()));
+        if (btnLast)
+          btnLast.addEventListener("click", function () {
+            const perPage = rowsPerPageVal();
+            const totalPages = perPage === Infinity ? 1 : Math.ceil(filteredPatients.length / perPage) || 1;
+            currentPage = totalPages;
+            render();
+          });
+
+        // Clickable counts
+        tbody.addEventListener("click", function (e) {
+          const el = e.target.closest(".js-open-orders");
+          if (!el) return;
+          e.preventDefault();
+
+          const p = el.getAttribute("data-patient");
+          const st = el.getAttribute("data-status");
+          if (!p || !st) return;
+
+          openOrders(p, st);
+        });
+
+        tbody.addEventListener("keydown", function (e) {
+          const el = e.target.closest(".js-open-orders");
+          if (!el) return;
+          if (e.key !== "Enter" && e.key !== " ") return;
+          e.preventDefault();
+
+          const p = el.getAttribute("data-patient");
+          const st = el.getAttribute("data-status");
+          if (!p || !st) return;
+
+          openOrders(p, st);
+        });
+
+        // Add order click (placeholder – no design changes)
+        tbody.addEventListener("click", function (e) {
+          const btn = e.target.closest(".js-add-order");
+          if (!btn) return;
+          e.preventDefault();
+          // TODO: open Add Order modal or redirect if needed
+        });
+
+        // Init
+        syncCounts();
+        applySearchAndFilter();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

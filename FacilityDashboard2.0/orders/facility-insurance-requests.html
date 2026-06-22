@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Insurance Queue</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+
+      /* Keep Insurance Queue table visual parity with Orders List table */
+      .orders-table th, .orders-table td { vertical-align: middle; }
+      .orders-table .col-code { white-space: nowrap; }
+      .orders-table .invoice-cell{
+        text-align: center;
+        white-space: nowrap;
+      }
+      .orders-table .invoice-btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:8px;
+        height:34px;
+        padding:0 12px;
+        border-radius:10px;
+        border:1px solid rgba(16,24,40,.12);
+        background:#fff;
+        font-weight:800;
+        font-size:13px;
+        line-height:1;
+        white-space:nowrap;
+        color:#101828;
+        text-decoration:none;
+      }
+      .orders-table .invoice-btn:hover{
+        border-color: rgba(15,140,140,.35);
+        box-shadow: 0 0 0 3px rgba(15,140,140,.08);
+        color:#101828;
+      }
+      .orders-table .invoice-btn i{ color: var(--nk-green); }
+      .orders-table .details-btn{
+        min-width:96px;
+      }
+      .status-pill.st-underreview{
+        background: rgba(255, 193, 7, .14);
+        border: 1px solid rgba(255, 193, 7, .30);
+        color: rgba(133, 92, 0, 1);
+        font-weight: 900;
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/orders-list-2.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List 2</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page insurance-queue-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Insurance Queue</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 â€¢ 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance Queue</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+
+          <div class="surface-light-50 p-12 radius-8 mb-12">
+            <div class="fsize-14 semiBold">Insurance Queue / Waseel Manual Workflow</div>
+            <div class="fsize-12 text-grey mt-4">
+              Staff submits to Waseel manually, then records submission, decision, plan/class mismatch notes, and timeline events in Naraakum.
+              Eligible and Authorized are tracked separately to avoid confusion.
+            </div>
+          </div>
+
+          <!-- Top operations bar -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="queueSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by Order ID / Patient / Item"
+                  />
+                  <button id="btnQueueSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnQueueReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#queue-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <button id="btnQueueExport" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Queue table -->
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight orders-table" id="queueTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq">#</th>
+                      <th class="col-code">Order No</th>
+                      <th>Patient Name</th>
+                      <th>Service</th>
+                      <th>Order Date</th>
+                      <th>Scheduled Date</th>
+                      <th>Price</th>
+                      <th>Status</th>
+                      <th class="text-center">Invoices</th>
+                      <th class="col-actions text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="queueTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="queueRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="queuePageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="queueFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="queuePrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="queueCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="queueNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="queueLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="queue-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Insurance Queue</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="qfStatus" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Insurance Company</label>
+                <select id="qfCompany" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Plan</label>
+                <select id="qfPlan" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Class</label>
+                <select id="qfClass" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Type</label>
+                <select id="qfType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="service">Service</option>
+                  <option value="package">Package</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="qfMainService" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Date From</label>
+                <input id="qfDateFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Date To</label>
+                <input id="qfDateTo" type="date" class="form-control form-control-32" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnQueueFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <button id="btnQueueApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mark Submitted Modal -->
+    <div class="modal fade" id="queue-submit-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Mark Submitted to Waseel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="submitCaseMeta">-</div>
+
+            <div class="mb-12">
+              <label class="fsize-12 text-grey">Submission Type</label>
+              <select id="submitType" class="form-control form-control-32">
+                <option value="Eligibility">Eligibility</option>
+                <option value="PreAuth">PreAuth</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+
+            <div class="mb-12">
+              <label class="fsize-12 text-grey">Waseel Reference Number</label>
+              <input id="submitRefNo" type="text" class="form-control form-control-32" placeholder="Enter Waseel reference no" />
+            </div>
+
+            <div>
+              <label class="fsize-12 text-grey">Internal Note</label>
+              <textarea id="submitNote" class="form-control" rows="3" placeholder="What was submitted on Waseel?"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveSubmission" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Update Decision Modal -->
+    <div class="modal fade" id="queue-decision-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Record Waseel Response</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="decisionCaseMeta">-</div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Decision</label>
+                <select id="decisionType" class="form-control form-control-32">
+                  <option value="Approved">Approved</option>
+                  <option value="Partial">Partially Approved</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+
+              <div class="col-md-6" id="decisionApprovedQtyWrap">
+                <label class="fsize-12 text-grey">Approved Qty</label>
+                <input id="decisionApprovedQty" type="number" min="0" class="form-control form-control-32" placeholder="Approved quantity" />
+              </div>
+
+              <div class="col-md-6" id="decisionValidityFromWrap">
+                <label class="fsize-12 text-grey">Approval Validity From</label>
+                <input id="decisionValidityFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-6" id="decisionValidityToWrap">
+                <label class="fsize-12 text-grey">Approval Validity To</label>
+                <input id="decisionValidityTo" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-6 d-none" id="decisionRejectReasonWrap">
+                <label class="fsize-12 text-grey">Rejection Reason</label>
+                <select id="decisionRejectReason" class="form-control form-control-32">
+                  <option value="NotCoveredBenefit">Not Covered Benefit</option>
+                  <option value="PlanClassMismatch">Plan/Class Not Eligible (Mismatch)</option>
+                  <option value="OutOfNetwork">Out of Network</option>
+                  <option value="PolicyInactive">Policy Inactive / Expired</option>
+                  <option value="MissingInvalidData">Missing/Invalid Data</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="col-md-6 d-none" id="decisionRejectTextWrap">
+                <label class="fsize-12 text-grey">Rejection Notes</label>
+                <input id="decisionRejectText" type="text" class="form-control form-control-32" placeholder="Reason details from Waseel" />
+              </div>
+
+              <div class="col-12 d-none" id="mismatchRequestWrap">
+                <label class="switch mb-0 me-8">
+                  <input id="decisionRequestInsuranceDetails" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+                <span class="fsize-12">Request insurance details from patient (confirm plan/class + clearer insurance card)</span>
+              </div>
+
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Internal Notes</label>
+                <textarea id="decisionInternalNotes" class="form-control" rows="3" placeholder="Internal operation notes"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveDecision" type="button" class="btn btn-primary">Save Decision</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Close Modal -->
+    <div class="modal fade" id="queue-close-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Close Insurance Case</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="closeCaseMeta">-</div>
+            <label class="fsize-12 text-grey">Closure Note</label>
+            <textarea id="closeCaseNote" class="form-control" rows="3" placeholder="Why is this case being closed?"></textarea>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnConfirmCloseCase" type="button" class="btn btn-primary">Close Case</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const CASES_KEY = "nk_facility_insurance_cases";
+        const PACKAGES_KEY = "nk_insurance_packages";
+        const FACILITY_SETTINGS_KEY = "nk_facility_insurance_settings";
+        const FACILITY_ID = "FD-123456";
+        const CURRENT_USER = "Facility Insurance Officer";
+
+        const STATUSES = [
+          "Draft",
+          "Pending Submission",
+          "Submitted / Awaiting Response",
+          "Approved",
+          "Partially Approved",
+          "Rejected",
+          "Cancelled / Closed",
+        ];
+
+        const REJECTION_REASONS = {
+          NotCoveredBenefit: "Not Covered Benefit",
+          PlanClassMismatch: "Plan/Class Not Eligible (Mismatch)",
+          OutOfNetwork: "Out of Network",
+          PolicyInactive: "Policy Inactive / Expired",
+          MissingInvalidData: "Missing/Invalid Data",
+          Other: "Other",
+        };
+
+        const DEFAULT_PACKAGE_TEMPLATES = [
+          { name: "Hemodialysis - 1 Month", code: "HD-M01-13", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 13, validityType: "Month", validityValue: 1 },
+          { name: "Hemodialysis - 3 Months", code: "HD-M03-36", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 36, validityType: "Months", validityValue: 3 },
+          { name: "Hemodialysis - 6 Months", code: "HD-M06-72", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 72, validityType: "Months", validityValue: 6 },
+          { name: "Physiotherapy - 3 Sessions", code: "PT-S03", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 3, validityType: "Days", validityValue: 30 },
+          { name: "Physiotherapy - 6 Sessions", code: "PT-S06", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 6, validityType: "Days", validityValue: 60 },
+          { name: "Physiotherapy - 12 Sessions", code: "PT-S12", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 12, validityType: "Days", validityValue: 90 },
+          { name: "Health Companion - 8 Days", code: "HC-D08", mainService: "Health Companion", unitType: "Days", unitsCount: 8, validityType: "Days", validityValue: 30 },
+          { name: "Health Companion - 12 Days", code: "HC-D12", mainService: "Health Companion", unitType: "Days", unitsCount: 12, validityType: "Days", validityValue: 45 },
+          { name: "Laboratory Tests - Sugar", code: "LAB-SUGAR", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1, validityType: "Days", validityValue: 30 },
+          { name: "Laboratory Tests - Checkup", code: "LAB-CHECK", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1, validityType: "Days", validityValue: 30 }
+        ];
+
+        const tbody = document.getElementById("queueTbody");
+        if (!tbody) return;
+
+        const searchInput = document.getElementById("queueSearchInput");
+        const btnSearch = document.getElementById("btnQueueSearch");
+        const btnReset = document.getElementById("btnQueueReset");
+        const btnExport = document.getElementById("btnQueueExport");
+
+        const rowsSelect = document.getElementById("queueRowsPerPage");
+        const indicator = document.getElementById("queuePageIndicator");
+        const currentBadge = document.getElementById("queueCurrentPageBadge");
+        const btnFirst = document.getElementById("queueFirstPage");
+        const btnPrev = document.getElementById("queuePrevPage");
+        const btnNext = document.getElementById("queueNextPage");
+        const btnLast = document.getElementById("queueLastPage");
+
+        const checkAllVisible = document.getElementById("checkAllVisibleCases");
+
+        const qfStatus = document.getElementById("qfStatus");
+        const qfCompany = document.getElementById("qfCompany");
+        const qfPlan = document.getElementById("qfPlan");
+        const qfClass = document.getElementById("qfClass");
+        const qfType = document.getElementById("qfType");
+        const qfMainService = document.getElementById("qfMainService");
+        const qfHasRef = document.getElementById("qfHasRef");
+        const qfDateFrom = document.getElementById("qfDateFrom");
+        const qfDateTo = document.getElementById("qfDateTo");
+        const btnApplyFilter = document.getElementById("btnQueueApplyFilter");
+        const btnFilterReset = document.getElementById("btnQueueFilterReset");
+
+        const submitModalEl = document.getElementById("queue-submit-modal");
+        const submitModal = submitModalEl ? new bootstrap.Modal(submitModalEl) : null;
+        const decisionModalEl = document.getElementById("queue-decision-modal");
+        const decisionModal = decisionModalEl ? new bootstrap.Modal(decisionModalEl) : null;
+        const closeModalEl = document.getElementById("queue-close-modal");
+        const closeModal = closeModalEl ? new bootstrap.Modal(closeModalEl) : null;
+
+        const submitCaseMeta = document.getElementById("submitCaseMeta");
+        const submitType = document.getElementById("submitType");
+        const submitRefNo = document.getElementById("submitRefNo");
+        const submitNote = document.getElementById("submitNote");
+        const btnSaveSubmission = document.getElementById("btnSaveSubmission");
+
+        const decisionCaseMeta = document.getElementById("decisionCaseMeta");
+        const decisionType = document.getElementById("decisionType");
+        const decisionApprovedQtyWrap = document.getElementById("decisionApprovedQtyWrap");
+        const decisionApprovedQty = document.getElementById("decisionApprovedQty");
+        const decisionValidityFromWrap = document.getElementById("decisionValidityFromWrap");
+        const decisionValidityFrom = document.getElementById("decisionValidityFrom");
+        const decisionValidityToWrap = document.getElementById("decisionValidityToWrap");
+        const decisionValidityTo = document.getElementById("decisionValidityTo");
+        const decisionRejectReasonWrap = document.getElementById("decisionRejectReasonWrap");
+        const decisionRejectReason = document.getElementById("decisionRejectReason");
+        const decisionRejectTextWrap = document.getElementById("decisionRejectTextWrap");
+        const decisionRejectText = document.getElementById("decisionRejectText");
+        const mismatchRequestWrap = document.getElementById("mismatchRequestWrap");
+        const decisionRequestInsuranceDetails = document.getElementById("decisionRequestInsuranceDetails");
+        const decisionInternalNotes = document.getElementById("decisionInternalNotes");
+        const btnSaveDecision = document.getElementById("btnSaveDecision");
+
+        const closeCaseMeta = document.getElementById("closeCaseMeta");
+        const closeCaseNote = document.getElementById("closeCaseNote");
+        const btnConfirmCloseCase = document.getElementById("btnConfirmCloseCase");
+
+        let allCases = [];
+        let filteredCases = [];
+        let currentPage = 1;
+        let currentCaseId = "";
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function readStorage(key) {
+          try {
+            return localStorage.getItem(key);
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function writeStorage(key, value) {
+          try {
+            localStorage.setItem(key, value);
+          } catch (err) {
+            // no-op
+          }
+        }
+
+        function safeParse(json, fallback) {
+          try {
+            return JSON.parse(json);
+          } catch (err) {
+            return fallback;
+          }
+        }
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function formatDateTime(v) {
+          if (!v) return "-";
+          const d = new Date(v);
+          if (Number.isNaN(d.getTime())) return "-";
+          return d.toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        }
+
+        function escapeHtml(value) {
+          return (value || "").toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function toNumber(v) {
+          const n = Number(v);
+          return Number.isFinite(n) ? n : null;
+        }
+        function getPackageTemplates() {
+          const parsed = safeParse(readStorage(PACKAGES_KEY), null);
+          let list = Array.isArray(parsed) ? parsed : [];
+          if (!list.length) {
+            list = [...DEFAULT_PACKAGE_TEMPLATES];
+            writeStorage(PACKAGES_KEY, JSON.stringify(list));
+          }
+
+          return list.map((p) => ({
+            name: (p.name || p.packageName || "").toString().trim(),
+            code: (p.code || p.packageCode || "").toString().trim().toUpperCase(),
+            mainService: (p.mainService || p.main_service || "General").toString().trim(),
+            unitType: (p.unitType || p.unit_type || "Sessions").toString().trim(),
+            unitsCount: parseInt(p.unitsCount ?? p.units_count ?? 1, 10) || 1,
+            validityType: (p.validityType || p.validity_type || "Days").toString().trim(),
+            validityValue: parseInt(p.validityValue ?? p.validity_value ?? 30, 10) || 30,
+          })).filter((x) => x.name && x.code);
+        }
+
+        function getFacilityInsuranceSettings() {
+          const parsed = safeParse(readStorage(FACILITY_SETTINGS_KEY), null);
+          if (!parsed || typeof parsed !== "object") {
+            return { enabledInsuranceCompanies: ["IN-00001", "IN-00002", "IN-00003", "IN-00004", "IN-00005"] };
+          }
+
+          if (Array.isArray(parsed.enabledInsuranceCompanies) && parsed.enabledInsuranceCompanies.length) {
+            return parsed;
+          }
+
+          if (parsed.items && typeof parsed.items === "object") {
+            const enabledInsuranceCompanies = Object.keys(parsed.items).filter((code) => parsed.items[code] && parsed.items[code].enabled);
+            return { enabledInsuranceCompanies };
+          }
+
+          return { enabledInsuranceCompanies: ["IN-00001", "IN-00002", "IN-00003", "IN-00004", "IN-00005"] };
+        }
+
+        function baseWaseel() {
+          return {
+            submissionType: "",
+            submittedAt: "",
+            referenceNo: "",
+            responseAt: "",
+            decision: "",
+            approvedQty: null,
+            approvalValidity: { from: "", to: "" },
+            rejectionReasonCode: "",
+            rejectionReasonText: "",
+          };
+        }
+
+        function pushTimeline(caseObj, event, note) {
+          caseObj.timeline = Array.isArray(caseObj.timeline) ? caseObj.timeline : [];
+          caseObj.timeline.push({
+            event,
+            by: CURRENT_USER,
+            time: nowIso(),
+            note: note || "",
+          });
+          caseObj.updatedAt = nowIso();
+        }
+
+        function newCaseId(index) {
+          return `IR-${String(index).padStart(4, "0")}`;
+        }
+
+        function createCaseFromOrder(order, caseIndex) {
+          const created = {
+            caseId: newCaseId(caseIndex),
+            orderId: order.orderId,
+            patient: {
+              name: order.patientName,
+              phone: order.patientPhone,
+            },
+            insurance: {
+              companyName: order.insuranceCompany,
+              companyCode: order.insuranceCode,
+              plan: order.plan,
+              class: order.class,
+            },
+            target: {
+              type: order.targetType,
+              mainService: order.mainService,
+              itemName: order.itemName,
+              itemCode: order.itemCode,
+              unitType: order.unitType,
+              requestedQty: order.requestedQty,
+            },
+            status: order.initialStatus || "Pending Submission",
+            waseel: baseWaseel(),
+            requiredDocs: [],
+            docsMessages: [],
+            clientMessages: [],
+            internalNotes: order.initialNote || "",
+            timeline: [],
+            updatedAt: nowIso(),
+          };
+
+          pushTimeline(created, "Case Created", "Auto-created from order (insurance/authorization required).");
+          return created;
+        }
+
+        function seedOrders(packageTemplates) {
+          const pkgByCode = (code, fallback) => packageTemplates.find((p) => p.code === code) || fallback;
+          const pHD13 = pkgByCode("HD-M01-13", { name: "Hemodialysis - 1 Month", code: "HD-M01-13", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 13 });
+          const pPT12 = pkgByCode("PT-S12", { name: "Physiotherapy - 12 Sessions", code: "PT-S12", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 12 });
+          const pHC08 = pkgByCode("HC-D08", { name: "Health Companion - 8 Days", code: "HC-D08", mainService: "Health Companion", unitType: "Days", unitsCount: 8 });
+          const pLab = pkgByCode("LAB-CHECK", { name: "Laboratory Tests - Checkup", code: "LAB-CHECK", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1 });
+          const pPTS6 = pkgByCode("PT-S06", { name: "Physiotherapy - 6 Sessions", code: "PT-S06", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 6 });
+          const pHD36 = pkgByCode("HD-M03-36", { name: "Hemodialysis - 3 Months", code: "HD-M03-36", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 36 });
+          const pLABS = pkgByCode("LAB-SUGAR", { name: "Laboratory Tests - Sugar", code: "LAB-SUGAR", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1 });
+          const pHC12 = pkgByCode("HC-D12", { name: "Health Companion - 12 Days", code: "HC-D12", mainService: "Health Companion", unitType: "Days", unitsCount: 12 });
+
+          return [
+            { orderId: "OR-2001", patientName: "Fahad Al-Mutairi", patientPhone: "0500011001", insuranceCompany: "Bupa", insuranceCode: "IN-00003", plan: "Gold", class: "A", targetType: "Package", mainService: pHD13.mainService, itemName: pHD13.name, itemCode: pHD13.code, unitType: pHD13.unitType, requestedQty: 13, initialStatus: "Partially Approved" },
+            { orderId: "OR-2002", patientName: "Noura Saleh", patientPhone: "0500011002", insuranceCompany: "Tawuniya", insuranceCode: "IN-00002", plan: "Silver", class: "B", targetType: "Package", mainService: pPT12.mainService, itemName: pPT12.name, itemCode: pPT12.code, unitType: pPT12.unitType, requestedQty: 12, initialStatus: "Submitted / Awaiting Response" },
+            { orderId: "OR-2003", patientName: "Mona Al-Qahtani", patientPhone: "0500011003", insuranceCompany: "MedGulf", insuranceCode: "IN-00004", plan: "Basic", class: "General", targetType: "Package", mainService: pHC08.mainService, itemName: pHC08.name, itemCode: pHC08.code, unitType: pHC08.unitType, requestedQty: 8, initialStatus: "Rejected" },
+            { orderId: "OR-2004", patientName: "Ahmed Al-Ghamdi", patientPhone: "0500011004", insuranceCompany: "GIG", insuranceCode: "IN-00005", plan: "Gold", class: "A", targetType: "Package", mainService: pLab.mainService, itemName: pLab.name, itemCode: pLab.code, unitType: pLab.unitType, requestedQty: 1, initialStatus: "Approved" },
+            { orderId: "OR-2005", patientName: "Huda Al-Otaibi", patientPhone: "0500011005", insuranceCompany: "Bupa", insuranceCode: "IN-00003", plan: "Silver", class: "B", targetType: "Service", mainService: "Telemedicine", itemName: "Telemedicine Consultation", itemCode: "SRV-TM-01", unitType: "Visits", requestedQty: 1, initialStatus: "Approved" },
+            { orderId: "OR-2006", patientName: "Saeed Al-Harbi", patientPhone: "0500011006", insuranceCompany: "Tawuniya", insuranceCode: "IN-00002", plan: "Basic", class: "General", targetType: "Package", mainService: pPTS6.mainService, itemName: pPTS6.name, itemCode: pPTS6.code, unitType: pPTS6.unitType, requestedQty: 6, initialStatus: "Rejected" },
+            { orderId: "OR-2007", patientName: "Rania Hassan", patientPhone: "0500011007", insuranceCompany: "BMC Insurance Co.", insuranceCode: "IN-00001", plan: "Silver", class: "B", targetType: "Package", mainService: pHD36.mainService, itemName: pHD36.name, itemCode: pHD36.code, unitType: pHD36.unitType, requestedQty: 36, initialStatus: "Pending Submission" },
+            { orderId: "OR-2008", patientName: "Majed Al-Dossary", patientPhone: "0500011008", insuranceCompany: "Bupa", insuranceCode: "IN-00003", plan: "Gold", class: "A", targetType: "Service", mainService: "Nursing Visit", itemName: "Home Wound Dressing", itemCode: "SRV-NV-02", unitType: "Visits", requestedQty: 5, initialStatus: "Submitted / Awaiting Response" },
+            { orderId: "OR-2009", patientName: "Lina Al-Shammari", patientPhone: "0500011009", insuranceCompany: "GIG", insuranceCode: "IN-00005", plan: "Silver", class: "C", targetType: "Service", mainService: "Home Care", itemName: "Home Nursing Visit", itemCode: "SRV-HC-03", unitType: "Visits", requestedQty: 4, initialStatus: "Draft" },
+            { orderId: "OR-2010", patientName: "Khaled Salem", patientPhone: "0500011010", insuranceCompany: "Tawuniya", insuranceCode: "IN-00002", plan: "Gold", class: "A", targetType: "Package", mainService: pLABS.mainService, itemName: pLABS.name, itemCode: pLABS.code, unitType: pLABS.unitType, requestedQty: 1, initialStatus: "Pending Submission" },
+            { orderId: "OR-2011", patientName: "Yara Fahmy", patientPhone: "0500011011", insuranceCompany: "MedGulf", insuranceCode: "IN-00004", plan: "Silver", class: "B", targetType: "Service", mainService: "Physiotherapy", itemName: "Physiotherapy Session", itemCode: "SRV-PT-04", unitType: "Sessions", requestedQty: 10, initialStatus: "Submitted / Awaiting Response" },
+            { orderId: "OR-2012", patientName: "Bader Al-Qahtani", patientPhone: "0500011012", insuranceCompany: "BMC Insurance Co.", insuranceCode: "IN-00001", plan: "Basic", class: "General", targetType: "Package", mainService: pHC12.mainService, itemName: pHC12.name, itemCode: pHC12.code, unitType: pHC12.unitType, requestedQty: 12, initialStatus: "Cancelled / Closed" },
+          ];
+        }
+
+        function applyScenarioData(cases) {
+          const byOrder = Object.fromEntries(cases.map((c) => [c.orderId, c]));
+
+          const c1 = byOrder["OR-2001"];
+          if (c1) {
+            c1.waseel.submissionType = "Both";
+            c1.waseel.submittedAt = "2026-02-08T09:15:00";
+            c1.waseel.referenceNo = "WSL-830011";
+            c1.waseel.responseAt = "2026-02-10T12:00:00";
+            c1.waseel.decision = "Partial";
+            c1.waseel.approvedQty = 8;
+            c1.waseel.approvalValidity = { from: "2026-02-10", to: "2026-03-10" };
+            pushTimeline(c1, "Submitted to Waseel", "Reference WSL-830011");
+            pushTimeline(c1, "Decision Recorded", "Partial approval: 8 of 13 due to policy limit.");
+          }
+
+          const c2 = byOrder["OR-2002"];
+          if (c2) {
+            c2.waseel.submissionType = "PreAuth";
+            c2.waseel.submittedAt = "2026-02-12T11:30:00";
+            c2.waseel.referenceNo = "WSL-830045";
+            pushTimeline(c2, "Submitted to Waseel", "Awaiting authorization decision.");
+          }
+          const c3 = byOrder["OR-2003"];
+          if (c3) {
+            c3.waseel.submissionType = "PreAuth";
+            c3.waseel.submittedAt = "2026-02-11T10:20:00";
+            c3.waseel.referenceNo = "WSL-830039";
+            c3.waseel.responseAt = "2026-02-11T16:05:00";
+            c3.waseel.decision = "Rejected";
+            c3.waseel.rejectionReasonCode = "NotCoveredBenefit";
+            c3.waseel.rejectionReasonText = "Companion package is not part of policy benefits.";
+            pushTimeline(c3, "Decision Recorded", "Rejected: Not Covered Benefit.");
+          }
+
+          const c4 = byOrder["OR-2004"];
+          if (c4) {
+            c4.waseel.submissionType = "Eligibility";
+            c4.waseel.submittedAt = "2026-02-09T08:50:00";
+            c4.waseel.referenceNo = "WSL-830019";
+            c4.waseel.responseAt = "2026-02-09T13:10:00";
+            c4.waseel.decision = "Approved";
+            c4.waseel.approvedQty = 1;
+            c4.waseel.approvalValidity = { from: "2026-02-09", to: "2026-03-09" };
+            pushTimeline(c4, "Decision Recorded", "Approved fully.");
+          }
+
+          const c5 = byOrder["OR-2005"];
+          if (c5) {
+            c5.waseel.submissionType = "Eligibility";
+            c5.waseel.submittedAt = "2026-02-14T10:00:00";
+            c5.waseel.referenceNo = "WSL-830051";
+            c5.waseel.responseAt = "2026-02-14T11:00:00";
+            c5.waseel.decision = "Approved";
+            c5.waseel.approvedQty = 1;
+            c5.waseel.approvalValidity = { from: "2026-02-14", to: "2026-03-14" };
+            pushTimeline(c5, "Decision Recorded", "Eligible and authorized for telemedicine service.");
+          }
+
+          const c6 = byOrder["OR-2006"];
+          if (c6) {
+            c6.waseel.submissionType = "PreAuth";
+            c6.waseel.submittedAt = "2026-02-10T09:25:00";
+            c6.waseel.referenceNo = "WSL-830026";
+            c6.waseel.responseAt = "2026-02-10T15:30:00";
+            c6.waseel.decision = "Rejected";
+            c6.waseel.rejectionReasonCode = "PlanClassMismatch";
+            c6.waseel.rejectionReasonText = "Gold plan required, patient has Basic / General.";
+            pushTimeline(c6, "Decision Recorded", "Rejected: Plan/Class mismatch.");
+          }
+
+          const c8 = byOrder["OR-2008"];
+          if (c8) {
+            c8.waseel.submissionType = "PreAuth";
+            c8.waseel.submittedAt = "2026-02-15T09:10:00";
+            c8.waseel.referenceNo = "WSL-830070";
+            pushTimeline(c8, "Submitted to Waseel", "Awaiting response.");
+          }
+
+          const c11 = byOrder["OR-2011"];
+          if (c11) {
+            c11.waseel.submissionType = "PreAuth";
+            c11.waseel.submittedAt = "2026-02-16T10:40:00";
+            c11.waseel.referenceNo = "WSL-830082";
+            pushTimeline(c11, "Submitted to Waseel", "Awaiting response from payer.");
+          }
+
+          const c12 = byOrder["OR-2012"];
+          if (c12) {
+            pushTimeline(c12, "Case Closed", "Patient cancelled order.");
+          }
+
+          return cases;
+        }
+
+        function normalizeCase(raw) {
+          const c = raw && typeof raw === "object" ? raw : {};
+          return {
+            caseId: (c.caseId || "").toString(),
+            orderId: (c.orderId || "").toString(),
+            patient: {
+              name: (c.patient?.name || "").toString(),
+              phone: (c.patient?.phone || "").toString(),
+            },
+            insurance: {
+              companyName: (c.insurance?.companyName || "").toString(),
+              companyCode: (c.insurance?.companyCode || "").toString(),
+              plan: (c.insurance?.plan || "").toString(),
+              class: (c.insurance?.class || "").toString(),
+            },
+            target: {
+              type: (c.target?.type || "Service").toString(),
+              mainService: (c.target?.mainService || "").toString(),
+              itemName: (c.target?.itemName || "").toString(),
+              itemCode: (c.target?.itemCode || "").toString(),
+              unitType: (c.target?.unitType || "").toString(),
+              requestedQty: toNumber(c.target?.requestedQty) || 0,
+            },
+            status: (c.status || "Draft").toString(),
+            waseel: {
+              ...baseWaseel(),
+              ...(c.waseel || {}),
+              approvalValidity: {
+                from: (c.waseel?.approvalValidity?.from || "").toString(),
+                to: (c.waseel?.approvalValidity?.to || "").toString(),
+              },
+            },
+            requiredDocs: Array.isArray(c.requiredDocs) ? c.requiredDocs.map((x) => x.toString()) : [],
+            docsMessages: Array.isArray(c.docsMessages) ? c.docsMessages : [],
+            clientMessages: Array.isArray(c.clientMessages) ? c.clientMessages : [],
+            internalNotes: (c.internalNotes || "").toString(),
+            timeline: Array.isArray(c.timeline) ? c.timeline : [],
+            updatedAt: (c.updatedAt || nowIso()).toString(),
+          };
+        }
+
+        function migrateLegacyCase(caseObj) {
+          let changed = false;
+          const c = caseObj;
+
+          if (c.status === "Need Documents") {
+            const hasSubmission = norm(c.waseel.referenceNo) || norm(c.waseel.submittedAt);
+            c.status = hasSubmission ? "Submitted / Awaiting Response" : "Pending Submission";
+            pushTimeline(c, "Legacy Migration", "Legacy status migrated from Need Documents.");
+            changed = true;
+          }
+
+          if (!STATUSES.includes(c.status)) {
+            c.status = "Draft";
+            changed = true;
+          }
+
+          if (!Array.isArray(c.clientMessages)) {
+            c.clientMessages = [];
+            changed = true;
+          }
+
+          return changed;
+        }
+
+        function loadCases() {
+          const packageTemplates = getPackageTemplates();
+          getFacilityInsuranceSettings();
+
+          let parsed = safeParse(readStorage(CASES_KEY), null);
+          if (!Array.isArray(parsed) || !parsed.length) {
+            const orders = seedOrders(packageTemplates);
+            let seeded = [];
+            orders.forEach((order, i) => {
+              if (!order.insuranceCode) return;
+              const authRequired = true;
+              if (!authRequired) return;
+              seeded.push(createCaseFromOrder(order, i + 1));
+            });
+
+            seeded = applyScenarioData(seeded);
+            writeStorage(CASES_KEY, JSON.stringify(seeded));
+            parsed = seeded;
+          }
+
+          const normalized = parsed.map(normalizeCase);
+          let dirty = false;
+          normalized.forEach((c) => {
+            if (migrateLegacyCase(c)) dirty = true;
+          });
+          if (dirty) {
+            writeStorage(CASES_KEY, JSON.stringify(normalized));
+          }
+          return normalized;
+        }
+
+        function saveCases() {
+          writeStorage(CASES_KEY, JSON.stringify(allCases));
+        }
+
+        function statusClass(status) {
+          const s = norm(status);
+          if (s === "approved" || s === "partially approved") return "status-pill st-accepted";
+          if (s === "rejected" || s === "cancelled / closed") return "status-pill st-cancel";
+          if (s === "draft") return "status-pill st-underreview";
+          return "status-pill st-missed";
+        }
+
+        function statusHtml(status) {
+          return `<span class="${statusClass(status)}">${escapeHtml(status)}</span>`;
+        }
+
+        function createdAtValue(c) {
+          if (Array.isArray(c.timeline) && c.timeline.length && c.timeline[0] && c.timeline[0].time) {
+            return c.timeline[0].time;
+          }
+          return c.updatedAt || "";
+        }
+
+        function scheduledAtValue(c) {
+          return c.waseel.submittedAt || c.updatedAt || createdAtValue(c);
+        }
+
+        function formatDateTop(v) {
+          if (!v) return "-";
+          const d = new Date(v);
+          if (Number.isNaN(d.getTime())) return "-";
+          return d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit" });
+        }
+
+        function formatDateSub(v) {
+          if (!v) return "-";
+          const d = new Date(v);
+          if (Number.isNaN(d.getTime())) return "-";
+          return d.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+        }
+
+        function dateCellHtml(v) {
+          return `
+            <div class="date-top">${escapeHtml(formatDateTop(v))}</div>
+            <div class="date-sub">${escapeHtml(formatDateSub(v))}</div>
+          `;
+        }
+
+        function estimatedPrice(c) {
+          const qty = Math.max(1, toNumber(c.target.requestedQty) || 1);
+          const base = norm(c.target.type) === "package" ? 85 : 60;
+          return (qty * base).toFixed(2);
+        }
+
+        function renderCaseRow(c, seq) {
+          const orderDate = createdAtValue(c);
+          const scheduledDate = scheduledAtValue(c);
+          const price = estimatedPrice(c);
+          const previewHref = `../orders/orders-details.html?order=${encodeURIComponent(c.orderId || "")}`;
+          return `
+            <tr>
+              <td class="col-seq"><span class="row-seq">${seq}</span></td>
+              <td class="col-code"><span class="staff-code order-code">${escapeHtml(c.orderId)}</span></td>
+              <td>
+                <div class="patient-cell">
+                  <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                  <div class="patient-info">
+                    <p class="name">${escapeHtml(c.patient.name)}</p>
+                    <div class="meta">${escapeHtml(c.patient.phone)}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="service-name">${escapeHtml(c.target.itemName)}</div>
+                <div class="service-main">${escapeHtml(c.target.mainService || c.insurance.companyName)}</div>
+              </td>
+              <td>${dateCellHtml(orderDate)}</td>
+              <td>${dateCellHtml(scheduledDate)}</td>
+              <td class="price-cell"><span class="bold">${escapeHtml(price)}</span> SR</td>
+              <td>${statusHtml(c.status)}</td>
+              <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+              <td class="col-actions">
+                <div class="actions-cell">
+                  <a class="action-icon js-preview" href="${escapeHtml(previewHref)}" title="Preview" aria-label="Preview">
+                    <i class="fi fi-rr-eye"></i>
+                  </a>
+                  <a class="invoice-btn details-btn js-details" href="#" data-caseid="${escapeHtml(c.caseId)}" title="Details"><span>Details</span></a>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+
+        function matchesSearch(c) {
+          const q = norm(searchInput ? searchInput.value : "");
+          if (!q) return true;
+          return (
+            norm(c.orderId).includes(q) ||
+            norm(c.patient.name).includes(q) ||
+            norm(c.patient.phone).includes(q) ||
+            norm(c.target.itemName).includes(q) ||
+            norm(c.target.itemCode).includes(q)
+          );
+        }
+
+        function inDateRange(c) {
+          const from = qfDateFrom ? qfDateFrom.value : "";
+          const to = qfDateTo ? qfDateTo.value : "";
+          if (!from && !to) return true;
+          const d = c.updatedAt ? c.updatedAt.substring(0, 10) : "";
+          if (!d) return false;
+          if (from && d < from) return false;
+          if (to && d > to) return false;
+          return true;
+        }
+
+        function matchesFilters(c) {
+          const st = norm(qfStatus ? qfStatus.value : "");
+          const co = norm(qfCompany ? qfCompany.value : "");
+          const pl = norm(qfPlan ? qfPlan.value : "");
+          const cl = norm(qfClass ? qfClass.value : "");
+          const ty = norm(qfType ? qfType.value : "");
+          const ms = norm(qfMainService ? qfMainService.value : "");
+
+          if (st && norm(c.status) !== st) return false;
+          if (co && norm(c.insurance.companyName) !== co) return false;
+          if (pl && norm(c.insurance.plan) !== pl) return false;
+          if (cl && norm(c.insurance.class) !== cl) return false;
+          if (ty && norm(c.target.type) !== ty) return false;
+          if (ms && norm(c.target.mainService) !== ms) return false;
+          if (!inDateRange(c)) return false;
+
+          return true;
+        }
+
+        function perPage() {
+          const v = parseInt(rowsSelect ? rowsSelect.value : "10", 10);
+          return Number.isFinite(v) && v > 0 ? v : 10;
+        }
+
+        function totalPages() {
+          return Math.max(1, Math.ceil(filteredCases.length / perPage()));
+        }
+
+        function updateHeadCheck() {
+          if (!checkAllVisible) return;
+          const boxes = Array.from(tbody.querySelectorAll(".row-check"));
+          if (!boxes.length) {
+            checkAllVisible.checked = false;
+            checkAllVisible.indeterminate = false;
+            return;
+          }
+          const checked = boxes.filter((b) => b.checked).length;
+          checkAllVisible.checked = checked === boxes.length;
+          checkAllVisible.indeterminate = checked > 0 && checked < boxes.length;
+        }
+
+        function render() {
+          const pages = totalPages();
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          const start = (currentPage - 1) * perPage();
+          const pageRows = filteredCases.slice(start, start + perPage());
+
+          if (!pageRows.length) {
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center text-grey">No insurance cases found.</td></tr>';
+          } else {
+            tbody.innerHTML = pageRows.map((c, i) => renderCaseRow(c, start + i + 1)).join("");
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+
+          updateHeadCheck();
+        }
+
+        function applyAll(resetPage) {
+          filteredCases = allCases.filter((c) => matchesSearch(c) && matchesFilters(c));
+          if (resetPage) currentPage = 1;
+          render();
+        }
+
+        function collectDistinct(selector) {
+          const set = new Set();
+          allCases.forEach((c) => {
+            const v = selector(c);
+            if (v) set.add(v);
+          });
+          return [...set];
+        }
+
+        function fillSelect(selectEl, values, allLabel) {
+          if (!selectEl) return;
+          const opts = [`<option value="">${escapeHtml(allLabel)}</option>`]
+            .concat(values.sort().map((v) => `<option value="${escapeHtml(v.toLowerCase())}">${escapeHtml(v)}</option>`));
+          selectEl.innerHTML = opts.join("");
+        }
+
+        function fillFilterOptions() {
+          fillSelect(qfStatus, STATUSES, "All");
+          fillSelect(qfCompany, collectDistinct((c) => c.insurance.companyName), "All");
+          fillSelect(qfPlan, collectDistinct((c) => c.insurance.plan), "All");
+          fillSelect(qfClass, collectDistinct((c) => c.insurance.class), "All");
+          fillSelect(qfMainService, collectDistinct((c) => c.target.mainService), "All");
+        }
+        function findCase(caseId) {
+          return allCases.find((c) => c.caseId === caseId) || null;
+        }
+
+        function saveCase(caseObj) {
+          caseObj.updatedAt = nowIso();
+          const idx = allCases.findIndex((x) => x.caseId === caseObj.caseId);
+          if (idx >= 0) allCases[idx] = caseObj;
+          saveCases();
+          applyAll(false);
+        }
+
+        function openQueueDetailsPage(caseId) {
+          const c = findCase(caseId);
+          if (!c) return;
+          window.location.href = `../orders/queue-details.html?caseId=${encodeURIComponent(c.caseId)}&orderId=${encodeURIComponent(c.orderId)}&scope=order`;
+        }
+
+        function openSubmitModal(caseId) {
+          const c = findCase(caseId);
+          if (!c || !submitModal) return;
+          currentCaseId = caseId;
+          if (submitCaseMeta) submitCaseMeta.textContent = `${c.caseId} • ${c.orderId} • ${c.patient.name}`;
+          if (submitType) submitType.value = c.waseel.submissionType || "Eligibility";
+          if (submitRefNo) submitRefNo.value = c.waseel.referenceNo || "";
+          if (submitNote) submitNote.value = "";
+          submitModal.show();
+        }
+
+        function refreshDecisionFields() {
+          const d = decisionType ? decisionType.value : "Approved";
+          const isApproved = d === "Approved" || d === "Partial";
+          const isRejected = d === "Rejected";
+
+          if (decisionApprovedQtyWrap) decisionApprovedQtyWrap.classList.toggle("d-none", !isApproved);
+          if (decisionValidityFromWrap) decisionValidityFromWrap.classList.toggle("d-none", !isApproved);
+          if (decisionValidityToWrap) decisionValidityToWrap.classList.toggle("d-none", !isApproved);
+          if (decisionRejectReasonWrap) decisionRejectReasonWrap.classList.toggle("d-none", !isRejected);
+          if (decisionRejectTextWrap) decisionRejectTextWrap.classList.toggle("d-none", !isRejected);
+
+          const mismatch = isRejected && decisionRejectReason && decisionRejectReason.value === "PlanClassMismatch";
+          if (mismatchRequestWrap) mismatchRequestWrap.classList.toggle("d-none", !mismatch);
+        }
+
+        function openDecisionModal(caseId) {
+          const c = findCase(caseId);
+          if (!c || !decisionModal) return;
+          currentCaseId = caseId;
+
+          if (decisionCaseMeta) decisionCaseMeta.textContent = `${c.caseId} • ${c.orderId} • Requested ${c.target.requestedQty} ${c.target.unitType}`;
+          const savedDecision = c.waseel.decision;
+          const decisionValue = savedDecision === "Approved" || savedDecision === "Partial" || savedDecision === "Rejected"
+            ? savedDecision
+            : "Approved";
+          if (decisionType) decisionType.value = decisionValue;
+          if (decisionApprovedQty) decisionApprovedQty.value = c.waseel.approvedQty == null ? "" : String(c.waseel.approvedQty);
+          if (decisionValidityFrom) decisionValidityFrom.value = c.waseel.approvalValidity?.from || "";
+          if (decisionValidityTo) decisionValidityTo.value = c.waseel.approvalValidity?.to || "";
+          if (decisionRejectReason) decisionRejectReason.value = c.waseel.rejectionReasonCode || "NotCoveredBenefit";
+          if (decisionRejectText) decisionRejectText.value = c.waseel.rejectionReasonText || "";
+          if (decisionRequestInsuranceDetails) decisionRequestInsuranceDetails.checked = false;
+          if (decisionInternalNotes) decisionInternalNotes.value = c.internalNotes || "";
+
+          refreshDecisionFields();
+          decisionModal.show();
+        }
+
+        function openCloseModal(caseId) {
+          const c = findCase(caseId);
+          if (!c || !closeModal) return;
+          currentCaseId = caseId;
+          if (closeCaseMeta) closeCaseMeta.textContent = `${c.caseId} • ${c.orderId}`;
+          if (closeCaseNote) closeCaseNote.value = "";
+          closeModal.show();
+        }
+
+        function selectedCases() {
+          return Array.from(tbody.querySelectorAll(".row-check:checked")).map((b) => b.getAttribute("data-caseid") || "").filter(Boolean);
+        }
+
+        function resetFilters() {
+          if (qfStatus) qfStatus.value = "";
+          if (qfCompany) qfCompany.value = "";
+          if (qfPlan) qfPlan.value = "";
+          if (qfClass) qfClass.value = "";
+          if (qfType) qfType.value = "";
+          if (qfMainService) qfMainService.value = "";
+          if (qfDateFrom) qfDateFrom.value = "";
+          if (qfDateTo) qfDateTo.value = "";
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", () => applyAll(true));
+        if (searchInput) searchInput.addEventListener("input", () => applyAll(true));
+
+        if (btnReset)
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            resetFilters();
+            applyAll(true);
+          });
+
+        if (btnApplyFilter)
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll(true);
+            const modalEl = document.getElementById("queue-filter-modal");
+            if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+          });
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", () => {
+            resetFilters();
+            applyAll(true);
+          });
+
+        if (rowsSelect) rowsSelect.addEventListener("change", () => { currentPage = 1; render(); });
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        if (checkAllVisible)
+          checkAllVisible.addEventListener("change", () => {
+            updateHeadCheck();
+          });
+
+        tbody.addEventListener("click", (e) => {
+          const detailsBtn = e.target.closest(".js-details");
+          if (detailsBtn) {
+            e.preventDefault();
+            const caseId = detailsBtn.getAttribute("data-caseid") || "";
+            if (caseId) openQueueDetailsPage(caseId);
+            return;
+          }
+        });
+
+        if (decisionType) decisionType.addEventListener("change", refreshDecisionFields);
+        if (decisionRejectReason) decisionRejectReason.addEventListener("change", refreshDecisionFields);
+        if (decisionRequestInsuranceDetails) decisionRequestInsuranceDetails.addEventListener("change", refreshDecisionFields);
+
+        if (btnSaveSubmission)
+          btnSaveSubmission.addEventListener("click", () => {
+            const c = findCase(currentCaseId);
+            if (!c) return;
+
+            const ref = (submitRefNo ? submitRefNo.value : "").trim();
+            if (!ref) {
+              alert("Please enter Waseel reference number.");
+              return;
+            }
+
+            c.waseel.submissionType = submitType ? submitType.value : "Eligibility";
+            c.waseel.referenceNo = ref;
+            c.waseel.submittedAt = nowIso();
+            c.status = "Submitted / Awaiting Response";
+            if (submitNote && submitNote.value.trim()) c.internalNotes = submitNote.value.trim();
+            pushTimeline(c, "Submitted to Waseel", `Submission type: ${c.waseel.submissionType}, Ref: ${ref}`);
+            saveCase(c);
+
+            if (submitModal) submitModal.hide();
+          });
+        if (btnSaveDecision)
+          btnSaveDecision.addEventListener("click", () => {
+            const c = findCase(currentCaseId);
+            if (!c) return;
+
+            const d = decisionType ? decisionType.value : "Approved";
+            const approvedQty = toNumber(decisionApprovedQty ? decisionApprovedQty.value : null);
+
+            c.waseel.responseAt = nowIso();
+            c.waseel.decision = d;
+            c.waseel.approvedQty = null;
+            c.waseel.approvalValidity = { from: "", to: "" };
+            c.waseel.rejectionReasonCode = "";
+            c.waseel.rejectionReasonText = "";
+
+            if (d === "Approved" || d === "Partial") {
+              c.waseel.approvedQty = approvedQty == null ? c.target.requestedQty : approvedQty;
+              c.waseel.approvalValidity = {
+                from: decisionValidityFrom ? decisionValidityFrom.value : "",
+                to: decisionValidityTo ? decisionValidityTo.value : "",
+              };
+              c.status = d === "Approved" ? "Approved" : "Partially Approved";
+              pushTimeline(c, "Decision Recorded", `${d === "Approved" ? "Approved" : "Partially approved"}: ${c.waseel.approvedQty} of ${c.target.requestedQty}`);
+            }
+
+            if (d === "Rejected") {
+              c.waseel.rejectionReasonCode = decisionRejectReason ? decisionRejectReason.value : "Other";
+              c.waseel.rejectionReasonText = decisionRejectText ? decisionRejectText.value.trim() : "";
+              c.status = "Rejected";
+              pushTimeline(c, "Decision Recorded", `Rejected: ${REJECTION_REASONS[c.waseel.rejectionReasonCode] || c.waseel.rejectionReasonCode}`);
+
+              if (c.waseel.rejectionReasonCode === "PlanClassMismatch" && decisionRequestInsuranceDetails && decisionRequestInsuranceDetails.checked) {
+                pushTimeline(c, "Verification Needed", "Plan/class mismatch flagged for patient re-verification.");
+              }
+            }
+
+            if (decisionInternalNotes && decisionInternalNotes.value.trim()) {
+              c.internalNotes = decisionInternalNotes.value.trim();
+            }
+
+            saveCase(c);
+            if (decisionModal) decisionModal.hide();
+          });
+
+        if (btnConfirmCloseCase)
+          btnConfirmCloseCase.addEventListener("click", () => {
+            const c = findCase(currentCaseId);
+            if (!c) return;
+            c.status = "Cancelled / Closed";
+            pushTimeline(c, "Case Closed", (closeCaseNote ? closeCaseNote.value : "").trim() || "Closed by operations.");
+            saveCase(c);
+            if (closeModal) closeModal.hide();
+          });
+
+        if (btnExport)
+          btnExport.addEventListener("click", () => {
+            const selectedIds = selectedCases();
+            const exportRows = selectedIds.length ? allCases.filter((c) => selectedIds.includes(c.caseId)) : filteredCases;
+
+            if (!exportRows.length) {
+              alert("No cases available to export.");
+              return;
+            }
+
+            function csvEscape(v) {
+              const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+              if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+              return s;
+            }
+
+            const headers = [
+              "Order No", "Patient Name", "Patient Phone", "Service", "Main Service", "Order Date", "Scheduled Date", "Price", "Status"
+            ];
+            const lines = [headers.map(csvEscape).join(",")];
+
+            exportRows.forEach((c) => {
+              const orderDate = createdAtValue(c);
+              const scheduledDate = scheduledAtValue(c);
+              lines.push([
+                c.orderId,
+                c.patient.name,
+                c.patient.phone,
+                c.target.itemName,
+                c.target.mainService,
+                formatDateTime(orderDate),
+                formatDateTime(scheduledDate),
+                `${estimatedPrice(c)} SR`,
+                c.status,
+              ].map(csvEscape).join(","));
+            });
+
+            const csv = "\ufeff" + lines.join("\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "insurance-queue.csv";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          });
+
+        allCases = loadCases();
+        fillFilterOptions();
+        applyAll(true);
+      })();
+    </script>
+<script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

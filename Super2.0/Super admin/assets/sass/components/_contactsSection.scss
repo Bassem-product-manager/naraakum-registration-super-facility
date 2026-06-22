@@ -1,0 +1,43 @@
+.contacts-section {
+  padding: 5rem 0rem;
+}
+/*/*/
+
+.download-box {
+  border-radius: 2.75rem;
+  background-color: $lightBlue-500;
+  padding: 3rem 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: $value-52;
+  @media screen and (max-width: 576px) {
+    padding: 2rem;
+    border-radius: 1.75rem;
+  }
+  .app-icon {
+    width: 8.15306rem;
+    height: 8.15306rem;
+    flex-shrink: 0;
+    box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.1);
+    border-radius: 2rem;
+    object-fit: cover;
+  }
+
+  .store-icons-conatiner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .store-icons {
+    display: flex;
+    flex-direction: column;
+    gap: $value-4;
+    // @media screen and (max-width: 998px) {
+    //   flex-direction: row;
+    // }
+    // @media screen and (max-width: 768px) {
+    //   flex-direction: column;
+    // }
+  }
+}

@@ -1,0 +1,400 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Service Return Details</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green: #0f8c8c; }
+    .facility-line { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 6px; }
+    .facility-name { font-weight: 900; line-height: 1; margin: 0; }
+    .ksa-clock { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border: 1px solid rgba(16,24,40,.1); background: #fff; border-radius: 12px; font-weight: 900; font-size: 12px; color: #101828; white-space: nowrap; }
+    .ksa-clock .tz { color: var(--nk-green); font-weight: 900; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); }
+    .switch-account-item { display: flex; align-items: center; gap: 10px; }
+    .switch-account-item i { color: var(--nk-green); }
+
+    .details-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .details-title { margin: 0; font-size: 22px; font-weight: 900; color: #101828; }
+    .chip-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .type-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 84px; height: 28px; border-radius: 999px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); color: #0b6f6f; font-size: 12px; font-weight: 900; padding: 0 10px; }
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 116px; height: 28px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 900; padding: 0 10px; white-space: nowrap; }
+    .r-under-review { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .r-approved-full { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .r-approved-partial { color: #0b6f6f; background: rgba(15,140,140,.1); border-color: rgba(15,140,140,.24); }
+    .r-rejected { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .f-not-released { color: #475467; background: rgba(71,84,103,.08); border-color: rgba(71,84,103,.22); }
+    .f-ready { color: #155eef; background: rgba(41,112,255,.1); border-color: rgba(41,112,255,.24); }
+    .f-released { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .f-failed { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+
+    .panel { border: 1px solid rgba(16,24,40,.08); border-radius: 14px; background: #fff; padding: 14px; }
+    .panel-title { margin: 0 0 10px; font-size: 14px; font-weight: 900; color: #101828; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .summary-item { border: 1px dashed rgba(16,24,40,.14); border-radius: 12px; padding: 10px; }
+    .summary-item .k { font-size: 11px; color: #667085; font-weight: 700; }
+    .summary-item .v { margin-top: 4px; font-size: 14px; color: #101828; font-weight: 900; word-break: break-word; }
+    .link-inline { color: var(--nk-green); font-weight: 900; text-decoration: none; }
+    .link-inline:hover { text-decoration: underline; }
+
+    .layout-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr); gap: 14px; margin-top: 14px; }
+    .return-items-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .return-items-table thead th { font-size: 12px; font-weight: 900; color: #344054; background: #fff; border-bottom: 1px solid rgba(16,24,40,.1); padding: 10px; white-space: nowrap; }
+    .return-items-table tbody td { border-bottom: 1px solid rgba(16,24,40,.08); padding: 10px; vertical-align: middle; font-size: 12px; font-weight: 700; color: #101828; }
+    .return-items-table tbody tr:last-child td { border-bottom: 0; }
+    .return-items-table tbody tr.row-locked td { background: rgba(16,24,40,.03); }
+
+    .item-box { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+    .item-box img { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(16,24,40,.12); }
+    .item-name { margin: 0; font-size: 12px; font-weight: 900; color: #101828; line-height: 1.2; }
+    .item-meta { margin-top: 2px; color: #667085; font-size: 11px; font-weight: 700; }
+    .availability { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; height: 22px; border-radius: 999px; border: 1px solid transparent; font-size: 11px; font-weight: 900; margin-top: 4px; padding: 0 8px; }
+    .av-available { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .av-unavailable { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .lock-label { display: inline-flex; align-items: center; gap: 5px; color: #475467; background: rgba(71,84,103,.08); border: 1px solid rgba(71,84,103,.2); border-radius: 999px; height: 22px; font-size: 10px; font-weight: 900; padding: 0 8px; margin-top: 4px; }
+
+    .qty-input { width: 74px; min-height: 34px; }
+    .line-total { font-weight: 900; white-space: nowrap; }
+    .condition-pill { display: inline-flex; align-items: center; justify-content: center; height: 24px; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 0 8px; border: 1px solid transparent; }
+    .c-closed { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .c-opened { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .c-damaged { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .thumb-btn { border: 1px solid rgba(16,24,40,.12); border-radius: 10px; background: #fff; width: 44px; height: 36px; padding: 2px; }
+    .thumb-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .note-toggle { border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); color: #0b6f6f; border-radius: 8px; width: 32px; height: 30px; display: inline-flex; align-items: center; justify-content: center; }
+    .note-text { margin-top: 6px; font-size: 11px; color: #475467; line-height: 1.4; }
+
+    .decision-select, .line-decision { min-height: 34px; }
+    .decision-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .decision-chip { border: 1px solid rgba(16,24,40,.14); border-radius: 999px; background: #fff; color: #344054; height: 32px; font-size: 12px; font-weight: 800; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; }
+    .decision-chip .count { color: #667085; font-weight: 900; }
+    .decision-chip.is-active { border-color: rgba(15,140,140,.35); background: rgba(15,140,140,.08); color: #0b6f6f; }
+    .decision-chip.is-active .count { color: #0b6f6f; }
+    .side-stack { display: grid; gap: 12px; }
+    .sum-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px dashed rgba(16,24,40,.12); font-size: 13px; font-weight: 800; color: #344054; }
+    .sum-row:last-of-type { border-bottom: 0; }
+    .sum-row strong { color: #101828; font-weight: 900; }
+    .input-sm { min-height: 34px; padding: 6px 10px !important; font-size: 12px !important; }
+    .success-box { border: 1px solid rgba(18,183,106,.28); background: rgba(18,183,106,.08); border-radius: 12px; padding: 10px; color: #067647; font-size: 12px; font-weight: 800; }
+    .release-links a { color: var(--nk-green); font-size: 12px; font-weight: 900; text-decoration: none; margin-right: 12px; }
+    .release-links a:hover { text-decoration: underline; }
+    .btn.is-disabled { pointer-events: none; opacity: .55; }
+    .empty-state { border: 1px dashed rgba(16,24,40,.2); border-radius: 14px; background: #fff; text-align: center; padding: 30px 16px; }
+    .alert-mini { border-radius: 10px; padding: 10px 12px; font-size: 12px; font-weight: 800; }
+    .alert-ok { color: #067647; background: rgba(18,183,106,.1); border: 1px solid rgba(18,183,106,.24); }
+    .alert-err { color: #b42318; background: rgba(240,68,56,.1); border: 1px solid rgba(240,68,56,.24); }
+    .service-pane-stack { display: grid; gap: 12px; }
+    .sub-panel { border: 1px solid rgba(16,24,40,.08); border-radius: 12px; padding: 12px; background: #fff; }
+    .sub-panel-title { margin: 0; font-size: 14px; font-weight: 900; color: #101828; }
+    .service-details-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .service-status-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 92px; height: 24px; border-radius: 999px; border: 1px solid transparent; font-size: 11px; font-weight: 900; padding: 0 8px; }
+    .ss-pending { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .ss-progress { color: #155eef; background: rgba(41,112,255,.1); border-color: rgba(41,112,255,.24); }
+    .ss-completed { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .ss-cancelled { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .record-type-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 72px; height: 24px; border-radius: 999px; border: 1px solid transparent; font-size: 11px; font-weight: 900; padding: 0 8px; }
+    .record-visit { color: #027a48; background: rgba(2,122,72,.1); border-color: rgba(2,122,72,.24); }
+    .record-session { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .map-frame { width: 100%; height: 230px; border: 1px solid rgba(16,24,40,.12); border-radius: 12px; overflow: hidden; background: #f8fafc; }
+    .map-frame iframe { width: 100%; height: 100%; border: 0; }
+
+    @media (max-width: 1200px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .layout-grid { grid-template-columns: 1fr; }
+      .service-details-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr; }
+      .service-details-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body data-menu="menu-orders">
+  <div class="preloader"></div>
+  <div id="full-container">
+    <div id="sidebar-slot" data-base="../"></div>
+
+    <main class="main-page">
+      <header class="page-header">
+        <div class="page-name">
+          <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+          <h2>Order Management</h2>
+        </div>
+
+        <div class="member-side d-flex align-items-center gap-2">
+          <div class="Orders notifcation-box dropdown">
+            <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              Notifications <span class="fsize-12 surface-secondary-400">13</span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-start">
+              <li class="dropdown-item d-flex justify-content-between align-items-center"><span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span></li>
+              <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+            </ul>
+          </div>
+
+          <div class="ksa-clock" title="Saudi Arabia Time">
+            <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+          </div>
+
+          <div class="language-box">
+            <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+            <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+          </div>
+
+          <div class="user dropdown">
+            <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"><img src="../assets/images/avatar.svg" alt="avatar" /></figure>
+            <ul class="dropdown-menu">
+              <li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Sror Rashad</b><p class="fsize-12 text-grey">Admin / Facility Dashboard</p></div></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-root">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a id="returnsListLink" href="returns-facility.html">Facility Return</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Service Return Details</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="page-content">
+        <div id="emptyState" class="empty-state d-none">
+          <div class="fsize-16 bold mb-4">Return not found</div>
+          <a id="emptyBackLink" class="btn btn-primary btn-32" href="returns-facility.html">Back to Returns</a>
+        </div>
+
+        <div id="detailsContent" class="d-none">
+          <div class="details-head mb-12">
+            <div>
+              <h3 class="details-title">Service Return Details <span id="rdId" class="text-grey"></span></h3>
+              <div class="chip-group mt-6">
+                <span id="chipType" class="type-pill">-</span>
+                <span id="chipStatus" class="status-badge">-</span>
+                <span id="chipRefund" class="status-badge">-</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <a id="headBackLink" class="btn btn-primary btn-32" href="returns-facility.html"><i class="fi fi-rr-arrow-small-left"></i><span>Back</span></a>
+            </div>
+          </div>
+
+          <div id="alertBox" class="alert-mini d-none"></div>
+
+          <div class="panel">
+            <h4 class="panel-title">Return Summary</h4>
+            <div class="summary-grid">
+              <div class="summary-item"><div class="k">Order No</div><div class="v" id="fOrderId">-</div></div>
+              <div class="summary-item"><div class="k">Provider</div><div class="v" id="fPurchaseDate">-</div></div>
+              <div class="summary-item"><div class="k">Return Date</div><div class="v" id="fReturnDate">-</div></div>
+              <div class="summary-item"><div class="k">Patient</div><div class="v" id="fCustomer">-</div></div>
+              <div class="summary-item"><div class="k">Patient Code</div><div class="v" id="fPhone">-</div></div>
+              <div class="summary-item"><div class="k">City</div><div class="v" id="fAddress">-</div></div>
+              <div class="summary-item"><div class="k">Cancellation Type</div><div class="v"><a class="link-inline" id="fMap" href="#">-</a></div></div>
+              <div class="summary-item"><div class="k">Cancellation Details</div><div class="v" id="fTracking">-</div></div>
+            </div>
+          </div>
+
+          <div class="layout-grid">
+            <section class="panel">
+              <div class="service-pane-stack">
+                <div class="sub-panel">
+                  <h4 class="sub-panel-title">Service Details</h4>
+                  <div class="service-details-grid mt-10">
+                    <div class="summary-item"><div class="k">Service Type</div><div class="v" id="sdServiceType">-</div></div>
+                    <div class="summary-item"><div class="k">Scheduled At</div><div class="v" id="sdScheduledAt">-</div></div>
+                    <div class="summary-item"><div class="k">Order Date</div><div class="v" id="sdOrderDate">-</div></div>
+                    <div class="summary-item"><div class="k">Provider</div><div class="v" id="sdProvider">-</div></div>
+                    <div class="summary-item"><div class="k">Service Status</div><div class="v" id="sdServiceStatus">-</div></div>
+                    <div class="summary-item"><div class="k">Payment Method</div><div class="v" id="sdPaymentMethod">-</div></div>
+                  </div>
+
+                  <div id="serviceLinesEmpty" class="empty-state d-none mt-10">
+                    <div class="fsize-15 bold mb-4">No service lines</div>
+                    <p class="text-grey mb-0">Service lines are not available for this order.</p>
+                  </div>
+
+                  <div id="serviceLinesWrap" class="table-responsive mt-10">
+                    <table class="return-items-table staff-table naraakum-table table-tight">
+                      <thead>
+                        <tr>
+                          <th>Service</th>
+                          <th>Quantity</th>
+                          <th>Status</th>
+                          <th>Provider Name</th>
+                          <th>Phone</th>
+                          <th>Email</th>
+                          <th class="text-end">Price</th>
+                        </tr>
+                      </thead>
+                      <tbody id="serviceLinesTbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="sub-panel">
+                  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                    <h4 class="sub-panel-title">Visit / Location Details</h4>
+                    <a id="serviceMapLink" class="link-inline" href="#" target="_blank" rel="noopener">Open on Google Maps</a>
+                  </div>
+
+                  <div class="service-details-grid mt-10">
+                    <div class="summary-item"><div class="k">Visit Type</div><div class="v" id="sdVisitType">-</div></div>
+                    <div class="summary-item"><div class="k">Patient City</div><div class="v" id="sdPatientCity">-</div></div>
+                    <div class="summary-item"><div class="k">Coordinates</div><div class="v" id="sdCoordinates">-</div></div>
+                  </div>
+
+                  <div id="serviceMapWrap" class="map-frame mt-10">
+                    <iframe id="serviceMapFrame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="about:blank" title="Patient Location"></iframe>
+                  </div>
+
+                  <div id="serviceMapEmpty" class="empty-state d-none mt-10">
+                    <div class="fsize-15 bold mb-4">Map location is not available</div>
+                    <p class="text-grey mb-0">No coordinates are linked to this service order.</p>
+                  </div>
+                </div>
+
+                <div class="sub-panel">
+                  <h4 class="sub-panel-title">Visit / Session Records</h4>
+                  <div id="recordLinesEmpty" class="empty-state d-none mt-10">
+                    <div class="fsize-15 bold mb-4">No patient records</div>
+                    <p class="text-grey mb-0">This patient does not have visit or session records yet.</p>
+                  </div>
+                  <div id="recordLinesWrap" class="table-responsive mt-10">
+                    <table class="return-items-table staff-table naraakum-table table-tight">
+                      <thead>
+                        <tr>
+                          <th>Record ID</th>
+                          <th>Type</th>
+                          <th>Provider</th>
+                          <th>Date</th>
+                          <th class="text-end">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="recordLinesTbody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div id="legacyReturnLines" class="d-none">
+                <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-10">
+                  <h4 class="panel-title mb-0">Service Lines</h4>
+                  <input id="itemSearch" type="text" class="form-control input-sm" placeholder="Search service" style="max-width: 220px;" />
+                </div>
+
+                <div id="decisionFilterBar" class="decision-filters">
+                  <button type="button" class="decision-chip is-active" data-filter="all">All <span class="count" id="filterAllCount">(0)</span></button>
+                  <button type="button" class="decision-chip" data-filter="approved">Approved <span class="count" id="filterApprovedCount">(0)</span></button>
+                  <button type="button" class="decision-chip" data-filter="rejected">Rejected <span class="count" id="filterRejectedCount">(0)</span></button>
+                  <button type="button" class="decision-chip" data-filter="pending">Pending <span class="count" id="filterPendingCount">(0)</span></button>
+                </div>
+
+                <div id="itemsEmpty" class="empty-state d-none">
+                  <div class="fsize-15 bold mb-4">No service lines</div>
+                  <p class="text-grey mb-0">This return does not include service lines.</p>
+                </div>
+
+                <div id="itemsWrap" class="table-responsive">
+                  <table class="return-items-table staff-table naraakum-table table-tight">
+                    <thead>
+                      <tr>
+                        <th>Service</th>
+                        <th>Main Service</th>
+                        <th>Requested Qty</th>
+                        <th>Approved Qty</th>
+                        <th>Unit Price</th>
+                        <th>Line Refund</th>
+                        <th>Reason</th>
+                        <th>Line Decision</th>
+                      </tr>
+                    </thead>
+                    <tbody id="itemsTbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+
+            <aside class="side-stack">
+              <div class="panel">
+                <h4 class="panel-title">Refund Summary</h4>
+                <div class="sum-row"><span>Subtotal (approved)</span><strong id="sumSubtotal">0.00 SAR</strong></div>
+                <div class="sum-row">
+                  <span>Fees</span>
+                  <input id="feesInput" type="number" step="0.01" class="form-control input-sm text-end" style="width: 120px;" />
+                </div>
+                <div class="sum-row">
+                  <span>Refund via</span>
+                  <select id="refundMethodSelect" class="form-control input-sm" style="width: 150px;">
+                    <option value="card">Card</option>
+                    <option value="wallet">Wallet</option>
+                    <option value="bank-transfer">Bank Transfer</option>
+                    <option value="cash">Cash</option>
+                  </select>
+                </div>
+                <div class="sum-row"><span>Final refund amount</span><strong id="sumFinal">0.00 SAR</strong></div>
+                <div class="d-flex align-items-center justify-content-between mt-10 mb-10">
+                  <span class="fsize-12 text-grey">Refund status</span>
+                  <span id="sumRefundBadge" class="status-badge f-not-released">Not Released</span>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                  <button id="releaseBtn" class="btn btn-primary btn-32 w-100" disabled>Release Refund</button>
+                  <a id="panelBackLink" href="returns-facility.html" class="btn btn-primary-revers btn-32 w-100">Back</a>
+                </div>
+                <div id="successBox" class="success-box d-none mt-10">
+                  Refund released successfully and this return is now locked.
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal fade" id="releaseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Refund Release</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="sum-row"><span>Return ID</span><strong id="mReturnId">-</strong></div>
+          <div class="sum-row"><span>Order No</span><strong id="mOrderId">-</strong></div>
+          <div class="sum-row"><span>Final Refund Amount</span><strong id="mAmount">-</strong></div>
+          <div class="sum-row"><span>Refund via</span><strong id="mRefundMethod">-</strong></div>
+          <div class="sum-row"><span>Approved items count</span><strong id="mApprovedCount">-</strong></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmReleaseBtn">Confirm Release</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/includes.js"></script>
+  <script src="../assets/js/adminSideMenu.js"></script>
+  <script src="../assets/js/data.js"></script>
+<script src="../assets/js/order-details-data.js"></script>
+<script src="../assets/js/service-returns-data.js"></script>
+<script src="../assets/js/return-service-details.js"></script>
+</body>
+</html>

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Services</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page services-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Services</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Services</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top operations bar -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="servicesSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by service / main service"
+                  />
+                  <button id="btnServicesSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnServicesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#services-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <button id="btnImportServices" type="button" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-file-import"></i>
+                  <span>Import</span>
+                </button>
+
+                <button id="btnExportServices" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+
+                <a href="../services/service-add-step-1.html" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-plus-small"></i>
+                  <span>Add Service</span>
+                </a>
+
+                <input id="servicesImportFileInput" type="file" accept=".csv,.xlsx,.xls" hidden />
+              </div>
+            </div>
+          </div>
+
+          <!-- Services table -->
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight services-table" id="servicesTable">
+                  <thead>
+                    <tr>
+                      <th class="col-check">
+                        <div class="head-check">
+                          <input type="checkbox" id="checkAllVisibleServices" title="Select visible rows" />
+                        </div>
+                      </th>
+
+                      <th class="col-seq"># <span class="sort-icon">▲▼</span></th>
+                      <th>Service <span class="sort-icon">▲▼</span></th>
+                      <th class="text-center">Active</th>
+                      <th>Price</th>
+                      <th>Final Availability</th>
+                      <th class="col-actions text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="servicesTbody">
+                    <!-- Available -->
+                    <tr data-service="video consultation" data-main="telemedicine" data-active="1" data-availability="available" data-price="150.00">
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">1</span></td>
+                      <td>
+                        <div class="service-name">Video Consultation</div>
+                        <div class="service-main">Telemedicine</div>
+                      </td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="price-cell"><span class="bold">150.00</span> SR</td>
+                      <td class="availability-cell">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="status-pill st-accepted availability-pill">Available</span>
+                        </div>
+                      </td>
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- No Providers (tooltip only) -->
+                    <tr data-service="home doctor visit" data-main="doctor visit" data-active="1" data-availability="no providers" data-price="250.00">
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">2</span></td>
+                      <td>
+                        <div class="service-name">Home Doctor Visit</div>
+                        <div class="service-main">Doctor Visit</div>
+                      </td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="price-cell"><span class="bold">250.00</span> SR</td>
+                      <td class="availability-cell">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="status-pill st-missed availability-pill">No Providers</span>
+                          <span
+                            class="info-icon availability-info"
+                            role="button"
+                            tabindex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            title="No Doctors: ليس لديك مقدمي خدمة مفعلين لهذه الخدمة او قد يكون جدولة مقدم الخدمة غير مضاف او محدث"
+                          >
+                            <i class="fi fi-rr-info"></i>
+                          </span>
+                        </div>
+                      </td>
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Unavailable (tooltip only) -->
+                    <tr data-service="lab sample collection" data-main="lab tests" data-active="1" data-availability="unavailable" data-price="120.00">
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">3</span></td>
+                      <td>
+                        <div class="service-name">Lab Sample Collection</div>
+                        <div class="service-main">Lab Tests</div>
+                      </td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="price-cell"><span class="bold">120.00</span> SR</td>
+                      <td class="availability-cell">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="status-pill st-cancel availability-pill">Unavailable</span>
+                          <span
+                            class="info-icon availability-info"
+                            role="button"
+                            tabindex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            title="الخدمة غير مفعلة"
+                          >
+                            <i class="fi fi-rr-info"></i>
+                          </span>
+                        </div>
+                      </td>
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Active = disActive + Unavailable (requested) -->
+                    <tr data-service="nursing at home" data-main="nursing visit" data-active="0" data-availability="unavailable" data-price="180.00">
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">4</span></td>
+                      <td>
+                        <div class="service-name">Nursing at Home</div>
+                        <div class="service-main">Nursing Visit</div>
+                      </td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="price-cell"><span class="bold">180.00</span> SR</td>
+                      <td class="availability-cell">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="status-pill st-cancel availability-pill">Unavailable</span>
+                          <span
+                            class="info-icon availability-info"
+                            role="button"
+                            tabindex="0"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-custom-class="custom-tooltip"
+                            title="الخدمة غير مفعلة"
+                          >
+                            <i class="fi fi-rr-info"></i>
+                          </span>
+                        </div>
+                      </td>
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Available -->
+                    <tr data-service="physiotherapy session" data-main="physiotherapy" data-active="1" data-availability="available" data-price="220.00">
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">5</span></td>
+                      <td>
+                        <div class="service-name">Physiotherapy Session</div>
+                        <div class="service-main">Physiotherapy</div>
+                      </td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="price-cell"><span class="bold">220.00</span> SR</td>
+                      <td class="availability-cell">
+                        <div class="d-flex align-items-center gap-2">
+                          <span class="status-pill st-accepted availability-pill">Available</span>
+                        </div>
+                      </td>
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="servicesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="servicesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="servicesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="servicesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="servicesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="servicesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="servicesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="services-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Services</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="sfMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="telemedicine">Telemedicine</option>
+                  <option value="doctor visit">Doctor Visit</option>
+                  <option value="nursing visit">Nursing Visit</option>
+                  <option value="health companion">Health Companion</option>
+                  <option value="home dialysis">Home Dialysis</option>
+                  <option value="physiotherapy">Physiotherapy</option>
+                  <option value="lab tests">Lab Tests</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Service</label>
+                <select id="sfService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="video consultation">Video Consultation</option>
+                  <option value="home doctor visit">Home Doctor Visit</option>
+                  <option value="lab sample collection">Lab Sample Collection</option>
+                  <option value="nursing at home">Nursing at Home</option>
+                  <option value="physiotherapy session">Physiotherapy Session</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Active</label>
+                <select id="sfActive" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnServicesFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnServicesApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div class="modal fade" id="editPriceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Price</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-2">
+              <div class="fsize-12 text-grey">Service</div>
+              <div class="semiBold" id="priceServiceLabel">—</div>
+              <div class="fsize-12 text-grey" id="priceMainLabel">—</div>
+            </div>
+
+            <label class="fsize-12 text-grey">Price (SR)</label>
+            <input
+              id="priceInput"
+              type="number"
+              min="0"
+              step="0.01"
+              class="form-control form-control-32"
+              placeholder="e.g. 250.00"
+              required
+            />
+            <div class="text-red fsize-12 mt-2 d-none" id="priceError">Price is required.</div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnSavePrice" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("servicesTbody");
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        const searchInput = document.getElementById("servicesSearchInput");
+        const btnSearch = document.getElementById("btnServicesSearch");
+        const btnReset = document.getElementById("btnServicesReset");
+
+        const rowsSelect = document.getElementById("servicesRowsPerPage");
+        const indicator = document.getElementById("servicesPageIndicator");
+        const currentBadge = document.getElementById("servicesCurrentPageBadge");
+
+        const btnFirst = document.getElementById("servicesFirstPage");
+        const btnPrev = document.getElementById("servicesPrevPage");
+        const btnNext = document.getElementById("servicesNextPage");
+        const btnLast = document.getElementById("servicesLastPage");
+
+        const checkAllVisible = document.getElementById("checkAllVisibleServices");
+
+        // Filter fields
+        const sfMain = document.getElementById("sfMainService");
+        const sfService = document.getElementById("sfService");
+        const sfActive = document.getElementById("sfActive");
+        const btnApplyFilter = document.getElementById("btnServicesApplyFilter");
+        const btnFilterReset = document.getElementById("btnServicesFilterReset");
+
+        // Import / Export
+        const btnImport = document.getElementById("btnImportServices");
+        const importInput = document.getElementById("servicesImportFileInput");
+        const btnExport = document.getElementById("btnExportServices");
+
+        // Edit price modal
+        const editPriceModalEl = document.getElementById("editPriceModal");
+        const editPriceModal = editPriceModalEl ? new bootstrap.Modal(editPriceModalEl) : null;
+        const priceInput = document.getElementById("priceInput");
+        const priceServiceLabel = document.getElementById("priceServiceLabel");
+        const priceMainLabel = document.getElementById("priceMainLabel");
+        const btnSavePrice = document.getElementById("btnSavePrice");
+        const priceError = document.getElementById("priceError");
+
+        let currentPage = 1;
+        let filteredRows = [...allRows];
+        let currentRowForPrice = null;
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function availabilityPillClassByState(state) {
+          const s = norm(state);
+          if (s === "available") return "status-pill st-accepted";
+          if (s === "no providers") return "status-pill st-missed";
+          return "status-pill st-cancel"; // unavailable
+        }
+
+        function availabilityLabelByState(state) {
+          const s = norm(state);
+          if (s === "available") return "Available";
+          if (s === "no providers") return "No Providers";
+          return "Unavailable";
+        }
+
+        function availabilityNoteByState(state) {
+          const s = norm(state);
+          if (s === "no providers") {
+            return "No Doctors: ليس لديك مقدمي خدمة مفعلين لهذه الخدمة او قد يكون جدولة مقدم الخدمة غير مضاف او محدث";
+          }
+          if (s === "unavailable") {
+            return "الخدمة غير مفعلة";
+          }
+          return "";
+        }
+
+        function initOrRefreshTooltip(el) {
+          if (!el) return;
+          const inst = bootstrap.Tooltip.getInstance(el);
+          if (inst) inst.dispose();
+          new bootstrap.Tooltip(el);
+        }
+
+        function syncAvailabilityUI(tr) {
+          if (!tr) return;
+
+          const state = tr.getAttribute("data-availability") || "available";
+
+          const pill = tr.querySelector(".availability-pill");
+          if (pill) {
+            pill.className = availabilityPillClassByState(state) + " availability-pill";
+            pill.textContent = availabilityLabelByState(state);
+          }
+
+          const note = availabilityNoteByState(state);
+          let info = tr.querySelector(".availability-info");
+
+          if (note) {
+            // Ensure wrapper exists
+            let wrap = tr.querySelector(".availability-cell .d-flex");
+            const td = tr.querySelector(".availability-cell");
+            if (!wrap && td) {
+              wrap = document.createElement("div");
+              wrap.className = "d-flex align-items-center gap-2";
+              td.innerHTML = "";
+              if (pill) wrap.appendChild(pill);
+              td.appendChild(wrap);
+            }
+
+            // Ensure info icon exists
+            if (!info) {
+              info = document.createElement("span");
+              info.className = "info-icon availability-info";
+              info.setAttribute("role", "button");
+              info.setAttribute("tabindex", "0");
+              info.setAttribute("data-bs-toggle", "tooltip");
+              info.setAttribute("data-bs-placement", "top");
+              info.setAttribute("data-bs-custom-class", "custom-tooltip");
+              info.innerHTML = '<i class="fi fi-rr-info"></i>';
+
+              const wrap2 = tr.querySelector(".availability-cell .d-flex");
+              if (wrap2) wrap2.appendChild(info);
+            }
+
+            info.setAttribute("title", note);
+            initOrRefreshTooltip(info);
+          } else {
+            // Remove info icon if exists
+            if (info) {
+              const inst = bootstrap.Tooltip.getInstance(info);
+              if (inst) inst.dispose();
+              info.remove();
+            }
+          }
+        }
+
+        function getRowData(tr) {
+          return {
+            service: norm(tr.getAttribute("data-service")),
+            main: norm(tr.getAttribute("data-main")),
+            active: norm(tr.getAttribute("data-active"))
+          };
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput?.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.service.includes(q) || d.main.includes(q);
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+          const m = norm(sfMain?.value);
+          const s = norm(sfService?.value);
+          const a = norm(sfActive?.value);
+
+          if (m && d.main !== m) return false;
+          if (s && d.service !== s) return false;
+          if (a && d.active !== a) return false;
+
+          return true;
+        }
+
+        function perPageVal() {
+          const v = rowsSelect?.value || "10";
+          return v === "all" ? filteredRows.length : parseInt(v, 10) || 10;
+        }
+
+        function totalPages() {
+          const p = perPageVal();
+          if (p <= 0) return 1;
+          return Math.max(1, Math.ceil(filteredRows.length / p));
+        }
+
+        function getVisibleRows() {
+          return filteredRows.filter((tr) => !tr.classList.contains("d-none"));
+        }
+
+        function render() {
+          allRows.forEach((tr) => tr.classList.add("d-none"));
+
+          const p = perPageVal();
+          const pages = totalPages();
+
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+          } else {
+            const start = (currentPage - 1) * p;
+            const end = start + p;
+            filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+
+          if (checkAllVisible) {
+            const vis = getVisibleRows();
+            if (vis.length === 0) {
+              checkAllVisible.checked = false;
+              checkAllVisible.indeterminate = false;
+            } else {
+              const checkedCount = vis.filter((tr) => tr.querySelector(".row-check")?.checked).length;
+              checkAllVisible.checked = checkedCount === vis.length;
+              checkAllVisible.indeterminate = checkedCount > 0 && checkedCount < vis.length;
+            }
+          }
+        }
+
+        function applyAll() {
+          filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+          filteredRows.forEach(syncAvailabilityUI);
+          currentPage = 1;
+
+          if (checkAllVisible) {
+            checkAllVisible.checked = false;
+            checkAllVisible.indeterminate = false;
+          }
+          render();
+        }
+
+        // Search
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+
+        // Reset
+        if (btnReset)
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            if (sfMain) sfMain.value = "";
+            if (sfService) sfService.value = "";
+            if (sfActive) sfActive.value = "";
+            applyAll();
+          });
+
+        // Filters
+        if (btnApplyFilter)
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll();
+            const modal = bootstrap.Modal.getInstance(document.getElementById("services-filter-modal"));
+            if (modal) modal.hide();
+          });
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", () => {
+            if (sfMain) sfMain.value = "";
+            if (sfService) sfService.value = "";
+            if (sfActive) sfActive.value = "";
+            applyAll();
+          });
+
+        // Pagination
+        if (rowsSelect)
+          rowsSelect.addEventListener("change", () => {
+            currentPage = 1;
+            if (checkAllVisible) {
+              checkAllVisible.checked = false;
+              checkAllVisible.indeterminate = false;
+            }
+            render();
+          });
+
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        // Select visible rows
+        if (checkAllVisible)
+          checkAllVisible.addEventListener("change", () => {
+            const vis = getVisibleRows();
+            vis.forEach((tr) => {
+              const cb = tr.querySelector(".row-check");
+              if (cb) cb.checked = checkAllVisible.checked;
+            });
+            render();
+          });
+
+        // Row checkbox + Active toggle + Edit Price open
+        tbody.addEventListener("change", (e) => {
+          const t = e.target;
+          if (!(t instanceof HTMLInputElement)) return;
+
+          if (t.classList.contains("row-check")) {
+            render();
+            return;
+          }
+
+          if (t.classList.contains("active-switch")) {
+            const tr = t.closest("tr");
+            if (!tr) return;
+
+            tr.setAttribute("data-active", t.checked ? "1" : "0");
+
+            // OFF => force Unavailable and store previous
+            if (!t.checked) {
+              const curAvail = tr.getAttribute("data-availability") || "available";
+              tr.setAttribute("data-prev-availability", curAvail);
+              tr.setAttribute("data-availability", "unavailable");
+            } else {
+              // ON => restore previous availability if exists, else available
+              const prev = tr.getAttribute("data-prev-availability");
+              tr.setAttribute("data-availability", prev ? prev : "available");
+              tr.removeAttribute("data-prev-availability");
+            }
+
+            syncAvailabilityUI(tr);
+            applyAll();
+          }
+        });
+
+        tbody.addEventListener("click", (e) => {
+          const btn = e.target.closest(".edit-price-btn");
+          if (!btn) return;
+
+          const tr = btn.closest("tr");
+          if (!tr) return;
+
+          currentRowForPrice = tr;
+
+          const serviceTxt = tr.querySelector(".service-name")?.textContent?.trim() || "—";
+          const mainTxt = tr.querySelector(".service-main")?.textContent?.trim() || "—";
+
+          priceServiceLabel.textContent = serviceTxt;
+          priceMainLabel.textContent = mainTxt;
+
+          const currentPrice = tr.getAttribute("data-price") || "";
+          priceInput.value = currentPrice;
+
+          if (priceError) priceError.classList.add("d-none");
+
+          if (editPriceModal) editPriceModal.show();
+        });
+
+        // Save price (required)
+        if (btnSavePrice)
+          btnSavePrice.addEventListener("click", () => {
+            if (!currentRowForPrice) return;
+
+            const v = (priceInput.value || "").trim();
+            if (!v) {
+              if (priceError) priceError.classList.remove("d-none");
+              priceInput.focus();
+              return;
+            }
+
+            const num = Number(v);
+            const fixed = isFinite(num) ? num.toFixed(2) : "0.00";
+
+            currentRowForPrice.setAttribute("data-price", fixed);
+
+            const priceCell = currentRowForPrice.querySelector(".price-cell");
+            if (priceCell) priceCell.innerHTML = `<span class="bold">${fixed}</span> SR`;
+
+            if (editPriceModal) editPriceModal.hide();
+          });
+
+        // Import placeholder
+        if (btnImport && importInput) {
+          btnImport.addEventListener("click", () => importInput.click());
+          importInput.addEventListener("change", () => {
+            if (!importInput.files || !importInput.files.length) return;
+            const f = importInput.files[0];
+            alert(`Selected file: ${f.name}\n(Parsing can be added in backend / with XLSX library later.)`);
+            importInput.value = "";
+          });
+        }
+
+        // Export selected to CSV (requires selection)
+        function csvEscape(v) {
+          const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+          if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+          return s;
+        }
+
+        if (btnExport)
+          btnExport.addEventListener("click", () => {
+            const selected = allRows.filter((tr) => tr.querySelector(".row-check")?.checked);
+            if (selected.length === 0) {
+              alert("Please select at least one service to export.");
+              return;
+            }
+
+            const headers = ["Service", "Main Service", "Active", "Price", "Final Availability"];
+            const lines = [headers.map(csvEscape).join(",")];
+
+            selected.forEach((tr) => {
+              const service = tr.querySelector(".service-name")?.textContent?.trim() || "";
+              const main = tr.querySelector(".service-main")?.textContent?.trim() || "";
+              const active = tr.getAttribute("data-active") === "1" ? "Active" : "Inactive";
+              const price = tr.getAttribute("data-price") || "";
+              const availability = availabilityLabelByState(tr.getAttribute("data-availability") || "available");
+
+              lines.push([service, main, active, price, availability].map(csvEscape).join(","));
+            });
+
+            const csvContent = "\ufeff" + lines.join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "services-export.csv";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          });
+
+        function availabilityLabelByState(state) {
+          const s = norm(state);
+          if (s === "available") return "Available";
+          if (s === "no providers") return "No Providers";
+          return "Unavailable";
+        }
+
+        // Tooltips init (page level + refresh handled per row)
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
+
+        // Initial sync
+        allRows.forEach(syncAvailabilityUI);
+        applyAll();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

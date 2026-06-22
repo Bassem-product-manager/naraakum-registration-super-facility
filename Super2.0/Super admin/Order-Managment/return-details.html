@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Return Details</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green: #0f8c8c; }
+    .facility-line { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 6px; }
+    .facility-name { font-weight: 900; line-height: 1; margin: 0; }
+    .ksa-clock { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border: 1px solid rgba(16,24,40,.1); background: #fff; border-radius: 12px; font-weight: 900; font-size: 12px; color: #101828; white-space: nowrap; }
+    .ksa-clock .tz { color: var(--nk-green); font-weight: 900; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); }
+    .switch-account-item { display: flex; align-items: center; gap: 10px; }
+    .switch-account-item i { color: var(--nk-green); }
+
+    .details-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .details-title { margin: 0; font-size: 22px; font-weight: 900; color: #101828; }
+    .chip-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .type-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 84px; height: 28px; border-radius: 999px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); color: #0b6f6f; font-size: 12px; font-weight: 900; padding: 0 10px; }
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 116px; height: 28px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 900; padding: 0 10px; white-space: nowrap; }
+    .r-under-review { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .r-approved-full { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .r-approved-partial { color: #0b6f6f; background: rgba(15,140,140,.1); border-color: rgba(15,140,140,.24); }
+    .r-rejected { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .f-not-released { color: #475467; background: rgba(71,84,103,.08); border-color: rgba(71,84,103,.22); }
+    .f-ready { color: #155eef; background: rgba(41,112,255,.1); border-color: rgba(41,112,255,.24); }
+    .f-released { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .f-failed { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+
+    .panel { border: 1px solid rgba(16,24,40,.08); border-radius: 14px; background: #fff; padding: 14px; }
+    .panel-title { margin: 0 0 10px; font-size: 14px; font-weight: 900; color: #101828; }
+    .summary-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; }
+    .summary-item { border: 1px dashed rgba(16,24,40,.14); border-radius: 12px; padding: 10px; }
+    .summary-item .k { font-size: 11px; color: #667085; font-weight: 700; }
+    .summary-item .v { margin-top: 4px; font-size: 14px; color: #101828; font-weight: 900; word-break: break-word; }
+    .link-inline { color: var(--nk-green); font-weight: 900; text-decoration: none; }
+    .link-inline:hover { text-decoration: underline; }
+
+    .layout-grid { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr); gap: 14px; margin-top: 14px; }
+    .return-items-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .return-items-table thead th { font-size: 12px; font-weight: 900; color: #344054; background: #fff; border-bottom: 1px solid rgba(16,24,40,.1); padding: 10px; white-space: nowrap; }
+    .return-items-table tbody td { border-bottom: 1px solid rgba(16,24,40,.08); padding: 10px; vertical-align: middle; font-size: 12px; font-weight: 700; color: #101828; }
+    .return-items-table tbody tr:last-child td { border-bottom: 0; }
+    .return-items-table tbody tr.row-locked td { background: rgba(16,24,40,.03); }
+
+    .item-box { display: flex; align-items: center; gap: 10px; min-width: 220px; }
+    .item-box img { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; border: 1px solid rgba(16,24,40,.12); }
+    .item-name { margin: 0; font-size: 12px; font-weight: 900; color: #101828; line-height: 1.2; }
+    .item-meta { margin-top: 2px; color: #667085; font-size: 11px; font-weight: 700; }
+    .availability { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; height: 22px; border-radius: 999px; border: 1px solid transparent; font-size: 11px; font-weight: 900; margin-top: 4px; padding: 0 8px; }
+    .av-available { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .av-unavailable { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .lock-label { display: inline-flex; align-items: center; gap: 5px; color: #475467; background: rgba(71,84,103,.08); border: 1px solid rgba(71,84,103,.2); border-radius: 999px; height: 22px; font-size: 10px; font-weight: 900; padding: 0 8px; margin-top: 4px; }
+
+    .qty-input { width: 74px; min-height: 34px; }
+    .line-total { font-weight: 900; white-space: nowrap; }
+    .condition-pill { display: inline-flex; align-items: center; justify-content: center; height: 24px; border-radius: 999px; font-size: 11px; font-weight: 900; padding: 0 8px; border: 1px solid transparent; }
+    .c-closed { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .c-opened { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .c-damaged { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .thumb-btn { border: 1px solid rgba(16,24,40,.12); border-radius: 10px; background: #fff; width: 44px; height: 36px; padding: 2px; }
+    .thumb-btn img { width: 100%; height: 100%; object-fit: cover; border-radius: 8px; }
+    .note-toggle { border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); color: #0b6f6f; border-radius: 8px; width: 32px; height: 30px; display: inline-flex; align-items: center; justify-content: center; }
+    .note-text { margin-top: 6px; font-size: 11px; color: #475467; line-height: 1.4; }
+
+    .decision-select, .line-decision { min-height: 34px; }
+    .decision-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+    .decision-chip { border: 1px solid rgba(16,24,40,.14); border-radius: 999px; background: #fff; color: #344054; height: 32px; font-size: 12px; font-weight: 800; padding: 0 10px; display: inline-flex; align-items: center; gap: 6px; }
+    .decision-chip .count { color: #667085; font-weight: 900; }
+    .decision-chip.is-active { border-color: rgba(15,140,140,.35); background: rgba(15,140,140,.08); color: #0b6f6f; }
+    .decision-chip.is-active .count { color: #0b6f6f; }
+    .side-stack { display: grid; gap: 12px; }
+    .sum-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px dashed rgba(16,24,40,.12); font-size: 13px; font-weight: 800; color: #344054; }
+    .sum-row:last-of-type { border-bottom: 0; }
+    .sum-row strong { color: #101828; font-weight: 900; }
+    .input-sm { min-height: 34px; padding: 6px 10px !important; font-size: 12px !important; }
+    .success-box { border: 1px solid rgba(18,183,106,.28); background: rgba(18,183,106,.08); border-radius: 12px; padding: 10px; color: #067647; font-size: 12px; font-weight: 800; }
+    .release-links a { color: var(--nk-green); font-size: 12px; font-weight: 900; text-decoration: none; margin-right: 12px; }
+    .release-links a:hover { text-decoration: underline; }
+    .empty-state { border: 1px dashed rgba(16,24,40,.2); border-radius: 14px; background: #fff; text-align: center; padding: 30px 16px; }
+    .alert-mini { border-radius: 10px; padding: 10px 12px; font-size: 12px; font-weight: 800; }
+    .alert-ok { color: #067647; background: rgba(18,183,106,.1); border: 1px solid rgba(18,183,106,.24); }
+    .alert-err { color: #b42318; background: rgba(240,68,56,.1); border: 1px solid rgba(240,68,56,.24); }
+
+    @media (max-width: 1200px) {
+      .summary-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .layout-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body data-menu="menu-orders">
+  <div class="preloader"></div>
+  <div id="full-container">
+    <div id="sidebar-slot" data-base="../"></div>
+
+    <main class="main-page">
+      <header class="page-header">
+        <div class="page-name">
+          <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+          <h2>Order Management</h2>
+        </div>
+
+        <div class="member-side d-flex align-items-center gap-2">
+          <div class="Orders notifcation-box dropdown">
+            <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              Notifications <span class="fsize-12 surface-secondary-400">13</span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-start">
+              <li class="dropdown-item d-flex justify-content-between align-items-center"><span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span></li>
+              <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+            </ul>
+          </div>
+
+          <div class="ksa-clock" title="Saudi Arabia Time">
+            <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+          </div>
+
+          <div class="language-box">
+            <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+            <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+          </div>
+
+          <div class="user dropdown">
+            <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"><img src="../assets/images/avatar.svg" alt="avatar" /></figure>
+            <ul class="dropdown-menu">
+              <li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Sror Rashad</b><p class="fsize-12 text-grey">Admin / Facility Dashboard</p></div></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-root">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><a href="returns-list.html">Returns</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Return Details</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="page-content">
+        <div id="emptyState" class="empty-state d-none">
+          <div class="fsize-16 bold mb-4">Return not found</div>
+          <a class="btn btn-primary btn-32" href="returns-list.html">Back to Returns</a>
+        </div>
+
+        <div id="detailsContent" class="d-none">
+          <div class="details-head mb-12">
+            <div>
+              <h3 class="details-title">Return Details <span id="rdId" class="text-grey"></span></h3>
+              <div class="chip-group mt-6">
+                <span id="chipType" class="type-pill">-</span>
+                <span id="chipStatus" class="status-badge">-</span>
+                <span id="chipRefund" class="status-badge">-</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <a id="orderLink" class="btn btn-primary-revers btn-32" href="#">View Original Order</a>
+              <a class="btn btn-primary btn-32" href="returns-list.html"><i class="fi fi-rr-arrow-small-left"></i><span>Back</span></a>
+            </div>
+          </div>
+
+          <div id="alertBox" class="alert-mini d-none"></div>
+
+          <div class="panel">
+            <h4 class="panel-title">Return Summary</h4>
+            <div class="summary-grid">
+              <div class="summary-item"><div class="k">Purchase Order ID</div><div class="v" id="fOrderId">-</div></div>
+              <div class="summary-item"><div class="k">Purchase Date</div><div class="v" id="fPurchaseDate">-</div></div>
+              <div class="summary-item"><div class="k">Return Date</div><div class="v" id="fReturnDate">-</div></div>
+              <div class="summary-item"><div class="k">Customer</div><div class="v" id="fCustomer">-</div></div>
+              <div class="summary-item"><div class="k">Phone</div><div class="v" id="fPhone">-</div></div>
+              <div class="summary-item"><div class="k">Address</div><div class="v" id="fAddress">-</div></div>
+              <div class="summary-item"><div class="k">Map</div><div class="v"><a class="link-inline" id="fMap" href="#" target="_blank" rel="noopener">Open location</a></div></div>
+              <div class="summary-item"><div class="k">Tracking</div><div class="v" id="fTracking">-</div></div>
+            </div>
+          </div>
+
+          <div class="layout-grid">
+            <section class="panel">
+              <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap mb-10">
+                <h4 class="panel-title mb-0">Returned Items</h4>
+                <input id="itemSearch" type="text" class="form-control input-sm" placeholder="Search item" style="max-width: 220px;" />
+              </div>
+
+              <div id="decisionFilterBar" class="decision-filters">
+                <button type="button" class="decision-chip is-active" data-filter="all">All <span class="count" id="filterAllCount">(0)</span></button>
+                <button type="button" class="decision-chip" data-filter="approved">Approved <span class="count" id="filterApprovedCount">(0)</span></button>
+                <button type="button" class="decision-chip" data-filter="rejected">Rejected <span class="count" id="filterRejectedCount">(0)</span></button>
+                <button type="button" class="decision-chip" data-filter="pending">Pending <span class="count" id="filterPendingCount">(0)</span></button>
+              </div>
+
+              <div id="itemsEmpty" class="empty-state d-none">
+                <div class="fsize-15 bold mb-4">No return items</div>
+                <p class="text-grey mb-0">This return request does not include items.</p>
+              </div>
+
+              <div id="itemsWrap" class="table-responsive">
+                <table class="return-items-table staff-table naraakum-table table-tight">
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Purchased Qty</th>
+                      <th>Requested Qty</th>
+                      <th>Approved Qty</th>
+                      <th>Unit Price</th>
+                      <th>Line Refund</th>
+                      <th>Reason</th>
+                      <th>Package</th>
+                      <th>Return Image</th>
+                      <th>Line Decision</th>
+                      <th>Notes</th>
+                    </tr>
+                  </thead>
+                  <tbody id="itemsTbody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <aside class="side-stack">
+              <div class="panel">
+                <h4 class="panel-title">Pharmacy Decision</h4>
+                <label class="fsize-12 text-grey mb-4">Decision</label>
+                <span id="decisionBadge" class="status-badge r-under-review">Under Review</span>
+              </div>
+
+              <div class="panel">
+                <h4 class="panel-title">Refund Summary</h4>
+                <div class="sum-row"><span>Subtotal (approved)</span><strong id="sumSubtotal">0.00 SAR</strong></div>
+                <div class="sum-row"><span>Shipping adjustment</span><strong id="sumShippingAdj">0.00 SAR</strong></div>
+                <div class="sum-row">
+                  <span>Fees</span>
+                  <input id="feesInput" type="number" step="0.01" class="form-control input-sm text-end" style="width: 120px;" />
+                </div>
+                <div class="sum-row">
+                  <span>Refund via</span>
+                  <select id="refundMethodSelect" class="form-control input-sm" style="width: 150px;">
+                    <option value="card">Card</option>
+                    <option value="wallet">Wallet</option>
+                    <option value="bank-transfer">Bank Transfer</option>
+                    <option value="cash">Cash</option>
+                  </select>
+                </div>
+                <div class="sum-row"><span>Final refund amount</span><strong id="sumFinal">0.00 SAR</strong></div>
+                <div class="d-flex align-items-center justify-content-between mt-10 mb-10">
+                  <span class="fsize-12 text-grey">Refund status</span>
+                  <span id="sumRefundBadge" class="status-badge f-not-released">Not Released</span>
+                </div>
+                <div class="d-flex flex-column gap-2">
+                  <button id="releaseBtn" class="btn btn-primary btn-32 w-100" disabled>Release Refund</button>
+                  <a href="returns-list.html" class="btn btn-primary-revers btn-32 w-100">Back</a>
+                </div>
+                <div id="successBox" class="success-box d-none mt-10">
+                  Refund released successfully.
+                  <div class="release-links mt-6">
+                    <a href="#">View Tax Invoice</a>
+                    <a href="#">View Ledger Entry</a>
+                    <a href="#">View Deposit Transaction</a>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal fade" id="releaseModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Refund Release</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="sum-row"><span>Return ID</span><strong id="mReturnId">-</strong></div>
+          <div class="sum-row"><span>Order ID</span><strong id="mOrderId">-</strong></div>
+          <div class="sum-row"><span>Final Refund Amount</span><strong id="mAmount">-</strong></div>
+          <div class="sum-row"><span>Refund via</span><strong id="mRefundMethod">-</strong></div>
+          <div class="sum-row"><span>Approved items count</span><strong id="mApprovedCount">-</strong></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmReleaseBtn">Confirm Release</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="imageTitle">Return Image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="imagePreview" src="" alt="Return" style="max-width:100%;border-radius:12px;border:1px solid rgba(16,24,40,.12);" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/includes.js"></script>
+  <script src="../assets/js/adminSideMenu.js"></script>
+  <script src="../assets/js/pharmacy-returns-data.js"></script>
+  <script>
+    (function () {
+      var ksaEl = document.getElementById("ksaTime");
+      if (!ksaEl) return;
+      function tick() {
+        try {
+          var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Riyadh", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+          ksaEl.textContent = fmt.format(new Date());
+        } catch (e) {
+          ksaEl.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    (function () {
+      var emptyState = document.getElementById("emptyState");
+      var detailsContent = document.getElementById("detailsContent");
+      var alertBox = document.getElementById("alertBox");
+      var itemSearch = document.getElementById("itemSearch");
+      var itemsWrap = document.getElementById("itemsWrap");
+      var itemsEmpty = document.getElementById("itemsEmpty");
+      var itemsTbody = document.getElementById("itemsTbody");
+      var decisionFilterBar = document.getElementById("decisionFilterBar");
+      var decisionBadge = document.getElementById("decisionBadge");
+      var feesInput = document.getElementById("feesInput");
+      var refundMethodSelect = document.getElementById("refundMethodSelect");
+      var releaseBtn = document.getElementById("releaseBtn");
+      var successBox = document.getElementById("successBox");
+      var orderLink = document.getElementById("orderLink");
+      var releaseModalEl = document.getElementById("releaseModal");
+      var releaseModal = window.bootstrap ? bootstrap.Modal.getOrCreateInstance(releaseModalEl) : null;
+      var imageModalEl = document.getElementById("imageModal");
+      var imageModal = window.bootstrap ? bootstrap.Modal.getOrCreateInstance(imageModalEl) : null;
+
+      var query = new URLSearchParams(window.location.search);
+      var requestedReturnId = query.get("returnId") || query.get("id") || query.get("returnID");
+      var requestedOrderId = query.get("orderId") || query.get("po") || query.get("orderID");
+      var allReturns = NKReturns.load();
+
+      function normalizeKey(value) {
+        return String(value || "").trim();
+      }
+
+      var keyReturnId = normalizeKey(requestedReturnId);
+      var keyOrderId = normalizeKey(requestedOrderId);
+
+      var currentIndex = -1;
+      if (keyReturnId) {
+        currentIndex = allReturns.findIndex(function (r) {
+          return normalizeKey(r.id) === keyReturnId;
+        });
+      }
+      if (currentIndex === -1 && keyOrderId) {
+        currentIndex = allReturns.findIndex(function (r) {
+          return normalizeKey(r.orderId) === keyOrderId;
+        });
+      }
+      if (currentIndex === -1) currentIndex = allReturns.length ? 0 : -1;
+      if (currentIndex === -1) {
+        emptyState.classList.remove("d-none");
+        return;
+      }
+
+      var current = allReturns[currentIndex];
+      var activeLineFilter = "all";
+      detailsContent.classList.remove("d-none");
+
+      function showAlert(type, text) {
+        if (!text) {
+          alertBox.className = "alert-mini d-none";
+          alertBox.textContent = "";
+          return;
+        }
+        alertBox.className = "alert-mini " + (type === "error" ? "alert-err" : "alert-ok");
+        alertBox.textContent = text;
+      }
+
+      function statusClass(status) {
+        if (status === "Approved (Full)") return "r-approved-full";
+        if (status === "Approved (Partial)") return "r-approved-partial";
+        if (status === "Rejected") return "r-rejected";
+        return "r-under-review";
+      }
+
+      function refundClass(status) {
+        if (status === "Ready to Release") return "f-ready";
+        if (status === "Released") return "f-released";
+        if (status === "Failed") return "f-failed";
+        return "f-not-released";
+      }
+
+      function conditionClass(value) {
+        if (String(value).toLowerCase() === "closed") return "c-closed";
+        if (String(value).toLowerCase() === "damaged") return "c-damaged";
+        return "c-opened";
+      }
+
+      function decisionFromStatus(status) {
+        if (status === "Rejected") return "rejected";
+        if (status.indexOf("Approved") === 0) return "approved";
+        return "under-review";
+      }
+
+      function normalizeRefundMethod(value) {
+        if (window.NKReturns && typeof window.NKReturns.normalizeRefundMethod === "function") {
+          return window.NKReturns.normalizeRefundMethod(value);
+        }
+        var method = String(value || "").trim().toLowerCase();
+        if (method === "card" || method === "wallet" || method === "bank-transfer" || method === "cash") {
+          return method;
+        }
+        return "card";
+      }
+
+      function refundMethodLabel(value) {
+        var method = normalizeRefundMethod(value);
+        if (method === "wallet") return "Wallet";
+        if (method === "bank-transfer") return "Bank Transfer";
+        if (method === "cash") return "Cash";
+        return "Card";
+      }
+
+      function getDecisionCounts() {
+        var fallback = { approved: 0, rejected: 0, pending: 0, total: current.items.length };
+        var counts = current.computedDecisionCounts || fallback;
+        var approved = Number(counts.approved || 0);
+        var rejected = Number(counts.rejected || 0);
+        var pending = Number(counts.pending || 0);
+        var total = Number(counts.total || approved + rejected + pending);
+        return {
+          approved: approved,
+          rejected: rejected,
+          pending: pending,
+          total: total
+        };
+      }
+
+      function lineMatchesDecision(item, filterValue) {
+        if (filterValue === "all") return true;
+        var decision = String((item && item.lineDecision) || "pending").toLowerCase();
+        if (decision !== "approved" && decision !== "rejected" && decision !== "pending") {
+          decision = "pending";
+        }
+        return decision === filterValue;
+      }
+
+      function isReleased() {
+        return current.computedRefundStatus === "Released";
+      }
+
+      function persist() {
+        current = NKReturns.normalizeReturn(current);
+        allReturns[currentIndex] = current;
+        NKReturns.save(allReturns);
+      }
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function renderHead() {
+        document.getElementById("rdId").textContent = "#" + current.id;
+        document.getElementById("chipType").textContent = current.returnType;
+
+        var chipStatus = document.getElementById("chipStatus");
+        chipStatus.className = "status-badge " + statusClass(current.computedReturnStatus);
+        chipStatus.textContent = current.computedReturnStatus;
+
+        var chipRefund = document.getElementById("chipRefund");
+        chipRefund.className = "status-badge " + refundClass(current.computedRefundStatus);
+        chipRefund.textContent = current.computedRefundStatus;
+      }
+
+      function renderSummary() {
+        document.getElementById("fOrderId").textContent = current.orderId;
+        document.getElementById("fPurchaseDate").textContent = NKReturns.formatDate(current.purchaseDate);
+        document.getElementById("fReturnDate").textContent = NKReturns.formatDate(current.returnDate);
+        document.getElementById("fCustomer").textContent = current.customerName;
+        document.getElementById("fPhone").textContent = current.customerPhone;
+        document.getElementById("fAddress").textContent = current.address;
+        document.getElementById("fTracking").textContent = current.shipping.trackingNo || "-";
+        document.getElementById("fMap").href = current.mapLink || "#";
+
+        orderLink.href = "order-details-pharmacy.html?orderId=" + encodeURIComponent(current.orderId);
+
+        current.refundMethod = normalizeRefundMethod(current.refundMethod);
+        document.getElementById("sumSubtotal").textContent = NKReturns.formatMoney(current.computedSubtotal);
+        document.getElementById("sumShippingAdj").textContent = NKReturns.formatMoney(current.shippingAdjustment || 0);
+        document.getElementById("sumFinal").textContent = NKReturns.formatMoney(current.computedFinalRefund);
+        feesInput.value = Number(current.fees || 0).toFixed(2);
+        refundMethodSelect.value = current.refundMethod;
+        if (decisionBadge) {
+          decisionBadge.className = "status-badge " + statusClass(current.computedReturnStatus);
+          decisionBadge.textContent = current.computedReturnStatus;
+        }
+
+        var sumRefundBadge = document.getElementById("sumRefundBadge");
+        sumRefundBadge.className = "status-badge " + refundClass(current.computedRefundStatus);
+        sumRefundBadge.textContent = current.computedRefundStatus;
+
+        var locked = isReleased();
+        feesInput.disabled = locked;
+        refundMethodSelect.disabled = locked;
+
+        var canRelease = !locked &&
+          (current.computedReturnStatus === "Approved (Full)" || current.computedReturnStatus === "Approved (Partial)") &&
+          current.computedFinalRefund > 0 &&
+          current.computedRefundStatus === "Ready to Release";
+        releaseBtn.disabled = !canRelease;
+
+        successBox.classList.toggle("d-none", !locked);
+      }
+
+      function renderDecisionFilters() {
+        var counts = getDecisionCounts();
+        document.getElementById("filterAllCount").textContent = "(" + counts.total + ")";
+        document.getElementById("filterApprovedCount").textContent = "(" + counts.approved + ")";
+        document.getElementById("filterRejectedCount").textContent = "(" + counts.rejected + ")";
+        document.getElementById("filterPendingCount").textContent = "(" + counts.pending + ")";
+
+        var chips = decisionFilterBar.querySelectorAll("[data-filter]");
+        chips.forEach(function (chip) {
+          var selected = chip.getAttribute("data-filter") === activeLineFilter;
+          chip.classList.toggle("is-active", selected);
+        });
+      }
+
+      function renderItems() {
+        var locked = isReleased();
+        var q = (itemSearch.value || "").trim().toLowerCase();
+        var items = current.items.filter(function (item) {
+          var bag = (item.name + " " + item.strength + " " + item.form + " " + item.reason).toLowerCase();
+          var searchMatch = !q || bag.indexOf(q) !== -1;
+          var decisionMatch = lineMatchesDecision(item, activeLineFilter);
+          return searchMatch && decisionMatch;
+        });
+
+        itemsTbody.innerHTML = "";
+        if (!items.length) {
+          var emptyTitle = itemsEmpty.querySelector(".fsize-15");
+          var emptyText = itemsEmpty.querySelector("p");
+          if (current.items.length === 0) {
+            if (emptyTitle) emptyTitle.textContent = "No return items";
+            if (emptyText) emptyText.textContent = "This return request does not include items.";
+          } else {
+            if (emptyTitle) emptyTitle.textContent = "No matching items";
+            if (emptyText) emptyText.textContent = "Try changing the search or decision filter.";
+          }
+          itemsWrap.classList.add("d-none");
+          itemsEmpty.classList.remove("d-none");
+          return;
+        }
+        itemsWrap.classList.remove("d-none");
+        itemsEmpty.classList.add("d-none");
+
+        current.items.forEach(function (item, idx) {
+          if (items.indexOf(item) === -1) return;
+          var rowLocked = true;
+          var qtyVal = item.approvedQty === null || item.approvedQty === undefined ? "" : String(item.approvedQty);
+          var lineTotal = Number(item.approvedQty || 0) * Number(item.unitPrice || 0);
+          var row = document.createElement("tr");
+          if (item.nonReturnable) row.classList.add("row-locked");
+          row.innerHTML = [
+            '<td><div class="item-box">',
+            '<img src="' + esc(item.returnImage || "../assets/images/avatar.svg") + '" alt="' + esc(item.name) + '" />',
+            '<div><p class="item-name">' + esc(item.name) + '</p><div class="item-meta">' + esc(item.strength + " / " + item.form) + '</div>',
+            '<span class="availability ' + (String(item.availability).toLowerCase() === "available" ? "av-available" : "av-unavailable") + '">' + esc(item.availability || "-") + '</span>',
+            item.nonReturnable ? '<div><span class="lock-label" title="Non-returnable"><i class="fi fi-rr-lock"></i>Non-returnable</span></div>' : "",
+            "</div></div></td>",
+            '<td class="text-center">' + item.purchasedQty + "</td>",
+            '<td class="text-center">' + item.requestedReturnQty + "</td>",
+            '<td><input class="form-control qty-input approved-qty" data-idx="' + idx + '" type="number" min="0" step="1" value="' + esc(qtyVal) + '" ' + (rowLocked ? "disabled" : "") + " /></td>",
+            "<td>" + NKReturns.formatMoney(item.unitPrice) + "</td>",
+            '<td class="line-total">' + NKReturns.formatMoney(lineTotal) + "</td>",
+            "<td>" + esc(item.reason || "-") + "</td>",
+            '<td><span class="condition-pill ' + conditionClass(item.packageCondition) + '">' + esc(item.packageCondition || "-") + "</span></td>",
+            '<td><button class="thumb-btn image-btn" data-name="' + esc(item.name) + '" data-src="' + esc(item.returnImage || "../assets/images/avatar.svg") + '" type="button"><img src="' + esc(item.returnImage || "../assets/images/avatar.svg") + '" alt="image" /></button></td>',
+            '<td><select class="form-control line-decision" data-idx="' + idx + '" ' + (rowLocked ? "disabled" : "") + ">",
+            '<option value="pending"' + (item.lineDecision === "pending" ? " selected" : "") + ">Pending</option>",
+            '<option value="approved"' + (item.lineDecision === "approved" ? " selected" : "") + ">Approved</option>",
+            '<option value="rejected"' + (item.lineDecision === "rejected" ? " selected" : "") + ">Rejected</option>",
+            "</select></td>",
+            "<td>",
+            item.note ? '<button class="note-toggle" data-note="note-' + idx + '" type="button"><i class="fi fi-rr-comment-dots"></i></button><div id="note-' + idx + '" class="note-text d-none">' + esc(item.note) + "</div>" : "-",
+            "</td>"
+          ].join("");
+          itemsTbody.appendChild(row);
+        });
+      }
+
+      function rerender() {
+        persist();
+        renderHead();
+        renderSummary();
+        renderDecisionFilters();
+        renderItems();
+      }
+
+      function handleQtyChange(index, raw) {
+        var item = current.items[index];
+        if (!item || item.nonReturnable || isReleased()) return;
+        if (raw === "") {
+          item.approvedQty = null;
+          item.lineDecision = "pending";
+          return;
+        }
+        var val = Number(raw);
+        if (!Number.isFinite(val)) val = 0;
+        val = Math.floor(val);
+        if (val < 0) val = 0;
+        if (val > item.requestedReturnQty) val = item.requestedReturnQty;
+        item.approvedQty = val;
+        item.lineDecision = val > 0 ? "approved" : "rejected";
+      }
+
+      function handleDecisionChange(index, value) {
+        var item = current.items[index];
+        if (!item || item.nonReturnable || isReleased()) return;
+        if (value === "rejected") {
+          item.approvedQty = 0;
+          item.lineDecision = "rejected";
+          return;
+        }
+        if (value === "approved") {
+          var base = Number(item.approvedQty || 0);
+          if (base <= 0) base = 1;
+          if (base > item.requestedReturnQty) base = item.requestedReturnQty;
+          item.approvedQty = base;
+          item.lineDecision = "approved";
+          return;
+        }
+        item.approvedQty = null;
+        item.lineDecision = "pending";
+      }
+
+      itemSearch.addEventListener("input", renderItems);
+      decisionFilterBar.addEventListener("click", function (event) {
+        var target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        var chip = target.closest("[data-filter]");
+        if (!chip) return;
+        activeLineFilter = chip.getAttribute("data-filter") || "all";
+        renderDecisionFilters();
+        renderItems();
+      });
+
+      itemsTbody.addEventListener("change", function (event) {
+        var target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        if (target.classList.contains("approved-qty")) {
+          handleQtyChange(Number(target.getAttribute("data-idx")), target.value);
+          showAlert("", "");
+          rerender();
+          return;
+        }
+        if (target.classList.contains("line-decision")) {
+          handleDecisionChange(Number(target.getAttribute("data-idx")), target.value);
+          showAlert("", "");
+          rerender();
+        }
+      });
+
+      itemsTbody.addEventListener("click", function (event) {
+        var target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+
+        var noteBtn = target.closest(".note-toggle");
+        if (noteBtn) {
+          var noteId = noteBtn.getAttribute("data-note");
+          var noteEl = noteId ? document.getElementById(noteId) : null;
+          if (noteEl) noteEl.classList.toggle("d-none");
+          return;
+        }
+
+        var imgBtn = target.closest(".image-btn");
+        if (imgBtn) {
+          var src = imgBtn.getAttribute("data-src");
+          var name = imgBtn.getAttribute("data-name") || "Return Image";
+          document.getElementById("imagePreview").src = src;
+          document.getElementById("imageTitle").textContent = name;
+          if (imageModal) imageModal.show();
+        }
+      });
+
+      function syncFees() {
+        if (isReleased()) return;
+        current.fees = Number(feesInput.value || 0);
+        showAlert("", "");
+        rerender();
+      }
+
+      refundMethodSelect.addEventListener("change", function () {
+        if (isReleased()) return;
+        current.refundMethod = normalizeRefundMethod(refundMethodSelect.value);
+        showAlert("", "");
+        rerender();
+      });
+      feesInput.addEventListener("change", syncFees);
+
+      releaseBtn.addEventListener("click", function () {
+        if (releaseBtn.disabled || !releaseModal) return;
+        document.getElementById("mReturnId").textContent = current.id;
+        document.getElementById("mOrderId").textContent = current.orderId;
+        document.getElementById("mAmount").textContent = NKReturns.formatMoney(current.computedFinalRefund);
+        document.getElementById("mRefundMethod").textContent = refundMethodLabel(current.refundMethod);
+        document.getElementById("mApprovedCount").textContent = String(current.approvedItemsCount);
+        releaseModal.show();
+      });
+
+      document.getElementById("confirmReleaseBtn").addEventListener("click", function () {
+        current.refundStatus = "Released";
+        showAlert("ok", "Refund released and return is now locked.");
+        rerender();
+        if (releaseModal) releaseModal.hide();
+      });
+
+      rerender();
+    })();
+  </script>
+</body>
+</html>

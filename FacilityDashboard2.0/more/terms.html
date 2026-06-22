@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Terms and Conditions</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Page-only CSS (enhanced UI/UX; RTL-ready) -->
+    <style>
+      :root { --accent: #0f8c8c; --muted: #6b7280; --card-bg: #fff; }
+      .tc-card { border: 1px solid var(--nk-border, #e6eaef); background: var(--card-bg); border-radius: 12px; overflow: hidden; box-shadow: 0 6px 30px rgba(15,23,42,0.04); }
+      .tc-head { padding: 18px 20px; border-bottom: 1px solid var(--nk-border, #e6eaef); display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+      .tc-title { margin:0; font-size:18px; font-weight:900; color:#0f172a; }
+      .tc-sub { margin-top:6px; font-size:13px; color:var(--muted); }
+      .tc-actions { display:flex; gap:10px; align-items:center; }
+
+      .tc-body { padding:18px; }
+
+      .tc-grid { display:grid; grid-template-columns: 300px 1fr; gap:20px; align-items:start; }
+
+      .toc { border: 1px solid var(--nk-border, #e6eaef); border-radius: 12px; padding:12px; background:var(--card-bg); position: sticky; top: 20px; }
+      .toc-title { margin:0 0 10px; font-size:12px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.3px; }
+      .toc-search { display:flex; gap:8px; margin-bottom:10px; }
+      .toc-search input { flex:1; padding:8px 10px; border-radius:10px; border:1px solid var(--nk-border); font-size:13px; }
+      .toc-list { max-height:60vh; overflow:auto; display:block; }
+      .toc a { display:block; padding:8px 10px; border-radius:10px; color:#0f172a; text-decoration:none; font-size:14px; border:1px solid transparent; margin-bottom:6px; }
+      .toc a:hover, .toc a.active { background: rgba(15,140,140,0.06); border-color: rgba(15,140,140,0.12); }
+
+      .tc-content { border:1px solid var(--nk-border, #e6eaef); border-radius:12px; padding:16px; background:var(--card-bg); }
+
+      .sec { padding:14px 0; border-bottom:1px solid rgba(230,234,239,0.7); }
+      .sec:last-child { border-bottom:0; }
+      .sec h3 { margin:0 0 10px; font-size:16px; font-weight:800; color:#071133; }
+      .sec p { margin:0 0 10px; font-size:14px; color:#273449; line-height:1.8; }
+      .sec ul { margin:0 0 10px; padding-left:18px; color:#273449; font-size:14px; line-height:1.8; }
+
+      .note { border:1px solid rgba(15,140,140,0.18); background:rgba(15,140,140,0.04); border-radius:12px; padding:12px; font-size:14px; color:#071133; }
+
+      /* Accept bar removed per request */
+
+      /* RTL support toggled by .rtl on html */
+      html.rtl { direction: rtl; }
+      html.rtl .tc-grid { grid-template-columns: 1fr 300px; }
+      html.rtl .toc a { text-align: right; }
+
+      @media (max-width: 992px) { .tc-grid { grid-template-columns: 1fr; } .toc { position: static; } }
+
+      /* Quick Links Container */
+      .quick-links-section { margin-bottom: 24px; }
+      .quick-links-card { border: 1px solid var(--nk-border, #e6eaef); background: var(--surface-light-50, #fff); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(16,24,40,0.03); }
+      .quick-links-head { padding: 18px 20px; border-bottom: 1px solid var(--nk-border, #e6eaef); }
+      .quick-links-head b { font-size: 16px; letter-spacing: -0.2px; }
+      .quick-links-body { padding: 18px; }
+      .links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .link-item { border: 1px solid var(--nk-border, #e6eaef); border-radius: 10px; padding: 14px 12px; background: #fff; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: all .18s ease; }
+      .link-item:hover { border-color: var(--accent); background: rgba(15, 140, 140, 0.04); box-shadow: 0 6px 20px rgba(15,140,140,0.08); transform: translateY(-2px); }
+      .link-item .icon { font-size: 24px; margin-bottom: 8px; opacity: 0.8; }
+      .link-item .label { font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.3; }
+      .link-item .sublabel { font-size: 11px; color: var(--muted); margin-top: 4px; }
+      @media (max-width: 1200px) { .links-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 768px) { .links-grid { grid-template-columns: repeat(2, 1fr); } }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+              <a href="../more/submitted-complaints.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Submitted Complaints</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Terms and Conditions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Terms and Conditions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- Quick Links / Related Pages Container -->
+    
+
+        
+
+        <div class="page-content">
+          <div class="tc-card">
+            <div class="tc-head">
+              <div>
+                <p class="tc-title">Terms and Conditions</p>
+                <div class="tc-sub">Last updated: Jan 22, 2026</div>
+              </div>
+              <div class="tc-actions">
+                <button type="button" class="btn btn-primary-revers" onclick="window.print()">Print</button>
+                <a class="btn btn-primary" href="#" title="Download PDF (placeholder)">Download PDF</a>
+              </div>
+            </div>
+
+            <div class="tc-body">
+              <div class="tc-grid">
+                <div class="toc" aria-label="Table of contents">
+                  <p class="toc-title">Contents</p>
+                  <div class="toc-search">
+                    <input id="tocSearch" type="search" placeholder="Search contents" aria-label="Search contents" />
+                  </div>
+                  <div class="toc-list" id="tocList">
+                    <a href="#sec-def">1. Definitions</a>
+                    <a href="#sec-scope">2. Scope of Services</a>
+                    <a href="#sec-accounts">3. Eligibility & Accounts</a>
+                    <a href="#sec-booking">4. Booking & Scheduling</a>
+                    <a href="#sec-pricing">5. Pricing, Taxes & Charges</a>
+                    <a href="#sec-payments">6. Payments</a>
+                    <a href="#sec-cancel">7. Cancellations & No-Show</a>
+                    <a href="#sec-refunds">8. Refunds</a>
+                    <a href="#sec-med">9. Medical Disclaimer</a>
+                    <a href="#sec-privacy">10. Privacy & Data</a>
+                    <a href="#sec-resp">11. Responsibilities</a>
+                    <a href="#sec-ip">12. Intellectual Property</a>
+                    <a href="#sec-liability">13. Limitation of Liability</a>
+                    <a href="#sec-law">14. Governing Law</a>
+                    <a href="#sec-changes">15. Changes to Terms</a>
+                    <a href="#sec-contact">16. Contact</a>
+                  </div>
+                </div>
+
+                <div class="tc-content">
+                  <div class="note">
+                    These Terms govern the use of the Naraakum platform and related services. If you do not agree, please discontinue use.
+                  </div>
+
+                  <div class="sec" id="sec-def">
+                    <h3>1. Definitions</h3>
+                    <ul>
+                      <li><b>Facility:</b> The healthcare entity using this dashboard.</li>
+                      <li><b>Patient:</b> End user receiving services.</li>
+                      <li><b>Provider:</b> Doctor/Nurse/Service provider delivering services.</li>
+                      <li><b>Order/Booking:</b> A requested service appointment or visit.</li>
+                      <li><b>Coupon:</b> A discount code with conditions and validity period.</li>
+                    </ul>
+                  </div>
+
+                  <div class="sec" id="sec-scope">
+                    <h3>2. Scope of Services</h3>
+                    <p>Naraakum facilitates service discovery, scheduling, communication, and billing workflows between facilities, providers, and patients.</p>
+                  </div>
+
+                  <div class="sec" id="sec-accounts">
+                    <h3>3. Eligibility & Accounts</h3>
+                    <p>Facilities are responsible for maintaining accurate account information and controlling access credentials for admins and staff.</p>
+                  </div>
+
+                  <div class="sec" id="sec-booking">
+                    <h3>4. Booking & Scheduling</h3>
+                    <p>Booking availability depends on provider schedules and facility settings. The platform may apply validations to prevent double-booking.</p>
+                  </div>
+
+                  <div class="sec" id="sec-pricing">
+                    <h3>5. Pricing, Taxes & Charges</h3>
+                    <p>Prices displayed may include taxes and platform/service charges as configured. Facilities must ensure compliance with local regulations.</p>
+                  </div>
+
+                  <div class="sec" id="sec-payments">
+                    <h3>6. Payments</h3>
+                    <p>Payment methods can be configured by the facility. Payouts are processed according to the selected method and verification requirements.</p>
+                  </div>
+
+                  <div class="sec" id="sec-cancel">
+                    <h3>7. Cancellations & No-Show</h3>
+                    <p>Cancellations may be subject to policy rules. No-show handling may impact eligibility for refunds or rebooking.</p>
+                  </div>
+
+                  <div class="sec" id="sec-refunds">
+                    <h3>8. Refunds</h3>
+                    <p>Refund eligibility depends on order status, cancellation timing, and applicable policy settings.</p>
+                  </div>
+
+                  <div class="sec" id="sec-med">
+                    <h3>9. Medical Disclaimer</h3>
+                    <p>Naraakum does not provide medical diagnosis. Medical decisions are the responsibility of licensed providers and facilities.</p>
+                  </div>
+
+                  <div class="sec" id="sec-privacy">
+                    <h3>10. Privacy & Data</h3>
+                    <p>Facilities must handle patient data responsibly. Data access should be limited by role and operational need.</p>
+                  </div>
+
+                  <div class="sec" id="sec-resp">
+                    <h3>11. Responsibilities</h3>
+                    <ul>
+                      <li>Facilities ensure accurate service listings, schedules, and pricing.</li>
+                      <li>Providers follow professional standards and appointment policies.</li>
+                      <li>Users provide accurate information and comply with platform rules.</li>
+                    </ul>
+                  </div>
+
+                  <div class="sec" id="sec-ip">
+                    <h3>12. Intellectual Property</h3>
+                    <p>All platform branding and software are owned by Naraakum or its licensors. Unauthorized copying is prohibited.</p>
+                  </div>
+
+                  <div class="sec" id="sec-liability">
+                    <h3>13. Limitation of Liability</h3>
+                    <p>The platform is provided “as is.” Liability is limited to the maximum extent permitted by law.</p>
+                  </div>
+
+                  <div class="sec" id="sec-law">
+                    <h3>14. Governing Law</h3>
+                    <p>These Terms are governed by applicable laws and regulations in the Kingdom of Saudi Arabia.</p>
+                  </div>
+
+                  <div class="sec" id="sec-changes">
+                    <h3>15. Changes to Terms</h3>
+                    <p>Naraakum may update these Terms periodically. Continued use after updates constitutes acceptance.</p>
+                  </div>
+
+                  <div class="sec" id="sec-contact">
+                    <h3>16. Contact</h3>
+                    <p>For support or questions, use the Complaints & Suggestions page or contact your account administrator.</p>
+                  </div>
+                </div>
+              </div><!-- /grid -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+    <script>
+      (function () {
+        // TOC search/filter
+        const tocSearch = document.getElementById('tocSearch');
+        const tocList = document.getElementById('tocList');
+        const tocLinks = Array.from(tocList.querySelectorAll('a'));
+
+        function filterTOC(q) {
+          const term = (q || '').trim().toLowerCase();
+          tocLinks.forEach(a => {
+            const txt = a.textContent.trim().toLowerCase();
+            a.style.display = (!term || txt.indexOf(term) !== -1) ? 'block' : 'none';
+          });
+        }
+        tocSearch && tocSearch.addEventListener('input', (e) => filterTOC(e.target.value));
+
+        // Smooth scrolling for TOC links
+        tocLinks.forEach(a => {
+          a.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (!target) return;
+            const top = target.getBoundingClientRect().top + window.scrollY - 90;
+            window.scrollTo({ top, behavior: 'smooth' });
+            // update active
+            tocLinks.forEach(x => x.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+
+        // Scroll spy: highlight TOC entry when section near top
+        const sections = Array.from(document.querySelectorAll('.sec'));
+        function onScrollSpy() {
+          const y = window.scrollY + 120;
+          let activeId = null;
+          for (let s of sections) {
+            if (s.offsetTop <= y) activeId = s.id;
+          }
+          if (activeId) {
+            tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + activeId));
+          }
+        }
+        window.addEventListener('scroll', onScrollSpy, { passive: true });
+        onScrollSpy();
+
+        // Accept button enable: scrolled to bottom only (checkbox removed)
+        const acceptBtn = document.getElementById('acceptBtn');
+        const printBtn = document.getElementById('printBtn');
+
+        function updateAccept() {
+          if (!acceptBtn) return;
+          const scrolledToBottom = (window.innerHeight + window.scrollY) >= (document.body.scrollHeight - 20);
+          acceptBtn.disabled = !scrolledToBottom;
+        }
+        window.addEventListener('scroll', updateAccept, { passive: true });
+        updateAccept();
+
+        // Print button
+        printBtn && printBtn.addEventListener('click', () => window.print());
+
+        // RTL toggle removed
+
+        // Small accessibility: focus outlines for keyboard users
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Tab') document.documentElement.classList.add('show-focus');
+        });
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

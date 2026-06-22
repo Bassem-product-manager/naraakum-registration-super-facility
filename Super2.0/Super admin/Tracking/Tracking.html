@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Naraakum | Tracking</title>
+<meta name="description" content="Naraakum" />
+<link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+<link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+<link rel="manifest" href="../assets/images/site.webmanifest" />
+<link rel="stylesheet" href="../assets/css/MainStyle.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{--nk-green:#0f8c8c;--nk-border:#e6eaef;--txt:#101828;--muted:#667085;--fac:#0f8c8c;--pha:#16a34a;--ind:#2563eb}
+.facility-line{display:flex;justify-content:center;align-items:center;margin-top:6px}.facility-name{font-size:14px;font-weight:900;color:#0b6f6f;margin:0}
+.side-menu.is-open{transform:translateX(0)}.side-menu-list li.is-open>.sub-list{display:block}.side-menu-list li>.sub-list{display:none}.side-menu-list a.menu-list-item.is-active{background:rgba(15,140,140,.08);border-radius:10px;font-weight:900}
+.ksa-clock{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid rgba(16,24,40,.1);background:#fff;border-radius:12px;font-weight:900;font-size:12px}.ksa-clock .tz{color:var(--nk-green);font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06)}
+.tracking-page .grid{display:grid;grid-template-columns:380px 1fr;gap:16px}.panel{border:1px solid var(--nk-border);background:#fff;border-radius:14px}.head{padding:14px;border-bottom:1px solid var(--nk-border);display:flex;align-items:center;justify-content:space-between}.body{padding:14px}
+.filters select.form-control{border-color:rgba(15,140,140,.22);color:#0b6f6f;font-weight:700}
+.filters select.form-control:focus{border-color:var(--nk-green);box-shadow:0 0 0 3px rgba(15,140,140,.16)}
+.filters select.form-control option:checked{background:var(--nk-green);color:#fff}
+.badge-online{padding:6px 10px;border-radius:999px;border:1px solid rgba(22,163,74,.3);background:rgba(22,163,74,.1);color:#15803d;font-size:12px;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-bottom:12px}.chip{border:1px solid var(--nk-border);border-radius:10px;padding:8px;text-align:center;background:#f8fafc}.chip .k{display:block;font-size:11px;color:var(--muted)}.chip .v{display:block;font-size:15px;font-weight:900;color:var(--txt)}
+.filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}.filters .form-control,.search .form-control,.search .btn{height:34px}.search{display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px}
+.list-head{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;font-weight:700;margin-bottom:8px}.list{display:flex;flex-direction:column;gap:8px;max-height:540px;overflow:auto}
+.cardp{border:1px solid var(--nk-border);border-radius:12px;padding:10px;display:grid;grid-template-columns:1fr auto;gap:8px;cursor:pointer}.cardp:hover{background:rgba(15,140,140,.04)}.cardp.active{border-color:rgba(15,140,140,.4);box-shadow:0 0 0 2px rgba(15,140,140,.08);background:rgba(15,140,140,.06)}
+.top{display:flex;gap:8px;align-items:center}.avatar{width:34px;height:34px;border-radius:10px;border:1px solid var(--nk-border);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff}.av-fac{background:var(--fac)}.av-pha{background:var(--pha)}.av-ind{background:var(--ind)}
+.name{margin:0;font-size:14px;font-weight:800;color:var(--txt)}.code{font-size:11px;color:var(--muted);font-weight:700;display:block}.sub{font-size:12px;color:var(--muted);margin-top:5px}.meta{font-size:11px;color:var(--muted);margin-top:5px;display:flex;gap:8px}
+.pill{padding:5px 9px;border-radius:999px;border:1px solid var(--nk-border);font-size:11px;font-weight:800;height:fit-content}.on{background:rgba(15,140,140,.12);color:var(--fac)}.idl{background:rgba(37,99,235,.1);color:#1d4ed8}.late{background:rgba(245,158,11,.12);color:#b45309}.off{background:rgba(148,163,184,.2);color:#475569}
+.mapbox{height:690px;border-radius:14px;position:relative;overflow:hidden}#map{width:100%;height:100%}.wm{position:absolute;left:12px;bottom:12px;border:1px solid var(--nk-border);background:rgba(255,255,255,.85);border-radius:10px;padding:6px 10px;font-size:11px;color:var(--muted);z-index:550}
+.legend{display:inline-flex;gap:10px;flex-wrap:wrap}.lg{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);font-weight:700}.dot{width:9px;height:9px;border-radius:999px}.dot.fac{background:var(--fac)}.dot.pha{background:var(--pha)}.dot.ind{background:var(--ind)}
+.mk{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:900;border:2px solid #fff;box-shadow:0 6px 14px rgba(16,24,40,.22)}.mk.fac{background:var(--fac)}.mk.pha{background:var(--pha)}.mk.ind{background:var(--ind)}.mk.sel{outline:2px solid rgba(15,140,140,.5)}.mk.on{animation:pl 1.3s infinite}.mk.off{opacity:.65}
+@keyframes pl{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
+.details{position:absolute;right:14px;bottom:14px;width:390px;max-width:calc(100% - 28px);border:1px solid var(--nk-border);border-radius:14px;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);padding:12px;z-index:700}
+.dtop{display:flex;justify-content:space-between;gap:10px}.dleft{display:flex;gap:10px}.dname{margin:0;font-size:16px;font-weight:900;color:var(--txt)}.dcode{font-size:12px;color:var(--muted);font-weight:700}.dsub{font-size:12px;color:var(--muted)}
+.dgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:8px}.mini{border:1px solid var(--nk-border);border-radius:10px;padding:8px;background:#fff}.mini .l{font-size:11px;color:var(--muted)}.mini .v{font-size:12px;font-weight:800;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dact{margin-top:10px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.drawer{position:absolute;top:14px;left:14px;width:370px;max-width:calc(100% - 28px);max-height:610px;border:1px solid var(--nk-border);border-radius:14px;background:rgba(255,255,255,.97);backdrop-filter:blur(5px);display:none;overflow:hidden;z-index:710}.drawer.open{display:block}
+.th{padding:12px;border-bottom:1px solid var(--nk-border);display:flex;justify-content:space-between}.tb{padding:12px;max-height:430px;overflow:auto}.ts{padding:12px;border-top:1px solid var(--nk-border);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stop{border:1px solid var(--nk-border);border-radius:10px;padding:9px;margin-bottom:8px;cursor:pointer}.stop:hover{background:rgba(15,140,140,.05)}.stop.active{border-color:rgba(15,140,140,.4)}.stime{font-size:12px;font-weight:900}.slabel{font-size:13px;font-weight:700;margin-top:4px}.smeta{font-size:12px;color:var(--muted);margin-top:4px}.ss{margin-top:6px;display:inline-flex;padding:4px 8px;border-radius:999px;border:1px solid var(--nk-border);font-size:11px;font-weight:800}.ss.ok{background:rgba(22,163,74,.1);color:#15803d}.ss.pd{background:rgba(148,163,184,.14);color:#475569}
+.empty{border:1px dashed var(--nk-border);border-radius:10px;padding:14px;text-align:center;color:var(--muted);font-size:13px;font-weight:700}
+@media (max-width:1100px){.tracking-page .grid{grid-template-columns:1fr}.mapbox{height:560px}.details{position:static;width:100%;max-width:100%;margin-top:12px}}
+@media (max-width:760px){.filters{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body data-menu="menu-tracking">
+<div class="preloader"></div>
+<div id="full-container">
+<div id="sidebar-slot" data-base="../"></div>
+
+<main class="main-page tracking-page">
+<header class="page-header">
+<div class="page-name"><button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button><h2>Tracking</h2></div>
+<div class="member-side d-flex align-items-center gap-2"><div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div></div>
+</header>
+<div class="page-root"><nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item active" aria-current="page">Home</li><li class="breadcrumb-item active" aria-current="page">Tracking</li></ol></nav></div>
+<div class="page-content"><div class="grid">
+<div class="panel"><div class="head"><b class="fsize-14 semiBold">Live Tracking</b><span class="badge-online" id="onlineBadge">0 Online</span></div><div class="body">
+<div class="stats"><div class="chip"><span class="k">All</span><span class="v" id="countAll">0</span></div><div class="chip"><span class="k">Facilities</span><span class="v" id="countFacility">0</span></div><div class="chip"><span class="k">Pharmacies</span><span class="v" id="countPharmacy">0</span></div><div class="chip"><span class="k">Individuals</span><span class="v" id="countIndividual">0</span></div><div class="chip"><span class="k">Online</span><span class="v" id="countOnline">0</span></div></div>
+<div class="filters"><select id="typeFilter" class="form-control form-control-32"><option value="">All Types</option><option value="facility">Facilities</option><option value="pharmacy">Pharmacies</option><option value="individual">Individuals</option></select><select id="cityFilter" class="form-control form-control-32"><option value="">All Cities</option></select><select id="statusFilter" class="form-control form-control-32"><option value="">All Statuses</option><option value="onroute">On Route</option><option value="idle">Idle</option><option value="late">Late</option><option value="offline">Offline</option></select></div>
+<div class="search"><input id="providerSearch" type="text" class="form-control form-control-32" placeholder="Search by name, code, specialty, type" /><button id="resetFiltersBtn" class="btn btn-primary-revers btn-32" type="button">Reset</button></div>
+<div class="list-head"><span id="listCountText">Showing 0 of 0</span><span>Updated live</span></div><div class="list" id="providersList"></div></div></div>
+<div class="panel"><div class="head"><b class="fsize-14 semiBold">Unified Provider Map</b><div class="legend"><span class="lg"><i class="dot fac"></i>Facility</span><span class="lg"><i class="dot pha"></i>Pharmacy</span><span class="lg"><i class="dot ind"></i>Individual</span></div></div><div class="body"><div class="mapbox"><div id="map" aria-label="Live Tracking Map"></div><div class="wm">Leaflet | (c) OpenStreetMap</div>
+<div class="drawer" id="timelineDrawer"><div class="th"><b id="timelineTitle">Timeline</b><button class="tl-close" type="button" id="closeTimeline" aria-label="Close">X</button></div><div class="tb" id="timelineBody"></div><div class="ts" id="timelineSummary"></div></div>
+<div class="details" id="providerDetails"><div class="dtop"><div class="dleft"><div class="avatar av-fac" id="detInitials">FC</div><div><p class="dname" id="detName">-</p><span class="dcode" id="detCode">-</span><div class="dsub" id="detSubtitle">-</div></div></div><span class="pill on" id="detStatus">On Route</span></div>
+<div class="dgrid"><div class="mini"><div class="l">Type</div><div class="v" id="detType">-</div></div><div class="mini"><div class="l">Current Location</div><div class="v" id="detLocation">-</div></div><div class="mini"><div class="l">Distance</div><div class="v" id="detDistance">-</div></div><div class="mini"><div class="l">Next Stop</div><div class="v" id="detNextStop">-</div></div><div class="mini"><div class="l">Orders Today</div><div class="v" id="detOrdersToday">-</div></div><div class="mini"><div class="l">Last Update</div><div class="v" id="detUpdated">-</div></div></div>
+<div class="dact"><button class="btn btn-primary-revers btn-32" id="openTimelineBtn" type="button">Open Timeline</button><button class="btn btn-primary btn-32" id="openProviderDetailsBtn" type="button">Open Provider Details</button></div></div>
+</div></div></div>
+</div></div>
+</main>
+</div>
+<script src="../assets/js/jquery-3.4.1.min.js"></script>
+<script src="../assets/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+<script>
+(function(){
+  const typeLabel = { facility:'Facility', pharmacy:'Pharmacy', individual:'Individual' };
+  const statusLabel = { onroute:'On Route', idle:'Idle', late:'Late', offline:'Offline' };
+  const baseByCity = { Riyadh:[24.7136,46.6753], Jeddah:[21.5433,39.1728], Dammam:[26.4207,50.0888] };
+  const cityShift = { Riyadh:[0.008,0.010], Jeddah:[0.007,0.009], Dammam:[0.009,0.011] };
+
+  const rows = [
+    ['FC-00001','facility','BMC Hospital','Emergency and Diagnostics','Riyadh','onroute',9],
+    ['FC-00002','facility','Al Noor Medical Center','Outpatient Services','Jeddah','idle',6],
+    ['FC-00003','facility','Green Valley Clinic','Primary Care','Dammam','late',4],
+    ['FC-00004','facility','Future Care Hospital','Surgery and Critical Care','Riyadh','offline',2],
+    ['PH-00001','pharmacy','BMC Community Pharmacy','Medication Fulfillment','Riyadh','onroute',18],
+    ['PH-00002','pharmacy','Al Noor Pharmacy','Retail and Clinical Pharmacy','Jeddah','idle',14],
+    ['PH-00003','pharmacy','Green Valley Pharmacy','Home Delivery Pharmacy','Dammam','late',11],
+    ['PH-00004','pharmacy','Future Care Pharmacy','Institutional Dispensing','Riyadh','offline',3],
+    ['DR-00001','individual','Dr. Ahmed Alqahtani','Cardiology','Riyadh','onroute',6],
+    ['DR-00002','individual','Dr. Sara Ibrahim','Dermatology','Jeddah','idle',4],
+    ['DR-00003','individual','Dr. Noura Hassan','Pediatrics','Dammam','late',5],
+    ['DR-00004','individual','Dr. Khalid Salem','Orthopedic Surgery','Riyadh','offline',2]
+  ];
+
+  const esc = (v) => String(v ?? '').replace(/[&<>"']/g, (ch) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const statusClass = (k) => k === 'onroute' ? 'pill on' : k === 'idle' ? 'pill idl' : k === 'late' ? 'pill late' : 'pill off';
+  const avatarClass = (t) => t === 'facility' ? 'avatar av-fac' : t === 'pharmacy' ? 'avatar av-pha' : 'avatar av-ind';
+  const fmtUpdated = (ms) => { const m = Math.max(0, Math.round((Date.now()-ms)/60000)); if(m < 1) return 'Updated now'; if(m < 60) return `Updated ${m}m ago`; return `Updated ${Math.floor(m/60)}h ago`; };
+  const fmtDist = (k) => (!Number.isFinite(k) || k <= 0) ? '-' : `${k.toFixed(1)} km`;
+
+  function pathFor(city, idx){
+    const b = baseByCity[city], s = cityShift[city], k = idx % 4;
+    return [[b[0] + s[0]*(k+0.2), b[1] + s[1]*(k-0.1)],[b[0] + s[0]*(k+1.0), b[1] + s[1]*(k+0.7)],[b[0] + s[0]*(k+1.6), b[1] + s[1]*(k-0.5)],[b[0] + s[0]*(k+0.8), b[1] + s[1]*(k-1.0)]];
+  }
+  function detailsUrl(code, type){ if(type === 'facility') return `../providers/facility-details.html?code=${code}`; if(type === 'pharmacy') return `../providers/pharm-details.html?code=${code}`; return `../providers/individual-details.html?code=${code}`; }
+  function initials(code, name){ if(code.startsWith('DR-')){ const words = name.replace('Dr.', '').trim().split(' '); return (words[0]?.[0] || 'D') + (words[1]?.[0] || 'R'); } return code.slice(0,2); }
+
+  const providers = rows.map((r, i) => {
+    const path = pathFor(r[4], i+1);
+    const timeline = r[5] === 'offline' ? [] : [
+      { time:'09:10 AM', label:`${typeLabel[r[1]]} stop 1`, state:'Completed', lat:path[1][0], lng:path[1][1] },
+      { time:'10:35 AM', label:`${typeLabel[r[1]]} stop 2`, state:'Scheduled', lat:path[2][0], lng:path[2][1] },
+      { time:'11:50 AM', label:`${typeLabel[r[1]]} stop 3`, state:'Scheduled', lat:path[3][0], lng:path[3][1] }
+    ];
+    return { id:r[0], code:r[0], type:r[1], name:r[2], subtitle:r[3], city:r[4], statusKey:r[5], ordersToday:r[6], initials:initials(r[0], r[2]), locationLabel:`${r[4]} service zone`, distanceKm:r[5] === 'offline' ? 0 : Number((4 + (i % 6) * 2.2).toFixed(1)), nextStop:r[5] === 'offline' ? 'No active route' : `${typeLabel[r[1]]} stop 2`, updatedAtMs:Date.now() - ((i+1)*2*60*1000), detailsUrl:detailsUrl(r[0], r[1]), path, pathIndex:0, lat:path[0][0], lng:path[0][1], timeline };
+  });
+
+  const els = {
+    list:document.getElementById('providersList'), onlineBadge:document.getElementById('onlineBadge'), listCountText:document.getElementById('listCountText'),
+    typeFilter:document.getElementById('typeFilter'), cityFilter:document.getElementById('cityFilter'), statusFilter:document.getElementById('statusFilter'), search:document.getElementById('providerSearch'), resetFiltersBtn:document.getElementById('resetFiltersBtn'),
+    countAll:document.getElementById('countAll'), countFacility:document.getElementById('countFacility'), countPharmacy:document.getElementById('countPharmacy'), countIndividual:document.getElementById('countIndividual'), countOnline:document.getElementById('countOnline'),
+    detInitials:document.getElementById('detInitials'), detName:document.getElementById('detName'), detCode:document.getElementById('detCode'), detSubtitle:document.getElementById('detSubtitle'), detStatus:document.getElementById('detStatus'),
+    detType:document.getElementById('detType'), detLocation:document.getElementById('detLocation'), detDistance:document.getElementById('detDistance'), detNextStop:document.getElementById('detNextStop'), detOrdersToday:document.getElementById('detOrdersToday'), detUpdated:document.getElementById('detUpdated'),
+    openTimelineBtn:document.getElementById('openTimelineBtn'), openProviderDetailsBtn:document.getElementById('openProviderDetailsBtn'),
+    timelineDrawer:document.getElementById('timelineDrawer'), timelineTitle:document.getElementById('timelineTitle'), closeTimeline:document.getElementById('closeTimeline'), timelineBody:document.getElementById('timelineBody'), timelineSummary:document.getElementById('timelineSummary')
+  };
+
+  let filtered = [...providers], activeId = providers[0]?.id || null, map = null, activePolyline = null;
+  const markers = new Map();
+
+  const markerIcon = (p) => {
+    const sel = p.id === activeId ? ' sel' : '';
+    return L.divIcon({ className:'mk-wrap', html:`<div class="mk ${p.type==='facility'?'fac':p.type==='pharmacy'?'pha':'ind'} ${p.statusKey==='onroute'?'on':''} ${p.statusKey==='offline'?'off':''}${sel}">${esc(p.initials)}</div>`, iconSize:[38,38], iconAnchor:[19,19] });
+  };
+  const popupHtml = (p) => `<b>${esc(p.name)}</b><br>${esc(p.code)} | ${esc(typeLabel[p.type])}<br>${esc(statusLabel[p.statusKey])}`;
+
+  function ensureMap(){
+    if(map) return;
+    map = L.map('map', { zoomControl:true }).setView([24.6,45.0],6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>' }).addTo(map);
+    providers.forEach((p) => {
+      const m = L.marker([p.lat,p.lng], { icon:markerIcon(p) }).addTo(map);
+      m.bindPopup(popupHtml(p));
+      m.on('click', () => { activeId = p.id; renderList(); setDetails(p); drawPath(p); openTimeline(false); });
+      markers.set(p.id, m);
+    });
+  }
+
+  function populateCities(){ [...new Set(providers.map((p)=>p.city))].sort().forEach((c)=>{ const o = document.createElement('option'); o.value = c.toLowerCase(); o.textContent = c; els.cityFilter.appendChild(o); }); }
+
+  function updateCounters(){
+    const src = filtered, all = src.length, fac = src.filter((p)=>p.type==='facility').length, pha = src.filter((p)=>p.type==='pharmacy').length, ind = src.filter((p)=>p.type==='individual').length, online = src.filter((p)=>p.statusKey!=='offline').length;
+    els.countAll.textContent = String(all); els.countFacility.textContent = String(fac); els.countPharmacy.textContent = String(pha); els.countIndividual.textContent = String(ind); els.countOnline.textContent = String(online);
+    els.onlineBadge.textContent = `${online} Online`; els.listCountText.textContent = `Showing ${all} of ${providers.length}`;
+  }
+
+  function applyMarkerVisibility(){ const ids = new Set(filtered.map((p)=>p.id)); providers.forEach((p)=>{ const m = markers.get(p.id); if(!m) return; if(ids.has(p.id) && !map.hasLayer(m)) m.addTo(map); if(!ids.has(p.id) && map.hasLayer(m)) map.removeLayer(m); m.setIcon(markerIcon(p)); m.setPopupContent(popupHtml(p)); }); }
+  function fitToFiltered(){ if(!map || !filtered.length) return; map.fitBounds(L.latLngBounds(filtered.map((p)=>[p.lat,p.lng])), { padding:[40,40], maxZoom:12 }); }
+
+  function setDetails(p){
+    els.detInitials.className = avatarClass(p.type); els.detInitials.textContent = p.initials; els.detName.textContent = p.name; els.detCode.textContent = p.code; els.detSubtitle.textContent = p.subtitle;
+    els.detStatus.className = statusClass(p.statusKey); els.detStatus.textContent = statusLabel[p.statusKey];
+    els.detType.textContent = typeLabel[p.type]; els.detLocation.textContent = p.locationLabel; els.detDistance.textContent = fmtDist(p.distanceKm); els.detNextStop.textContent = p.nextStop || '-';
+    els.detOrdersToday.textContent = String(p.ordersToday); els.detUpdated.textContent = fmtUpdated(p.updatedAtMs);
+    els.openTimelineBtn.disabled = !p.timeline.length; els.openProviderDetailsBtn.disabled = !p.detailsUrl; els.openProviderDetailsBtn.dataset.url = p.detailsUrl || '';
+  }
+
+  function clearDetails(){
+    els.detInitials.className = 'avatar av-fac'; els.detInitials.textContent = '--'; els.detName.textContent = 'No selection'; els.detCode.textContent = '-'; els.detSubtitle.textContent = '-';
+    els.detStatus.className = 'pill off'; els.detStatus.textContent = 'Offline'; els.detType.textContent = '-'; els.detLocation.textContent = '-'; els.detDistance.textContent = '-';
+    els.detNextStop.textContent = '-'; els.detOrdersToday.textContent = '-'; els.detUpdated.textContent = '-'; els.openTimelineBtn.disabled = true; els.openProviderDetailsBtn.disabled = true;
+    els.openProviderDetailsBtn.dataset.url = '';
+  }
+
+  function drawPath(p){
+    if(activePolyline){ map.removeLayer(activePolyline); activePolyline = null; }
+    if(!Array.isArray(p.path) || p.path.length < 2) return;
+    const color = p.type === 'facility' ? '#0f8c8c' : p.type === 'pharmacy' ? '#16a34a' : '#2563eb';
+    activePolyline = L.polyline(p.path, { color, weight:4, opacity:.5, dashArray:'8 8' }).addTo(map);
+  }
+
+  function openTimeline(forceOpen){
+    const p = providers.find((x)=>x.id===activeId); if(!p || !p.timeline.length){ closeTimeline(); return; }
+    els.timelineTitle.textContent = `Timeline | ${p.name}`; els.timelineBody.innerHTML = '';
+    let done = 0;
+    p.timeline.forEach((stop, i) => {
+      if(stop.state === 'Completed') done += 1;
+      const item = document.createElement('div'); item.className = 'stop';
+      item.innerHTML = `<div class="stime">${esc(stop.time)}</div><div class="slabel">${esc(stop.label)}</div><div class="smeta">${esc(p.city)} | ${esc(typeLabel[p.type])}</div><span class="ss ${stop.state==='Completed'?'ok':'pd'}">${esc(stop.state)}</span>`;
+      item.addEventListener('click', () => { els.timelineBody.querySelectorAll('.stop').forEach((e)=>e.classList.remove('active')); item.classList.add('active'); map.setView([stop.lat, stop.lng], 13); });
+      if(i===0) item.classList.add('active');
+      els.timelineBody.appendChild(item);
+    });
+    const pending = p.timeline.length - done, eta = p.statusKey === 'offline' ? 'N/A' : `${Math.max(20, Math.round(p.distanceKm * 4))} min`;
+    els.timelineSummary.innerHTML = `<div class="mini"><div class="l">Done</div><div class="v">${done}</div></div><div class="mini"><div class="l">Pending</div><div class="v">${pending}</div></div><div class="mini"><div class="l">ETA</div><div class="v">${eta}</div></div>`;
+    if(forceOpen !== false) els.timelineDrawer.classList.add('open');
+  }
+
+  function closeTimeline(){ els.timelineDrawer.classList.remove('open'); }
+
+  function renderList(){
+    els.list.innerHTML = '';
+    if(!filtered.length){ els.list.innerHTML = '<div class="empty">No providers match the current filters.</div>'; clearDetails(); closeTimeline(); applyMarkerVisibility(); updateCounters(); return; }
+    if(!filtered.some((p)=>p.id===activeId)) activeId = filtered[0].id;
+    filtered.forEach((p) => {
+      const card = document.createElement('button'); card.type = 'button'; card.className = `cardp${p.id===activeId?' active':''}`;
+      card.innerHTML = `<div><div class="top"><div class="${avatarClass(p.type)}">${esc(p.initials)}</div><div><p class="name">${esc(p.name)}</p><span class="code">${esc(p.code)} | ${esc(typeLabel[p.type])}</span></div></div><div class="sub">${esc(p.subtitle)}</div><div class="meta"><span>${esc(fmtUpdated(p.updatedAtMs))}</span><span>${esc(p.city)}</span><span>${esc(p.ordersToday)} orders</span></div></div><span class="${statusClass(p.statusKey)}">${esc(statusLabel[p.statusKey])}</span>`;
+      card.addEventListener('click', () => { activeId = p.id; renderList(); setDetails(p); drawPath(p); const m = markers.get(p.id); if(m){ map.setView(m.getLatLng(), Math.max(map.getZoom(),11)); m.openPopup(); } });
+      els.list.appendChild(card);
+    });
+    applyMarkerVisibility(); updateCounters();
+  }
+
+  function applyFilters(){
+    const t = (els.typeFilter.value || '').toLowerCase(), c = (els.cityFilter.value || '').toLowerCase(), s = (els.statusFilter.value || '').toLowerCase(), q = (els.search.value || '').trim().toLowerCase();
+    filtered = providers.filter((p)=> (!t || p.type===t) && (!c || p.city.toLowerCase()===c) && (!s || p.statusKey===s) && (!q || `${p.name} ${p.code} ${p.subtitle} ${p.type} ${p.city}`.toLowerCase().includes(q)));
+    renderList(); if(!filtered.length) return; const current = providers.find((x)=>x.id===activeId) || filtered[0]; setDetails(current); drawPath(current);
+  }
+
+  function liveTick(){
+    providers.forEach((p)=>{
+      if(p.statusKey==='offline' || p.path.length < 2) return;
+      p.pathIndex = (p.pathIndex + 1) % p.path.length; p.lat = p.path[p.pathIndex][0]; p.lng = p.path[p.pathIndex][1]; p.updatedAtMs = Date.now();
+      const next = p.timeline.find((x)=>x.state!=='Completed'); p.nextStop = next ? next.label : 'No pending stop';
+      if(Number.isFinite(p.distanceKm) && p.distanceKm > 0) p.distanceKm = Number(Math.max(.8, p.distanceKm + (Math.random()*2.4 - 1.2)).toFixed(1));
+      const m = markers.get(p.id); if(m){ m.setLatLng([p.lat,p.lng]); m.setIcon(markerIcon(p)); m.setPopupContent(popupHtml(p)); }
+    });
+    renderList(); const current = providers.find((x)=>x.id===activeId); if(current){ setDetails(current); drawPath(current); } if(els.timelineDrawer.classList.contains('open')) openTimeline(true);
+  }
+
+  function resetFilters(){ els.typeFilter.value=''; els.cityFilter.value=''; els.statusFilter.value=''; els.search.value=''; applyFilters(); fitToFiltered(); }
+
+  function initMenu(){
+    const aside = document.querySelector('.side-menu'), btn = document.getElementById('open-menu-btn'), list = document.querySelector('.side-menu-list');
+    if(!aside || !btn || !list) return;
+    btn.addEventListener('click', ()=>aside.classList.toggle('is-open'));
+    list.querySelectorAll('li').forEach((li)=>{ const sub = li.querySelector(':scope > .sub-list'); const trigger = li.querySelector(':scope > a.menu-list-item:not([href])'); if(!sub || !trigger) return; trigger.addEventListener('click', ()=>li.classList.toggle('is-open')); });
+    const id = document.body.getAttribute('data-menu'); if(id){ const el = document.getElementById(id); if(el){ el.classList.add('is-active'); const p = el.closest('li'); if(p && p.querySelector(':scope > .sub-list')) p.classList.add('is-open'); } }
+  }
+
+  function initClock(){
+    const el = document.getElementById('ksaTime'); if(!el) return;
+    const tick = ()=>{ try{ const fmt = new Intl.DateTimeFormat('en-US',{ timeZone:'Asia/Riyadh', hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }); el.textContent = fmt.format(new Date()); }catch(e){ el.textContent = new Date().toLocaleTimeString('en-US',{ hour12:true }); } };
+    tick(); setInterval(tick, 1000);
+  }
+
+  function init(){
+    initMenu(); initClock(); populateCities(); ensureMap();
+    els.typeFilter.addEventListener('change', ()=>{ applyFilters(); fitToFiltered(); });
+    els.cityFilter.addEventListener('change', ()=>{ applyFilters(); fitToFiltered(); });
+    els.statusFilter.addEventListener('change', ()=>{ applyFilters(); fitToFiltered(); });
+    els.search.addEventListener('input', applyFilters);
+    els.resetFiltersBtn.addEventListener('click', resetFilters);
+    els.openTimelineBtn.addEventListener('click', ()=>openTimeline(true));
+    els.closeTimeline.addEventListener('click', closeTimeline);
+    els.openProviderDetailsBtn.addEventListener('click', ()=>{ const url = els.openProviderDetailsBtn.dataset.url || ''; if(url) window.location.href = url; });
+
+    applyFilters(); fitToFiltered();
+    const current = providers.find((x)=>x.id===activeId); if(current){ setDetails(current); drawPath(current); const m = markers.get(current.id); if(m){ map.setView(m.getLatLng(), 11); m.openPopup(); } }
+    setInterval(liveTick, 8000);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
+

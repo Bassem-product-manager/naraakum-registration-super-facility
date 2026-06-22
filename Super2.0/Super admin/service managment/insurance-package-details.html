@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Package Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-weight: 900;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .package-summary {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .summary-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .summary-avatar {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex: 0 0 44px;
+      }
+
+      .summary-name {
+        margin: 0;
+        color: #101828;
+        font-size: 16px;
+        font-weight: 1000;
+        line-height: 1.2;
+      }
+
+      .summary-sub {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .summary-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .ov-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .ov-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        background: rgba(16, 24, 40, 0.01);
+        border-radius: 14px;
+        padding: 12px;
+      }
+
+      .ov-item .l {
+        font-size: 11px;
+        font-weight: 1000;
+        color: #667085;
+      }
+
+      .ov-item .v {
+        font-size: 13px;
+        font-weight: 1000;
+        color: #101828;
+        margin-top: 4px;
+      }
+
+      .nk-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .nk-card + .nk-card {
+        margin-top: 12px;
+      }
+
+      .nk-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .nk-card-title h4 {
+        margin: 0;
+        font-size: 14px;
+        color: #101828;
+        font-weight: 1000;
+      }
+
+      .note-box {
+        border: 1px solid rgba(15, 140, 140, 0.28);
+        background: rgba(15, 140, 140, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 24px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 11px;
+        font-weight: 1000;
+      }
+
+      .status-pill.active {
+        color: #067647;
+        background: rgba(18, 183, 106, 0.1);
+        border-color: rgba(18, 183, 106, 0.22);
+      }
+
+      .status-pill.inactive {
+        color: #b42318;
+        background: rgba(240, 68, 56, 0.1);
+        border-color: rgba(240, 68, 56, 0.22);
+      }
+
+      .page-toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        z-index: 1080;
+        min-width: 220px;
+        max-width: 360px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        background: #12b76a;
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+        transition: 0.2s ease;
+      }
+
+      .page-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .page-toast.info {
+        background: #155eef;
+      }
+
+      .page-toast.danger {
+        background: #b42318;
+      }
+
+      @media (max-width: 992px) {
+        .package-summary {
+          flex-direction: column;
+        }
+
+        .summary-actions {
+          justify-content: flex-start;
+        }
+
+        .ov-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Package Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="insurance-packages.html">Insurance Packages</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="detailsNotFound" class="nk-card d-none">
+            <h4 class="mb-2">Package Not Found</h4>
+            <p class="text-grey mb-3">The selected package template was not found.</p>
+            <a href="insurance-packages.html" class="btn btn-primary btn-40">Back to Insurance Packages</a>
+          </div>
+
+          <div id="detailsContent">
+            <div class="package-summary">
+              <div class="summary-left">
+                <div class="summary-avatar"><i class="fi fi-rr-box-open-full"></i></div>
+                <div class="min-w-0">
+                  <h3 class="summary-name" id="detailPackageName">-</h3>
+                  <p class="summary-sub">Code: <span id="detailPackageCode">-</span></p>
+                </div>
+              </div>
+
+              <div class="summary-actions">
+                <a id="btnEditPackage" href="#" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-edit"></i>
+                  <span>Edit</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="nk-card mt-16">
+              <div class="nk-card-title">
+                <h4>Package Summary</h4>
+              </div>
+              <div class="ov-grid">
+                <div class="ov-item">
+                  <div class="l">Package Name</div>
+                  <div class="v" id="detailPackageNameValue">-</div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Code</div>
+                  <div class="v" id="detailPackageCodeValue">-</div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Main Service</div>
+                  <div class="v" id="detailMainService">-</div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Unit Type / Units Count</div>
+                  <div class="v" id="detailUnitAndCount">-</div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Validity</div>
+                  <div class="v" id="detailValidity">-</div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Active Status</div>
+                  <div class="v"><span id="detailStatusPill" class="status-pill">-</span></div>
+                </div>
+                <div class="ov-item">
+                  <div class="l">Last Updated</div>
+                  <div class="v" id="detailUpdatedAt">-</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="nk-card">
+              <div class="nk-card-title">
+                <h4>Where Used</h4>
+              </div>
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight">
+                  <thead>
+                    <tr>
+                      <th>Module</th>
+                      <th>Value</th>
+                      <th>Note</th>
+                    </tr>
+                  </thead>
+                  <tbody id="whereUsedTbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="note-box mt-12">Template only. Pricing and coverage are managed in Insurance Coverage / Rate Sheet.</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div id="packageDetailsToast" class="page-toast">Saved.</div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-package-store.js"></script>
+    <script src="../assets/js/insurance-package-details.js"></script>
+  </body>
+</html>

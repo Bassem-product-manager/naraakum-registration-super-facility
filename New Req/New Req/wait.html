@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نرعاكم | المراقبة عن بعد - الوزن والنظام الغذائي</title>
+
+  <!-- Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --nk-teal:#0f8c8c;
+      --nk-teal-2:#0b6f6f;
+      --nk-bg:#eef5f6;
+      --nk-card:#ffffff;
+      --nk-border:#e4ecef;
+      --nk-text:#1e2a2a;
+      --nk-muted:#6f7f82;
+      --nk-shadow: 0 10px 24px rgba(16, 24, 40, .06);
+      --r:14px;
+
+      --good:#17a34a;
+      --warn:#f59e0b;
+      --bad:#ef4444;
+      --sky:#0ea5e9;
+
+      --band-good: rgba(34, 197, 94, .12);
+      --band-warn: rgba(245, 158, 11, .12);
+      --band-bad: rgba(239, 68, 68, .10);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:"Cairo", system-ui, -apple-system, Segoe UI, Arial;
+      color:var(--nk-text);
+      background: linear-gradient(180deg, var(--nk-teal) 0 210px, var(--nk-bg) 210px 100%);
+    }
+
+    /* ===== Icons ===== */
+    .i{
+      width:18px;height:18px;display:inline-block;vertical-align:middle;flex:0 0 auto;
+      fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+    }
+    .i-14{width:14px;height:14px}
+    .i-16{width:16px;height:16px}
+    .i-20{width:20px;height:20px}
+    .i-22{width:22px;height:22px}
+    .i-solid{fill:currentColor;stroke:none}
+
+    /* ===== Top Navbar (كل شيء من اليمين) ===== */
+    .topbar{
+      height:62px;
+      background:#fff;
+      border-bottom:1px solid rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      padding:0 18px;
+    }
+    .topbar .wrap{
+      width:min(1180px, 100%);
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      margin-left:auto; /* في RTL ده يخلي اللوجو في أقصى اليمين */
+    }
+    .logoMark{
+      width:34px;height:34px;border-radius:10px;
+      background:linear-gradient(135deg, var(--nk-teal), #16b3b3);
+      display:grid;place-items:center;
+      box-shadow: 0 10px 18px rgba(15,140,140,.25);
+      color:#fff;
+      flex:0 0 auto;
+    }
+    .brandTitle{
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:.2px;
+      font-size:14px;
+      color:var(--nk-teal-2);
+    }
+    .brandSub{
+      font-size:11px;color:var(--nk-muted);margin-top:2px;font-weight:600;
+    }
+
+    .navlinks{
+      display:flex;align-items:center;gap:16px;
+      color:#2a3b3b;
+      font-weight:700;
+      font-size:12.5px;
+      white-space:nowrap;
+    }
+    .navlinks a{
+      text-decoration:none;color:#234141;opacity:.95;
+      display:flex;align-items:center;gap:6px;
+    }
+    .navlinks a:hover{color:var(--nk-teal-2)}
+
+    .topActions{
+      display:flex;align-items:center;gap:10px;
+    }
+    .chip{
+      display:flex;align-items:center;gap:8px;
+      background:#f2f7f7;border:1px solid var(--nk-border);
+      padding:7px 10px;border-radius:999px;
+      font-size:12px;font-weight:800;color:#294545;
+    }
+    .chip select{
+      border:none;background:transparent;font:inherit;outline:none;color:inherit;
+      direction:rtl;
+    }
+    .iconBtn{
+      width:34px;height:34px;border-radius:10px;
+      background:#fff;border:1px solid var(--nk-border);
+      display:grid;place-items:center;
+      color:#294545;
+      position:relative;
+      box-shadow: 0 10px 20px rgba(16, 24, 40, .04);
+      cursor:pointer;
+    }
+    .iconBtn:hover{border-color:#cfe0e5}
+    .badgeDot{
+      position:absolute;top:-5px;left:-5px;
+      width:18px;height:18px;border-radius:999px;
+      background:#ef4444;color:#fff;
+      display:grid;place-items:center;
+      font-size:11px;font-weight:900;
+      border:2px solid #fff;
+    }
+    .userMini{
+      display:flex;align-items:center;gap:10px;
+      padding:6px 10px;border:1px solid var(--nk-border);
+      border-radius:999px;background:#fff;
+    }
+    .avatar{
+      width:30px;height:30px;border-radius:50%;
+      background:linear-gradient(135deg, #c7f0f0, #e7fbfb);
+      border:1px solid #d7eeee;
+      display:grid;place-items:center;color:var(--nk-teal-2);
+      font-weight:900;
+    }
+    .userMini .name{font-weight:900;font-size:12px;color:#234141;line-height:1}
+    .userMini .role{font-size:11px;color:var(--nk-muted);line-height:1.1;margin-top:2px;font-weight:700}
+
+    /* ===== Page Container ===== */
+    .container{
+      width:min(1180px, 100%);
+      margin:0 auto;
+      padding:18px 18px 40px;
+    }
+
+    /* ===== Header Title Area ===== */
+    .pageHead{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px 2px 18px;
+      color:#eaffff;
+    }
+    .pageHead h1{
+      margin:0;font-size:22px;font-weight:900;
+      letter-spacing:.2px;
+    }
+    .helpLink{
+      color:#eaffff;text-decoration:none;
+      font-weight:800;font-size:12px;
+      opacity:.95;
+      display:flex;align-items:center;gap:6px;
+    }
+    .helpLink:hover{opacity:1;text-decoration:underline}
+
+    /* ===== Main Card Wrapper ===== */
+    .shell{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:18px;
+      box-shadow: var(--nk-shadow);
+      padding:14px;
+    }
+
+    /* ===== Tabs Row ===== */
+    .tabsRow{
+      display:flex;gap:10px;align-items:center;
+      padding:6px;
+      border:1px solid var(--nk-border);
+      border-radius:14px;
+      background:#fff;
+      margin-bottom:12px;
+      overflow:auto;
+    }
+    .tab{
+      display:flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:12px;
+      background:#f6fbfb;border:1px solid #e6f0f2;
+      color:#244545;
+      font-weight:900;font-size:12px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .tab.active{
+      background:rgba(15,140,140,.10);
+      border-color:rgba(15,140,140,.35);
+      color:var(--nk-teal-2);
+    }
+
+    /* ===== Layout Grid ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1.6fr .74fr; /* main + right sidebar */
+      gap:12px;
+      align-items:start;
+    }
+
+    /* ===== Cards ===== */
+    .card{
+      background:var(--nk-card);
+      border:1px solid var(--nk-border);
+      border-radius:var(--r);
+      box-shadow: 0 10px 18px rgba(16, 24, 40, .04);
+    }
+    .cardHd{
+      padding:12px 12px 0;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .cardTitle{
+      margin:0;
+      font-size:12.5px;
+      font-weight:900;
+      color:#1f3a3a;
+      display:flex;align-items:center;gap:8px;
+    }
+    .cardBody{padding:12px}
+    .muted{color:var(--nk-muted)}
+    .tiny{font-size:11px;font-weight:700}
+    .sep{height:1px;background:var(--nk-border);margin:10px 0}
+
+    /* ===== Main Column Sections ===== */
+    .topRow{
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:12px;
+      align-items:start;
+      margin-bottom:12px;
+    }
+
+    /* Devices box */
+    .devicesWrap{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .deviceItem{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:10px;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:10px;
+      background:#fff;
+    }
+    .deviceL{
+      display:flex;align-items:flex-start;gap:10px;
+      min-width:0;
+    }
+    .devIcon{
+      width:36px;height:36px;border-radius:12px;
+      background:#f2fbfb;border:1px solid #d9f0f0;
+      display:grid;place-items:center;color:var(--nk-teal-2);
+      flex:0 0 auto;
+    }
+    .devName{font-weight:900;font-size:12px;margin:0;line-height:1.2}
+    .devSub{font-size:11px;color:var(--nk-muted);font-weight:800;margin-top:2px}
+    .devStatus{
+      display:flex;align-items:center;gap:6px;
+      font-size:11px;font-weight:900;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--nk-border);
+      background:#f7fbfb;
+      color:#264444;
+      white-space:nowrap;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:var(--good);
+      box-shadow:0 0 0 3px rgba(34,197,94,.12);
+    }
+    .dot.off{background:#b9c6c9; box-shadow:0 0 0 3px rgba(185,198,201,.18)}
+    .addMini{
+      width:34px;height:34px;border-radius:10px;
+      border:1px dashed #bfe1e1;
+      background:#f5fbfb;color:var(--nk-teal-2);
+      display:grid;place-items:center;cursor:pointer;
+    }
+    .addMini:hover{background:#eefafa}
+
+    /* Info/Goal area */
+    .goalGrid{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr 1.05fr; /* 3 small + big reading */
+      gap:10px;
+      align-items:stretch;
+    }
+    .miniBox{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:10px;
+      background:#fff;
+      min-height:82px;
+    }
+    .miniLbl{font-size:11px;font-weight:900;color:#284848;display:flex;align-items:center;gap:6px}
+    .miniVal{margin-top:6px;font-size:15px;font-weight:900;color:#122424}
+    .miniSub{margin-top:4px;font-size:11px;color:var(--nk-muted);font-weight:800}
+    .hintLine{
+      margin-top:8px;
+      display:flex;align-items:center;gap:8px;
+      font-size:11px;font-weight:900;color:var(--good);
+    }
+
+    .bigReading{
+      background: #fff7e6;
+      border:1px solid #f3e1ba;
+      border-radius:14px;
+      padding:12px;
+      min-height:82px;
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .bigLbl{font-size:11px;font-weight:900;color:#6a4b00;display:flex;align-items:center;gap:6px}
+    .bigNum{font-size:28px;font-weight:900;color:#a66a00;line-height:1;margin-top:6px}
+    .bigUnit{font-size:12px;font-weight:900;color:#6a4b00;margin-right:6px}
+    .bigTime{font-size:11px;color:#7a6a4c;font-weight:800}
+
+    /* Chart Cards */
+    .chartCard .cardBody{padding:10px 12px 12px}
+    .chartTop{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:10px;
+    }
+    .dateChip{
+      display:flex;align-items:center;gap:6px;
+      padding:7px 10px;border-radius:999px;
+      border:1px solid var(--nk-border);
+      background:#fff;
+      font-size:11px;font-weight:900;color:#244545;
+      white-space:nowrap;
+    }
+
+    .chartArea{
+      display:grid;
+      grid-template-columns: 1.7fr .8fr;
+      gap:10px;
+      align-items:stretch;
+    }
+    .plotWrap{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      background:#fff;
+      padding:10px;
+      position:relative;
+      overflow:hidden;
+      min-height:220px;
+    }
+    .plotCanvas{
+      width:100%;
+      height:190px;
+      display:block;
+    }
+    .plotAxisLbl{
+      position:absolute;top:10px;right:10px;
+      font-size:11px;font-weight:900;color:#2a3b3b;
+      background:rgba(255,255,255,.85);
+      padding:5px 8px;border-radius:999px;border:1px solid var(--nk-border);
+      display:flex;align-items:center;gap:6px;
+    }
+
+    .legendBox{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      background:#fff;
+      padding:10px;
+      display:flex;flex-direction:column;gap:10px;
+      min-height:220px;
+      justify-content:space-between;
+    }
+    .legendItem{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-weight:900;font-size:11px;color:#244545;
+    }
+    .pill{
+      padding:6px 10px;border-radius:999px;
+      border:1px solid var(--nk-border);
+      background:#f7fbfb;
+      font-size:11px;font-weight:900;color:#244545;
+      white-space:nowrap;
+    }
+    .rangePills{
+      display:flex;flex-direction:column;gap:8px;
+    }
+    .rangePills .row{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:11px;font-weight:900;color:#244545;
+    }
+    .barKey{
+      width:12px;height:12px;border-radius:4px;flex:0 0 auto;
+      border:1px solid rgba(0,0,0,.06);
+    }
+
+    /* Secondary chart */
+    .plotWrap.sm{min-height:190px}
+    .plotCanvas.sm{height:160px}
+
+    /* Bottom Summary */
+    .summaryGrid{
+      display:grid;
+      grid-template-columns: 1.05fr 1.35fr;
+      gap:12px;
+      align-items:stretch;
+      margin-top:12px;
+    }
+    .insight{
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--nk-border);
+      background:#fff;
+      min-height:210px;
+      display:flex;flex-direction:column;justify-content:space-between;
+    }
+    .statusTag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      font-size:11px;font-weight:900;
+      border:1px solid rgba(245,158,11,.35);
+      background: rgba(245,158,11,.12);
+      color:#8a5a00;
+      width:max-content;
+    }
+    .insTitle{
+      margin:10px 0 6px;
+      font-size:18px;font-weight:900;color:#1c2b2b;
+    }
+    .insText{margin:0;color:var(--nk-muted);font-size:12px;font-weight:800;line-height:1.7}
+    .btnPrimary{
+      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      border:none;
+      background:rgba(15,140,140,.10);
+      color:var(--nk-teal-2);
+      padding:10px 12px;border-radius:12px;
+      font-weight:900;font-size:12px;
+      cursor:pointer;
+      width:max-content;
+      border:1px solid rgba(15,140,140,.28);
+    }
+    .btnPrimary:hover{background:rgba(15,140,140,.14)}
+
+    .donutBox{
+      border-radius:14px;border:1px solid var(--nk-border);
+      background:#fff;
+      padding:12px;
+      min-height:210px;
+      display:flex;flex-direction:column;gap:10px;
+    }
+    .filters{
+      display:flex;gap:8px;flex-wrap:wrap;
+      justify-content:flex-start;
+    }
+    .fbtn{
+      border:1px solid var(--nk-border);
+      background:#fff;
+      color:#244545;
+      border-radius:10px;
+      padding:6px 10px;
+      font-size:11px;font-weight:900;
+      cursor:pointer;
+      display:inline-flex;align-items:center;gap:6px;
+    }
+    .fbtn.active{
+      background:rgba(15,140,140,.10);
+      border-color:rgba(15,140,140,.35);
+      color:var(--nk-teal-2);
+    }
+    .donutRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+      align-items:center;
+    }
+    .donutCanvas{
+      width:100%;
+      height:160px;
+      display:block;
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      background:#fff;
+    }
+    .stats{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:10px;
+      background:#fff;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .statRow{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      font-size:11px;font-weight:900;color:#244545;
+    }
+    .statVal{color:#0f2f2f}
+    .pdfBtn{
+      margin-top:auto;
+      display:flex;align-items:center;justify-content:flex-end;
+    }
+    .btnGhost{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:9px 12px;border-radius:12px;
+      border:1px solid var(--nk-border);
+      background:#f7fbfb;
+      color:#244545;
+      font-weight:900;font-size:12px;
+      cursor:pointer;
+    }
+    .btnGhost:hover{background:#eefafa}
+
+    /* ===== Right Sidebar ===== */
+    .sideStack{display:flex;flex-direction:column;gap:12px}
+    .sideCard .cardBody{padding:12px}
+    .kv{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:8px 10px;
+      font-size:12px;
+      color:#244545;
+      font-weight:900;
+    }
+    .kv div{
+      background:#fff;
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:8px 10px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      min-height:38px;
+    }
+    .kv span{color:var(--nk-muted);font-weight:800;font-size:11px}
+    .docList{display:flex;flex-direction:column;gap:10px}
+    .docItem{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      padding:8px 10px;
+      background:#fff;
+    }
+    .docL{display:flex;align-items:center;gap:10px;min-width:0}
+    .docAv{
+      width:32px;height:32px;border-radius:12px;
+      background:#f2fbfb;border:1px solid #d9f0f0;
+      display:grid;place-items:center;color:var(--nk-teal-2);
+      font-weight:900;
+      flex:0 0 auto;
+    }
+    .docName{font-weight:900;font-size:12px;margin:0;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .docSpec{font-size:11px;color:var(--nk-muted);font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .arrowBtn{
+      width:32px;height:32px;border-radius:10px;
+      border:1px solid var(--nk-border);
+      background:#f7fbfb;
+      display:grid;place-items:center;
+      cursor:pointer;color:#244545;
+      flex:0 0 auto;
+    }
+    .arrowBtn:hover{background:#eefafa}
+
+    .remList,.repList,.artList{display:flex;flex-direction:column;gap:10px}
+    .remItem,.repItem,.artItem{
+      border:1px solid var(--nk-border);
+      border-radius:12px;
+      background:#fff;
+      padding:9px 10px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .remItem .t{font-weight:900;font-size:12px}
+    .remItem .s{font-size:11px;color:var(--nk-muted);font-weight:800}
+    .repItem .t,.artItem .t{font-weight:900;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .repItem .s,.artItem .s{font-size:11px;color:var(--nk-muted);font-weight:800}
+    .prod{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      border:1px solid var(--nk-border);
+      border-radius:12px;background:#fff;
+      padding:10px;
+    }
+    .prod .t{font-weight:900;font-size:12px;margin:0}
+    .prod .s{font-size:11px;color:var(--nk-muted);font-weight:800;margin-top:2px}
+    .prodTag{
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(15,140,140,.25);
+      background:rgba(15,140,140,.10);
+      color:var(--nk-teal-2);
+      font-weight:900;font-size:11px;
+      white-space:nowrap;
+    }
+
+    /* Floating help button */
+    .floatHelp{
+      position:fixed;
+      left:18px; /* في RTL خليها يسار زي السكر */
+      bottom:18px;
+      z-index:50;
+      background:var(--nk-teal);
+      color:#fff;
+      border:none;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:900;
+      display:flex;align-items:center;gap:8px;
+      box-shadow: 0 16px 40px rgba(15,140,140,.35);
+      cursor:pointer;
+    }
+    .floatHelp:hover{background:var(--nk-teal-2)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .grid{grid-template-columns: 1fr}
+      .topRow{grid-template-columns: 1fr}
+      .goalGrid{grid-template-columns: 1fr 1fr}
+      .chartArea{grid-template-columns: 1fr}
+      .summaryGrid{grid-template-columns: 1fr}
+      .navlinks{display:none}
+    }
+    @media (max-width: 520px){
+      .goalGrid{grid-template-columns: 1fr}
+      .topbar{height:auto;padding:10px 12px}
+      .topbar .wrap{flex-wrap:wrap}
+      .brand{margin-left:0}
+      .userMini{width:100%;justify-content:space-between}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== SVG Symbols (عشان مفيش أيقونة فاضية) ===== -->
+  <svg width="0" height="0" style="position:absolute; left:-9999px; top:-9999px;">
+    <symbol id="ic-bell" viewBox="0 0 24 24">
+      <path d="M18 8a6 6 0 10-12 0c0 7-3 7-3 7h18s-3 0-3-7"></path>
+      <path d="M13.73 21a2 2 0 01-3.46 0"></path>
+    </symbol>
+    <symbol id="ic-msg" viewBox="0 0 24 24">
+      <path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z"></path>
+    </symbol>
+    <symbol id="ic-cart" viewBox="0 0 24 24">
+      <circle cx="9" cy="21" r="1"></circle>
+      <circle cx="20" cy="21" r="1"></circle>
+      <path d="M1 1h4l2.7 13.4a2 2 0 002 1.6h9.6a2 2 0 002-1.6L23 6H6"></path>
+    </symbol>
+    <symbol id="ic-help" viewBox="0 0 24 24">
+      <path d="M12 18h.01"></path>
+      <path d="M9.09 9a3 3 0 115.82 1c0 2-3 2-3 4"></path>
+      <circle cx="12" cy="12" r="10"></circle>
+    </symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24">
+      <path d="M20 21a8 8 0 10-16 0"></path>
+      <circle cx="12" cy="7" r="4"></circle>
+    </symbol>
+    <symbol id="ic-flag" viewBox="0 0 24 24">
+      <path d="M4 22V2"></path>
+      <path d="M4 4h12l-1 5 1 5H4"></path>
+    </symbol>
+    <symbol id="ic-plus" viewBox="0 0 24 24">
+      <path d="M12 5v14"></path>
+      <path d="M5 12h14"></path>
+    </symbol>
+    <symbol id="ic-scale" viewBox="0 0 24 24">
+      <path d="M6 3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6a3 3 0 013-3z"></path>
+      <path d="M12 7a4 4 0 014 4"></path>
+      <path d="M12 7a4 4 0 00-4 4"></path>
+      <path d="M12 11l2-2"></path>
+    </symbol>
+    <symbol id="ic-heart" viewBox="0 0 24 24">
+      <path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"></path>
+    </symbol>
+    <symbol id="ic-drop" viewBox="0 0 24 24">
+      <path d="M12 2s7 8 7 13a7 7 0 01-14 0c0-5 7-13 7-13z"></path>
+    </symbol>
+    <symbol id="ic-utensils" viewBox="0 0 24 24">
+      <path d="M4 3v7a3 3 0 003 3h0V3"></path>
+      <path d="M10 3v7a3 3 0 01-3 3h0"></path>
+      <path d="M14 3h2a4 4 0 014 4v3h-6V3z"></path>
+      <path d="M18 10v11"></path>
+    </symbol>
+    <symbol id="ic-calendar" viewBox="0 0 24 24">
+      <path d="M8 2v4"></path><path d="M16 2v4"></path>
+      <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+      <path d="M3 10h18"></path>
+    </symbol>
+    <symbol id="ic-doc" viewBox="0 0 24 24">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+      <path d="M14 2v6h6"></path>
+    </symbol>
+    <symbol id="ic-arrow" viewBox="0 0 24 24">
+      <path d="M9 18l6-6-6-6"></path>
+    </symbol>
+    <symbol id="ic-chart" viewBox="0 0 24 24">
+      <path d="M3 3v18h18"></path>
+      <path d="M7 14l4-4 3 3 5-6"></path>
+    </symbol>
+    <symbol id="ic-download" viewBox="0 0 24 24">
+      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
+      <path d="M7 10l5 5 5-5"></path>
+      <path d="M12 15V3"></path>
+    </symbol>
+    <symbol id="ic-edit" viewBox="0 0 24 24">
+      <path d="M12 20h9"></path>
+      <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+    </symbol>
+  </svg>
+
+  <!-- ===== Top Navbar ===== -->
+  <header class="topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logoMark" aria-label="Naraakum">
+          <svg class="i i-20" style="stroke:#fff"><use href="#ic-heart"></use></svg>
+        </div>
+        <div>
+          <div class="brandTitle">نرعاكم</div>
+          <div class="brandSub">الرعاية الصحية عن بعد</div>
+        </div>
+      </div>
+
+      <nav class="navlinks" aria-label="روابط">
+        <a href="#"><svg class="i i-16"><use href="#ic-chart"></use></svg>الرئيسية</a>
+        <a href="#"><svg class="i i-16"><use href="#ic-doc"></use></svg>الخدمات الطبية</a>
+        <a href="#"><svg class="i i-16"><use href="#ic-user"></use></svg>مهتمين بالرعاية</a>
+        <a href="#"><svg class="i i-16"><use href="#ic-help"></use></svg>الأسئلة الشائعة</a>
+        <a href="#"><svg class="i i-16"><use href="#ic-flag"></use></svg>من نحن</a>
+      </nav>
+
+      <div class="topActions">
+        <div class="chip" title="الدولة">
+          <svg class="i i-16"><use href="#ic-flag"></use></svg>
+          <select aria-label="الدولة">
+            <option>السعودية</option>
+            <option>مصر</option>
+            <option>الإمارات</option>
+          </select>
+        </div>
+
+        <button class="iconBtn" aria-label="المفضلة">
+          <svg class="i"><use href="#ic-heart"></use></svg>
+        </button>
+
+        <button class="iconBtn" aria-label="الرسائل">
+          <svg class="i"><use href="#ic-msg"></use></svg>
+        </button>
+
+        <button class="iconBtn" aria-label="سلة">
+          <span class="badgeDot">1</span>
+          <svg class="i"><use href="#ic-cart"></use></svg>
+        </button>
+
+        <div class="userMini">
+          <div class="avatar">م</div>
+          <div>
+            <div class="name">مروان</div>
+            <div class="role">مزود الرعاية</div>
+          </div>
+          <svg class="i i-16" style="opacity:.7"><use href="#ic-arrow"></use></svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="pageHead">
+      <a class="helpLink" href="#">
+        <svg class="i i-16" style="stroke:#eaffff"><use href="#ic-help"></use></svg>
+        <span>محتاج مساعدة؟</span>
+      </a>
+      <h1>المراقبة عن بعد</h1>
+    </div>
+
+    <section class="shell">
+      <!-- Tabs -->
+      <div class="tabsRow" role="tablist" aria-label="تبويبات المراقبة">
+        <div class="tab" role="tab" aria-selected="false">
+          <svg class="i i-16"><use href="#ic-heart"></use></svg>
+          ضغط الدم
+        </div>
+        <div class="tab" role="tab" aria-selected="false">
+          <svg class="i i-16"><use href="#ic-drop"></use></svg>
+          السكر
+        </div>
+        <div class="tab active" role="tab" aria-selected="true">
+          <svg class="i i-16"><use href="#ic-scale"></use></svg>
+          الوزن / النظام الغذائي
+        </div>
+        <div class="tab" role="tab" aria-selected="false">
+          <svg class="i i-16"><use href="#ic-chart"></use></svg>
+          النشاط البدني
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- =================== MAIN COLUMN =================== -->
+        <div>
+          <!-- Top row: devices + goals/reading -->
+          <div class="topRow">
+            <!-- Devices -->
+            <div class="card">
+              <div class="cardHd">
+                <h3 class="cardTitle">
+                  <svg class="i i-16"><use href="#ic-scale"></use></svg>
+                  أجهزة القياس الذكية
+                </h3>
+                <button class="addMini" title="إضافة جهاز">
+                  <svg class="i i-16"><use href="#ic-plus"></use></svg>
+                </button>
+              </div>
+              <div class="cardBody">
+                <div class="devicesWrap">
+                  <div class="deviceItem">
+                    <div class="deviceL">
+                      <div class="devIcon">
+                        <svg class="i i-18"><use href="#ic-scale"></use></svg>
+                      </div>
+                      <div style="min-width:0">
+                        <p class="devName">ميزان ذكي</p>
+                        <div class="devSub">Withings Body+</div>
+                      </div>
+                    </div>
+                    <div class="devStatus">
+                      <span class="dot"></span>
+                      متصل
+                    </div>
+                  </div>
+
+                  <div class="deviceItem">
+                    <div class="deviceL">
+                      <div class="devIcon">
+                        <svg class="i i-18"><use href="#ic-scale"></use></svg>
+                      </div>
+                      <div style="min-width:0">
+                        <p class="devName">ميزان ذكي</p>
+                        <div class="devSub">Fitbit Aria Air</div>
+                      </div>
+                    </div>
+                    <div class="devStatus">
+                      <span class="dot off"></span>
+                      غير متصل
+                    </div>
+                  </div>
+                </div>
+
+                <div class="sep"></div>
+
+                <button class="btnPrimary" type="button" id="btnAddReading">
+                  <svg class="i i-16"><use href="#ic-plus"></use></svg>
+                  تسجيل قراءة
+                </button>
+              </div>
+            </div>
+
+            <!-- Goals + Big Reading -->
+            <div class="card">
+              <div class="cardHd">
+                <h3 class="cardTitle">
+                  <svg class="i i-16"><use href="#ic-utensils"></use></svg>
+                  ملخص الهدف والمتابعة
+                </h3>
+                <button class="iconBtn" style="width:34px;height:34px" title="تعديل">
+                  <svg class="i i-16"><use href="#ic-edit"></use></svg>
+                </button>
+              </div>
+              <div class="cardBody">
+                <div class="goalGrid">
+                  <div class="miniBox">
+                    <div class="miniLbl">
+                      <svg class="i i-14"><use href="#ic-flag"></use></svg>
+                      النطاق المستهدف
+                    </div>
+                    <div class="miniVal">72 – 80 <span class="tiny muted">kg</span></div>
+                    <div class="miniSub">حسب خطة الطبيب</div>
+                  </div>
+
+                  <div class="miniBox">
+                    <div class="miniLbl">
+                      <svg class="i i-14"><use href="#ic-chart"></use></svg>
+                      الهدف الحالي
+                    </div>
+                    <div class="miniVal">75 <span class="tiny muted">kg</span></div>
+                    <div class="miniSub">هدف خلال 30 يوم</div>
+                  </div>
+
+                  <div class="miniBox">
+                    <div class="miniLbl">
+                      <svg class="i i-14"><use href="#ic-user"></use></svg>
+                      مؤشر كتلة الجسم
+                    </div>
+                    <div class="miniVal">BMI 27.4</div>
+                    <div class="miniSub">الحالة: زيادة وزن</div>
+                  </div>
+
+                  <div class="bigReading" id="bigReadingCard">
+                    <div class="bigLbl">
+                      <svg class="i i-14"><use href="#ic-scale"></use></svg>
+                      قراءة الوزن
+                    </div>
+                    <div>
+                      <span class="bigNum" id="currentWeight">75.2</span>
+                      <span class="bigUnit">kg</span>
+                    </div>
+                    <div class="bigTime" id="lastUpdated">منذ 4 دقائق</div>
+                  </div>
+                </div>
+
+                <div class="hintLine">
+                  <svg class="i i-16" style="color:var(--good)"><use href="#ic-help"></use></svg>
+                  تنبيه: يتم احتساب الاتجاه العام بناءً على قراءات آخر 7 أيام
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 1 -->
+          <div class="card chartCard">
+            <div class="cardHd">
+              <h3 class="cardTitle">
+                <svg class="i i-16"><use href="#ic-chart"></use></svg>
+                مخطط تغير الوزن
+              </h3>
+              <div class="dateChip">
+                <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                <span id="chartDateLabel">29/04/2025 اليوم</span>
+              </div>
+            </div>
+            <div class="cardBody">
+              <div class="chartArea">
+                <div class="plotWrap" id="weightPlotWrap">
+                  <div class="plotAxisLbl">
+                    <svg class="i i-14"><use href="#ic-scale"></use></svg>
+                    الوزن (kg)
+                  </div>
+                  <canvas class="plotCanvas" id="weightChart"></canvas>
+                </div>
+
+                <div class="legendBox">
+                  <div class="rangePills">
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:var(--band-good)"></span>
+                        داخل النطاق
+                      </span>
+                      <span class="pill">72 – 80 kg</span>
+                    </div>
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:var(--band-warn)"></span>
+                        فوق المستهدف
+                      </span>
+                      <span class="pill">أكثر من 80 kg</span>
+                    </div>
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:var(--band-bad)"></span>
+                        أقل من المستهدف
+                      </span>
+                      <span class="pill">أقل من 72 kg</span>
+                    </div>
+                  </div>
+
+                  <div class="sep"></div>
+
+                  <div class="legendItem">
+                    <span>آخر تغيير</span>
+                    <span class="pill" id="deltaWeight">-0.4 kg</span>
+                  </div>
+                  <div class="legendItem">
+                    <span>الاتجاه</span>
+                    <span class="pill" id="trendTag">مستقر</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 2 -->
+          <div class="card chartCard" style="margin-top:12px">
+            <div class="cardHd">
+              <h3 class="cardTitle">
+                <svg class="i i-16"><use href="#ic-utensils"></use></svg>
+                مخطط الالتزام بالنظام الغذائي
+              </h3>
+              <div class="dateChip">
+                <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                <span>29/04/2025 اليوم</span>
+              </div>
+            </div>
+            <div class="cardBody">
+              <div class="chartArea">
+                <div class="plotWrap sm" id="dietPlotWrap">
+                  <div class="plotAxisLbl">
+                    <svg class="i i-14"><use href="#ic-utensils"></use></svg>
+                    الالتزام (%)
+                  </div>
+                  <canvas class="plotCanvas sm" id="dietChart"></canvas>
+                </div>
+
+                <div class="legendBox" style="min-height:190px">
+                  <div class="rangePills">
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:rgba(34,197,94,.18)"></span>
+                        جيد
+                      </span>
+                      <span class="pill">≥ 80%</span>
+                    </div>
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:rgba(245,158,11,.18)"></span>
+                        متوسط
+                      </span>
+                      <span class="pill">50% – 79%</span>
+                    </div>
+                    <div class="row">
+                      <span style="display:flex;align-items:center;gap:8px">
+                        <span class="barKey" style="background:rgba(239,68,68,.16)"></span>
+                        منخفض
+                      </span>
+                      <span class="pill">< 50%</span>
+                    </div>
+                  </div>
+
+                  <div class="sep"></div>
+
+                  <div class="legendItem">
+                    <span>خطة اليوم</span>
+                    <span class="pill">1800 سعرة</span>
+                  </div>
+                  <div class="legendItem">
+                    <span>متوسط الالتزام</span>
+                    <span class="pill" id="avgDiet">74%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Summary -->
+          <div class="card" style="margin-top:12px">
+            <div class="cardHd">
+              <h3 class="cardTitle">
+                <svg class="i i-16"><use href="#ic-chart"></use></svg>
+                ملخص مستوى التحكم في الوزن
+              </h3>
+              <div class="dateChip">
+                <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                <span>29/04/2025 إلى 29/04/2025</span>
+              </div>
+            </div>
+            <div class="cardBody">
+              <div class="summaryGrid">
+                <div class="insight">
+                  <div>
+                    <div class="statusTag" id="statusTag">
+                      <svg class="i i-16" style="stroke:#8a5a00"><use href="#ic-help"></use></svg>
+                      حالة الوزن: مستقر
+                    </div>
+                    <div class="insTitle" id="insTitle">اتجاه مستقر مع تحسن بسيط</div>
+                    <p class="insText" id="insText">
+                      القراءات تشير إلى استقرار الوزن ضمن النطاق المستهدف مع انخفاض طفيف خلال الأسبوع.
+                      يُنصح بالاستمرار على نفس الخطة الغذائية والتركيز على الالتزام بنسبة أعلى خلال العشاء.
+                    </p>
+                  </div>
+                  <button class="btnPrimary" type="button">
+                    <svg class="i i-16"><use href="#ic-msg"></use></svg>
+                    إجراء استشارة الآن
+                  </button>
+                </div>
+
+                <div class="donutBox">
+                  <div class="filters" role="group" aria-label="فلاتر المدة">
+                    <button class="fbtn" data-range="1">
+                      <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                      1 يوم
+                    </button>
+                    <button class="fbtn active" data-range="7">
+                      <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                      7 أيام
+                    </button>
+                    <button class="fbtn" data-range="30">
+                      <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                      30 يوم
+                    </button>
+                    <button class="fbtn" data-range="90">
+                      <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                      90 يوم
+                    </button>
+                    <button class="fbtn" data-range="180">
+                      <svg class="i i-14"><use href="#ic-calendar"></use></svg>
+                      180 يوم
+                    </button>
+                  </div>
+
+                  <div class="donutRow">
+                    <canvas class="donutCanvas" id="donutChart"></canvas>
+
+                    <div class="stats">
+                      <div class="statRow">
+                        <span>ضمن الهدف</span>
+                        <span class="statVal" id="inGoalPct">60%</span>
+                      </div>
+                      <div class="statRow">
+                        <span>فوق الهدف</span>
+                        <span class="statVal" id="aboveGoalPct">30%</span>
+                      </div>
+                      <div class="statRow">
+                        <span>أقل من الهدف</span>
+                        <span class="statVal" id="belowGoalPct">10%</span>
+                      </div>
+                      <div class="sep"></div>
+                      <div class="statRow">
+                        <span>متوسط الوزن</span>
+                        <span class="statVal" id="avgWeight">76.1 kg</span>
+                      </div>
+                      <div class="statRow">
+                        <span>أعلى قراءة</span>
+                        <span class="statVal" id="maxWeight">78.0 kg</span>
+                      </div>
+                      <div class="statRow">
+                        <span>أقل قراءة</span>
+                        <span class="statVal" id="minWeight">74.9 kg</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pdfBtn">
+                    <button class="btnGhost" type="button" id="btnPdf">
+                      <svg class="i i-16"><use href="#ic-download"></use></svg>
+                      تحميل التقرير PDF
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- =================== RIGHT SIDEBAR =================== -->
+        <aside class="sideStack">
+          <div class="card sideCard">
+            <div class="cardHd">
+              <h3 class="cardTitle">
+                <svg class="i i-16"><use href="#ic-user"></use></svg>
+                بيانات المستفيد
+              </h3>
+            </div>
+            <div class="cardBody">
+              <div class="kv">
+                <div><b>اسم المستفيد</b><span>سعود أحمد عساف</span></div>
+                <div><b>النوع</b><span>ذكر</span></div>
+                <div><b>العمر</b><span>52 سنة</span></div>
+                <div><b>الوزن</b><span>80 kg</span></div>
+                <div><b>الطول</b><span>177 cm</span></div>
+                <div><b>حالة المتابعة</b><span>نشطة</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card sideCard">
+            <div class="cardHd">
+              <h3 class="cardTitle">
+                <svg class="i i-16"><use href="#ic-msg"></use></svg>
+                تواصل مع طبيبك
+              </h3>
+              <button class="btnGhost" style="padding:7px 10px;border-radius:10px">
+                <svg class="i i-16"><use href="#ic-plus"></use></svg>
+                المزيد
+              </button>
+            </div>
+            <div class="cardBody">
+              <div class="docList">
+                <div class="docItem">
+                  <div class="docL">
+                    <div class="docAv">ر</div>
+                    <div style="min-width:0">
+                      <p class="docName">رياض محمد العائلي</p>
+                      <div class="docSpec">استشاري تغذية علاجية</div>
+                    </div>
+                  </div>
+                  <button class="arrowBtn" aria-label="فتح">
+                    <svg class="i i-16"><use href="#ic-arrow"></use></svg>
+                  </button>
+                </div>
+
+                <div class="docItem">
+                  <div class="docL">
+                    <div class="docAv">غ</div>
+                    <div style="min-width:0">
+                      <p class="docName">غادة محمد عسيري</p>
+                      <div class="docSpec">أخصائي متابعة وزن</div>
+                    </div>
+                  </div>
+                  <button class="arrowBtn" aria-label="فتح">
+                    <svg class="i i-16"><use href="#ic-arrow"></use></svg>
+                  </button>
+                </div>
+
+                <div class="docItem">
+                  <div class="docL">
+                    <div class="docAv">م</div>
+                    <div style="min-width:0">
+                      <p class="docName">مصطفى نبيل محمد</p>
+                      <div class="docSpec">ممارس عام</div>
+                    </div>
+                  </div>
+                  <button

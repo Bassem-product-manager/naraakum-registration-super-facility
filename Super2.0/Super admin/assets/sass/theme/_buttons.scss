@@ -1,0 +1,167 @@
+.btn {
+  // padding: 0.2rem 0.75rem 0rem 0.75rem !important;
+  border-radius: $value-12;
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.4rem;
+  font-weight: 600 !important;
+}
+.action-btn {
+  padding: 0.1rem 0.75rem 0rem 0.75rem !important;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.4rem;
+  text-transform: capitalize !important;
+  outline: 0px;
+  border: 0px;
+  background-color: $secondary-100;
+  i {
+    color: $primary-500;
+    margin-top: 0.4rem;
+  }
+  &:hover {
+    background-color: #fff;
+  }
+}
+
+/*========================= Buttons Sizes =========================*/
+.btn-24 {
+  height: $value-24 !important;
+  font-size: $fsize-12 !important;
+}
+.btn-28 {
+  height: $value-28 !important;
+  font-size: $fsize-12 !important;
+}
+.btn-32 {
+  height: $value-32 !important;
+  font-size: $fsize-16 !important;
+}
+.btn-36 {
+  height: $value-36 !important;
+  font-size: $fsize-16 !important;
+  i {
+    margin-top: 0.3rem;
+  }
+}
+.btn-40 {
+  height: $value-40 !important;
+  font-size: $fsize-14 !important;
+}
+.btn-44 {
+  height: $value-44 !important;
+  font-size: $fsize-16 !important;
+}
+.btn-48 {
+  height: $value-48 !important;
+  font-size: $fsize-18 !important;
+}
+.btn-52 {
+  height: $value-52 !important;
+  font-size: $fsize-18 !important;
+}
+.btn-56 {
+  height: $value-56 !important;
+  font-size: $fsize-18 !important;
+}
+
+/*/*/
+// :disabled {
+//   background-color: $grey-100 !important;
+//   border-color: $grey-100 !important;
+//   color: $grey-900 !important;
+//   cursor: not-allowed !important;
+// }
+// .disabled {
+//   background-color: $grey-100 !important;
+//   border-color: $grey-100 !important;
+//   color: $grey-900 !important;
+//   cursor: not-allowed !important;
+// }
+
+/*/*/
+.custom-tooltip {
+  font-size: $value-12;
+}
+/*/*/
+.icon-item {
+  display: flex;
+  gap: $value-16;
+  align-items: center;
+  .fi {
+    padding-top: 0.2rem;
+    color: #747474;
+  }
+  img {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+/*/*/
+.btn-icon {
+  display: inline-flex;
+  gap: $value-8;
+  align-items: center;
+  .fi {
+    padding-top: 0.2rem;
+  }
+  img {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+
+/*/*/
+.help-btns-group {
+  .btn {
+    background-color: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    i {
+      color: rgba(0, 0, 0, 0.6);
+      padding-top: 0.5rem;
+    }
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/*/*/
+
+.custom-radio-group {
+  display: flex;
+  gap: $value-6;
+  flex-wrap: nowrap;
+}
+
+.custom-radio-btn {
+  display: inline-block;
+  padding: $value-6 $value-12;
+  border: 1px solid #fff;
+  border-radius: $value-8;
+  background-color: white;
+  color: $primary-500;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: $value-14;
+
+  text-wrap: nowrap;
+  box-shadow: 0px $value-2 $value-4 rgba(0, 0, 0, 0.1);
+}
+
+.btn-check:checked + .custom-radio-btn {
+  background-color: $primary-500;
+  color: white;
+  border-color: $primary-500;
+}
+
+.custom-radio-btn:hover {
+  border: 1px solid $primary-500;
+}
+
+/*/*/

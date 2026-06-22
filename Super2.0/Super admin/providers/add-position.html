@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Position</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: .3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open { transform: translateX(0); }
+      .side-menu-list li.is-open > .sub-list { display: block; }
+      .side-menu-list li > .sub-list { display: none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down { transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, .08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .title-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .title-head h1 {
+        margin: 0;
+        color: #101828;
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .position-form-shell {
+        max-width: 980px;
+      }
+
+      .position-form {
+        border: 1px solid rgba(16, 24, 40, .08);
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 10px 24px rgba(16, 24, 40, .04);
+      }
+
+      .position-form-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px;
+        border-bottom: 1px solid rgba(16, 24, 40, .08);
+      }
+
+      .position-form-head b {
+        display: block;
+        color: #101828;
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .position-form-body {
+        padding: 16px;
+      }
+
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 16px;
+        border-top: 1px solid rgba(16, 24, 40, .08);
+      }
+
+      @media (max-width: 767px) {
+        .title-head,
+        .position-form-head,
+        .form-actions {
+          align-items: stretch;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Positions</li>
+              <li class="breadcrumb-item active" aria-current="page">Add Position</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="title-head position-form-shell">
+            <h1>Add Position</h1>
+          </div>
+
+          <form class="position-form position-form-shell" id="addPositionForm">
+            <div class="position-form-head">
+              <b>Position Details</b>
+              <span class="fsize-12 text-grey">Provider Management</span>
+            </div>
+
+            <div class="position-form-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Position Name</label>
+                  <input id="positionName" type="text" class="form-control form-control-32" placeholder="Example: Senior Consultant" required />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Job Title</label>
+                  <select id="jobTitle" class="form-control form-control-32" required>
+                    <option value="" selected disabled>Select title</option>
+                    <option value="General Practitioner">General Practitioner</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Home Care Nurse">Home Care Nurse</option>
+                    <option value="Nutrition Consultant">Nutrition Consultant</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Activation</label>
+                  <select id="activationStatus" class="form-control form-control-32">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <a class="btn btn-secondary" href="positions.html">Cancel</a>
+              <button type="submit" class="btn btn-primary">Save Position</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () { aside.classList.toggle("is-open"); });
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () { li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function () {
+        const form = document.getElementById("addPositionForm");
+        if (!form) return;
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          window.location.href = "positions.html";
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+.item-bank-card {
+  background-color: #fff;
+  padding: $value-12;
+  border-radius: $value-12;
+  display: flex;
+  flex-direction: column;
+  gap: $value-16;
+  height: 100%;
+  position: relative;
+
+  .card-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 8rem;
+
+    img {
+      max-height: 100%;
+      width: auto;
+    }
+  }
+}

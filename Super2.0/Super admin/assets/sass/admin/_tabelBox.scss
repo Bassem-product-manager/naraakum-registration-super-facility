@@ -1,0 +1,85 @@
+.boxes-list {
+  display: flex;
+  flex-direction: column;
+  gap: $value-20;
+}
+
+.tabel-box-item {
+  background-color: $surface-basic;
+  border-radius: $value-8;
+  padding: $value-16;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: $value-12;
+
+  .box-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: $value-8;
+
+    .box-name {
+      display: flex;
+      flex-direction: column;
+      gap: $value-4;
+
+      h3 {
+        font-size: $value-28;
+        font-style: normal;
+        font-weight: 700;
+        text-transform: capitalize;
+
+        line-height: 1.396rem; /* 69.801% */
+      }
+      p {
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        color: $grey-600;
+        line-height: 1.396rem; /* 69.801% */
+        display: none;
+        @media screen and (min-width: 768px) {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+/*/*/
+.gap-0 {
+  gap: 0;
+}
+
+/*/*/
+
+.note-dot {
+  width: $value-8;
+  height: $value-8;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+/*/*/
+.tabs-responsive {
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    gap: 1rem;
+    .box-name {
+      p {
+        display: none;
+      }
+    }
+  }
+}
+
+/*/*/
+
+.p-xs-0 {
+  @media screen and (max-width: 414px) {
+    padding: 0px !important;
+  }
+}

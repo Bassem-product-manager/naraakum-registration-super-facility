@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Main Services</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+
+      .svc-subtitle{
+        margin-top:4px;
+        font-size:12px;
+        font-weight:800;
+        color:#667085;
+      }
+
+      .svc-price{
+        font-weight:900;
+        color:#101828;
+        white-space:nowrap;
+      }
+
+      .btn-edit-price{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:6px;
+        height:34px;
+        padding:0 12px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.26);
+        background:rgba(15,140,140,.08);
+        color:#0f8c8c;
+        font-size:12px;
+        font-weight:900;
+      }
+
+      .btn-edit-price:hover{
+        background:rgba(15,140,140,.12);
+      }
+
+      .filter-services-only.d-none{
+        display:none !important;
+      }
+    </style>  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+      <div id="sidebar-slot" data-base="../"></div>
+      <!-- End side-menu -->
+
+      <main class="main-page main-services-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2 id="pageTitle">Main Services</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li id="breadcrumbCurrent" class="breadcrumb-item active" aria-current="page">Main Services</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top operations bar (same style as Services) -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="mainServicesSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by main service"
+                  />
+                  <button id="btnMainServicesSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnMainServicesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#main-services-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <a id="btnAddServiceNav" href="add-service.html" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-plus-small"></i>
+                  <span id="btnAddServiceLabel">Add Service</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Services table (no select column) -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="mainServicesTable">
+                  <thead>
+                    <tr id="mainServicesHeadRow"></tr>
+                  </thead>
+                  <tbody id="mainServicesTbody"></tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="mainServicesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="mainServicesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="mainServicesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="mainServicesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="mainServicesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="mainServicesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="mainServicesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="main-services-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="filterModalTitle" class="modal-title">Filter Main Services</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label id="filterMainLabel" class="fsize-12 text-grey">Main Service</label>
+                <select id="msfMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Active</label>
+                <select id="msfActive" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+
+              <div id="wrapPriceMin" class="col-md-6 filter-services-only d-none">
+                <label class="fsize-12 text-grey">Min Price (SR)</label>
+                <input id="msfPriceMin" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="e.g. 100.00" />
+              </div>
+
+              <div id="wrapPriceMax" class="col-md-6 filter-services-only d-none">
+                <label class="fsize-12 text-grey">Max Price (SR)</label>
+                <input id="msfPriceMax" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="e.g. 300.00" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnMainServicesFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnMainServicesApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="service-price-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Price</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-2">
+              <label class="fsize-12 text-grey">Service</label>
+              <div id="editPriceServiceName" class="semiBold fsize-14">-</div>
+            </div>
+            <div>
+              <label class="fsize-12 text-grey">Price (SR)</label>
+              <input id="editPriceInput" type="number" min="0" step="0.01" class="form-control form-control-40" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveEditedPrice" type="button" class="btn btn-primary">Save Price</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const viewMode = (params.get("view") || "").toLowerCase() === "services" ? "services" : "main";
+
+        const MAIN_SERVICES_DATA = [
+          { id: "MS-01", main: "Telemedicine", active: 1, serviceCount: 2, updatedAt: "2026-01-20 14:10" },
+          { id: "MS-02", main: "Remote Follow-up", active: 1, serviceCount: 2, updatedAt: "2026-01-19 09:32" },
+          { id: "MS-03", main: "Laboratory Tests", active: 1, serviceCount: 2, updatedAt: "2026-01-18 17:05" },
+          { id: "MS-04", main: "In-Clinic Doctor Consultation", active: 1, serviceCount: 2, updatedAt: "2026-01-17 11:40" },
+        ];
+
+        const SUB_SERVICES_DATA = [
+          { id: "SS-01", service: "Video Consultation", main: "Telemedicine", active: 1, price: 150.0 },
+          { id: "SS-02", service: "Audio Consultation", main: "Telemedicine", active: 1, price: 120.0 },
+          { id: "SS-03", service: "Chronic Case Follow-up", main: "Remote Follow-up", active: 1, price: 110.0 },
+          { id: "SS-04", service: "Post-Visit Follow-up", main: "Remote Follow-up", active: 1, price: 95.0 },
+          { id: "SS-05", service: "Lab Sample Collection", main: "Laboratory Tests", active: 1, price: 120.0 },
+          { id: "SS-06", service: "Comprehensive Blood Panel", main: "Laboratory Tests", active: 1, price: 180.0 },
+          { id: "SS-07", service: "General Clinic Consultation", main: "In-Clinic Doctor Consultation", active: 1, price: 200.0 },
+          { id: "SS-08", service: "Specialist Clinic Consultation", main: "In-Clinic Doctor Consultation", active: 1, price: 280.0 },
+        ];
+
+        const dataSource = viewMode === "services" ? SUB_SERVICES_DATA : MAIN_SERVICES_DATA;
+        let selectedServiceId = "";
+
+        const pageTitle = document.getElementById("pageTitle");
+        const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+        const navMainService = document.getElementById("navMainService");
+        const navServices = document.getElementById("navServices");
+        const searchInput = document.getElementById("mainServicesSearchInput");
+        const btnAddServiceNav = document.getElementById("btnAddServiceNav");
+        const btnAddServiceLabel = document.getElementById("btnAddServiceLabel");
+        const filterModalTitle = document.getElementById("filterModalTitle");
+        const filterMainLabel = document.getElementById("filterMainLabel");
+
+        const tableHeadRow = document.getElementById("mainServicesHeadRow");
+        const tbody = document.getElementById("mainServicesTbody");
+        const rowsSelect = document.getElementById("mainServicesRowsPerPage");
+        const indicator = document.getElementById("mainServicesPageIndicator");
+        const currentBadge = document.getElementById("mainServicesCurrentPageBadge");
+        const btnFirst = document.getElementById("mainServicesFirstPage");
+        const btnPrev = document.getElementById("mainServicesPrevPage");
+        const btnNext = document.getElementById("mainServicesNextPage");
+        const btnLast = document.getElementById("mainServicesLastPage");
+
+        const btnSearch = document.getElementById("btnMainServicesSearch");
+        const btnReset = document.getElementById("btnMainServicesReset");
+        const msfMain = document.getElementById("msfMainService");
+        const msfActive = document.getElementById("msfActive");
+        const wrapPriceMin = document.getElementById("wrapPriceMin");
+        const wrapPriceMax = document.getElementById("wrapPriceMax");
+        const msfPriceMin = document.getElementById("msfPriceMin");
+        const msfPriceMax = document.getElementById("msfPriceMax");
+        const btnApplyFilter = document.getElementById("btnMainServicesApplyFilter");
+        const btnFilterReset = document.getElementById("btnMainServicesFilterReset");
+
+        const editModalEl = document.getElementById("service-price-modal");
+        const editPriceServiceName = document.getElementById("editPriceServiceName");
+        const editPriceInput = document.getElementById("editPriceInput");
+        const btnSaveEditedPrice = document.getElementById("btnSaveEditedPrice");
+
+        let currentPage = 1;
+        let filteredRows = [...dataSource];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function toPrice(v) {
+          return Number(v || 0).toFixed(2) + " SR";
+        }
+
+        function applyPageIdentity() {
+          if (viewMode === "services") {
+            document.title = "Naraakum | Services";
+            pageTitle.textContent = "Services";
+            breadcrumbCurrent.textContent = "Services";
+            searchInput.placeholder = "Search by service / main service";
+            filterModalTitle.textContent = "Filter Services";
+            filterMainLabel.textContent = "Main Service";
+            btnAddServiceNav.href = "addsub-service.html";
+            btnAddServiceLabel.textContent = "Add Service";
+            wrapPriceMin.classList.remove("d-none");
+            wrapPriceMax.classList.remove("d-none");
+            if (navMainService) navMainService.classList.remove("is-active");
+            if (navServices) navServices.classList.add("is-active");
+            return;
+          }
+
+          document.title = "Naraakum | Main Services";
+          pageTitle.textContent = "Main Services";
+          breadcrumbCurrent.textContent = "Main Services";
+          searchInput.placeholder = "Search by main service";
+          filterModalTitle.textContent = "Filter Main Services";
+          filterMainLabel.textContent = "Main Service";
+          btnAddServiceNav.href = "add-service.html";
+          btnAddServiceLabel.textContent = "Add Main Service";
+          wrapPriceMin.classList.add("d-none");
+          wrapPriceMax.classList.add("d-none");
+          if (navServices) navServices.classList.remove("is-active");
+          if (navMainService) navMainService.classList.add("is-active");
+        }
+
+        function fillMainOptions() {
+          const uniq = Array.from(new Set(dataSource.map(function (r) {
+            return viewMode === "services" ? r.main : r.main;
+          }))).sort();
+
+          msfMain.innerHTML = '<option value="">All</option>' + uniq.map(function (n) {
+            return '<option value="' + n.toLowerCase() + '">' + n + "</option>";
+          }).join("");
+        }
+
+        function renderHead() {
+          if (viewMode === "services") {
+            tableHeadRow.innerHTML = ""
+              + '<th class="col-seq">#</th>'
+              + "<th>Service</th>"
+              + '<th class="text-center">Active</th>'
+              + "<th>Price</th>"
+              + "<th>Actions</th>";
+            return;
+          }
+
+          tableHeadRow.innerHTML = ""
+            + '<th class="col-seq"># <span class="sort-icon">&#9650;&#9660;</span></th>'
+            + '<th>Main Service <span class="sort-icon">&#9650;&#9660;</span></th>'
+            + '<th class="text-center">Active</th>'
+            + "<th>Active Service</th>"
+            + "<th>Last Update</th>";
+        }
+
+        function matchesSearch(row) {
+          const q = norm(searchInput.value);
+          if (!q) return true;
+
+          if (viewMode === "services") {
+            return norm(row.service).includes(q) || norm(row.main).includes(q);
+          }
+          return norm(row.main).includes(q);
+        }
+
+        function matchesFilter(row) {
+          const main = norm(msfMain.value);
+          const active = norm(msfActive.value);
+          const minPrice = Number(msfPriceMin.value || "");
+          const maxPrice = Number(msfPriceMax.value || "");
+
+          const rowMain = norm(row.main);
+          const rowActive = String(Number(row.active));
+
+          if (main && rowMain !== main) return false;
+          if (active && rowActive !== active) return false;
+
+          if (viewMode === "services") {
+            const price = Number(row.price || 0);
+            if (!Number.isNaN(minPrice) && msfPriceMin.value !== "" && price < minPrice) return false;
+            if (!Number.isNaN(maxPrice) && msfPriceMax.value !== "" && price > maxPrice) return false;
+          }
+
+          return true;
+        }
+
+        function perPageVal() {
+          const v = (rowsSelect && rowsSelect.value) || "10";
+          return v === "all" ? filteredRows.length : parseInt(v, 10) || 10;
+        }
+
+        function totalPages() {
+          const p = perPageVal();
+          return Math.max(1, Math.ceil(filteredRows.length / (p || 1)));
+        }
+
+        function renderBody() {
+          const p = perPageVal();
+          const pages = totalPages();
+
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          const start = rowsSelect.value === "all" ? 0 : (currentPage - 1) * p;
+          const end = rowsSelect.value === "all" ? filteredRows.length : start + p;
+          const currentRows = filteredRows.slice(start, end);
+
+          if (!currentRows.length) {
+            const colSpan = viewMode === "services" ? 5 : 5;
+            tbody.innerHTML = '<tr><td colspan="' + colSpan + '" class="text-center text-grey" style="padding:26px;">No records found.</td></tr>';
+          } else if (viewMode === "services") {
+            tbody.innerHTML = currentRows.map(function (row, idx) {
+              const seq = start + idx + 1;
+              return ""
+                + "<tr>"
+                + '<td class="col-seq"><span class="row-seq">' + seq + "</span></td>"
+                + "<td><div class=\"service-name\">" + row.service + "</div><div class=\"svc-subtitle\">" + row.main + "</div></td>"
+                + '<td class="text-center"><label class="switch"><input class="active-switch" data-id="' + row.id + '" type="checkbox" ' + (row.active ? "checked" : "") + ' /><span class="slider"></span></label></td>'
+                + '<td><span class="svc-price">' + toPrice(row.price) + "</span></td>"
+                + '<td><button type="button" class="btn-edit-price" data-edit-price="' + row.id + '"><i class="fi fi-rr-coins"></i><span>Edit Price</span></button></td>'
+                + "</tr>";
+            }).join("");
+          } else {
+            tbody.innerHTML = currentRows.map(function (row, idx) {
+              const seq = start + idx + 1;
+              const tag = row.serviceCount + " services";
+              const pillClass = row.serviceCount > 0 ? "st-accepted" : "st-missed";
+              return ""
+                + "<tr>"
+                + '<td class="col-seq"><span class="row-seq">' + seq + "</span></td>"
+                + "<td><div class=\"service-name\">" + row.main + "</div></td>"
+                + '<td class="text-center"><label class="switch"><input class="active-switch" data-id="' + row.id + '" type="checkbox" ' + (row.active ? "checked" : "") + " " + (row.serviceCount === 0 ? "disabled" : "") + ' /><span class="slider"></span></label></td>'
+                + '<td class="availability-cell"><span class="status-pill ' + pillClass + '">' + tag + "</span></td>"
+                + '<td class="text-grey">' + row.updatedAt + "</td>"
+                + "</tr>";
+            }).join("");
+          }
+
+          if (indicator) indicator.textContent = "Page " + currentPage + " of " + pages;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+
+          tbody.querySelectorAll(".active-switch").forEach(function (sw) {
+            if (sw.disabled) return;
+            sw.addEventListener("change", function () {
+              const id = sw.getAttribute("data-id");
+              const row = dataSource.find(function (r) { return r.id === id; });
+              if (!row) return;
+              row.active = sw.checked ? 1 : 0;
+              applyAll();
+            });
+          });
+
+          if (viewMode === "services") {
+            tbody.querySelectorAll("button[data-edit-price]").forEach(function (btn) {
+              btn.addEventListener("click", function () {
+                const id = btn.getAttribute("data-edit-price");
+                const row = dataSource.find(function (r) { return r.id === id; });
+                if (!row) return;
+                selectedServiceId = id;
+                editPriceServiceName.textContent = row.service;
+                editPriceInput.value = Number(row.price || 0).toFixed(2);
+                bootstrap.Modal.getOrCreateInstance(editModalEl).show();
+              });
+            });
+          }
+        }
+
+        function applyAll() {
+          filteredRows = dataSource.filter(function (r) {
+            return matchesSearch(r) && matchesFilter(r);
+          });
+          currentPage = 1;
+          renderBody();
+        }
+
+        function resetFilters() {
+          searchInput.value = "";
+          msfMain.value = "";
+          msfActive.value = "";
+          msfPriceMin.value = "";
+          msfPriceMax.value = "";
+          applyAll();
+        }
+
+        btnSaveEditedPrice.addEventListener("click", function () {
+          if (!selectedServiceId) return;
+          const row = dataSource.find(function (r) { return r.id === selectedServiceId; });
+          if (!row) return;
+          const price = Number(editPriceInput.value || 0);
+          if (Number.isNaN(price) || price < 0) {
+            alert("Please enter a valid price.");
+            return;
+          }
+          row.price = price;
+          bootstrap.Modal.getInstance(editModalEl)?.hide();
+          renderBody();
+        });
+
+        btnSearch.addEventListener("click", applyAll);
+        searchInput.addEventListener("input", applyAll);
+        btnReset.addEventListener("click", resetFilters);
+        btnFilterReset.addEventListener("click", resetFilters);
+        btnApplyFilter.addEventListener("click", function () {
+          applyAll();
+          bootstrap.Modal.getInstance(document.getElementById("main-services-filter-modal"))?.hide();
+        });
+
+        rowsSelect.addEventListener("change", function () {
+          currentPage = 1;
+          renderBody();
+        });
+
+        btnFirst.addEventListener("click", function () { currentPage = 1; renderBody(); });
+        btnPrev.addEventListener("click", function () { currentPage = Math.max(1, currentPage - 1); renderBody(); });
+        btnNext.addEventListener("click", function () { currentPage = Math.min(totalPages(), currentPage + 1); renderBody(); });
+        btnLast.addEventListener("click", function () { currentPage = totalPages(); renderBody(); });
+
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (el) { return new bootstrap.Tooltip(el); });
+
+        applyPageIdentity();
+        fillMainOptions();
+        renderHead();
+        applyAll();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+
+
+

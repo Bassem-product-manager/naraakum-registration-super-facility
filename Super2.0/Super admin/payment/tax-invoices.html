@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Tax Invoices</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      /* ===== KSA clock (same idea used in your pages) ===== */
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        letter-spacing: 0.3px;
+      }
+
+      /* ===== KPI (copied pattern from deposits) ===== */
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+      .kpi-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+      .kpi-card .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+      .kpi-card .value {
+        margin-top: 6px;
+        font-size: 18px;
+        font-weight: 900;
+        color: #101828;
+      }
+      .kpi-card .hint {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #667085;
+      }
+      .kpi-card .value.green {
+        color: var(--nk-green);
+      }
+
+      /* ===== Layout split: list + preview ===== */
+      .inv-split {
+        display: grid;
+        grid-template-columns: 1.25fr 0.75fr;
+        gap: 12px;
+        align-items: start;
+      }
+      @media (max-width: 1100px) {
+        .inv-split {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .panel {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+      }
+      .panel-head {
+        padding: 12px 12px 10px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .panel-title {
+        font-weight: 900;
+        color: #101828;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .panel-body {
+        padding: 12px;
+      }
+
+      /* ===== Filter bar grid ===== */
+      .inv-filter-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr auto auto;
+        gap: 10px;
+        align-items: end;
+      }
+      @media (max-width: 1200px) {
+        .inv-filter-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      .form-label-mini {
+        font-size: 12px;
+        font-weight: 700;
+        color: #667085;
+        margin: 0 0 6px;
+      }
+
+      /* ===== Invoice toolbar + tabs ===== */
+      .invoice-toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .tab-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        cursor: pointer;
+        user-select: none;
+        font-weight: 800;
+        font-size: 12px;
+        color: #101828;
+      }
+      .tab-chip.active {
+        border-color: rgba(15, 140, 140, 0.35);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0b6f6f;
+      }
+      .tab-chip .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 99px;
+        background: #98a2b3;
+      }
+      .tab-chip.active .dot {
+        background: var(--nk-green);
+      }
+
+      /* ===== Badges ===== */
+      .badge-soft {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        color: #101828;
+        white-space: nowrap;
+      }
+      .badge-soft.green {
+        border-color: rgba(2, 122, 72, 0.25);
+        background: rgba(2, 122, 72, 0.08);
+        color: #027a48;
+      }
+      .badge-soft.orange {
+        border-color: rgba(181, 71, 8, 0.25);
+        background: rgba(181, 71, 8, 0.08);
+        color: #b54708;
+      }
+      .badge-soft.blue {
+        border-color: rgba(23, 92, 211, 0.25);
+        background: rgba(23, 92, 211, 0.08);
+        color: #175cd3;
+      }
+
+      /* ===== Invoice paper ===== */
+      .invoice-paper {
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        border-radius: 14px;
+        padding: 14px;
+        background: #fff;
+      }
+      .inv-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .inv-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .inv-brand img {
+        height: 36px;
+        width: auto;
+      }
+      .inv-brand .name {
+        font-weight: 1000;
+        font-size: 16px;
+        color: #101828;
+        line-height: 1.1;
+      }
+      .inv-brand .sub {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+      .inv-meta {
+        display: grid;
+        gap: 6px;
+        min-width: 260px;
+      }
+      .inv-meta .row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+      }
+      .inv-meta .k {
+        color: #667085;
+        font-weight: 800;
+      }
+      .inv-meta .v {
+        color: #101828;
+        font-weight: 900;
+      }
+
+      .inv-hr {
+        height: 1px;
+        background: rgba(16, 24, 40, 0.08);
+        margin: 12px 0;
+      }
+
+      .inv-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 700px) {
+        .inv-grid-2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .inv-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        padding: 12px;
+        background: rgba(15, 140, 140, 0.04);
+      }
+      .inv-card .h {
+        font-size: 12px;
+        font-weight: 1000;
+        color: #0b6f6f;
+        margin-bottom: 8px;
+      }
+      .inv-card .line {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        margin: 4px 0;
+      }
+      .inv-card .line .k {
+        color: #667085;
+        font-weight: 800;
+      }
+      .inv-card .line .v {
+        color: #101828;
+        font-weight: 900;
+      }
+
+      .inv-items {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+      }
+      .inv-items th,
+      .inv-items td {
+        padding: 10px;
+        font-size: 12px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+        text-align: left;
+        vertical-align: top;
+      }
+      .inv-items th {
+        background: rgba(15, 140, 140, 0.08);
+        color: #0b6f6f;
+        font-weight: 1000;
+      }
+      .inv-items tr:last-child td {
+        border-bottom: none;
+      }
+
+      .inv-totals {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .inv-total-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 12px;
+        padding: 8px 10px;
+        border: 1px dashed rgba(16, 24, 40, 0.14);
+        border-radius: 12px;
+      }
+      .inv-total-row .k {
+        color: #667085;
+        font-weight: 900;
+      }
+      .inv-total-row .v {
+        color: #101828;
+        font-weight: 1000;
+      }
+      .inv-total-row.grand {
+        border-style: solid;
+        border-color: rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .tax-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      @media (max-width: 900px) {
+        .tax-grid-3 {
+          grid-template-columns: 1fr;
+        }
+      }
+      .tax-chip {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #fff;
+      }
+      .tax-chip .k {
+        font-size: 11px;
+        font-weight: 700;
+        color: #667085;
+      }
+      .tax-chip .v {
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+      .tax-chip .h {
+        margin-top: 2px;
+        font-size: 11px;
+        color: #667085;
+      }
+      .tax-alloc {
+        margin-top: 10px;
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .tax-alloc th,
+      .tax-alloc td {
+        padding: 8px 10px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+        font-size: 12px;
+      }
+      .tax-alloc th {
+        background: #f8fafc;
+        font-weight: 900;
+        color: #344054;
+      }
+      .tax-alloc tr:last-child td {
+        border-bottom: none;
+      }
+
+      .qr-box {
+        width: 98px;
+        height: 98px;
+        border-radius: 12px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        display: grid;
+        place-items: center;
+        color: #667085;
+        font-weight: 900;
+        font-size: 11px;
+        background: #fff;
+      }
+
+      /* ===== small helper ===== */
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+
+      /* Print */
+      @media print {
+        body * {
+          visibility: hidden !important;
+        }
+        #invoiceRoot,
+        #invoiceRoot * {
+          visibility: visible !important;
+        }
+        #invoiceRoot {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-payments">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- sidebar include -->
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <!-- ===== Header (same structure) ===== -->
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Tax Invoices</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">12-03-000011</span>
+                    </span>
+                    <span class="fsize-12 text-grey">12/02/2026 - 401.35 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- ===== Breadcrumb ===== -->
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="transaction-orders.html">Transaction Orders</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Tax Invoices</li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- ===== Page Content ===== -->
+        <div class="page-content">
+          <!-- KPI -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="label">Issued Docs</div>
+              <div class="value" id="kpiIssued">0</div>
+              <div class="hint">Across selected filters</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Credit Notes</div>
+              <div class="value" id="kpiCreditNotes">0</div>
+              <div class="hint">Refund corrections</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Net VAT</div>
+              <div class="value green" id="kpiVat">0.00 SAR</div>
+              <div class="hint">Patient + Naraakum - Credit VAT</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Gross Taxable Amount</div>
+              <div class="value" id="kpiGross">0.00 SAR</div>
+              <div class="hint">Taxable base across issued docs</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Patient VAT</div>
+              <div class="value" id="kpiPatientVat">0.00 SAR</div>
+              <div class="hint">VAT on Patient invoices</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Naraakum VAT</div>
+              <div class="value" id="kpiNaraakumVat">0.00 SAR</div>
+              <div class="hint">Output VAT on platform fees</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Provider VAT Context</div>
+              <div class="value" id="kpiProviderVat">0.00 SAR</div>
+              <div class="hint">Service VAT context (provider copy)</div>
+            </div>
+          </div>
+
+          <!-- Filters -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 mt-12">
+            <div class="inv-filter-grid">
+              <div>
+                <div class="form-label-mini">From</div>
+                <input id="fFrom" type="date" class="form-control form-control-32" />
+              </div>
+              <div>
+                <div class="form-label-mini">To</div>
+                <input id="fTo" type="date" class="form-control form-control-32" />
+              </div>
+              <div>
+                <div class="form-label-mini">Entity Type</div>
+                <select id="fEntityType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="facility">Facility</option>
+                  <option value="pharmacy">Pharmacy</option>
+                  <option value="individual">Individual (Doctor)</option>
+                </select>
+              </div>
+              <div>
+                <div class="form-label-mini">Document Type</div>
+                <select id="fDocType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="patient">Patient Invoice (Provider -> Patient)</option>
+                  <option value="naraakum">Naraakum Invoice (Naraakum -> Provider)</option>
+                  <option value="provider">Provider Context (Reference)</option>
+                  <option value="credit">Credit Note</option>
+                </select>
+              </div>
+              <div>
+                <div class="form-label-mini">Status</div>
+                <select id="fStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="issued">Issued</option>
+                  <option value="draft">Draft</option>
+                  <option value="canceled">Canceled</option>
+                </select>
+              </div>
+              <div>
+                <div class="form-label-mini">Provider Code</div>
+                <input id="fProviderCode" class="form-control form-control-32" placeholder="FC-00001 / PH-00001" />
+              </div>
+              <button id="btnApply" type="button" class="btn btn-primary btn-32">Apply</button>
+              <button id="btnReset" type="button" class="btn btn-primary-revers btn-32">Reset</button>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mt-12">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <div class="form-label-mini mb-0" style="min-width: 64px">Search</div>
+                <input id="fSearch" class="form-control form-control-32" placeholder="Invoice, Order, TRX, Provider, Patient..." style="min-width: 320px" />
+                <button id="btnExportCsv" type="button" class="btn btn-primary-revers btn-32">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export CSV</span>
+                </button>
+              </div>
+
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                  <span class="badge-soft blue" id="badgeModel">
+                    <i class="fi fi-rr-info"></i>
+                    <span>Tax split view: Patient VAT + Naraakum VAT + Provider context</span>
+                  </span>
+                </div>
+            </div>
+          </div>
+
+          <!-- Split -->
+          <div class="inv-split mt-12">
+            <!-- List -->
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-title">
+                  <i class="fi fi-rr-document-signed"></i>
+                  <span>Tax Documents Center</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge-soft" id="invCountBadge">0 Docs</span>
+                  <select id="rowsPerPage" class="form-control form-control-32" style="width: 90px">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="table-responsive">
+                  <table class="staff-table naraakum-table table-tight tx-table" id="invTable">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Invoice No</th>
+                        <th>Doc Type</th>
+                        <th>Order No</th>
+                        <th>Transaction No</th>
+                        <th>Provider</th>
+                        <th>Patient</th>
+                        <th>Issue Date</th>
+                        <th>Taxable Base</th>
+                        <th>VAT</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Compliance</th>
+                        <th class="text-center">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="invTbody"></tbody>
+                  </table>
+                </div>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <span class="fsize-12 text-grey">Page</span>
+                    <select id="pageSelect" class="form-control form-control-32" style="width: 100px"></select>
+                    <span class="fsize-12 text-grey" id="pageInfo">0 / 0</span>
+                  </div>
+                  <div class="table-pagination">
+                    <button class="btn btn-primary-revers btn-32" id="btnPrevPage">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                      <span>Prev</span>
+                    </button>
+                    <button class="btn btn-primary-revers btn-32" id="btnNextPage">
+                      <span>Next</span>
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Viewer -->
+            <div class="panel" id="viewerPanel">
+              <div class="panel-head">
+                <div class="panel-title">
+                  <i class="fi fi-rr-eye"></i>
+                  <span>Invoice Preview</span>
+                </div>
+
+                <div class="d-flex align-items-center gap-2">
+                  <a id="invoiceBackToLedger" href="#" class="btn btn-primary-revers btn-32 d-none">Back to Ledger</a>
+                  <button id="btnViewerClear" type="button" class="btn btn-primary-revers btn-32">
+                    <i class="fi fi-rr-cross"></i>
+                    <span>Clear</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="filter-bar surface-light-50 p-12 radius-8">
+                  <div class="invoice-toolbar">
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                      <label class="fsize-12 text-grey mb-0">Order</label>
+                      <select id="invoiceOrderSelect" class="form-control form-control-32" style="min-width: 220px"></select>
+                      <div id="invoiceTypeTabs" class="d-flex gap-2 flex-wrap"></div>
+                    </div>
+                    <div class="d-flex gap-2">
+                      <button id="btnInvoicePrint" type="button" class="btn btn-primary btn-icon btn-40">
+                        <i class="fi fi-rr-print"></i>
+                        <span>Print</span>
+                      </button>
+                      <button id="btnInvoiceDownload" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                        <i class="fi fi-rr-download"></i>
+                        <span>Download</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-12" id="invoiceRoot">
+                  <div class="invoice-paper">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                      <span class="badge-soft">
+                        <i class="fi fi-rr-info"></i>
+                        Select any document from the list to preview it here
+                      </span>
+                      <span class="badge-soft blue">
+                        <i class="fi fi-rr-shield-check"></i>
+                        VAT documents are generated per rules (B2C simplified / B2B standard)
+                      </span>
+                    </div>
+
+                    <div class="inv-hr"></div>
+
+                    <div class="fsize-12 text-grey">
+                      Tip: use <b>Document Type</b> filter to jump between Patient, Naraakum, Provider, and Credit Note documents.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/payment-data.js"></script>
+
+    <script src="../assets/js/payment-tax-invoices.js"></script>
+  </body>
+</html>
+

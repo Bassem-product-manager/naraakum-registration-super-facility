@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Rate Rule</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .nk-card {
+        background: #fff;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .nk-card-title {
+        margin: 0 0 6px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .nk-help {
+        margin: 0 0 12px;
+        color: #667085;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .nk-section {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .nk-section + .nk-section {
+        margin-top: 12px;
+      }
+
+      .nk-section-title {
+        margin: 0 0 10px;
+        font-size: 13px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .nk-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .nk-grid-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .nk-field label {
+        display: block;
+        font-weight: 900;
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+
+      .field-label-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .field-label-row label {
+        margin-bottom: 0;
+      }
+
+      .label-icon-btn {
+        width: 26px;
+        min-width: 26px;
+        height: 26px;
+        padding: 0;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .label-icon-btn:hover {
+        background: rgba(15, 140, 140, 0.14);
+      }
+
+      .scope-list {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        background: #fff;
+        max-height: 170px;
+        overflow: auto;
+      }
+
+      .scope-list-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 8px 10px;
+      }
+
+      .scope-list-item + .scope-list-item {
+        border-top: 1px solid rgba(16, 24, 40, 0.06);
+      }
+
+      .scope-list-item.is-selected {
+        background: rgba(15, 140, 140, 0.08);
+      }
+
+      .scope-list-item .name {
+        font-size: 12px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .scope-list-item .btn {
+        min-width: 76px;
+      }
+
+      .nk-required {
+        color: #b42318;
+      }
+
+      .inline-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nk-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .nk-divider {
+        height: 1px;
+        background: #eef1f4;
+        margin: 12px 0;
+      }
+
+      .collapse-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .warning-bar {
+        border: 1px solid rgba(247, 144, 9, 0.28);
+        background: rgba(247, 144, 9, 0.12);
+        color: #93370d;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .package-hint {
+        margin-top: 6px;
+        color: #b42318;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      @media (max-width: 992px) {
+        .nk-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2 id="rateRulePageTitle">Add Rate Rule</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="insurance-rate-sheet.html">Insurance Rate Sheet</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="rateRuleBreadcrumbCurrent">Add</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="nk-card">
+            <h3 class="nk-card-title" id="rateRuleCardTitle">Add Rate Rule</h3>
+            <p class="nk-help">This page defines insurance coverage templates only. Facility pricing is configured by facilities.</p>
+
+            <div id="insuranceRateRuleFormAlert" class="alert d-none mb-3" role="alert"></div>
+            <div id="coverageWarningBar" class="alert warning-bar d-none mb-3" role="alert"></div>
+
+            <form id="insuranceRateRuleForm" novalidate>
+              <div class="nk-section">
+                <h4 class="nk-section-title">Section A - Insurance Scope</h4>
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label>Insurance Company <span class="nk-required">*</span></label>
+                    <select id="rrInsuranceCompany" class="form-control form-control-40"></select>
+                  </div>
+                  <div class="nk-field">
+                    <div class="field-label-row">
+                      <label>Plan <span class="nk-required">*</span></label>
+                      <button type="button" id="btnManagePlans" class="label-icon-btn" title="Manage Plans">
+                        <i class="fi fi-rr-edit"></i>
+                      </button>
+                    </div>
+                    <select id="rrPlan" class="form-control form-control-40"></select>
+                  </div>
+                </div>
+                <div class="nk-grid nk-grid-1">
+                  <div class="nk-field">
+                    <div class="field-label-row">
+                      <label>Class <span class="nk-required">*</span></label>
+                      <button type="button" id="btnManageClasses" class="label-icon-btn" title="Manage Classes">
+                        <i class="fi fi-rr-edit"></i>
+                      </button>
+                    </div>
+                    <select id="rrClass" class="form-control form-control-40"></select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-section">
+                <h4 class="nk-section-title">Section B - Target</h4>
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label>Target Type <span class="nk-required">*</span></label>
+                    <select id="rrTargetType" class="form-control form-control-40">
+                      <option value="service">Service</option>
+                      <option value="package">Package</option>
+                    </select>
+                  </div>
+                  <div class="nk-field">
+                    <label>Main Service <span class="nk-required">*</span></label>
+                    <select id="rrMainService" class="form-control form-control-40"></select>
+                  </div>
+                </div>
+
+                <div class="nk-grid nk-grid-1" id="rrServiceWrap">
+                  <div class="nk-field">
+                    <label>Service <span class="nk-required">*</span></label>
+                    <select id="rrService" class="form-control form-control-40"></select>
+                  </div>
+                </div>
+
+                <div class="nk-grid nk-grid-1 d-none" id="rrPackageWrap">
+                  <div class="nk-field">
+                    <label>Package <span class="nk-required">*</span></label>
+                    <select id="rrPackage" class="form-control form-control-40"></select>
+                    <div id="rrPackageHint" class="package-hint d-none"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-section">
+                <h4 class="nk-section-title">Section C - Coverage Rule Fields</h4>
+                <div class="nk-grid nk-grid-1">
+                  <div class="nk-field">
+                    <label>Coverage %</label>
+                    <input id="rrCoveragePct" type="number" min="0" max="100" class="form-control form-control-40" placeholder="e.g., 80" />
+                  </div>
+                </div>
+
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label>Copay Type</label>
+                    <select id="rrCopayType" class="form-control form-control-40">
+                      <option value="None">None</option>
+                      <option value="Fixed">Fixed</option>
+                      <option value="Percent">Percent</option>
+                    </select>
+                  </div>
+                  <div class="nk-field">
+                    <label>Copay Value</label>
+                    <input id="rrCopayValue" type="number" min="0" class="form-control form-control-40" placeholder="e.g., 20 or 50" />
+                  </div>
+                </div>
+
+                <div class="nk-grid">
+                  <div class="nk-field">
+                    <label>Max Coverage Cap</label>
+                    <input id="rrMaxCoverageCap" type="number" min="0" class="form-control form-control-40" placeholder="e.g., 5000" />
+                  </div>
+                  <div class="nk-field">
+                    <label>Auth Required</label>
+                    <div class="inline-status">
+                      <label class="switch m-0">
+                        <input id="rrAuthRequired" type="checkbox" />
+                        <span class="slider"></span>
+                      </label>
+                      <span id="rrAuthText" class="fsize-12 semiBold text-grey">Not Required</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nk-grid nk-grid-1">
+                  <div class="nk-field">
+                    <label>Rule Status</label>
+                    <div class="inline-status">
+                      <label class="switch m-0">
+                        <input id="rrIsActive" type="checkbox" checked />
+                        <span class="slider"></span>
+                      </label>
+                      <span id="rrActiveText" class="fsize-12 semiBold text-grey">Active</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-section">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                  <h4 class="nk-section-title mb-0">Section D - Optional Limits</h4>
+                  <button
+                    type="button"
+                    class="btn btn-primary-revers btn-32 collapse-toggle"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#optionalLimitsCollapse"
+                    aria-expanded="true"
+                  >
+                    <i class="fi fi-rr-angle-small-down"></i>
+                    <span>Toggle</span>
+                  </button>
+                </div>
+
+                <div class="collapse show" id="optionalLimitsCollapse">
+                  <div class="nk-grid">
+                    <div class="nk-field">
+                      <label>Max Units / Month</label>
+                      <input id="rrLimitPerMonth" type="number" min="0" class="form-control form-control-40" />
+                    </div>
+                    <div class="nk-field">
+                      <label>Max Units / Year</label>
+                      <input id="rrLimitPerYear" type="number" min="0" class="form-control form-control-40" />
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="nk-actions">
+                <a href="insurance-rate-sheet.html" class="btn btn-primary-revers btn-40">Cancel</a>
+                <button id="btnSaveRateRule" type="submit" class="btn btn-primary btn-40">Save Rule</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="scopeManagerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="scopeManagerTitle">Manage Plans</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="fsize-12 text-grey mb-2" id="scopeListLabel">Current Plans</label>
+              <div id="scopeManagerList" class="scope-list"></div>
+            </div>
+
+            <div class="mb-3">
+              <label class="fsize-12 text-grey mb-1" id="scopeAddLabel">Add New Plan</label>
+              <div class="d-flex gap-2">
+                <input id="scopeNewName" type="text" class="form-control form-control-40" placeholder="Enter new name" />
+                <button id="btnAddScopeName" type="button" class="btn btn-primary btn-40">Add</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="fsize-12 text-grey mb-1" id="scopeEditLabel">Edit Name</label>
+              <input id="scopeEditName" type="text" class="form-control form-control-40" placeholder="Select item then type new name" />
+              <div class="d-flex justify-content-end mt-2">
+                <button id="btnSaveScopeEdit" type="button" class="btn btn-primary btn-40" disabled>Save Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-rate-rule-store.js"></script>
+    <script src="../assets/js/insurance-rate-rule-form.js"></script>
+  </body>
+</html>

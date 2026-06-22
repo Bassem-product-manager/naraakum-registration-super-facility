@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Item Bank</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; }
+
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-name{
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.3px;
+        color:#0b6f6f;
+        line-height:1;
+        margin:0;
+      }
+
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+
+      .ib-head{
+        margin:16px 0 10px;
+      }
+      .ib-title{
+        margin:0;
+        font-size:24px;
+        font-weight:900;
+        color:#101828;
+      }
+
+      .ib-tabs{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        margin-bottom:14px;
+      }
+
+      .ib-tab{
+        height:34px;
+        border-radius:12px;
+        border:1px solid #d8dde5;
+        background:#fff;
+        color:#344054;
+        padding:0 12px;
+        font-size:12px;
+        font-weight:900;
+      }
+
+      .ib-tab.is-active{
+        background:rgba(15,140,140,.12);
+        border-color:rgba(15,140,140,.35);
+        color:#0f8c8c;
+      }
+
+      .ib-grid{
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+        gap:12px;
+      }
+
+      .ib-card{
+        background:#fff;
+        border:1px solid #e6eaef;
+        border-radius:14px;
+        padding:14px;
+        min-height:190px;
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+
+      .ib-main{
+        color:#0f8c8c;
+        font-size:12px;
+        font-weight:900;
+      }
+
+      .ib-service{
+        margin:0;
+        color:#101828;
+        font-size:21px;
+        font-weight:900;
+        line-height:1.2;
+      }
+
+      .ib-desc{
+        margin:0;
+        color:#667085;
+        font-size:13px;
+        font-weight:700;
+        min-height:44px;
+      }
+
+      .ib-meta{
+        margin-top:auto;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:8px;
+      }
+
+      .ib-price{
+        display:inline-flex;
+        align-items:center;
+        height:34px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.24);
+        background:rgba(15,140,140,.08);
+        color:#0f8c8c;
+        font-size:13px;
+        font-weight:900;
+        padding:0 12px;
+      }
+
+      .ib-status{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:28px;
+        border-radius:999px;
+        font-size:12px;
+        font-weight:900;
+        padding:0 10px;
+        border:1px solid transparent;
+      }
+      .ib-status.active{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .ib-status.inactive{
+        color:#b42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+
+      .ib-empty{
+        background:#fff;
+        border:1px dashed #d8dde5;
+        border-radius:14px;
+        color:#667085;
+        font-weight:800;
+        font-size:13px;
+        padding:20px;
+        text-align:center;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Item Bank</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Item Bank</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input id="ibSearchInput" type="text" class="form-control form-control-32" placeholder="Search by service / main service / description" />
+                  <button id="btnIbSearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                  <button id="btnIbReset" type="button" class="btn btn-primary-revers btn-32" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reset" data-bs-custom-class="custom-tooltip">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#itemBankFilterModal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ib-head">
+            <h3 id="ibCount" class="ib-title">All services (0)</h3>
+          </div>
+
+          <div id="ibTabs" class="ib-tabs"></div>
+          <div id="ibGrid" class="ib-grid"></div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="itemBankFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Item Bank</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="ibfMain" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="ibfStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Min Price (SR)</label>
+                <input id="ibfPriceMin" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="e.g. 100.00" />
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Max Price (SR)</label>
+                <input id="ibfPriceMax" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="e.g. 300.00" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnIbFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnIbApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US",{hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick,1000);
+      })();
+
+      (function(){
+        const DATA = [
+          { id:"IB-001", main:"Remote Consultation", service:"Cardiology", description:"Remote specialist session with diagnostics review.", price:180, active:true },
+          { id:"IB-002", main:"Remote Consultation", service:"Dermatology", description:"Skin consultation with treatment plan and follow-up.", price:140, active:true },
+          { id:"IB-003", main:"Doctor Visit", service:"Internal Medicine", description:"Doctor home visit with full medical assessment.", price:250, active:true },
+          { id:"IB-004", main:"Doctor Visit", service:"Orthopedics", description:"Musculoskeletal examination and therapy recommendation.", price:290, active:true },
+          { id:"IB-005", main:"Nursing Visit", service:"Vitals Check", description:"Vital signs monitoring and nursing follow-up visit.", price:120, active:true },
+          { id:"IB-006", main:"Nursing Visit", service:"Injection (IM/SC)", description:"Professional injection administration at home.", price:95, active:false },
+          { id:"IB-007", main:"Laboratory Analysis", service:"Lab Sample Collection", description:"Home sample collection and transport workflow.", price:110, active:true },
+          { id:"IB-008", main:"Physiotherapy", service:"Knee Rehab Session", description:"Guided rehabilitation for post-injury recovery.", price:210, active:true },
+          { id:"IB-009", main:"Radiology", service:"Portable X-Ray", description:"Portable imaging request with clinical report.", price:320, active:false },
+          { id:"IB-010", main:"Pharmacy", service:"Medication Delivery", description:"Fast medicine delivery for approved prescriptions.", price:80, active:true },
+          { id:"IB-011", main:"Caregiver", service:"Caregiver - 8 Hours", description:"Daily caregiver support with shift coordination.", price:390, active:true },
+          { id:"IB-012", main:"Hemodialysis", service:"Home Hemodialysis Session", description:"Managed dialysis session with nurse supervision.", price:650, active:true }
+        ];
+
+        const ibSearchInput = document.getElementById("ibSearchInput");
+        const btnIbSearch = document.getElementById("btnIbSearch");
+        const btnIbReset = document.getElementById("btnIbReset");
+        const ibTabs = document.getElementById("ibTabs");
+        const ibGrid = document.getElementById("ibGrid");
+        const ibCount = document.getElementById("ibCount");
+
+        const ibfMain = document.getElementById("ibfMain");
+        const ibfStatus = document.getElementById("ibfStatus");
+        const ibfPriceMin = document.getElementById("ibfPriceMin");
+        const ibfPriceMax = document.getElementById("ibfPriceMax");
+        const btnIbApplyFilter = document.getElementById("btnIbApplyFilter");
+        const btnIbFilterReset = document.getElementById("btnIbFilterReset");
+
+        let selectedMainTab = "all";
+        let filtered = [...DATA];
+
+        function norm(v){
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function toPrice(v){
+          return Number(v || 0).toFixed(2) + " SR";
+        }
+
+        function fillMainOptions(){
+          const mains = Array.from(new Set(DATA.map(function(x){ return x.main; }))).sort();
+          ibfMain.innerHTML = '<option value="">All</option>' + mains.map(function(main){
+            const v = norm(main);
+            return '<option value="' + v + '">' + main + '</option>';
+          }).join("");
+        }
+
+        function renderTabs(){
+          const mains = Array.from(new Set(DATA.map(function(x){ return x.main; }))).sort();
+          let html = '<button type="button" class="ib-tab ' + (selectedMainTab === "all" ? "is-active" : "") + '" data-main="all">All services</button>';
+          html += mains.map(function(main){
+            const key = norm(main);
+            const cls = selectedMainTab === key ? "is-active" : "";
+            return '<button type="button" class="ib-tab ' + cls + '" data-main="' + key + '">' + main + '</button>';
+          }).join("");
+          ibTabs.innerHTML = html;
+
+          ibTabs.querySelectorAll("button[data-main]").forEach(function(btn){
+            btn.addEventListener("click", function(){
+              selectedMainTab = btn.getAttribute("data-main") || "all";
+              applyAll();
+            });
+          });
+        }
+
+        function matchesSearch(row){
+          const q = norm(ibSearchInput.value);
+          if(!q) return true;
+          return norm(row.main).includes(q) ||
+                 norm(row.service).includes(q) ||
+                 norm(row.description).includes(q) ||
+                 norm(toPrice(row.price)).includes(q);
+        }
+
+        function matchesFilter(row){
+          const fm = norm(ibfMain.value);
+          const fs = norm(ibfStatus.value);
+          const min = Number(ibfPriceMin.value || "");
+          const max = Number(ibfPriceMax.value || "");
+          const main = norm(row.main);
+          const status = row.active ? "active" : "inactive";
+
+          if(selectedMainTab !== "all" && main !== selectedMainTab) return false;
+          if(fm && main !== fm) return false;
+          if(fs && status !== fs) return false;
+          if(!Number.isNaN(min) && ibfPriceMin.value !== "" && Number(row.price) < min) return false;
+          if(!Number.isNaN(max) && ibfPriceMax.value !== "" && Number(row.price) > max) return false;
+
+          return true;
+        }
+
+        function renderGrid(){
+          ibCount.textContent = "All services (" + filtered.length + ")";
+
+          if(!filtered.length){
+            ibGrid.innerHTML = '<div class="ib-empty">No services match your current filters.</div>';
+            return;
+          }
+
+          ibGrid.innerHTML = filtered.map(function(row){
+            const statusClass = row.active ? "active" : "inactive";
+            const statusLabel = row.active ? "Active" : "Inactive";
+            return ""
+              + '<article class="ib-card">'
+              + '<span class="ib-main">' + row.main + '</span>'
+              + '<h4 class="ib-service">' + row.service + '</h4>'
+              + '<p class="ib-desc">' + row.description + '</p>'
+              + '<div class="ib-meta">'
+              + '  <span class="ib-price">' + toPrice(row.price) + '</span>'
+              + '  <span class="ib-status ' + statusClass + '">' + statusLabel + '</span>'
+              + '</div>'
+              + '</article>';
+          }).join("");
+        }
+
+        function applyAll(){
+          filtered = DATA.filter(function(row){
+            return matchesSearch(row) && matchesFilter(row);
+          });
+          renderTabs();
+          renderGrid();
+        }
+
+        function resetAll(){
+          ibSearchInput.value = "";
+          ibfMain.value = "";
+          ibfStatus.value = "";
+          ibfPriceMin.value = "";
+          ibfPriceMax.value = "";
+          selectedMainTab = "all";
+          applyAll();
+        }
+
+        btnIbSearch.addEventListener("click", applyAll);
+        ibSearchInput.addEventListener("input", applyAll);
+        btnIbReset.addEventListener("click", resetAll);
+
+        btnIbFilterReset.addEventListener("click", function(){
+          ibfMain.value = "";
+          ibfStatus.value = "";
+          ibfPriceMin.value = "";
+          ibfPriceMax.value = "";
+          applyAll();
+        });
+
+        btnIbApplyFilter.addEventListener("click", function(){
+          applyAll();
+          const modal = document.getElementById("itemBankFilterModal");
+          bootstrap.Modal.getOrCreateInstance(modal).hide();
+        });
+
+        fillMainOptions();
+        applyAll();
+      })();
+    </script>
+  </body>
+</html>
+
+

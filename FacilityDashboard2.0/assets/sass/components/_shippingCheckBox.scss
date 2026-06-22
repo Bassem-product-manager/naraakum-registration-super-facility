@@ -1,0 +1,66 @@
+.Shipping-companies-checkbox {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: $value-8;
+  padding: $value-8;
+
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.3s;
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  img {
+    width: $value-56;
+    height: $value-56;
+    object-fit: cover;
+    border-radius: $value-8;
+    margin-#{$left}: $value-16;
+    transition: opacity 0.3s;
+    filter: grayscale(100%);
+    opacity: 0.5;
+  }
+
+  .label-text {
+    flex-grow: 1;
+    font-weight: 600;
+    font-size: $value-18;
+    transition: all 0.3s;
+    color: #666;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #198754;
+    color: white;
+    border-radius: 50%;
+    width: $value-24;
+    height: $value-24;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $value-16;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  input[type="checkbox"]:checked {
+    ~ .checkmark {
+      opacity: 1;
+    }
+    ~ .label-text {
+      color: $primary-500;
+    }
+
+    ~ img {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+  }
+}

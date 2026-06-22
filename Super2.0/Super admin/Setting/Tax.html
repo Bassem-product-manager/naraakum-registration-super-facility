@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Tax Settings</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-green-soft: rgba(15, 140, 140, 0.1);
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .tax-header {
+        margin-bottom: 14px;
+      }
+
+      .page-content {
+        padding-bottom: 110px;
+      }
+
+      .tax-header h4 {
+        margin: 0 0 6px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .tax-header p {
+        margin: 0;
+        color: #667085;
+        font-size: 13px;
+      }
+
+      .tax-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .tax-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+        box-shadow: 0 8px 20px rgba(16, 24, 40, 0.04);
+      }
+
+      .tax-card.span-2 {
+        grid-column: span 2;
+      }
+
+      .tax-card-head {
+        margin-bottom: 12px;
+      }
+
+      .tax-card-head h5 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .tax-card-head p {
+        margin: 6px 0 0;
+        color: #667085;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .field-wrap {
+        margin-bottom: 10px;
+      }
+
+      .field-wrap label {
+        display: block;
+        margin-bottom: 4px;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .field-helper {
+        margin: 0 0 6px;
+        color: #98a2b3;
+        font-size: 11px;
+      }
+
+      .form-control.form-control-32 {
+        width: 100%;
+        border-radius: 10px;
+        border-color: rgba(16, 24, 40, 0.18);
+      }
+
+      .form-control.form-control-32:focus {
+        border-color: var(--nk-green);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+
+      .field-error {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #b42318;
+        font-weight: 700;
+        display: none;
+      }
+
+      .field-error.show {
+        display: block;
+      }
+
+      .field-invalid {
+        border-color: #fda29b !important;
+      }
+
+      .segment {
+        display: inline-flex;
+        width: 100%;
+        max-width: 360px;
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+
+      .segment input[type="radio"] {
+        display: none;
+      }
+
+      .segment label {
+        flex: 1;
+        margin: 0;
+        padding: 8px 10px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 800;
+        color: #344054;
+        cursor: pointer;
+        border-right: 1px solid rgba(16, 24, 40, 0.12);
+      }
+
+      .segment label:last-child {
+        border-right: 0;
+      }
+
+      .segment input[type="radio"]:checked + label {
+        background: rgba(15, 140, 140, 0.14);
+        color: #0b7777;
+      }
+
+      .tax-radio-group {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .tax-radio-group .form-check-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #475467;
+      }
+
+      .form-check-input:checked {
+        background-color: var(--nk-green);
+        border-color: var(--nk-green);
+      }
+
+      .form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+        border-color: var(--nk-green);
+      }
+
+      .toggle-list {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .toggle-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        padding: 8px 10px;
+        background: #fff;
+      }
+
+      .toggle-item .label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #344054;
+      }
+
+      .summary-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+      }
+
+      .summary-item .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .summary-item .value {
+        margin-top: 4px;
+        font-size: 18px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .tax-action-bar {
+        position: fixed;
+        right: 18px;
+        bottom: 14px;
+        margin-top: 14px;
+        z-index: 1050;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 10px 26px rgba(16, 24, 40, 0.08);
+        padding: 10px 12px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        max-width: calc(100vw - 24px);
+      }
+
+      .tax-toast {
+        position: fixed;
+        right: 18px;
+        bottom: 84px;
+        z-index: 1085;
+        min-width: 260px;
+        max-width: 360px;
+        border-radius: 12px;
+        padding: 10px 12px;
+        color: #fff;
+        background: #027a48;
+        box-shadow: 0 12px 24px rgba(16, 24, 40, 0.2);
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        transition: all 0.25s ease;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .tax-toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .tax-toast.info {
+        background: #175cd3;
+      }
+
+      .qr-placeholder {
+        width: 88px;
+        height: 88px;
+        border: 1px dashed #98a2b3;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #667085;
+        font-size: 11px;
+        font-weight: 700;
+        background: #fff;
+      }
+
+      @media (max-width: 992px) {
+        .tax-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .tax-card.span-2 {
+          grid-column: span 1;
+        }
+
+        .tax-action-bar {
+          right: 12px;
+          left: 12px;
+          flex-wrap: wrap;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Tax Settings</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Finance</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Tax</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="tax-header">
+            <h4>Tax Settings</h4>
+            <p>Configure global VAT profile, calculation rules, and invoice template options for Naraakum.</p>
+          </div>
+
+          <form id="taxSettingsForm" novalidate>
+            <div class="tax-grid">
+              <section class="tax-card span-2">
+                <div class="tax-card-head">
+                  <h5>1) VAT Profile</h5>
+                  <p>Naraakum seller legal identity and invoice profile used across all generated tax documents.</p>
+                </div>
+
+                <div class="row g-3">
+                  <div class="col-lg-6">
+                    <div class="field-wrap">
+                      <label for="legalNameAr">Legal Name (Arabic) *</label>
+                      <input id="legalNameAr" type="text" class="form-control form-control-32" />
+                      <div id="errLegalNameAr" class="field-error"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="field-wrap">
+                      <label for="legalNameEn">Legal Name (English) *</label>
+                      <input id="legalNameEn" type="text" class="form-control form-control-32" />
+                      <div id="errLegalNameEn" class="field-error"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="field-wrap">
+                      <label for="trnNumber">VAT / TRN Number *</label>
+                      <p class="field-helper">Numeric only, 8 to 15 digits.</p>
+                      <input id="trnNumber" type="text" class="form-control form-control-32" />
+                      <div id="errTrnNumber" class="field-error"></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-3">
+                    <div class="field-wrap">
+                      <label for="countryName">Country</label>
+                      <input id="countryName" type="text" class="form-control form-control-32" value="Saudi Arabia" readonly />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-3">
+                    <div class="field-wrap">
+                      <label for="cityName">City *</label>
+                      <input id="cityName" type="text" class="form-control form-control-32" />
+                      <div id="errCityName" class="field-error"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="field-wrap">
+                      <label for="postalCode">Postal Code *</label>
+                      <input id="postalCode" type="text" class="form-control form-control-32" />
+                      <div id="errPostalCode" class="field-error"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6">
+                    <div class="field-wrap">
+                      <label for="streetBuilding">Street / Building *</label>
+                      <input id="streetBuilding" type="text" class="form-control form-control-32" />
+                      <div id="errStreetBuilding" class="field-error"></div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12">
+                    <div class="field-wrap">
+                      <label>Invoice Language</label>
+                      <div class="segment">
+                        <input id="langArabic" type="radio" name="invoiceLanguage" value="arabic" />
+                        <label for="langArabic">Arabic</label>
+                        <input id="langEnglish" type="radio" name="invoiceLanguage" value="english" />
+                        <label for="langEnglish">English</label>
+                        <input id="langBoth" type="radio" name="invoiceLanguage" value="both" checked />
+                        <label for="langBoth">Both</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="tax-card">
+                <div class="tax-card-head">
+                  <h5>2) Tax Calculation Rules</h5>
+                  <p>Define VAT defaults used in tax math for platform transactions and service invoicing.</p>
+                </div>
+
+                <div class="field-wrap">
+                  <label for="vatRate">Default VAT Rate (%) *</label>
+                  <input id="vatRate" type="number" min="0" max="20" step="0.01" class="form-control form-control-32" />
+                  <div id="errVatRate" class="field-error"></div>
+                </div>
+
+                <div class="field-wrap">
+                  <label>Pricing Mode</label>
+                  <div class="tax-radio-group">
+                    <div class="form-check">
+                      <input id="pricingInclusive" class="form-check-input" type="radio" name="pricingMode" value="inclusive" />
+                      <label class="form-check-label" for="pricingInclusive">Tax Inclusive</label>
+                    </div>
+                    <div class="form-check">
+                      <input id="pricingExclusive" class="form-check-input" type="radio" name="pricingMode" value="exclusive" checked />
+                      <label class="form-check-label" for="pricingExclusive">Tax Exclusive</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <span class="label">Apply VAT on Delivery Fees</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="applyDelivery" class="form-check-input" type="checkbox" />
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <span class="label">Apply VAT on Platform Fees</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="applyPlatform" class="form-check-input" type="checkbox" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field-wrap mb-0">
+                  <label for="exemptNotes">Zero-rated / Exempt Notes</label>
+                  <p class="field-helper">Optional notes shown to operators for handling VAT exceptions.</p>
+                  <textarea id="exemptNotes" class="form-control" rows="3"></textarea>
+                </div>
+              </section>
+
+              <section class="tax-card">
+                <div class="tax-card-head">
+                  <h5>3) Invoice Template Options</h5>
+                  <p>Control invoice visual blocks and document-level explanatory content.</p>
+                </div>
+
+                <div class="toggle-list">
+                  <div class="toggle-item">
+                    <span class="label">Show QR Code</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="showQrCode" class="form-check-input" type="checkbox" />
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <span class="label">Show Naraakum Logo</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="showNaraakumLogo" class="form-check-input" type="checkbox" />
+                    </div>
+                  </div>
+                  <div class="toggle-item">
+                    <span class="label">Show VAT Breakdown Section</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="showVatBreakdown" class="form-check-input" type="checkbox" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="field-wrap">
+                  <label for="footerAr">Footer Notes (Arabic)</label>
+                  <textarea id="footerAr" class="form-control" rows="2"></textarea>
+                </div>
+
+                <div class="field-wrap">
+                  <label for="footerEn">Footer Notes (English)</label>
+                  <textarea id="footerEn" class="form-control" rows="2"></textarea>
+                </div>
+              </section>
+            </div>
+
+            <div class="tax-action-bar">
+              <button id="btnCancelChanges" type="button" class="btn btn-primary-revers btn-32">Cancel</button>
+              <button id="btnTestPreview" type="button" class="btn btn-primary-revers btn-32" data-bs-toggle="modal" data-bs-target="#invoicePreviewModal">
+                Test Template
+              </button>
+              <button id="btnSaveChanges" type="button" class="btn btn-primary btn-32">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="invoicePreviewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Test Template Preview</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="tax-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <h6 class="mb-4" id="pvLegalNameEn">-</h6>
+                  <p class="mb-4 text-grey" id="pvLegalNameAr">-</p>
+                  <p class="mb-4"><b>TRN:</b> <span id="pvTrn">-</span></p>
+                  <p class="mb-0"><b>Invoice No:</b> <span id="pvInvoiceNo">-</span></p>
+                </div>
+                <div class="text-end">
+                  <p class="mb-4"><b>Date:</b> <span id="pvDate">-</span></p>
+                  <p class="mb-4"><b>Pricing Mode:</b> <span id="pvPricingMode">-</span></p>
+                  <div class="qr-placeholder">QR</div>
+                </div>
+              </div>
+
+              <hr class="my-12" />
+
+              <div class="row g-2">
+                <div class="col-md-4">
+                  <div class="summary-item">
+                    <div class="label">Subtotal</div>
+                    <div class="value fsize-18" id="pvSubtotal">0.00 SAR</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="summary-item">
+                    <div class="label">VAT</div>
+                    <div class="value fsize-18" id="pvVat">0.00 SAR</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="summary-item">
+                    <div class="label">Total</div>
+                    <div class="value fsize-18" id="pvTotal">0.00 SAR</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="saveToast" class="tax-toast">Tax settings saved successfully.</div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        var STORAGE_KEY = "nk_tax_settings";
+        var toastTimer = null;
+
+        var DEFAULTS = {
+          profile: {
+            legalNameAr: "",
+            legalNameEn: "",
+            trnNumber: "",
+            countryName: "Saudi Arabia",
+            cityName: "",
+            postalCode: "",
+            streetBuilding: "",
+            invoiceLanguage: "both"
+          },
+          rules: {
+            vatRate: 15,
+            pricingMode: "exclusive",
+            applyServices: true,
+            applyDelivery: true,
+            applyPlatform: true,
+            exemptNotes: ""
+          },
+          template: {
+            showQrCode: true,
+            showNaraakumLogo: true,
+            showVatBreakdown: true,
+            footerAr: "",
+            footerEn: ""
+          }
+        };
+
+        var ERROR_MAP = {
+          legalNameAr: "errLegalNameAr",
+          legalNameEn: "errLegalNameEn",
+          trnNumber: "errTrnNumber",
+          cityName: "errCityName",
+          postalCode: "errPostalCode",
+          streetBuilding: "errStreetBuilding",
+          vatRate: "errVatRate"
+        };
+
+        var savedState = null;
+
+        function clone(value) {
+          return JSON.parse(JSON.stringify(value));
+        }
+
+        function mergeWithDefaults(raw) {
+          var data = raw || {};
+          return {
+            profile: Object.assign({}, DEFAULTS.profile, data.profile || {}),
+            rules: Object.assign({}, DEFAULTS.rules, data.rules || {}),
+            template: Object.assign({}, DEFAULTS.template, data.template || {})
+          };
+        }
+
+        function loadState() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return clone(DEFAULTS);
+            return mergeWithDefaults(JSON.parse(raw));
+          } catch (err) {
+            return clone(DEFAULTS);
+          }
+        }
+
+        function persistState(state) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        }
+
+        function byId(id) {
+          return document.getElementById(id);
+        }
+
+        function getTrimmed(id) {
+          return String((byId(id) && byId(id).value) || "").trim();
+        }
+
+        function toFloat(value) {
+          var num = parseFloat(String(value || "").trim());
+          return Number.isFinite(num) ? num : NaN;
+        }
+
+        function currentLanguage() {
+          var picked = document.querySelector('input[name="invoiceLanguage"]:checked');
+          return picked ? picked.value : "both";
+        }
+
+        function currentPricingMode() {
+          var picked = document.querySelector('input[name="pricingMode"]:checked');
+          return picked ? picked.value : "exclusive";
+        }
+
+        function collectStateFromForm() {
+          var state = clone(DEFAULTS);
+
+          state.profile.legalNameAr = getTrimmed("legalNameAr");
+          state.profile.legalNameEn = getTrimmed("legalNameEn");
+          state.profile.trnNumber = getTrimmed("trnNumber");
+          state.profile.countryName = "Saudi Arabia";
+          state.profile.cityName = getTrimmed("cityName");
+          state.profile.postalCode = getTrimmed("postalCode");
+          state.profile.streetBuilding = getTrimmed("streetBuilding");
+          state.profile.invoiceLanguage = currentLanguage();
+
+          state.rules.vatRate = toFloat(getTrimmed("vatRate"));
+          state.rules.pricingMode = currentPricingMode();
+          state.rules.applyServices = true;
+          state.rules.applyDelivery = !!(byId("applyDelivery") && byId("applyDelivery").checked);
+          state.rules.applyPlatform = !!(byId("applyPlatform") && byId("applyPlatform").checked);
+          state.rules.exemptNotes = String((byId("exemptNotes") && byId("exemptNotes").value) || "").trim();
+
+          state.template.showQrCode = !!(byId("showQrCode") && byId("showQrCode").checked);
+          state.template.showNaraakumLogo = !!(byId("showNaraakumLogo") && byId("showNaraakumLogo").checked);
+          state.template.showVatBreakdown = !!(byId("showVatBreakdown") && byId("showVatBreakdown").checked);
+          state.template.footerAr = String((byId("footerAr") && byId("footerAr").value) || "").trim();
+          state.template.footerEn = String((byId("footerEn") && byId("footerEn").value) || "").trim();
+
+          return state;
+        }
+
+        function renderState(state) {
+          byId("legalNameAr").value = state.profile.legalNameAr;
+          byId("legalNameEn").value = state.profile.legalNameEn;
+          byId("trnNumber").value = state.profile.trnNumber;
+          byId("countryName").value = "Saudi Arabia";
+          byId("cityName").value = state.profile.cityName;
+          byId("postalCode").value = state.profile.postalCode;
+          byId("streetBuilding").value = state.profile.streetBuilding;
+
+          byId("langArabic").checked = state.profile.invoiceLanguage === "arabic";
+          byId("langEnglish").checked = state.profile.invoiceLanguage === "english";
+          byId("langBoth").checked = state.profile.invoiceLanguage === "both";
+
+          byId("vatRate").value = state.rules.vatRate;
+          byId("pricingInclusive").checked = state.rules.pricingMode === "inclusive";
+          byId("pricingExclusive").checked = state.rules.pricingMode !== "inclusive";
+          byId("applyDelivery").checked = !!state.rules.applyDelivery;
+          byId("applyPlatform").checked = !!state.rules.applyPlatform;
+          byId("exemptNotes").value = state.rules.exemptNotes;
+
+          byId("showQrCode").checked = !!state.template.showQrCode;
+          byId("showNaraakumLogo").checked = !!state.template.showNaraakumLogo;
+          byId("showVatBreakdown").checked = !!state.template.showVatBreakdown;
+          byId("footerAr").value = state.template.footerAr;
+          byId("footerEn").value = state.template.footerEn;
+        }
+
+        function validateData(state) {
+          var s = state || collectStateFromForm();
+          var errors = {};
+
+          if (!s.profile.legalNameAr) errors.legalNameAr = "Legal name (Arabic) is required.";
+          if (!s.profile.legalNameEn) errors.legalNameEn = "Legal name (English) is required.";
+          if (!/^\d{8,15}$/.test(s.profile.trnNumber)) errors.trnNumber = "TRN must be numeric with 8 to 15 digits.";
+          if (!s.profile.cityName) errors.cityName = "City is required.";
+          if (!s.profile.postalCode) errors.postalCode = "Postal code is required.";
+          if (!s.profile.streetBuilding) errors.streetBuilding = "Street / Building is required.";
+
+          if (!Number.isFinite(s.rules.vatRate) || s.rules.vatRate < 0 || s.rules.vatRate > 20) {
+            errors.vatRate = "VAT rate must be between 0 and 20.";
+          }
+
+          return { isValid: Object.keys(errors).length === 0, errors: errors };
+        }
+
+        function clearErrors() {
+          Object.keys(ERROR_MAP).forEach(function (fieldId) {
+            var input = byId(fieldId);
+            var errNode = byId(ERROR_MAP[fieldId]);
+            if (input) input.classList.remove("field-invalid");
+            if (errNode) {
+              errNode.textContent = "";
+              errNode.classList.remove("show");
+            }
+          });
+        }
+
+        function applyErrors(errors) {
+          clearErrors();
+          var allErrors = errors || {};
+          Object.keys(allErrors).forEach(function (fieldId) {
+            var errId = ERROR_MAP[fieldId];
+            var input = byId(fieldId);
+            var errNode = byId(errId);
+            if (input) input.classList.add("field-invalid");
+            if (errNode) {
+              errNode.textContent = allErrors[fieldId];
+              errNode.classList.add("show");
+            }
+          });
+        }
+
+        function money(value) {
+          return Number(value || 0).toFixed(2) + " SAR";
+        }
+
+        function updatePreviewModal(state) {
+          var s = state || collectStateFromForm();
+          var vatRate = Number.isFinite(s.rules.vatRate) ? s.rules.vatRate : 0;
+          var mode = s.rules.pricingMode === "inclusive" ? "Tax Inclusive" : "Tax Exclusive";
+          var baseValue = 1000;
+          var subtotal = 0;
+          var vatAmount = 0;
+          var total = 0;
+
+          if (s.rules.pricingMode === "inclusive") {
+            total = baseValue;
+            subtotal = vatRate > 0 ? total / (1 + vatRate / 100) : total;
+            vatAmount = total - subtotal;
+          } else {
+            subtotal = baseValue;
+            vatAmount = subtotal * (vatRate / 100);
+            total = subtotal + vatAmount;
+          }
+
+          byId("pvLegalNameEn").textContent = s.profile.legalNameEn || "Naraakum";
+          byId("pvLegalNameAr").textContent = s.profile.legalNameAr || "-";
+          byId("pvTrn").textContent = s.profile.trnNumber || "-";
+          byId("pvInvoiceNo").textContent = "INV-000001";
+          byId("pvDate").textContent = new Date().toLocaleDateString("en-GB");
+          byId("pvPricingMode").textContent = mode;
+          byId("pvSubtotal").textContent = money(subtotal);
+          byId("pvVat").textContent = money(vatAmount);
+          byId("pvTotal").textContent = money(total);
+        }
+
+        function showToast(message, type) {
+          var toast = byId("saveToast");
+          if (!toast) return;
+          toast.textContent = message || "Done.";
+          toast.classList.toggle("info", type === "info");
+          toast.classList.add("show");
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            toast.classList.remove("show");
+          }, 2400);
+        }
+
+        function bindLiveEvents() {
+          var form = byId("taxSettingsForm");
+          if (!form) return;
+
+          form.addEventListener("input", function () {
+            clearErrors();
+          });
+        }
+
+        function initActions() {
+          byId("btnSaveChanges").addEventListener("click", function () {
+            var state = collectStateFromForm();
+            var validation = validateData(state);
+            applyErrors(validation.errors);
+            if (!validation.isValid) return;
+
+            persistState(state);
+            savedState = clone(state);
+            showToast("Tax settings saved successfully.");
+          });
+
+          byId("btnCancelChanges").addEventListener("click", function () {
+            renderState(clone(savedState));
+            clearErrors();
+            showToast("Changes reverted to last saved state.", "info");
+          });
+
+          byId("btnTestPreview").addEventListener("click", function () {
+            updatePreviewModal(collectStateFromForm());
+          });
+        }
+
+        function initClock() {
+          var el = byId("ksaTime");
+          if (!el) return;
+          function tick() {
+            try {
+              var fmt = new Intl.DateTimeFormat("en-US", {
+                timeZone: "Asia/Riyadh",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+              });
+              el.textContent = fmt.format(new Date());
+            } catch (e) {
+              el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+            }
+          }
+          tick();
+          setInterval(tick, 1000);
+        }
+
+        savedState = loadState();
+        renderState(clone(savedState));
+        clearErrors();
+        bindLiveEvents();
+        initActions();
+        initClock();
+      })();
+    </script>
+  </body>
+</html>

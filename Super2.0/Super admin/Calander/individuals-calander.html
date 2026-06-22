@@ -1,0 +1,1337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Individuals Calendar</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .ksa-clock .time {
+        letter-spacing: 0.2px;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open {
+        transform: translateX(0);
+      }
+
+      .side-menu-list li.is-open > .sub-list {
+        display: block;
+      }
+
+      .side-menu-list li > .sub-list {
+        display: none;
+      }
+
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down {
+        transform: rotate(180deg);
+      }
+
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, 0.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .nk-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nk-search {
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .nk-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #98a2b3;
+      }
+
+      .nk-search input {
+        padding-left: 42px;
+      }
+
+      .nk-count-line {
+        margin-top: 10px;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .table-wrap {
+        border: 1px solid #eef1f4;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      table.nk-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table.nk-table thead th {
+        background: rgba(15, 140, 140, 0.95);
+        color: #fff;
+        font-weight: 900;
+        font-size: 13px;
+        padding: 14px 12px;
+        white-space: nowrap;
+        border: none;
+        vertical-align: middle;
+      }
+
+      table.nk-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #eef2f6;
+        font-size: 13px;
+        vertical-align: middle;
+        color: #101828;
+        font-weight: 700;
+      }
+
+      table.nk-table tbody tr:hover td {
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      table.nk-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .facility-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 250px;
+      }
+
+      .facility-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: #fff;
+        object-fit: contain;
+        padding: 6px;
+        flex: 0 0 42px;
+      }
+
+      .facility-title {
+        margin: 0;
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 1.1;
+      }
+
+      .facility-sub {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .count-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 56px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .link-details {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 12px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .link-details:hover {
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .nk-filter-modal .modal-content {
+        border-radius: 14px;
+        overflow: hidden;
+        border: none;
+      }
+
+      .nk-filter-modal .nk-modal-top {
+        background: #eaf6f5;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .nk-filter-modal .nk-modal-title {
+        font-weight: 900;
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+
+      .nk-filter-modal .nk-modal-x {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: 0.85;
+        color: #000;
+      }
+
+      .nk-filter-modal .nk-modal-x:hover {
+        background: rgba(15, 140, 140, 0.06);
+        border-color: rgba(15, 140, 140, 0.25);
+        opacity: 1;
+      }
+
+      .nk-filter-modal .modal-body {
+        padding: 16px;
+      }
+
+      .nk-filter-modal .modal-footer {
+        padding: 14px 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .mono {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: rgba(16, 24, 40, 0.04);
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .status-pill.active {
+        border-color: rgba(18, 183, 106, 0.22);
+        background: rgba(18, 183, 106, 0.1);
+        color: #067647;
+      }
+
+      .status-pill.idle {
+        border-color: rgba(56, 96, 255, 0.2);
+        background: rgba(56, 96, 255, 0.08);
+        color: #1d4ed8;
+      }
+
+      .status-pill.offline {
+        border-color: rgba(102, 112, 133, 0.2);
+        background: rgba(102, 112, 133, 0.08);
+        color: #475467;
+      }
+
+      .bh-head-tools {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .bh-switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 44px;
+        height: 26px;
+      }
+
+      .bh-switch input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .bh-switch span {
+        width: 44px;
+        height: 26px;
+        border-radius: 999px;
+        background: #d0d5dd;
+        border: 1px solid #c4c9d4;
+        display: block;
+        position: relative;
+        transition: all 0.15s ease;
+      }
+
+      .bh-switch span::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: all 0.15s ease;
+      }
+
+      .bh-switch input:checked + span {
+        background: rgba(15, 140, 140, 0.28);
+        border-color: rgba(15, 140, 140, 0.45);
+      }
+
+      .bh-switch input:checked + span::after {
+        left: 21px;
+        background: #0f8c8c;
+      }
+
+      .day-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .day-grid.is-disabled {
+        opacity: 0.6;
+      }
+
+      .bh-day-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .bh-day-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+      }
+
+      .bh-day-left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bh-day-name {
+        font-size: 13px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .bh-day-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: rgba(16, 24, 40, 0.02);
+        color: #667085;
+      }
+
+      .bh-day-pill.is-open {
+        border-color: rgba(18, 183, 106, 0.28);
+        background: rgba(18, 183, 106, 0.12);
+        color: #067647;
+      }
+
+      .bh-day-toggle {
+        height: 32px;
+        min-width: 62px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        background: #f8fafc;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .bh-day-toggle.is-on {
+        border-color: rgba(15, 140, 140, 0.32);
+        background: rgba(15, 140, 140, 0.14);
+        color: #0f8c8c;
+      }
+
+      .bh-day-body {
+        padding: 10px;
+        background: rgba(248, 250, 252, 0.5);
+      }
+
+      .bh-intervals {
+        display: grid;
+        gap: 8px;
+      }
+
+      .bh-interval-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bh-interval-row .sep {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .bh-interval-row .form-control:disabled {
+        opacity: 0.55;
+      }
+
+      .bh-remove {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid rgba(240, 68, 56, 0.24);
+        background: rgba(240, 68, 56, 0.06);
+        color: #b42318;
+        font-size: 14px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .bh-add {
+        margin-top: 8px;
+        width: 100%;
+        height: 34px;
+        border: 1px dashed rgba(15, 140, 140, 0.3);
+        border-radius: 10px;
+        background: rgba(15, 140, 140, 0.05);
+        color: #0f8c8c;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: left;
+        padding: 0 10px;
+        cursor: pointer;
+      }
+
+      .bh-day-card.is-closed .bh-day-body {
+        opacity: 0.75;
+      }
+
+      .bh-empty {
+        font-size: 12px;
+        font-weight: 800;
+        color: #98a2b3;
+      }
+
+      @media (max-width: 1200px) {
+        .table-wrap {
+          overflow-x: auto;
+        }
+
+        table.nk-table {
+          min-width: 1080px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .bh-interval-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-calendar">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Individuals Calendar</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Calendars</li>
+              <li class="breadcrumb-item active" aria-current="page">Individuals Calendar</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="surface-light-50 p-16 radius-12">
+            <div class="nk-toolbar">
+              <div class="nk-search">
+                <i class="fi fi-rr-search"></i>
+                <input id="qSearch" type="text" class="form-control form-control-40" placeholder="Search by provider name / code / role / specialty / city" />
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <button id="btnResetFilters" class="btn btn-primary-revers btn-40" type="button">
+                  <i class="fi fi-rr-rotate-right"></i><span>Reset</span>
+                </button>
+                <button id="btnShowFilters" class="btn btn-primary btn-40" type="button" data-bs-toggle="modal" data-bs-target="#modalFilterIndividuals">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="nk-count-line">
+              Showing <span id="countLabel" class="mono">0</span> of <span id="totalLabel" class="mono">0</span> individuals
+            </div>
+
+            <div class="mt-16 table-wrap">
+              <table class="nk-table">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width:60px;">#</th>
+                    <th style="min-width:260px;">Provider</th>
+                    <th style="width:120px;">Role</th>
+                    <th style="width:180px;">Specialty</th>
+                    <th style="width:140px;">City</th>
+                    <th style="width:170px;">Timezone</th>
+                    <th style="width:120px;">Status</th>
+                    <th style="width:170px;">Last Calendar Update</th>
+                    <th class="text-center" style="width:150px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyIndividuals"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade nk-filter-modal" id="modalFilterIndividuals" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
+        <div class="modal-content">
+          <div class="nk-modal-top">
+            <div class="nk-modal-title">Filter Individuals Calendar</div>
+            <button type="button" class="nk-modal-x" data-bs-dismiss="modal" aria-label="Close">X</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Role</label>
+                <select class="form-select form-control-40" id="roleFilter"></select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Specialty</label>
+                <select class="form-select form-control-40" id="specialtyFilter"></select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">City</label>
+                <select class="form-select form-control-40" id="cityFilter"></select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Timezone</label>
+                <select class="form-select form-control-40" id="tzFilter"></select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Status</label>
+                <select class="form-select form-control-40" id="statusFilter"></select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-light btn-40" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary btn-40" type="button" id="btnApplyFilters">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="individualScheduleModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="individualModalTitle">Edit Individual Calendar</h5>
+            <div class="bh-head-tools">
+              <span class="fsize-12 text-grey semiBold">Enable</span>
+              <label class="bh-switch">
+                <input type="checkbox" id="individualEnabled" checked />
+                <span></span>
+              </label>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Timezone</label>
+                <input id="individualTz" class="form-control form-control-40" value="(GMT+03:00) Riyadh" />
+              </div>
+            </div>
+
+            <div id="individualDayGrid" class="day-grid mt-12"></div>
+
+            <div class="mt-12">
+              <label class="fsize-12 text-grey">Holidays</label>
+              <textarea id="individualHolidays" class="form-control" rows="3" placeholder="Example: Annual leave 10/03-14/03, public holidays"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" id="btnSaveIndividualSchedule" class="btn btn-primary">Save Calendar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        const el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            const fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () {
+          aside.classList.toggle("is-open");
+        });
+
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () {
+            li.classList.toggle("is-open");
+          });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+            (function () {
+        const STORAGE_KEY = "naraakum_individual_calendars_v2";
+        const DEFAULT_TZ = "(GMT+03:00) Riyadh";
+        const DAYS = [
+          ["monday", "Monday"],
+          ["tuesday", "Tuesday"],
+          ["wednesday", "Wednesday"],
+          ["thursday", "Thursday"],
+          ["friday", "Friday"],
+          ["saturday", "Saturday"],
+          ["sunday", "Sunday"],
+        ];
+
+        const qSearch = document.getElementById("qSearch");
+        const tbody = document.getElementById("tbodyIndividuals");
+        const countLabel = document.getElementById("countLabel");
+        const totalLabel = document.getElementById("totalLabel");
+
+        const roleFilter = document.getElementById("roleFilter");
+        const specialtyFilter = document.getElementById("specialtyFilter");
+        const cityFilter = document.getElementById("cityFilter");
+        const tzFilter = document.getElementById("tzFilter");
+        const statusFilter = document.getElementById("statusFilter");
+
+        const btnApply = document.getElementById("btnApplyFilters");
+        const btnReset = document.getElementById("btnResetFilters");
+
+        const modalFilterEl = document.getElementById("modalFilterIndividuals");
+        const modalScheduleEl = document.getElementById("individualScheduleModal");
+        const modalTitleEl = document.getElementById("individualModalTitle");
+        const enabledEl = document.getElementById("individualEnabled");
+        const tzEl = document.getElementById("individualTz");
+        const dayGridEl = document.getElementById("individualDayGrid");
+        const holidaysEl = document.getElementById("individualHolidays");
+        const btnSaveSchedule = document.getElementById("btnSaveIndividualSchedule");
+
+        let providers = [];
+        let selectedProviderCode = "";
+        let individualSyncFns = [];
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function formatDateTime(iso) {
+          if (!iso) return "-";
+          const d = new Date(iso);
+          if (Number.isNaN(d.getTime())) return "-";
+          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const yyyy = d.getFullYear();
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mi = String(d.getMinutes()).padStart(2, "0");
+          return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + mi;
+        }
+
+        function esc(v) {
+          return (v || "")
+            .toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function normalize(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function scheduleTemplate(timezone) {
+          function day(enabled, from, to) {
+            return {
+              enabled: enabled,
+              intervals: enabled ? [{ from: from, to: to }] : [],
+              from: from,
+              to: to,
+            };
+          }
+
+          return {
+            enabled: true,
+            timezone: timezone || DEFAULT_TZ,
+            days: {
+              monday: day(true, "08:00", "16:00"),
+              tuesday: day(true, "08:00", "16:00"),
+              wednesday: day(true, "08:00", "16:00"),
+              thursday: day(true, "08:00", "16:00"),
+              friday: day(false, "08:00", "16:00"),
+              saturday: day(false, "08:00", "16:00"),
+              sunday: day(true, "09:00", "15:00"),
+            },
+            holidays: "",
+            exceptions: "",
+          };
+        }
+
+        function normalizeSchedule(raw, timezoneFallback) {
+          const base = scheduleTemplate(timezoneFallback || DEFAULT_TZ);
+          const out = {
+            enabled: raw && typeof raw.enabled === "boolean" ? raw.enabled : true,
+            timezone: (raw && raw.timezone) || timezoneFallback || DEFAULT_TZ,
+            days: {},
+            holidays: (raw && (raw.holidays || raw.exceptions)) || "",
+            exceptions: (raw && (raw.holidays || raw.exceptions)) || "",
+          };
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const src = raw && raw.days && raw.days[key] ? raw.days[key] : base.days[key];
+            const enabled = Boolean(src && src.enabled);
+            let intervals = [];
+
+            if (src && Array.isArray(src.intervals) && src.intervals.length) {
+              intervals = src.intervals.map(function (it) {
+                return {
+                  from: (it && it.from) || "08:00",
+                  to: (it && it.to) || "16:00",
+                };
+              });
+            } else if (src && (src.from || src.to)) {
+              intervals = [{ from: src.from || "08:00", to: src.to || "16:00" }];
+            }
+
+            if (enabled && !intervals.length) {
+              intervals = [{ from: "08:00", to: "16:00" }];
+            }
+
+            out.days[key] = {
+              enabled: enabled,
+              intervals: intervals,
+              from: intervals[0] ? intervals[0].from : "08:00",
+              to: intervals[0] ? intervals[0].to : "16:00",
+            };
+          });
+
+          return out;
+        }
+
+        function makeProvider(id, code, name, role, specialty, city, timezone, status) {
+          return {
+            id: id,
+            code: code,
+            name: name,
+            role: role,
+            specialty: specialty,
+            city: city,
+            timezone: timezone || DEFAULT_TZ,
+            status: status || "Active",
+            updatedAt: nowIso(),
+            schedule: scheduleTemplate(timezone || DEFAULT_TZ),
+          };
+        }
+
+        function defaultProviders() {
+          return [
+            makeProvider("IND-1", "DR-00001", "Dr. Ahmed Saleh", "Doctor", "Cardiology", "Riyadh", DEFAULT_TZ, "Active"),
+            makeProvider("IND-2", "DR-00002", "Dr. Laila Omar", "Doctor", "Internal Medicine", "Riyadh", DEFAULT_TZ, "Active"),
+            makeProvider("IND-3", "DR-00003", "Dr. Sami Khaled", "Doctor", "Pediatrics", "Jeddah", DEFAULT_TZ, "Idle"),
+            makeProvider("IND-4", "DR-00004", "Dr. Basma Nader", "Doctor", "Dermatology", "Dammam", DEFAULT_TZ, "Active"),
+            makeProvider("IND-5", "NR-00001", "Nurse Rana Ibrahim", "Nurse", "Home Care", "Jeddah", DEFAULT_TZ, "Active"),
+            makeProvider("IND-6", "NR-00002", "Nurse Maha Omar", "Nurse", "Post-Op Care", "Khobar", DEFAULT_TZ, "Offline"),
+          ];
+        }
+
+        function loadProviders() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) {}
+          }
+
+          const seeded = defaultProviders();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+          return seeded;
+        }
+
+        function saveProviders() {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(providers));
+        }
+
+        function statusClass(status) {
+          const v = normalize(status);
+          if (v === "active") return "active";
+          if (v === "idle") return "idle";
+          return "offline";
+        }
+
+        function matchesSearch(provider, q) {
+          if (!q) return true;
+          const hay = normalize([
+            provider.name,
+            provider.code,
+            provider.role,
+            provider.specialty,
+            provider.city,
+            provider.timezone,
+          ].join(" "));
+          return hay.includes(q);
+        }
+
+        function matchesFilters(provider) {
+          const role = roleFilter.value || "All";
+          const specialty = specialtyFilter.value || "All";
+          const city = cityFilter.value || "All";
+          const tz = tzFilter.value || "All";
+          const status = statusFilter.value || "All";
+
+          if (role !== "All" && provider.role !== role) return false;
+          if (specialty !== "All" && provider.specialty !== specialty) return false;
+          if (city !== "All" && provider.city !== city) return false;
+          if (tz !== "All" && provider.timezone !== tz) return false;
+          if (status !== "All" && provider.status !== status) return false;
+          return true;
+        }
+
+        function fillFilterOptions(items) {
+          const roles = Array.from(new Set(items.map(function (i) { return i.role; }).filter(Boolean))).sort();
+          const specialties = Array.from(new Set(items.map(function (i) { return i.specialty; }).filter(Boolean))).sort();
+          const cities = Array.from(new Set(items.map(function (i) { return i.city; }).filter(Boolean))).sort();
+          const timezones = Array.from(new Set(items.map(function (i) { return i.timezone; }).filter(Boolean))).sort();
+          const statuses = Array.from(new Set(items.map(function (i) { return i.status; }).filter(Boolean))).sort();
+
+          roleFilter.innerHTML = ["<option value=\"All\">All Roles</option>"].concat(
+            roles.map(function (v) { return "<option value=\"" + esc(v) + "\">" + esc(v) + "</option>"; })
+          ).join("");
+          specialtyFilter.innerHTML = ["<option value=\"All\">All Specialties</option>"].concat(
+            specialties.map(function (v) { return "<option value=\"" + esc(v) + "\">" + esc(v) + "</option>"; })
+          ).join("");
+          cityFilter.innerHTML = ["<option value=\"All\">All Cities</option>"].concat(
+            cities.map(function (v) { return "<option value=\"" + esc(v) + "\">" + esc(v) + "</option>"; })
+          ).join("");
+          tzFilter.innerHTML = ["<option value=\"All\">All Timezones</option>"].concat(
+            timezones.map(function (v) { return "<option value=\"" + esc(v) + "\">" + esc(v) + "</option>"; })
+          ).join("");
+          statusFilter.innerHTML = ["<option value=\"All\">All Statuses</option>"].concat(
+            statuses.map(function (v) { return "<option value=\"" + esc(v) + "\">" + esc(v) + "</option>"; })
+          ).join("");
+        }
+
+        function rowTemplate(provider, idx) {
+          const code = provider.code || "-";
+          return ""
+            + "<tr>"
+            + "<td class=\"text-center mono\">" + (idx + 1) + "</td>"
+            + "<td>"
+            + "  <div class=\"facility-cell\">"
+            + "    <img class=\"facility-avatar\" src=\"../assets/images/logo.svg\" alt=\"Provider Logo\" />"
+            + "    <div>"
+            + "      <p class=\"facility-title\">" + esc(provider.name || "-") + "</p>"
+            + "      <p class=\"facility-sub\">" + esc(code) + "</p>"
+            + "    </div>"
+            + "  </div>"
+            + "</td>"
+            + "<td>" + esc(provider.role || "-") + "</td>"
+            + "<td>" + esc(provider.specialty || "-") + "</td>"
+            + "<td>" + esc(provider.city || "-") + "</td>"
+            + "<td>" + esc(provider.timezone || DEFAULT_TZ) + "</td>"
+            + "<td><span class=\"status-pill " + statusClass(provider.status) + "\">" + esc(provider.status || "Active") + "</span></td>"
+            + "<td class=\"mono\">" + esc(formatDateTime(provider.updatedAt)) + "</td>"
+            + "<td class=\"text-center\">"
+            + "  <button type=\"button\" class=\"link-details\" data-provider-code=\"" + esc(code) + "\">"
+            + "    <i class=\"fi fi-rr-calendar\"></i><span>Edit Calendar</span>"
+            + "  </button>"
+            + "</td>"
+            + "</tr>";
+        }
+
+        function render() {
+          const q = normalize(qSearch.value);
+          const filtered = providers.filter(function (provider) {
+            return matchesSearch(provider, q) && matchesFilters(provider);
+          });
+
+          totalLabel.textContent = String(providers.length);
+          countLabel.textContent = String(filtered.length);
+          tbody.innerHTML = filtered.map(rowTemplate).join("");
+
+          if (!filtered.length) {
+            tbody.innerHTML = ""
+              + "<tr>"
+              + "<td colspan=\"9\" class=\"text-center text-grey\" style=\"padding:26px;\">No individuals found.</td>"
+              + "</tr>";
+          }
+
+          tbody.querySelectorAll("button[data-provider-code]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const code = (btn.getAttribute("data-provider-code") || "").toUpperCase();
+              if (!code) return;
+              sessionStorage.setItem("lastIndividualCalendarCode", code);
+              openScheduleModal(code);
+            });
+          });
+        }
+
+        function buildDayRows(container, schedule, prefix) {
+          container.innerHTML = "";
+          const syncFns = [];
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const label = entry[1];
+            const day = (schedule.days && schedule.days[key]) ? schedule.days[key] : { enabled: false, intervals: [] };
+
+            const card = document.createElement("div");
+            card.className = "bh-day-card";
+            card.innerHTML = ""
+              + "<div class=\"bh-day-head\">"
+              + "  <div class=\"bh-day-left\">"
+              + "    <span class=\"bh-day-name\">" + label + "</span>"
+              + "    <span class=\"bh-day-pill\" id=\"" + prefix + "-" + key + "-pill\">Closed</span>"
+              + "  </div>"
+              + "  <button type=\"button\" class=\"bh-day-toggle\" id=\"" + prefix + "-" + key + "-toggle\">Off</button>"
+              + "</div>"
+              + "<div class=\"bh-day-body\">"
+              + "  <div id=\"" + prefix + "-" + key + "-intervals\" class=\"bh-intervals\"></div>"
+              + "  <button type=\"button\" class=\"bh-add\" id=\"" + prefix + "-" + key + "-add\">+ Add Interval</button>"
+              + "</div>";
+            container.appendChild(card);
+
+            const toggleEl = document.getElementById(prefix + "-" + key + "-toggle");
+            const pillEl = document.getElementById(prefix + "-" + key + "-pill");
+            const intervalsEl = document.getElementById(prefix + "-" + key + "-intervals");
+            const addBtn = document.getElementById(prefix + "-" + key + "-add");
+            const intervalState = Array.isArray(day.intervals) ? day.intervals.slice() : [];
+            toggleEl.dataset.state = day.enabled ? "on" : "off";
+
+            function renderIntervals() {
+              intervalsEl.innerHTML = "";
+              if (!intervalState.length) {
+                intervalsEl.innerHTML = "<div class=\"bh-empty\">No intervals.</div>";
+                return;
+              }
+
+              intervalState.forEach(function (it, idx) {
+                const row = document.createElement("div");
+                row.className = "bh-interval-row";
+                row.innerHTML = ""
+                  + "<input type=\"time\" class=\"form-control form-control-40\" data-part=\"from\" value=\"" + esc(it.from || "08:00") + "\" />"
+                  + "<span class=\"sep\">to</span>"
+                  + "<input type=\"time\" class=\"form-control form-control-40\" data-part=\"to\" value=\"" + esc(it.to || "16:00") + "\" />"
+                  + "<button type=\"button\" class=\"bh-remove\" title=\"Remove\">X</button>";
+                intervalsEl.appendChild(row);
+
+                const fromEl = row.querySelector('input[data-part="from"]');
+                const toEl = row.querySelector('input[data-part="to"]');
+                const removeBtn = row.querySelector(".bh-remove");
+                fromEl.addEventListener("input", function () {
+                  intervalState[idx].from = fromEl.value || "08:00";
+                });
+                toEl.addEventListener("input", function () {
+                  intervalState[idx].to = toEl.value || "16:00";
+                });
+                removeBtn.addEventListener("click", function () {
+                  intervalState.splice(idx, 1);
+                  renderIntervals();
+                  sync();
+                });
+              });
+            }
+
+            function sync() {
+              const open = toggleEl.dataset.state === "on";
+              const interactive = open;
+              toggleEl.classList.toggle("is-on", open);
+              toggleEl.textContent = open ? "On" : "Off";
+              pillEl.textContent = open ? "OPEN" : "CLOSED";
+              pillEl.classList.toggle("is-open", open);
+              card.classList.toggle("is-closed", !open);
+              addBtn.disabled = !interactive;
+              intervalsEl.querySelectorAll("input,button").forEach(function (el) {
+                el.disabled = !interactive;
+              });
+            }
+
+            addBtn.addEventListener("click", function () {
+              intervalState.push({ from: "08:00", to: "16:00" });
+              renderIntervals();
+              sync();
+            });
+
+            toggleEl.addEventListener("click", function () {
+              toggleEl.dataset.state = toggleEl.dataset.state === "on" ? "off" : "on";
+              if (toggleEl.dataset.state === "on" && !intervalState.length) {
+                intervalState.push({ from: "08:00", to: "16:00" });
+              }
+              renderIntervals();
+              sync();
+            });
+
+            renderIntervals();
+            sync();
+            syncFns.push(sync);
+          });
+
+          return syncFns;
+        }
+
+        function applyGridEnabled(gridEl, enabled, syncFns) {
+          gridEl.classList.toggle("is-disabled", !enabled);
+          if (!enabled) {
+            gridEl.querySelectorAll("input,button").forEach(function (el) {
+              el.disabled = true;
+            });
+            return;
+          }
+          (syncFns || []).forEach(function (fn) {
+            fn();
+          });
+        }
+
+        function collectSchedule(prefix, enabledToggle) {
+          const out = {
+            enabled: enabledToggle ? enabledToggle.checked : true,
+            timezone: tzEl.value || DEFAULT_TZ,
+            days: {},
+            holidays: holidaysEl.value || "",
+            exceptions: holidaysEl.value || "",
+          };
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const stateEl = document.getElementById(prefix + "-" + key + "-toggle");
+            const intervalsWrap = document.getElementById(prefix + "-" + key + "-intervals");
+            const intervals = Array.from(intervalsWrap.querySelectorAll(".bh-interval-row")).map(function (row) {
+              const fromEl = row.querySelector('input[data-part="from"]');
+              const toEl = row.querySelector('input[data-part="to"]');
+              return {
+                from: (fromEl && fromEl.value) || "08:00",
+                to: (toEl && toEl.value) || "16:00",
+              };
+            });
+
+            out.days[key] = {
+              enabled: stateEl ? stateEl.dataset.state === "on" : false,
+              intervals: intervals,
+              from: intervals[0] ? intervals[0].from : "08:00",
+              to: intervals[0] ? intervals[0].to : "16:00",
+            };
+          });
+          return out;
+        }
+
+        function openScheduleModal(code) {
+          const person = providers.find(function (p) {
+            return (p.code || "").toUpperCase() === code;
+          });
+          if (!person) return;
+
+          selectedProviderCode = code;
+          modalTitleEl.textContent = "Edit Calendar - " + person.name + " (" + person.code + ")";
+
+          const schedule = normalizeSchedule(person.schedule, person.timezone || DEFAULT_TZ);
+          enabledEl.checked = schedule.enabled !== false;
+          tzEl.value = schedule.timezone || person.timezone || DEFAULT_TZ;
+          holidaysEl.value = schedule.holidays || schedule.exceptions || "";
+          individualSyncFns = buildDayRows(dayGridEl, schedule, "individual-day");
+          applyGridEnabled(dayGridEl, enabledEl.checked, individualSyncFns);
+
+          bootstrap.Modal.getOrCreateInstance(modalScheduleEl).show();
+        }
+
+        function saveSchedule() {
+          if (!selectedProviderCode) return;
+          const person = providers.find(function (p) {
+            return (p.code || "").toUpperCase() === selectedProviderCode;
+          });
+          if (!person) return;
+
+          person.schedule = collectSchedule("individual-day", enabledEl);
+          person.timezone = person.schedule.timezone;
+          person.updatedAt = nowIso();
+          saveProviders();
+
+          bootstrap.Modal.getInstance(modalScheduleEl)?.hide();
+          render();
+        }
+
+        function maybeOpenFromParams() {
+          const params = new URLSearchParams(window.location.search);
+          const wantsEdit = params.get("edit") === "1";
+          const code = (params.get("provider") || sessionStorage.getItem("lastIndividualCalendarCode") || "").toUpperCase();
+          if (!wantsEdit || !code) return;
+          openScheduleModal(code);
+        }
+
+        qSearch.addEventListener("input", render);
+
+        btnApply.addEventListener("click", function () {
+          render();
+          const modal = bootstrap.Modal.getInstance(modalFilterEl);
+          if (modal) modal.hide();
+        });
+
+        btnReset.addEventListener("click", function () {
+          qSearch.value = "";
+          roleFilter.value = "All";
+          specialtyFilter.value = "All";
+          cityFilter.value = "All";
+          tzFilter.value = "All";
+          statusFilter.value = "All";
+          render();
+        });
+
+        enabledEl.addEventListener("change", function () {
+          applyGridEnabled(dayGridEl, enabledEl.checked, individualSyncFns);
+        });
+
+        btnSaveSchedule.addEventListener("click", saveSchedule);
+
+        providers = loadProviders();
+        saveProviders();
+        fillFilterOptions(providers);
+        render();
+        maybeOpenFromParams();
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+

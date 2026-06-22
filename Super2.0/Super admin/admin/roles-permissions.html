@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Roles & Permissions</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Page-only refinements (spacing + badge + actions) -->
+    <style>
+      /* Enhanced search box styling */
+      .search-box-group {
+        background: #fff;
+        border: 1px solid #e6eaef;
+        border-radius: 0.5rem;
+        padding: 0.25rem;
+        display: flex;
+        gap: 0.2rem;
+        align-items: center;
+      }
+      /* Constrain medium search width so it doesn't span full row */
+      .search-box-group.search-box-group--md {
+        max-width: 520px;
+      }
+      .search-box-group .form-control {
+        border: 0;
+        box-shadow: none !important;
+        font-size: 0.95rem;
+        padding: 0.5rem 0.75rem;
+      }
+      .search-box-group .form-control:focus {
+        border-color: var(--nk-green, #17a697) !important;
+        box-shadow: 0 0 0 3px rgba(23, 166, 151, 0.1) !important;
+      }
+      .search-box-group .btn {
+        border-radius: 0.4rem;
+        width: 2rem;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Search actions container */
+      .search-actions {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      /* tighter rows */
+      #rolesTable tbody td {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        vertical-align: middle;
+      }
+
+      /* table layout */
+      #rolesTable {
+        table-layout: fixed;
+      }
+
+      /* column widths */
+      #rolesTable th.col-name,
+      #rolesTable td.col-name {
+        width: 340px;
+      }
+      #rolesTable th.col-perms,
+      #rolesTable td.col-perms {
+        width: 170px;
+        white-space: nowrap;
+      }
+      #rolesTable th.col-updated,
+      #rolesTable td.col-updated {
+        width: 260px;
+        white-space: nowrap;
+      }
+      #rolesTable th.col-actions,
+      #rolesTable td.col-actions {
+        width: 90px;
+        white-space: nowrap;
+        text-align: right;
+      }
+
+      /* permissions count badge */
+      .perm-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 48px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        line-height: 1;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green, #0f8c8c);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .perm-count-badge.is-high {
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+      }
+
+      /* Edit icon: naraakum green + icon-only */
+      .nk-edit-icon {
+        color: var(--nk-green, #0f8c8c) !important;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .btn-edit-dd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        width: 40px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .roles-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .roles-kpi-card {
+        border: 1px solid #e6eaef;
+        background: #fff;
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .roles-kpi-card .k {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+      .roles-kpi-card .v {
+        margin-top: 4px;
+        font-size: 20px;
+        font-weight: 900;
+        color: #101828;
+      }
+      .roles-kpi-card .s {
+        margin-top: 2px;
+        font-size: 11px;
+        color: #667085;
+      }
+      .role-name-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .role-name-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .role-scope {
+        font-size: 12px;
+        color: #667085;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .role-tag {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        border: 1px solid #bfdbfe;
+        background: #eff6ff;
+        color: #155eef;
+        padding: 2px 8px;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 991px) {
+        #rolesTable {
+          table-layout: auto;
+        }
+        .roles-kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        #rolesTable th.col-actions,
+        #rolesTable td.col-actions {
+          text-align: left;
+        }
+        .btn-edit-dd {
+          width: auto;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .roles-kpi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+  <body data-menu="menu-admin">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <div id="sidebar-slot" data-base="../"></div>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Roles &amp; Permissions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 â€¢ 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Admin</li>
+              <li class="breadcrumb-item active" aria-current="page">Roles &amp; Permissions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Search & New Role Button -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="rolesSearchInput" type="text" class="form-control form-control-32" placeholder="Search role / scope" />
+                  <button id="btnRolesSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnRolesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <a href="NewRole.html" class="btn btn-primary btn-icon btn-40" title="Create New Role">
+                    <i class="fi fi-rr-plus-small"></i>
+                    <span>Create New Role</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="roles-kpi-grid">
+            <div class="roles-kpi-card">
+              <div class="k">Total Roles</div>
+              <div class="v" id="kpiRolesTotal">0</div>
+              <div class="s">Configured role templates</div>
+            </div>
+            <div class="roles-kpi-card">
+              <div class="k">Core Roles</div>
+              <div class="v" id="kpiCoreRoles">0</div>
+              <div class="s">Super, ops, finance, security</div>
+            </div>
+            <div class="roles-kpi-card">
+              <div class="k">Avg Permissions</div>
+              <div class="v" id="kpiAvgPermissions">0</div>
+              <div class="s">Average enabled permissions</div>
+            </div>
+            <div class="roles-kpi-card">
+              <div class="k">Last Updated</div>
+              <div class="v" id="kpiLastUpdated">-</div>
+              <div class="s" id="kpiLastUpdatedAt">-</div>
+            </div>
+          </div>
+
+          <!-- Table -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="rolesTable">
+                  <thead>
+                    <tr>
+                      <th class="col-name">Name</th>
+                      <th class="col-perms">Permissions</th>
+                      <th class="col-updated">Updated At</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="rolesTbody"></tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="rolesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="rolesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="rolesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="rolesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="rolesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="rolesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="rolesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/admin-rbac.js"></script>
+
+    <script>
+      (function () {
+        const rbac = window.NKAdminRBAC || null;
+        const tbody = document.getElementById("rolesTbody");
+
+        const searchInput = document.getElementById("rolesSearchInput");
+        const btnSearch = document.getElementById("btnRolesSearch");
+        const btnReset = document.getElementById("btnRolesReset");
+
+        const rowsSelect = document.getElementById("rolesRowsPerPage");
+        const indicator = document.getElementById("rolesPageIndicator");
+        const currentBadge = document.getElementById("rolesCurrentPageBadge");
+
+        const btnFirst = document.getElementById("rolesFirstPage");
+        const btnPrev = document.getElementById("rolesPrevPage");
+        const btnNext = document.getElementById("rolesNextPage");
+        const btnLast = document.getElementById("rolesLastPage");
+
+        const kpiRolesTotal = document.getElementById("kpiRolesTotal");
+        const kpiCoreRoles = document.getElementById("kpiCoreRoles");
+        const kpiAvgPermissions = document.getElementById("kpiAvgPermissions");
+        const kpiLastUpdated = document.getElementById("kpiLastUpdated");
+        const kpiLastUpdatedAt = document.getElementById("kpiLastUpdatedAt");
+
+        const fallbackRoles = [
+          { id: "super_admin", name: "Super Admin", permissionsCount: 72, scope: "All modules", updatedAtIso: "2026-02-09T10:20:00Z" },
+          { id: "finance_manager", name: "Finance Manager", permissionsCount: 40, scope: "Transactions, deposits, tax", updatedAtIso: "2026-02-13T08:40:00Z" },
+          { id: "ops_manager", name: "Operations Manager", permissionsCount: 45, scope: "Orders, providers, patients", updatedAtIso: "2026-02-11T14:10:00Z" },
+          { id: "support_agent", name: "Support Agent", permissionsCount: 22, scope: "Patients support and messages", updatedAtIso: "2026-02-07T09:15:00Z" },
+          { id: "read_only_auditor", name: "Read-Only Auditor", permissionsCount: 19, scope: "Read-only reporting", updatedAtIso: "2026-02-05T07:30:00Z" }
+        ];
+
+        const roles = (function () {
+          if (!rbac || typeof rbac.getRoleOptions !== "function") return fallbackRoles;
+
+          const options = rbac.getRoleOptions();
+          const updatedDates = [
+            "2026-02-14T12:30:00Z",
+            "2026-02-13T10:10:00Z",
+            "2026-02-12T09:00:00Z",
+            "2026-02-10T16:20:00Z",
+            "2026-02-09T08:40:00Z",
+            "2026-02-08T07:15:00Z"
+          ];
+
+          return options.map((role, idx) => {
+            const permissionsCount = rbac.getRolePermissionCount(role.id);
+            const scopeTokens = rbac.getPresetTokens(role.id).map((t) => t.split(":")[0]);
+            const uniqueScopes = Array.from(new Set(scopeTokens));
+            const scopeTitles = (rbac.getPermissionGroups() || [])
+              .filter((g) => uniqueScopes.indexOf(g.id) !== -1)
+              .map((g) => g.title)
+              .slice(0, 3);
+
+            return {
+              id: role.id,
+              name: role.label,
+              description: role.description || "",
+              permissionsCount: permissionsCount,
+              totalPermissions: rbac.getAllPermissionTokens().length,
+              scope: scopeTitles.join(" • "),
+              updatedAtIso: updatedDates[idx] || updatedDates[updatedDates.length - 1]
+            };
+          });
+        })();
+
+        let currentPage = 1;
+        let filtered = [...roles];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function rowsPerPageVal() {
+          const v = rowsSelect ? rowsSelect.value : "10";
+          if (v === "all") return Infinity;
+          const n = parseInt(v, 10);
+          return Number.isFinite(n) ? n : 10;
+        }
+
+        function roleTag(roleId) {
+          return String(roleId || "").replace(/_/g, " ").toUpperCase();
+        }
+
+        function formatDateTime(value) {
+          const dt = new Date(value);
+          if (Number.isNaN(dt.getTime())) return "N/A";
+          return dt.toLocaleString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          });
+        }
+
+        function updateKpis() {
+          const source = filtered.length ? filtered : roles;
+          const total = source.length;
+          const coreRoles = source.filter((r) => {
+            const roleId = norm(r.id);
+            return roleId === "super_admin" || roleId === "ops_manager" || roleId === "finance_manager" || roleId === "security_admin";
+          }).length;
+          const avg = total
+            ? Math.round(
+                source.reduce((sum, r) => sum + Number(r.permissionsCount || 0), 0) / total
+              )
+            : 0;
+
+          const sortedByDate = source
+            .slice()
+            .sort((a, b) => new Date(b.updatedAtIso).getTime() - new Date(a.updatedAtIso).getTime());
+          const latest = sortedByDate[0] || null;
+
+          if (kpiRolesTotal) kpiRolesTotal.textContent = String(total);
+          if (kpiCoreRoles) kpiCoreRoles.textContent = String(coreRoles);
+          if (kpiAvgPermissions) kpiAvgPermissions.textContent = String(avg);
+          if (kpiLastUpdated) kpiLastUpdated.textContent = latest ? latest.name : "-";
+          if (kpiLastUpdatedAt) kpiLastUpdatedAt.textContent = latest ? formatDateTime(latest.updatedAtIso) : "-";
+        }
+
+        function applySearch() {
+          const q = norm(searchInput ? searchInput.value : "");
+          filtered = roles.filter((r) => {
+            const key = norm([r.name, r.permissionsCount, r.scope, r.description, r.id].join(" "));
+            return !q || key.includes(q);
+          });
+          currentPage = 1;
+          render();
+        }
+
+        function updatePager(totalPages) {
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          const safeCurrent = Math.min(Math.max(currentPage, 1), safeTotal);
+
+          if (indicator) indicator.textContent = "Page " + safeCurrent + " of " + safeTotal;
+          if (currentBadge) currentBadge.textContent = safeCurrent;
+
+          const disable = (btn, state) => btn && (btn.disabled = !!state);
+          disable(btnFirst, safeCurrent <= 1);
+          disable(btnPrev, safeCurrent <= 1);
+          disable(btnNext, safeCurrent >= safeTotal);
+          disable(btnLast, safeCurrent >= safeTotal);
+        }
+
+        function render() {
+          if (!tbody) return;
+          tbody.innerHTML = "";
+
+          const perPage = rowsPerPageVal();
+          const total = filtered.length;
+
+          const totalPages = perPage === Infinity ? 1 : Math.ceil(total / perPage) || 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? total : start + perPage;
+
+          const visible = filtered.slice(start, end);
+
+          if (!visible.length) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = '<td colspan="4" class="text-center text-grey">No data available</td>';
+            tbody.appendChild(tr);
+            updatePager(totalPages);
+            updateKpis();
+            return;
+          }
+
+          visible.forEach((r) => {
+            const tr = document.createElement("tr");
+
+            const high = r.permissionsCount >= 30 ? "is-high" : "";
+            const badge =
+              '<span class="perm-count-badge ' +
+              high +
+              '">' +
+              r.permissionsCount +
+              (r.totalPermissions ? "/" + r.totalPermissions : "") +
+              "</span>";
+            const updated = formatDateTime(r.updatedAtIso);
+
+            tr.innerHTML =
+              '<td class="col-name">' +
+              '  <div class="role-name-wrap">' +
+              '    <div class="role-name-row">' +
+              '      <span class="fsize-14 semiBold">' +
+              r.name +
+              "</span>" +
+              '      <span class="role-tag">' +
+              roleTag(r.id) +
+              "</span>" +
+              "    </div>" +
+              '    <span class="role-scope">' +
+              (r.scope || r.description || "") +
+              "</span>" +
+              "  </div>" +
+              "</td>" +
+              '<td class="col-perms">' + badge + "</td>" +
+              '<td class="col-updated"><span class="fsize-14">' + updated + "</span></td>" +
+              '<td class="col-actions">' +
+              '  <div class="dropdown">' +
+              '    <button class="btn btn-primary-revers btn-32 dropdown-toggle btn-edit-dd" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">' +
+              '      <i class="fi fi-rr-edit nk-edit-icon"></i>' +
+              "    </button>" +
+              '    <ul class="dropdown-menu dropdown-menu-end">' +
+              '      <li><a class="dropdown-item" href="ViewRole.html?id=' + encodeURIComponent(r.id) + '">Preview</a></li>' +
+              '      <li><a class="dropdown-item" href="NewRole.html?template=' + encodeURIComponent(r.id) + '">Create Similar</a></li>' +
+              "    </ul>" +
+              "  </div>" +
+              "</td>";
+
+            tbody.appendChild(tr);
+          });
+
+          updatePager(totalPages);
+          updateKpis();
+        }
+
+        // Events
+        if (btnSearch) btnSearch.addEventListener("click", applySearch);
+        if (searchInput) {
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") applySearch();
+          });
+        }
+        if (btnReset) {
+          btnReset.addEventListener("click", function () {
+            if (searchInput) searchInput.value = "";
+            applySearch();
+          });
+        }
+
+        if (rowsSelect) rowsSelect.addEventListener("change", render);
+
+        if (btnFirst) btnFirst.addEventListener("click", () => ((currentPage = 1), render()));
+        if (btnPrev) btnPrev.addEventListener("click", () => ((currentPage = Math.max(1, currentPage - 1)), render()));
+        if (btnNext) btnNext.addEventListener("click", () => ((currentPage = currentPage + 1), render()));
+        if (btnLast) {
+          btnLast.addEventListener("click", function () {
+            const perPage = rowsPerPageVal();
+            const totalPages = perPage === Infinity ? 1 : Math.ceil(filtered.length / perPage) || 1;
+            currentPage = totalPages;
+            render();
+          });
+        }
+
+        // Init
+        applySearch();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+
+
+

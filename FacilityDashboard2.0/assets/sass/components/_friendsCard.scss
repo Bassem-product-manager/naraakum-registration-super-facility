@@ -1,0 +1,16 @@
+.friends-card {
+  display: flex;
+  flex-direction: column;
+  gap: $value-8;
+
+  img {
+    width: 7rem;
+    height: 8rem;
+    object-fit: cover;
+    border: 0.1rem solid #eee;
+    border-radius: $value-12;
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+}

@@ -1,0 +1,77 @@
+/**************************************Theme***************************************************/
+@import "theme/bootstrap.min";
+@import "theme/colors";
+@import "theme/bootstrapRoot";
+@import "theme/values";
+@import "theme/radius";
+@import "theme/shadow";
+@import "theme/dirctions";
+@import "theme/typography";
+@import "theme/buttons";
+@import "theme/spacing";
+@import "theme/forms";
+@import "theme/scrollbar";
+@import "theme/container";
+@import "theme/icons";
+@import "theme/flags";
+@import "theme/public";
+@import "theme/tabs";
+@import "theme/preloader";
+@import "theme/modal";
+@import "theme/cardsHeights";
+@import "theme/customTable";
+@import "theme/navPills";
+@import "theme/lisits";
+@import "theme/images";
+@import "theme/borders";
+
+// @import "carousel/owl.carousel.min";
+// @import "carousel/owl.theme.default.min";
+// @import "theme/cssanimation.min";
+// @import "theme/animate.min";
+// @import "theme/loopColors";
+
+/**************************************Components***************************************************/
+@import "components/dropdownMenu";
+@import "components/age-slider";
+@import "components/fancybox";
+@import "components/itemBankCard";
+@import "components/scrollableContainer";
+@import "components/shippingCheckBox";
+@import "components/insuranceCompanies";
+@import "components/BrancheCard";
+@import "components/pharmacyLocation";
+
+// @import "components/stickyNavigation.scss";
+// @import "components/heroSection";
+// @import "components/sportsSlider";
+// @import "components/featuresSection";
+// @import "components/addDesignSection";
+// @import "components/contactsSection";
+// @import "components/footer";
+// @import "components/fixedIcons";
+// @import "components/userCard";
+// @import "components/customCard";
+// @import "components/friendsCard";
+// @import "components/teamCard";
+// @import "components/chats";
+// @import "components/productCard";
+// @import "components/favoriteSportsSection";
+
+/**************************************admin***************************************************/
+@import "admin/layout";
+@import "admin/sideMenu";
+@import "admin/charts";
+@import "admin/tabelBox";
+@import "admin/tabelResponsive";
+@import "admin/customTable";
+@import "admin/datatables";
+@import "admin/searchBox";
+@import "admin/datepicker.min";
+@import "admin/timepickr.min";
+@import "admin/login";
+@import "admin/statisticsCard";
+@import "admin/fileUpload";
+@import "admin/customRadio";
+@import "admin/textEditor";
+@import "admin/registrationQuestions";

@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Main Services</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page main-services-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Main Services</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Main Services</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top operations bar (same style as Services) -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="mainServicesSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by main service"
+                  />
+                  <button id="btnMainServicesSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnMainServicesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#main-services-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <a href="../services/service-add-step-1.html" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-plus-small"></i>
+                  <span>Add Service</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Services table (no select column) -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="mainServicesTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq"># <span class="sort-icon">▲▼</span></th>
+                      <th>Main Service <span class="sort-icon">▲▼</span></th>
+                      <th class="text-center">Active</th>
+                      <th>Availability</th>
+                      <th>Last Update</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="mainServicesTbody">
+                    <tr data-main="remote consultation" data-active="1">
+                      <td class="col-seq"><span class="row-seq">1</span></td>
+                      <td><div class="service-name">Remote Consultation</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">4 / 20 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-20 14:10</td>
+                    </tr>
+
+                    <tr data-main="doctor visit" data-active="1">
+                      <td class="col-seq"><span class="row-seq">2</span></td>
+                      <td><div class="service-name">Doctor Visit</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">2 / 13 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-19 09:32</td>
+                    </tr>
+
+                    <tr data-main="nursing visit" data-active="1">
+                      <td class="col-seq"><span class="row-seq">3</span></td>
+                      <td><div class="service-name">Nursing Visit</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-missed">No Sub Services</span>
+                      </td>
+                      <td class="text-grey">2026-01-18 17:05</td>
+                    </tr>
+
+                    <tr data-main="hemodialysis" data-active="1">
+                      <td class="col-seq"><span class="row-seq">4</span></td>
+                      <td><div class="service-name">Hemodialysis</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">1 / 6 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-17 11:40</td>
+                    </tr>
+
+                    <tr data-main="caregiver" data-active="1">
+                      <td class="col-seq"><span class="row-seq">5</span></td>
+                      <td><div class="service-name">Caregiver</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">5 / 9 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-16 15:22</td>
+                    </tr>
+
+                    <tr data-main="laboratory analysis" data-active="1">
+                      <td class="col-seq"><span class="row-seq">6</span></td>
+                      <td><div class="service-name">Laboratory Analysis</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">0 / 8 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-15 10:08</td>
+                    </tr>
+
+                    <tr data-main="physiotherapy" data-active="1">
+                      <td class="col-seq"><span class="row-seq">7</span></td>
+                      <td><div class="service-name">Physiotherapy</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-accepted">3 / 12 <span class="fsize-12">available</span></span>
+                      </td>
+                      <td class="text-grey">2026-01-14 08:55</td>
+                    </tr>
+
+                    <!-- Coming Soon + toggle disabled -->
+                    <tr data-main="radiology" data-active="0">
+                      <td class="col-seq"><span class="row-seq">8</span></td>
+                      <td><div class="service-name">Radiology</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" disabled />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-missed">Coming Soon</span>
+                      </td>
+                      <td class="text-grey">—</td>
+                    </tr>
+
+                    <tr data-main="pharmacy" data-active="0">
+                      <td class="col-seq"><span class="row-seq">9</span></td>
+                      <td><div class="service-name">Pharmacy</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" disabled />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-missed">Coming Soon</span>
+                      </td>
+                      <td class="text-grey">—</td>
+                    </tr>
+
+                    <tr data-main="facility visit" data-active="0">
+                      <td class="col-seq"><span class="row-seq">10</span></td>
+                      <td><div class="service-name">Facility Visit</div></td>
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" disabled />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+                      <td class="availability-cell">
+                        <span class="status-pill st-missed">Coming Soon</span>
+                      </td>
+                      <td class="text-grey">—</td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="mainServicesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="mainServicesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="mainServicesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="mainServicesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="mainServicesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="mainServicesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="mainServicesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="main-services-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Main Services</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="msfMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="remote consultation">Remote Consultation</option>
+                  <option value="doctor visit">Doctor Visit</option>
+                  <option value="nursing visit">Nursing Visit</option>
+                  <option value="hemodialysis">Hemodialysis</option>
+                  <option value="caregiver">Caregiver</option>
+                  <option value="laboratory analysis">Laboratory Analysis</option>
+                  <option value="physiotherapy">Physiotherapy</option>
+                  <option value="radiology">Radiology</option>
+                  <option value="pharmacy">Pharmacy</option>
+                  <option value="facility visit">Facility Visit</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Active</label>
+                <select id="msfActive" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnMainServicesFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnMainServicesApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("mainServicesTbody");
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        const searchInput = document.getElementById("mainServicesSearchInput");
+        const btnSearch = document.getElementById("btnMainServicesSearch");
+        const btnReset = document.getElementById("btnMainServicesReset");
+
+        const rowsSelect = document.getElementById("mainServicesRowsPerPage");
+        const indicator = document.getElementById("mainServicesPageIndicator");
+        const currentBadge = document.getElementById("mainServicesCurrentPageBadge");
+
+        const btnFirst = document.getElementById("mainServicesFirstPage");
+        const btnPrev = document.getElementById("mainServicesPrevPage");
+        const btnNext = document.getElementById("mainServicesNextPage");
+        const btnLast = document.getElementById("mainServicesLastPage");
+
+        const msfMain = document.getElementById("msfMainService");
+        const msfActive = document.getElementById("msfActive");
+        const btnApplyFilter = document.getElementById("btnMainServicesApplyFilter");
+        const btnFilterReset = document.getElementById("btnMainServicesFilterReset");
+
+        let currentPage = 1;
+        let filteredRows = [...allRows];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function getRowData(tr) {
+          return {
+            main: norm(tr.getAttribute("data-main")),
+            active: norm(tr.getAttribute("data-active")),
+          };
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput && searchInput.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.main.includes(q);
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+          const m = norm(msfMain && msfMain.value);
+          const a = norm(msfActive && msfActive.value);
+
+          if (m && d.main !== m) return false;
+          if (a && d.active !== a) return false;
+          return true;
+        }
+
+        function perPageVal() {
+          const v = (rowsSelect && rowsSelect.value) || "10";
+          return v === "all" ? filteredRows.length : parseInt(v, 10) || 10;
+        }
+
+        function totalPages() {
+          const p = perPageVal();
+          if (p <= 0) return 1;
+          return Math.max(1, Math.ceil(filteredRows.length / p));
+        }
+
+        function render() {
+          allRows.forEach((tr) => tr.classList.add("d-none"));
+
+          const p = perPageVal();
+          const pages = totalPages();
+
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+          } else {
+            const start = (currentPage - 1) * p;
+            const end = start + p;
+            filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+        }
+
+        function applyAll() {
+          filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+          currentPage = 1;
+          render();
+        }
+
+        function bindToggleActive(tr) {
+          const sw = tr.querySelector(".active-switch");
+          if (!sw) return;
+          if (sw.disabled) return;
+
+          sw.addEventListener("change", () => {
+            tr.setAttribute("data-active", sw.checked ? "1" : "0");
+            applyAll();
+          });
+        }
+
+        allRows.forEach(bindToggleActive);
+
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+
+        if (btnReset) {
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            if (msfMain) msfMain.value = "";
+            if (msfActive) msfActive.value = "";
+            applyAll();
+          });
+        }
+
+        if (btnApplyFilter) {
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll();
+            const modalEl = document.getElementById("main-services-filter-modal");
+            const modal = modalEl ? bootstrap.Modal.getInstance(modalEl) : null;
+            if (modal) modal.hide();
+          });
+        }
+
+        if (btnFilterReset) {
+          btnFilterReset.addEventListener("click", () => {
+            if (msfMain) msfMain.value = "";
+            if (msfActive) msfActive.value = "";
+            applyAll();
+          });
+        }
+
+        if (rowsSelect) {
+          rowsSelect.addEventListener("change", () => {
+            currentPage = 1;
+            render();
+          });
+        }
+
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
+
+        applyAll();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

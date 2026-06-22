@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Shipping Companies</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --ship-brand: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .ksa-clock .tz {
+        color: var(--ship-brand);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .shipping-table-wrap .code-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--ship-brand);
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .shipping-table-wrap .company-wrap {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .shipping-table-wrap .company-logo {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        object-fit: contain;
+        background: #fff;
+        padding: 2px;
+        flex: 0 0 30px;
+      }
+      .shipping-table-wrap .company-name {
+        display: block;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+        line-height: 1.2;
+      }
+      .shipping-table-wrap .company-city {
+        display: block;
+        margin-top: 2px;
+        font-size: 11px;
+        color: #667085;
+        font-weight: 800;
+      }
+
+      .shipping-table-wrap .contact-name {
+        display: block;
+        font-size: 13px;
+        font-weight: 900;
+        color: #101828;
+      }
+      .shipping-table-wrap .contact-phone {
+        display: block;
+        margin-top: 1px;
+        font-size: 11px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .shipping-table-wrap .integration-cell {
+        min-width: 120px;
+      }
+      .shipping-table-wrap .toggle-wrap {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .status-toggle {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 44px;
+        height: 24px;
+        position: relative;
+        border-radius: 999px;
+        border: 1px solid #d0d5dd;
+        background: #e4e7ec;
+        cursor: pointer;
+        transition: 0.15s ease;
+      }
+      .status-toggle::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(16, 24, 40, 0.22);
+        transition: 0.15s ease;
+      }
+      .status-toggle:checked {
+        background: var(--ship-brand);
+        border-color: var(--ship-brand);
+      }
+      .status-toggle:checked::after {
+        transform: translateX(20px);
+      }
+      .status-toggle:focus {
+        border-color: var(--ship-brand);
+        box-shadow: none;
+        outline: none;
+      }
+      .status-toggle:disabled {
+        cursor: not-allowed;
+        opacity: 0.55;
+      }
+
+      .shipping-table-wrap .link-details {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.07);
+        color: var(--ship-brand);
+        font-size: 12px;
+        font-weight: 900;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .shipping-table-wrap .link-details:hover {
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .search-actions .btn {
+        border-radius: 12px;
+        font-weight: 900;
+      }
+
+      .tabel-pagination {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .tabel-pagination .paging-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      #shippingPageIndicator {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: rgba(16, 24, 40, 0.02);
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .paging-controls {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .paging-controls .pg-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid rgba(16, 24, 40, 0.16);
+        background: #fff;
+        color: #344054;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.15s ease;
+      }
+      .paging-controls .pg-btn:hover:not(:disabled) {
+        border-color: rgba(15, 140, 140, 0.35);
+        color: var(--ship-brand);
+        background: rgba(15, 140, 140, 0.08);
+      }
+      .paging-controls .pg-btn:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .paging-controls .pg-current {
+        min-width: 34px;
+        height: 34px;
+        padding: 0 8px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.1);
+        color: var(--ship-brand);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      #shippingRowsPerPage {
+        border-radius: 10px;
+        border-color: rgba(16, 24, 40, 0.16);
+        font-weight: 800;
+        color: #101828;
+        background: #fff;
+      }
+
+      .inline-feedback {
+        margin-top: 8px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        display: none;
+      }
+      .inline-feedback.show {
+        display: block;
+      }
+      .inline-feedback.success {
+        background: #ecfdf3;
+        border-color: #abefc6;
+        color: #027a48;
+      }
+      .inline-feedback.error {
+        background: #fef3f2;
+        border-color: #fecdca;
+        color: #b42318;
+      }
+      .inline-feedback.info {
+        background: #eff8ff;
+        border-color: #b2ddff;
+        color: #175cd3;
+      }
+
+      @media (max-width: 768px) {
+        .shipping-table-wrap .integration-cell {
+          min-width: 100px;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="Ar" /><span>AR</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Shipping Companies</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="shippingSearchInput" type="text" class="form-control form-control-32" placeholder="Search by Company / Code / City / Email / Contact / Provider" />
+                  <button id="btnShippingSearch" type="button" class="btn btn-primary btn-32" title="Search"><i class="fi fi-rr-search"></i></button>
+                  <button id="btnShippingReset" type="button" class="btn btn-primary-revers btn-32" title="Reset"><i class="fi fi-rr-rotate-right"></i></button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#shippingFilterModal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                  </button>
+                  <button id="btnShippingExport" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                    <i class="fi fi-rr-download"></i><span>Export</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-16 shipping-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight shipping-table" id="shippingTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq">#</th>
+                      <th style="min-width: 120px">Company Code</th>
+                      <th style="min-width: 260px">Company Name</th>
+                      <th style="min-width: 220px">Email</th>
+                      <th style="min-width: 180px">Contact</th>
+                      <th style="min-width: 230px" class="text-center">Integration Toggle</th>
+                      <th class="text-center" style="min-width: 120px">Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="shippingCompaniesBody"></tbody>
+                </table>
+              </div>
+
+              <div id="shippingInlineFeedback" class="inline-feedback info"></div>
+
+              <div class="tabel-pagination mt-12">
+                <div class="d-flex align-items-center gap-8">
+                  <span class="fsize-12 text-grey">Rows per page</span>
+                  <select id="shippingRowsPerPage" class="form-control form-control-32" style="width: 80px">
+                    <option value="5">5</option>
+                    <option value="10" selected>10</option>
+                    <option value="20">20</option>
+                    <option value="all">All</option>
+                  </select>
+                </div>
+
+                <div class="paging-group">
+                  <span class="fsize-12 text-grey" id="shippingPageIndicator">Page 1 of 1</span>
+                  <div class="paging-controls">
+                    <button class="pg-btn" id="shippingFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="shippingPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="shippingCurrentPageBadge">1</span>
+                    <button class="pg-btn" id="shippingNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="shippingLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="shippingFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Shipping Companies</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="shippingFilterStatus" class="fsize-12 text-grey">Integration State</label>
+                <select id="shippingFilterStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="inactive">Inactive</option>
+                  <option value="error">Error</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="shippingFilterCity" class="fsize-12 text-grey">City</label>
+                <select id="shippingFilterCity" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="shippingFilterProvider" class="fsize-12 text-grey">Provider Link</label>
+                <select id="shippingFilterProvider" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="linked">Linked</option>
+                  <option value="unlinked">Not Linked</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label for="shippingFilterDocs" class="fsize-12 text-grey">Documents Completion</label>
+                <select id="shippingFilterDocs" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="complete">Complete (100%)</option>
+                  <option value="incomplete">Incomplete (&lt;100%)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnShippingFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnShippingApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/shipping-companies-store.js"></script>
+    <script src="../assets/js/shipping-companies-list.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (err) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

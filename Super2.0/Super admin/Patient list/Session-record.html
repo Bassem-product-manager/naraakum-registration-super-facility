@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Session Record</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-green-dark: #0b6b78;
+        --nk-border: #e7eff1;
+        --nk-soft: #f2fbfc;
+        --nk-text: #1b2b34;
+        --nk-muted: #6b7c86;
+      }
+
+      .vr-wrap { display: grid; gap: 16px; }
+
+      .vr-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nk-pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 999px;
+        border: 1px solid #9fd0d6;
+        background: var(--nk-soft);
+        color: var(--nk-green-dark);
+        font-weight: 800;
+        font-size: 12px;
+        white-space: nowrap;
+        text-decoration: none;
+      }
+      .nk-pill-btn i { font-size: 14px; line-height: 1; }
+      .nk-pill-btn:hover { filter: brightness(0.98); }
+
+      .nk-pill-btn--solid {
+        border-color: transparent;
+        background: var(--nk-green);
+        color: #fff;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid #cde3e7;
+        background: #ffffff;
+        color: var(--nk-green-dark);
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .card-nk {
+        border: 1px solid var(--nk-border);
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .card-nk__head {
+        padding: 12px 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid var(--nk-border);
+        background: linear-gradient(0deg, #fff, var(--nk-soft));
+      }
+
+      .card-nk__head h3 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--nk-text);
+      }
+
+      .card-nk__body { padding: 14px; }
+
+      .kv-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 12px;
+      }
+
+      .kv {
+        grid-column: span 4;
+        border: 1px dashed #d7e6ea;
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+      }
+      .kv .k {
+        display: block;
+        font-size: 11px;
+        color: var(--nk-muted);
+        margin-bottom: 4px;
+      }
+      .kv .v {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--nk-text);
+      }
+
+      @media (max-width: 992px) { .kv { grid-column: span 6; } }
+      @media (max-width: 576px) { .kv { grid-column: span 12; } }
+
+      .block {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .block .title {
+        margin: 0 0 8px;
+        font-size: 12px;
+        font-weight: 900;
+        color: var(--nk-text);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .block .desc {
+        margin: 0;
+        font-size: 13px;
+        color: #2a3a42;
+        line-height: 1.6;
+      }
+
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+
+      .table-nk {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .table-nk thead th {
+        background: #f7fbfc;
+        font-size: 12px;
+        font-weight: 900;
+        color: #2a3a42;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--nk-border);
+        white-space: nowrap;
+      }
+      .table-nk td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--nk-border);
+        font-size: 13px;
+        color: #2a3a42;
+        vertical-align: top;
+      }
+      .table-nk tr:last-child td { border-bottom: 0; }
+
+      .divider-line { height: 1px; background: var(--nk-border); margin: 12px 0; }
+
+      @media print {
+        .side-menu,
+        .member-side,
+        #open-menu-btn,
+        .vr-topbar,
+        .breadcrumb { display: none !important; }
+        .main-page { padding: 0 !important; }
+        .card-nk, .block { break-inside: avoid; }
+      }
+    
+      /* ✅ Fallback: ensure page never stays stuck on loader */
+      .preloader.hide,
+      .preloader.preloader-hide {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+  <body data-menu="menu-patients">
+    <div class="preloader"></div>
+    <!-- ✅ Fallback: hide loader even if main JS fails -->
+    <script>
+      (function () {
+        function hideLoader() {
+          var pre = document.querySelector(".preloader");
+          if (!pre) return;
+          pre.classList.add("hide", "preloader-hide");
+          pre.style.display = "none";
+        }
+        window.addEventListener("load", hideLoader);
+        // safety timeout (in case load event doesn't fire due to external assets)
+        setTimeout(hideLoader, 1200);
+      })();
+    </script>
+
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <div id="sidebar-slot" data-base="../"></div>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Session Record</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="patients-list.html">Patients List</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a id="srBreadcrumbProfile" href="#">Patient Profile</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Session Record</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="vr-wrap">
+            <div class="vr-topbar">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="pill"><i class="fi fi-rr-document"></i> Session Record</span>
+                <span class="pill" id="srPatientContext">Patient: -</span>
+                <span class="fsize-12 text-grey" id="srHeaderDate">Session Date: <b class="surface-secondary-400">-</b></span>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a class="nk-pill-btn nk-pill-btn--solid" href="#" id="downloadPdfBtn">
+                  <i class="fi fi-rr-download"></i>
+                  Download PDF
+                </a>
+                <a class="nk-pill-btn" id="srBackToProfile" href="#">
+                  <i class="fi fi-rr-arrow-small-left"></i>
+                  Back to Profile
+                </a>
+              </div>
+            </div>
+
+            <!-- Session Information -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Session Information</h3>
+                <span class="fsize-12 text-grey">Summary</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="kv-grid">
+                  <div class="kv">
+                    <span class="k">Care Provider</span>
+                    <div class="v" id="srProvider">-</div>
+                  </div>
+                  <div class="kv">
+                    <span class="k">Hospital</span>
+                    <div class="v" id="srHospital">-</div>
+                  </div>
+                  <div class="kv">
+                    <span class="k">Session Date</span>
+                    <div class="v" id="srSessionDate">-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Complaint / Present illness / Duration -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Patient Complaint</h3>
+                <span class="fsize-12 text-grey">CC / Present illness / Duration</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="two-col">
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-comment-alt"></i> Chief Complains (CC)</p>
+                    <p class="desc">Reference site about Lorem Ipsum, giving information on its origins</p>
+                  </div>
+
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-heart"></i> Present Illness</p>
+                    <p class="desc">Reference site about Lorem Ipsum, giving information on its origins</p>
+                  </div>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="two-col">
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-clock"></i> Duration Of Complains</p>
+                    <p class="desc"><b>10 Days</b></p>
+                  </div>
+
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-folder"></i> Patient History</p>
+                    <p class="desc">—</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Patient History -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Patient History</h3>
+                <span class="fsize-12 text-grey">Past medical / Past surgical / Allergy</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="two-col">
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-hospital"></i> Past Medical History</p>
+                    <p class="desc">Reference site about Lorem Ipsum, giving information on</p>
+                  </div>
+
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-scissors"></i> Past Surgical History</p>
+                    <p class="desc">Reference site about Lorem Ipsum, giving information on</p>
+                  </div>
+
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-shield-exclamation"></i> Allergy</p>
+                    <p class="desc">Reference site about Lorem Ipsum, giving information on</p>
+                  </div>
+
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-info"></i> Notes</p>
+                    <p class="desc">—</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Assessment -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Patient Assessment</h3>
+                <span class="fsize-12 text-grey">Vital signs & O/E</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-heart-rate"></i> Vital Signs</p>
+                  <div class="table-responsive">
+                    <table class="table-nk">
+                      <thead>
+                        <tr>
+                          <th>Temp</th>
+                          <th>H/R</th>
+                          <th>SpO2</th>
+                          <th>R/R</th>
+                          <th>BP</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>30</td>
+                          <td>10</td>
+                          <td>10</td>
+                          <td>20</td>
+                          <td>10</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-stethoscope"></i> O/E (Head &amp; Neck)</p>
+                  <div class="table-responsive">
+                    <table class="table-nk">
+                      <thead>
+                        <tr>
+                          <th>Area</th>
+                          <th>Head Size</th>
+                          <th>Consistency</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>Head &amp; Neck</td>
+                          <td>40 CM</td>
+                          <td>Symmetrical</td>
+                        </tr>
+                        <tr>
+                          <td>Head &amp; Neck</td>
+                          <td>40 CM</td>
+                          <td>Symmetrical</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DX -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>DX</h3>
+                <span class="fsize-12 text-grey">Diagnosis details</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="table-responsive">
+                  <table class="table-nk">
+                    <thead>
+                      <tr>
+                        <th>Provisional Dx</th>
+                        <th>Specialty</th>
+                        <th>ICD10 Code</th>
+                        <th>Diagnosis</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Provisional Dx</td>
+                        <td>Specialty</td>
+                        <td><span class="pill"><i class="fi fi-rr-hastag"></i> 04B00ZZ</span></td>
+                        <td>Diagnosis Name</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-notes"></i> Notes</p>
+                  <p class="desc"><b>Diagnosis:</b> Details of the Diagnosis are displayed in writing here</p>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-info"></i> Patient Instructions</p>
+                  <p class="desc">Details of the Diagnosis are displayed in writing here</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Labs & X-Rays -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Lab &amp; X-Rays</h3>
+                <span class="fsize-12 text-grey">Investigations</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="table-responsive">
+                  <table class="table-nk">
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>File Type</th>
+                        <th>Preview</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><b>CBC</b></td>
+                        <td><span class="pill"><i class="fi fi-rr-flask"></i> Lab</span></td>
+                        <td>
+                          <a class="nk-pill-btn" href="#" onclick="window.alert('Demo: open lab file preview'); return false;">
+                            <i class="fi fi-rr-eye"></i> Preview
+                          </a>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Treatment Plan -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Treatment Plan</h3>
+                <span class="fsize-12 text-grey">Medicines / Services</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-medicine"></i> Medicines</p>
+                  <div class="table-responsive">
+                    <table class="table-nk">
+                      <thead>
+                        <tr>
+                          <th>Medicine Name</th>
+                          <th>Drug Type</th>
+                          <th>Duration</th>
+                          <th>Quantity</th>
+                          <th>Dose</th>
+                          <th>Unit</th>
+                          <th>Frequency</th>
+                        </tr>
+                      </thead>
+                      <tbody id="srMedsBody"></tbody>
+                    </table>
+                  </div>
+
+                  <div class="divider-line"></div>
+
+                  <p class="title"><i class="fi fi-rr-document"></i> Description</p>
+                  <p class="desc" id="srTreatmentDescription">-</p>
+                </div>
+
+                <div class="divider-line"></div>
+
+                <div class="block">
+                  <p class="title"><i class="fi fi-rr-plus"></i> Added Services</p>
+                  <div class="table-responsive">
+                    <table class="table-nk">
+                      <thead>
+                        <tr>
+                          <th>Service</th>
+                          <th>Qty</th>
+                        </tr>
+                      </thead>
+                      <tbody id="srServicesBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Refer -->
+            <div class="card-nk">
+              <div class="card-nk__head">
+                <h3>Refer</h3>
+                <span class="fsize-12 text-grey">Referral details</span>
+              </div>
+              <div class="card-nk__body">
+                <div class="two-col">
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-briefcase"></i> Specialization</p>
+                    <p class="desc">Specialization name here</p>
+                  </div>
+                  <div class="block">
+                    <p class="title"><i class="fi fi-rr-share"></i> Refer To</p>
+                    <p class="desc">Refer To notes display here</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+    <!-- kept for project consistency -->
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+    <script src="../assets/js/data.js"></script>
+    <script src="../assets/js/session-record.js"></script>
+
+    <script>
+      // Download PDF (reliable): opens print dialog, user can "Save as PDF"
+      (function () {
+        var btn = document.getElementById("downloadPdfBtn");
+        if (!btn) return;
+
+        btn.addEventListener("click", function (e) {
+          e.preventDefault();
+          window.print();
+        });
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+
+

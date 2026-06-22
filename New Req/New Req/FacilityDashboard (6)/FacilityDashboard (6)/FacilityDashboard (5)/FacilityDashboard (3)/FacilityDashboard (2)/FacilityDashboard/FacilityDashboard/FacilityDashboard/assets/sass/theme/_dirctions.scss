@@ -1,0 +1,11 @@
+/*======Directions=====*/
+$right: left;
+$left: right;
+$dir-right: ltr;
+$dir-left: rtl;
+
+html,
+body {
+  text-align: $right !important;
+  direction: $dir-right !important;
+}

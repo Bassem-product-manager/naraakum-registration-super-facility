@@ -1,0 +1,2457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Pharmacy Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root{
+        --nk-green:#0f8c8c;
+        --nk-border:#e6eaef;
+
+        --nk-text:#101828;
+        --nk-muted:#667085;
+        --nk-soft:#f7f9fc;
+      }
+
+      /* Facility/SuperAdmin line under logo */
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.3px;
+        color:#0b6f6f;
+        text-shadow:0 1px 0 rgba(255,255,255,.5);
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      /* ===== Fallback menu behavior ===== */
+      .side-menu.is-open{ transform: translateX(0); }
+      .side-menu-list li.is-open > .sub-list{ display:block; }
+      .side-menu-list li > .sub-list{ display:none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down{ transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active{
+        background: rgba(15,140,140,.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      /* ===== Page specific ===== */
+      .details-shell{
+        display:grid;
+        grid-template-columns: 1fr 360px;
+        gap:16px;
+        align-items:start;
+      }
+      @media (max-width: 1200px){
+        .details-shell{ grid-template-columns: 1fr 340px; }
+      }
+      @media (max-width: 992px){
+        .details-shell{ grid-template-columns: 1fr; }
+      }
+
+      /* Summary Card */
+      .facility-summary{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:14px;
+      }
+      @media (max-width: 992px){
+        .facility-summary{ flex-direction:column; }
+      }
+
+      .sum-left{
+        display:flex;
+        align-items:flex-start;
+        gap:12px;
+        min-width: 0;
+      }
+      .sum-avatar{
+        width:46px;height:46px;border-radius:14px;
+        border:1px solid rgba(15,140,140,.18);
+        background:rgba(15,140,140,.06);
+        display:flex;align-items:center;justify-content:center;
+        flex:0 0 46px;
+        color:var(--nk-green);
+        font-size:20px;
+      }
+      .sum-titles{ min-width:0; }
+      .sum-title-row{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        min-width:0;
+      }
+      .sum-title{
+        font-size:16px;
+        font-weight:1000;
+        color:var(--nk-text);
+        line-height:1.2;
+        margin:0 0 4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .sum-sub{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        align-items:center;
+        color:var(--nk-muted);
+        font-weight:800;
+        font-size:12px;
+      }
+      .sum-sub .k{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:4px 10px;
+        border-radius:999px;
+        border:1px solid rgba(16,24,40,.10);
+        background:rgba(16,24,40,.02);
+      }
+      .sum-branch-alert{
+        position:relative;
+        transition:.2s ease;
+      }
+      .sum-branch-alert .sum-bell{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        width:18px;
+        height:18px;
+        border-radius:999px;
+        background:rgba(15,140,140,.08);
+        color:var(--nk-green);
+      }
+      .sum-branch-alert .sum-bell-dot{
+        width:8px;
+        height:8px;
+        border-radius:999px;
+        background:#12B76A;
+        box-shadow:0 0 0 2px #fff;
+        display:none;
+      }
+      .sum-branch-alert.is-live{
+        border-color:rgba(18,183,106,.30);
+        background:rgba(18,183,106,.10);
+        color:#067647;
+      }
+      .sum-branch-alert.is-live .sum-bell{
+        background:rgba(18,183,106,.16);
+        color:#067647;
+        animation: bellPulse 1.3s ease-in-out infinite;
+      }
+      .sum-branch-alert.is-live .sum-bell-dot{
+        display:inline-block;
+      }
+      @keyframes bellPulse{
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+      }
+      .sum-right{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+      .context-tabs{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        margin-top:10px;
+      }
+      .context-tab-btn{
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        color:#344054;
+        height:30px;
+        padding:0 10px;
+        border-radius:999px;
+        font-size:12px;
+        font-weight:900;
+        cursor:pointer;
+      }
+      .context-tab-btn:hover{
+        background:rgba(15,140,140,.06);
+      }
+      .context-tab-btn.is-active{
+        color:#0f8c8c;
+        background:rgba(15,140,140,.12);
+        border-color:rgba(15,140,140,.32);
+      }
+
+      /* Badges */
+      .pm-badge{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:28px;
+        padding:0 12px;
+        border-radius:999px;
+        font-weight:1000;
+        font-size:12px;
+        border:1px solid transparent;
+        white-space:nowrap;
+        letter-spacing:.2px;
+      }
+      .pm-badge.active{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .pm-badge.needs-info{
+        color:#B54708;
+        background:rgba(247,144,9,.10);
+        border-color:rgba(247,144,9,.22);
+      }
+      .pm-badge.rejected{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+      .pm-badge.inactive{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+
+      /* License dot */
+      .license-dot{
+        width:12px;height:12px;border-radius:999px;display:inline-block;vertical-align:middle;
+        box-shadow:0 0 0 3px rgba(16,24,40,.03);
+      }
+      .lic-valid{ background:#12B76A; }
+      .lic-expired{ background:#F04438; }
+      .lic-soon{ background:#F04438; }
+      .lic-na{ background:#F04438; }
+
+      /* Tab Bar */
+      .nk-tabs{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        overflow:hidden;
+      }
+      .nk-tabs-header{
+        display:flex;
+        gap:6px;
+        padding:10px;
+        border-bottom:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        flex-wrap:wrap;
+      }
+      .tab-btn{
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        color:var(--nk-text);
+        font-weight:1000;
+        font-size:12px;
+        height:34px;
+        padding:0 12px;
+        border-radius:12px;
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        cursor:pointer;
+        transition:.15s ease;
+        user-select:none;
+      }
+      .tab-btn i{ color:var(--nk-green); }
+      .tab-btn:hover{ background:rgba(15,140,140,.06); }
+      .tab-btn.is-active{
+        background:rgba(15,140,140,.10);
+        border-color:rgba(15,140,140,.28);
+        color:var(--nk-green);
+      }
+      .nk-tab-panel{
+        display:none;
+        padding:14px;
+      }
+      .nk-tab-panel.is-active{ display:block; }
+      .nk-tabs-header .tab-btn[data-tab="tab-docs"],
+      .nk-tabs-header .tab-btn[data-tab="tab-branches"]{
+        display:none;
+      }
+      #tab-docs{
+        display:block;
+        padding:0 14px 14px;
+      }
+      #tab-branches{
+        display:none !important;
+      }
+
+      /* Cards inside panels */
+      .nk-card{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+      }
+      .nk-card + .nk-card{ margin-top:12px; }
+
+      .nk-card-title{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:10px;
+      }
+      .nk-card-title h4{
+        margin:0;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .nk-muted{ color:var(--nk-muted); font-weight:800; font-size:12px; }
+      .card-title-actions{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+      .btn-edit-soft{
+        height:30px;
+        padding:0 10px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+        color:#0b6f6f;
+        font-size:12px;
+        font-weight:1000;
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+      }
+      .btn-edit-soft.is-save{
+        background:#0f8c8c;
+        border-color:#0f8c8c;
+        color:#fff;
+      }
+      .sum-name-edit{
+        width:28px;
+        height:28px;
+        padding:0;
+        border-radius:50%;
+        justify-content:center;
+        flex:0 0 28px;
+      }
+      .sum-name-edit span{ display:none; }
+
+      /* Overview grid */
+      .ov-grid{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:12px;
+      }
+      @media (max-width: 992px){
+        .ov-grid{ grid-template-columns: 1fr; }
+      }
+      .ov-item{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:12px;
+      }
+      .ov-item .l{ font-size:11px; font-weight:1000; color:var(--nk-muted); }
+      .ov-item .v{ font-size:13px; font-weight:1000; color:var(--nk-text); margin-top:4px; }
+      .ov-item.is-editing{
+        border-color:rgba(16,24,40,.10);
+        background:#fff;
+      }
+      .ov-edit-value[contenteditable="true"]{
+        display:block;
+        min-height:32px;
+        padding:7px 10px;
+        margin:6px 0 0;
+        border-radius:10px;
+        border:1px solid rgba(16,24,40,.14);
+        outline:0;
+        background:#f9fafb;
+        font-weight:900;
+        line-height:1.35;
+        cursor:text;
+      }
+      .ov-edit-value[contenteditable="true"]:focus,
+      .ov-password-input:focus{
+        border-color:rgba(15,140,140,.55);
+        box-shadow:0 0 0 3px rgba(15,140,140,.10);
+        background:#fff;
+      }
+      .owner-password-line{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        min-width:0;
+        margin-top:4px;
+      }
+      .owner-password-mask{
+        font-size:15px;
+        letter-spacing:2px;
+      }
+      .ov-password-input{
+        flex:1;
+        min-width:0;
+        min-height:32px;
+        padding:7px 10px;
+        border-radius:10px;
+        border:1px solid rgba(16,24,40,.14);
+        outline:0;
+        background:#f9fafb;
+        color:var(--nk-text);
+        font-size:13px;
+        font-weight:900;
+      }
+      .owner-reset-btn{
+        height:34px;
+        padding:0 12px;
+        border-radius:10px;
+        background:#0f8c8c;
+        border:1px solid #0f8c8c;
+        color:#fff;
+        box-shadow:0 6px 16px rgba(15,140,140,.16);
+      }
+      .owner-reset-btn:hover{
+        background:#0b7474;
+        color:#fff;
+      }
+
+      /* Documents list */
+      .doc-row{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        padding:10px 12px;
+        border:1px solid rgba(16,24,40,.08);
+        border-radius:14px;
+        background:#fff;
+      }
+      .doc-row + .doc-row{ margin-top:10px; }
+
+      .doc-left{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        min-width:0;
+      }
+      .doc-ic{
+        width:36px;height:36px;border-radius:12px;
+        background:rgba(15,140,140,.06);
+        border:1px solid rgba(15,140,140,.18);
+        display:flex;align-items:center;justify-content:center;
+        color:var(--nk-green);
+        flex:0 0 36px;
+      }
+      .doc-meta{ min-width:0; }
+      .doc-name{
+        font-weight:1000;
+        color:var(--nk-text);
+        font-size:13px;
+        margin:0;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      }
+      .doc-sub{
+        display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+        margin-top:4px;
+        color:var(--nk-muted);
+        font-weight:900;
+        font-size:11px;
+      }
+      .chip{
+        display:inline-flex;align-items:center;gap:6px;
+        height:22px;padding:0 10px;border-radius:999px;
+        border:1px solid rgba(16,24,40,.10);
+        background:rgba(16,24,40,.02);
+        font-size:11px;font-weight:1000;
+        color:var(--nk-text);
+        white-space:nowrap;
+      }
+      .chip.crit{
+        color:#B42318;
+        border-color:rgba(240,68,56,.25);
+        background:rgba(240,68,56,.08);
+      }
+
+      .doc-actions{
+        display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end;
+      }
+      .btn-mini{
+        display:inline-flex;align-items:center;gap:8px;
+        height:32px;padding:0 12px;border-radius:12px;
+        border:1px solid rgba(16,24,40,.12);
+        background:#fff;
+        color:var(--nk-text);
+        font-weight:1000;
+        font-size:12px;
+        cursor:pointer;
+        text-decoration:none;
+      }
+      .btn-mini:hover{ background:rgba(16,24,40,.02); }
+      .btn-mini.view{
+        border-color:rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green);
+      }
+      .btn-view-attachment{
+        border-color:rgba(15,140,140,.28)!important;
+        background:rgba(15,140,140,.10)!important;
+        color:#0b6f6f!important;
+      }
+      .btn-view-attachment:hover{
+        background:rgba(15,140,140,.16)!important;
+        border-color:rgba(15,140,140,.40)!important;
+      }
+      .btn-mini.view:hover{ background:rgba(15,140,140,.10); }
+      .btn-mini.danger{
+        border-color:rgba(240,68,56,.25);
+        background:rgba(240,68,56,.06);
+        color:#B42318;
+      }
+      .btn-mini.warning{
+        border-color:rgba(247,144,9,.28);
+        background:rgba(247,144,9,.08);
+        color:#B54708;
+      }
+      .btn-mini.icon{
+        width:32px;
+        min-width:32px;
+        padding:0;
+        justify-content:center;
+        gap:0;
+      }
+      .btn-mini.icon span{ display:none; }
+      .btn-mini.approve{
+        border-color:rgba(18,183,106,.25);
+        background:rgba(18,183,106,.08);
+        color:#067647;
+      }
+
+      /* Status pill for docs */
+      .doc-status{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:24px;
+        padding:0 10px;
+        border-radius:999px;
+        font-weight:1000;
+        font-size:11px;
+        border:1px solid transparent;
+        white-space:nowrap;
+      }
+      .doc-status.approved{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .doc-status.rejected{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+      .doc-status.pending,
+      .doc-status.needs-info{
+        color:#B54708;
+        background:rgba(247,144,9,.10);
+        border-color:rgba(247,144,9,.22);
+      }
+      .doc-status.missing{
+        color:#344054;
+        background:rgba(16,24,40,.04);
+        border-color:rgba(16,24,40,.12);
+      }
+
+      /* Tables */
+      .nk-table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:13px;
+      }
+      .nk-table thead th{
+        font-weight:1000;
+        color:#344054;
+        font-size:12px;
+        white-space:nowrap;
+        background:#fff;
+        border-bottom:1px solid rgba(16,24,40,.10);
+        padding:12px 12px;
+        vertical-align:middle;
+      }
+      .nk-table tbody td{
+        padding:12px 12px;
+        vertical-align:middle;
+        border-bottom:1px solid rgba(16,24,40,.08);
+        color:#101828;
+        font-weight:800;
+      }
+      .nk-table tbody tr:hover td{ background:rgba(15,140,140,.04); }
+      .nk-table tbody tr:last-child td{ border-bottom:0; }
+      .nk-table .text-center{text-align:center;}
+      .nk-table .text-right{text-align:right;}
+
+      /* Decision panel */
+      .decision-panel{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+        position:sticky;
+        top:14px;
+      }
+      @media (max-width: 992px){
+        .decision-panel{ position:relative; top:auto; }
+      }
+      .dp-title{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:8px;
+      }
+      .dp-title h4{
+        margin:0;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .dp-hint{
+        color:var(--nk-muted);
+        font-weight:800;
+        font-size:12px;
+        margin:0 0 10px;
+      }
+
+      .dp-actions{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:10px;
+        margin-top:10px;
+      }
+      .dp-actions .btn{ height:40px; border-radius:12px; font-weight:1000; white-space:nowrap; }
+      .dp-actions .btn i{ margin-right:8px; }
+      .dp-actions .btn-suspend{
+        border-color:rgba(247,144,9,.35);
+        background:rgba(247,144,9,.10);
+        color:#B54708;
+      }
+      .dp-actions .btn-suspend:hover{
+        border-color:rgba(247,144,9,.48);
+        background:rgba(247,144,9,.16);
+        color:#9A3412;
+      }
+      .dp-actions .btn-ban{
+        border-color:rgba(240,68,56,.35);
+        background:rgba(240,68,56,.10);
+        color:#B42318;
+      }
+      .dp-actions .btn-ban:hover{
+        border-color:rgba(240,68,56,.50);
+        background:rgba(240,68,56,.16);
+        color:#912018;
+      }
+
+      .dp-actions .btn-wide{ grid-column: 1 / -1; }
+
+      .branch-requests{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+      .branch-req-item{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px 12px;
+        border:1px solid rgba(16,24,40,.10);
+        border-radius:12px;
+        background:rgba(16,24,40,.01);
+      }
+      .branch-req-text{
+        min-width:0;
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+      }
+      .branch-req-title{
+        margin:0;
+        color:#101828;
+        font-size:12px;
+        font-weight:1000;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .sum-description{
+        margin:0 0 8px;
+        color:#0b6f6f;
+        font-size:13px;
+        font-weight:900;
+        line-height:1.45;
+      }
+      .summary-edit-input,
+      .summary-edit-textarea{
+        width:100%;
+        border:1px solid rgba(16,24,40,.14);
+        border-radius:10px;
+        background:#f9fafb;
+        color:var(--nk-text);
+        font-weight:900;
+        outline:0;
+      }
+      .summary-edit-input{
+        height:34px;
+        padding:0 10px;
+      }
+      .summary-edit-textarea{
+        min-height:56px;
+        padding:8px 10px;
+        resize:vertical;
+      }
+      .summary-edit-input:focus,
+      .summary-edit-textarea:focus{
+        border-color:rgba(15,140,140,.55);
+        box-shadow:0 0 0 3px rgba(15,140,140,.10);
+        background:#fff;
+      }
+      .branch-req-meta{
+        margin:0;
+        color:#667085;
+        font-size:11px;
+        font-weight:900;
+      }
+      .branch-req-close{
+        width:24px;
+        height:24px;
+        border-radius:999px;
+        border:1px solid rgba(16,24,40,.14);
+        background:#fff;
+        color:#667085;
+        font-size:12px;
+        font-weight:1000;
+        line-height:1;
+      }
+      .branch-req-close:hover{
+        background:rgba(240,68,56,.08);
+        border-color:rgba(240,68,56,.28);
+        color:#B42318;
+      }
+      .branch-row.is-selected td{
+        background:rgba(15,140,140,.08);
+      }
+
+      .mini-metrics{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:10px;
+        margin:10px 0 0;
+      }
+      .metric{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:10px;
+      }
+      .metric .l{ font-size:11px; font-weight:1000; color:var(--nk-muted); }
+      .metric .v{ margin-top:4px; font-size:13px; font-weight:1000; color:var(--nk-text); }
+
+      /* Audit timeline */
+      .timeline{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+      .tl-item{
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+      }
+      .tl-dot{
+        width:10px;height:10px;border-radius:999px;
+        background:rgba(15,140,140,.35);
+        box-shadow:0 0 0 4px rgba(15,140,140,.08);
+        margin-top:4px;
+        flex:0 0 10px;
+      }
+      .tl-body{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:10px 12px;
+        flex:1;
+      }
+      .tl-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      .tl-title{
+        font-weight:1000;
+        color:var(--nk-text);
+        font-size:12px;
+        margin:0;
+      }
+      .tl-time{
+        font-size:11px;
+        font-weight:900;
+        color:var(--nk-muted);
+      }
+      .tl-note{
+        margin:6px 0 0;
+        font-size:12px;
+        font-weight:800;
+        color:var(--nk-text);
+      }
+
+      /* Not found */
+      .notfound{
+        border:1px dashed rgba(16,24,40,.18);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:14px;
+      }
+      .notfound h3{
+        margin:0 0 6px;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .notfound p{
+        margin:0 0 10px;
+        font-size:12px;
+        font-weight:900;
+        color:var(--nk-muted);
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE (SUPER ADMIN) ===================== -->
+      <div id="sidebar-slot" data-base="../"></div>
+      <!-- ===================== /ASIDE ===================== -->
+
+      <main class="main-page">
+        <!-- ===================== TOP HEADER (SAME NAVBAR) ===================== -->
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+        <!-- ===================== /TOP HEADER ===================== -->
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="../providers/pharm.html">Pharmacies</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Pharmacy Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- ===== Summary ===== -->
+          <div class="facility-summary" id="facilitySummary">
+            <div class="sum-left">
+              <div class="sum-avatar"><i class="fi fi-rr-shopping-bag"></i></div>
+              <div class="sum-titles">
+                <div class="sum-title-row">
+                  <p class="sum-title" id="sumFacilityName">-</p>
+                  <button class="btn-edit-soft sum-name-edit" id="btnEditSummaryName" type="button" title="Edit name">
+                    <i class="fi fi-rr-edit"></i><span>Edit</span>
+                  </button>
+                </div>
+                <p class="sum-description" id="sumFacilityDescription">-</p>
+                <div class="sum-sub">
+                  <span class="k" id="sumFacilityCode"><i class="fi fi-rr-id-badge"></i><span>-</span></span>
+                  <span class="k" id="sumCity"><i class="fi fi-rr-marker"></i><span>-</span></span>
+                  <span class="k" id="sumSubmitted"><i class="fi fi-rr-calendar"></i><span>Submitted: -</span></span>
+                  <span class="k" id="sumUpdated"><i class="fi fi-rr-time-forward"></i><span>Updated: -</span></span>
+                </div>
+                <div class="context-tabs" id="contextTabs"></div>
+              </div>
+            </div>
+
+            <div class="sum-right">
+              <span class="pm-badge active" id="sumStatusBadge">Active</span>
+            </div>
+          </div>
+
+          <div class="details-shell mt-16" id="detailsShell">
+            <!-- Left: Tabs -->
+            <div class="nk-tabs" id="tabsBox">
+              <div class="nk-tabs-header">
+                <button class="tab-btn is-active" data-tab="tab-overview" type="button">
+                  <i class="fi fi-rr-info"></i><span>Overview</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-docs" type="button">
+                  <i class="fi fi-rr-document"></i><span>Documents</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-branches" type="button">
+                  <i class="fi fi-rr-building"></i><span>Branches</span>
+                </button>
+              </div>
+
+              <!-- Overview -->
+              <div class="nk-tab-panel is-active" id="tab-overview">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Pharmacy Information</h4>
+                    <div class="card-title-actions">
+                      <span class="nk-muted" id="ovType">-</span>
+                      <button class="btn-edit-soft" id="btnEditOverview" type="button">
+                        <i class="fi fi-rr-edit"></i><span>Edit</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="ov-grid" id="overviewGrid">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Quick Summary</h4>
+                    <span class="nk-muted">Auto calculated</span>
+                  </div>
+
+                  <div class="mini-metrics">
+                    <div class="metric">
+                      <div class="l">Documents Completion</div>
+                      <div class="v" id="mDocsCompletion">-</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Owner Info</h4>
+                    <div class="card-title-actions">
+                      <span class="nk-muted" id="ownerResetHint">Primary</span>
+                      <button class="btn-edit-soft" id="btnEditOwnerInfo" type="button">
+                        <i class="fi fi-rr-edit"></i><span>Edit</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="ov-grid" id="contactGrid"></div>
+                </div>
+              </div>
+
+              <!-- Documents -->
+              <div class="nk-tab-panel" id="tab-docs">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Submitted Documents</h4>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="nk-muted" id="docsHint">-</span>
+                      <button class="btn-mini" id="btnAddDocument" type="button">
+                        <i class="fi fi-rr-plus"></i><span>Add Document</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="docsList">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Branches -->
+              <div class="nk-tab-panel" id="tab-branches">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Branch Notifications</h4>
+                    <span class="nk-muted">Notifications only</span>
+                  </div>
+                  <div class="branch-requests" id="branchRequestsList">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Branches</h4>
+                    <span class="nk-muted" id="branchesHint">-</span>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="nk-table" id="branchesTable">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Branch Name</th>
+                          <th>City</th>
+                          <th class="text-center">Docs</th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="branchesTbody">
+                        <!-- filled by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Not found -->
+              <div class="nk-tab-panel" id="tab-notfound">
+                <div class="notfound">
+                  <h3>Pharmacy not found</h3>
+                  <p>We could not find a pharmacy with this code. Please go back to the pharmacies list.</p>
+                  <a href="../providers/pharm.html" class="btn btn-primary btn-40">
+                    <i class="fi fi-rr-arrow-left"></i><span>Back to Pharmacies</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Decision Panel -->
+            <aside class="decision-panel" id="decisionPanel">
+              <div class="dp-title">
+                <h4>Decision Panel</h4>
+                <span class="pm-badge active" id="dpStatus">Active</span>
+              </div>
+
+              <div class="nk-card" style="padding:10px;">
+                <div class="nk-muted">Decision Target</div>
+                <div style="font-size:14px;font-weight:1000;color:#101828;" id="dpTargetName">Pharmacy</div>
+                <div class="nk-muted" id="dpTargetMeta">Default target</div>
+              </div>
+
+              <p class="dp-hint" id="dpHint" style="margin-top:10px;">Select a target, then apply the decision.</p>
+
+              <div class="dp-actions">
+                <button class="btn btn-primary" id="btnApprove" type="button">
+                  <i class="fi fi-rr-badge-check"></i>Approve
+                </button>
+                <button class="btn btn-secondary" id="btnReject" type="button">
+                  <i class="fi fi-rr-cross-circle"></i>Reject
+                </button>
+                <button class="btn btn-primary-revers btn-suspend" id="btnSuspend" type="button">
+                  <i class="fi fi-rr-ban"></i>Suspend
+                </button>
+                <button class="btn btn-primary-revers btn-ban" id="btnBan" type="button">
+                  <i class="fi fi-rr-ban"></i>Ban
+                </button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===================== MODALS ===================== -->
+    <!-- Document Viewer -->
+    <div class="modal fade" id="docViewerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="docViewerTitle">Document</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="nk-card" style="padding:12px;">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <div class="nk-muted">Preview (mock)</div>
+                  <div style="font-weight:1000;" id="docViewerMeta">-</div>
+                </div>
+                <a href="#" class="btn btn-primary-revers btn-40" id="docDownloadLink">
+                  <i class="fi fi-rr-download"></i><span>Download</span>
+                </a>
+              </div>
+              <div style="margin-top:12px; border:1px dashed rgba(16,24,40,.18); border-radius:14px; padding:14px; background:rgba(16,24,40,.01);">
+                <div style="font-weight:1000; color:#101828;">This is a placeholder preview area.</div>
+                <div class="nk-muted" style="margin-top:6px;">
+                  Connect real PDF/image preview here later. Right now we just show meta information.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch Details -->
+    <div class="modal fade" id="branchModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="branchModalTitle">Branch</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="nk-card" style="padding:12px;">
+              <div class="ov-grid" id="branchModalGrid"></div>
+            </div>
+
+            <div class="nk-card" style="padding:12px;">
+              <div class="nk-card-title">
+                <h4 style="margin:0;">Branch Documents</h4>
+                <span class="nk-muted">Mock list</span>
+              </div>
+              <div id="branchDocsList"></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/provider-commission-ui.js"></script>
+
+    <script>
+      // ===== KSA Clock (Asia/Riyadh) =====
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      // ===== Side menu fallback (like your page) =====
+      (function(){
+        if (window.__NK_FD_MENU_INIT__) return;
+        window.__NK_FD_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function(){ aside.classList.toggle("is-open"); });
+
+        list.querySelectorAll("li").forEach(function(li){
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function(){ li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      // ===== Tooltips init =====
+      (function(){
+        if (!window.bootstrap) return;
+        const els = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        els.forEach(el => new bootstrap.Tooltip(el));
+      })();
+
+      // ===== Pharmacy Details Logic (Mock) =====
+      (function(){
+        // ------------------------
+        // Helpers
+        // ------------------------
+        function qs(sel, root=document){ return root.querySelector(sel); }
+        function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+        function esc(s){ return (s ?? "").toString(); }
+
+        function getParam(name){
+          const u = new URL(window.location.href);
+          return u.searchParams.get(name) || "";
+        }
+
+        function pad2(n){ return n < 10 ? ("0"+n) : (""+n); }
+        function niceDate(iso){
+          if (!iso) return "-";
+          const parts = iso.split("-");
+          if (parts.length !== 3) return iso;
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        function todayISO(){
+          const d = new Date();
+          return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+        }
+        function addDaysISO(baseIso, days){
+          const base = new Date((baseIso || todayISO()) + "T00:00:00");
+          if (Number.isNaN(base.getTime())) return todayISO();
+          base.setDate(base.getDate() + days);
+          return `${base.getFullYear()}-${pad2(base.getMonth()+1)}-${pad2(base.getDate())}`;
+        }
+        function daysBetween(aIso, bIso){
+          try{
+            const a = new Date(aIso+"T00:00:00");
+            const b = new Date(bIso+"T00:00:00");
+            return Math.round((b - a) / (1000*60*60*24));
+          }catch(e){ return 0; }
+        }
+        function statusLabel(st){
+          if (st === "active") return "Active";
+          if (st === "approved") return "Approved";
+          if (st === "pending" || st === "under-review" || st === "new") return "Under Review";
+          if (st === "needs-info") return "Needs Info";
+          if (st === "rejected") return "Rejected";
+          if (st === "inactive") return "Inactive";
+          if (st === "banned") return "Banned";
+          if (st === "deleted") return "Deleted";
+          return st || "-";
+        }
+
+        function statusClass(st){
+          if (st === "active") return "active";
+          if (st === "approved") return "active";
+          if (st === "pending" || st === "under-review" || st === "new") return "needs-info";
+          if (st === "needs-info") return "needs-info";
+          if (st === "rejected") return "rejected";
+          if (st === "inactive") return "inactive";
+          if (st === "banned") return "rejected";
+          if (st === "deleted") return "rejected";
+          return "active";
+        }
+
+        function docStatusLabel(st){
+          if (st === "pending") return "Pending";
+          if (st === "approved") return "Approved";
+          if (st === "rejected") return "Rejected";
+          if (st === "missing") return "Missing";
+          return st || "-";
+        }
+
+        function licenseDotClass(state){
+          if (state === "valid") return "lic-valid";
+          if (state === "soon") return "lic-expired";
+          if (state === "expired") return "lic-expired";
+          return "lic-na";
+        }
+
+        function formatPhone(p){
+          return (p || "-").toString();
+        }
+        function formatCode(raw){
+          const v = (raw || "").toString();
+          const cleaned = v.replace(/^[A-Z]+-?/i, "").replace(/^0+/, "");
+          return cleaned || v || "-";
+        }
+
+        function statusFromContract(contract){
+          const v = String(contract || "").toLowerCase();
+          if (v === "active") return "active";
+          if (v === "pending") return "pending";
+          if (v === "expired") return "inactive";
+          return "";
+        }
+
+        function calcDocsCompletion(docs){
+          const required = docs.filter(x => x.required);
+          if (!required.length) return { pct: 0, approved: 0, total: 0 };
+          const approved = required.filter(x => x.status === "approved").length;
+          const pct = Math.round((approved / required.length) * 100);
+          return { pct, approved, total: required.length };
+        }
+
+        function criticalGate(docs){
+          const critical = docs.filter(x => x.critical);
+          const missingOrBad = critical.filter(x => x.status === "missing" || x.status === "rejected");
+          return { total: critical.length, bad: missingOrBad.length, badList: missingOrBad };
+        }
+
+        function licenseState(expiryIso){
+          if (!expiryIso) return { state:"na", days:null };
+          const t = todayISO();
+          const diff = daysBetween(t, expiryIso); // expiry - today
+          if (diff < 0) return { state:"expired", days: diff };
+          if (diff <= 45) return { state:"soon", days: diff };
+          return { state:"valid", days: diff };
+        }
+
+        // ------------------------
+        // Mock Data
+        // ------------------------
+        const PHARMACIES = {
+          "PH-00001": {
+            code:"PH-00001",
+            name:"BMC Community Pharmacy",
+            type:"Community Pharmacy",
+            city:"Riyadh",
+            address:"King Fahd Rd, Riyadh, KSA",
+            phone:"+966 50 000 1111",
+            email:"contact@bmcpharmacy.sa",
+            legalEntity:"BMC Community Pharmacy Company",
+            crNumber:"1010000000",
+            vatNumber:"300000000000003",
+            submittedAt:"2026-01-20",
+            updatedAt:"2026-02-06",
+            status:"new",
+
+            documents:[
+              { id:"doc_owner_id", name:"Owner / Owners ID", required:true, critical:true, status:"approved", uploadedAt:"2026-01-20", fileName:"Owner_ID_BMC.pdf" },
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-01-20", fileName:"CR_BMC.pdf" },
+              { id:"doc_bank_letter", name:"Bank Account Letter", required:true, critical:false, status:"approved", uploadedAt:"2026-01-21", fileName:"Bank_Letter_BMC.pdf" },
+              { id:"doc_suppliers_file", name:"Suppliers File", required:true, critical:false, status:"approved", uploadedAt:"2026-01-22", fileName:"Suppliers_File_BMC.pdf" }
+            ],
+
+            branches:[
+              {
+                id:"BR-001",
+                name:"BMC Pharmacy - North Branch",
+                city:"Riyadh",
+                address:"North District, Riyadh",
+                status:"new",
+                docs:{
+                  completion: 100
+                },
+                documents:[
+                  { id:"br_cr", name:"Commercial Registration (CR)", status:"approved", fileName:"BR001_CR.pdf", uploadedAt:"2026-02-01" }
+                ]
+              },
+              {
+                id:"BR-002",
+                name:"BMC Pharmacy - East Branch",
+                city:"Riyadh",
+                address:"East District, Riyadh",
+                status:"active",
+                docs:{
+                  completion: 100
+                },
+                documents:[
+                  { id:"br_cr", name:"Commercial Registration (CR)", status:"approved", fileName:"BR002_CR.pdf", uploadedAt:"2026-01-22" }
+                ]
+              }
+            ],
+
+            branchRequests:[
+              { id:"REQ-9001", branchId:"BR-001", title:"New pharmacy branch onboarding request", time:"06/02/2026 10:10" },
+              { id:"REQ-9002", branchId:"BR-002", title:"Pharmacy branch data update submitted", time:"07/02/2026 08:35" }
+            ],
+
+            admins:[
+              { name:"Ahmed Alqahtani", email:"ahmed@bmcpharmacy.sa", role:"Pharmacy Admin", status:"active" },
+              { name:"Sara Ibrahim", email:"sara@bmcpharmacy.sa", role:"Compliance Officer", status:"active" },
+              { name:"Ops Team", email:"ops@bmcpharmacy.sa", role:"Operations", status:"invited" }
+            ],
+
+            audit:[
+              { title:"Submission Received", time:"20/01/2026 11:12", note:"Pharmacy submitted required documents for review." },
+              { title:"Document Check", time:"21/01/2026 09:30", note:"CR and VAT verified. License validated." },
+              { title:"Approved & Activated", time:"06/02/2026 14:10", note:"Pharmacy approved and activated for operations." }
+            ]
+          },
+
+          "PH-00002": {
+            code:"PH-00002",
+            name:"Al Noor Pharmacy",
+            type:"Retail Pharmacy",
+            city:"Jeddah",
+            address:"Al Andalus District, Jeddah, KSA",
+            phone:"+966 50 000 2222",
+            email:"admin@alnoorpharmacy.sa",
+            legalEntity:"Al Noor Pharmacy LLC",
+            crNumber:"4030000000",
+            vatNumber:"310000000000001",
+            submittedAt:"2026-02-01",
+            updatedAt:"2026-02-08",
+            status:"active",
+
+            documents:[
+              { id:"doc_owner_id", name:"Owner / Owners ID", required:true, critical:true, status:"approved", uploadedAt:"2026-02-01", fileName:"Owner_ID_AlNoor.pdf" },
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-02-01", fileName:"CR_AlNoor.pdf" },
+              { id:"doc_bank_letter", name:"Bank Account Letter", required:true, critical:false, status:"missing", uploadedAt:"", fileName:"" },
+              { id:"doc_suppliers_file", name:"Suppliers File", required:true, critical:false, status:"pending", uploadedAt:"2026-02-02", fileName:"Suppliers_File_AlNoor.pdf" }
+            ],
+
+            branches:[
+              {
+                id:"BR-101",
+                name:"Al Noor Pharmacy - Main",
+                city:"Jeddah",
+                address:"Central Jeddah",
+                status:"new",
+                docs:{ completion: 100 },
+                documents:[
+                  { id:"br_cr", name:"Commercial Registration (CR)", status:"approved", fileName:"BR101_CR.pdf", uploadedAt:"2026-02-03" }
+                ]
+              }
+            ],
+
+            branchRequests:[
+              { id:"REQ-9101", branchId:"BR-101", title:"New pharmacy branch onboarding request", time:"08/02/2026 11:20" }
+            ],
+
+            admins:[
+              { name:"Fahad Salem", email:"fahad@alnoorpharmacy.sa", role:"Pharmacy Admin", status:"active" },
+              { name:"Compliance Desk", email:"compliance@alnoorpharmacy.sa", role:"Compliance", status:"approved" }
+            ],
+
+            audit:[
+              { title:"Submission Received", time:"01/02/2026 13:05", note:"Pharmacy submitted documents for onboarding." },
+              { title:"Verification Completed", time:"08/02/2026 10:40", note:"CR document verified and approved." }
+            ]
+          },
+
+          "PH-00003": {
+            code:"PH-00003",
+            name:"Green Valley Pharmacy",
+            type:"Community Pharmacy",
+            city:"Dammam",
+            address:"Al Faisaliyah, Dammam, KSA",
+            phone:"+966 50 000 3333",
+            email:"info@greenvalleypharmacy.sa",
+            legalEntity:"Green Valley Pharmacy",
+            crNumber:"2050000000",
+            vatNumber:"320000000000002",
+            submittedAt:"2025-11-15",
+            updatedAt:"2026-01-05",
+            status:"needs-info",
+
+            documents:[
+              { id:"doc_owner_id", name:"Owner / Owners ID", required:true, critical:true, status:"rejected", uploadedAt:"2025-11-15", fileName:"Owner_ID_GreenValley.pdf", rejectionReason:"Uploaded file is not readable." },
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"missing", uploadedAt:"", fileName:"" },
+              { id:"doc_bank_letter", name:"Bank Account Letter", required:true, critical:false, status:"approved", uploadedAt:"2025-11-16", fileName:"Bank_Letter_GreenValley.pdf" },
+              { id:"doc_suppliers_file", name:"Suppliers File", required:true, critical:false, status:"missing", uploadedAt:"", fileName:"" }
+            ],
+
+            branches:[],
+            branchRequests:[],
+            admins:[
+              { name:"Owner", email:"owner@greenvalleypharmacy.sa", role:"Pharmacy Admin", status:"active" }
+            ],
+            audit:[
+              { title:"Submission Received", time:"15/11/2025 09:20", note:"Initial submission received." },
+              { title:"Documents Updated", time:"05/01/2026 12:10", note:"Updated CR document submitted." }
+            ]
+          },
+
+          "PH-00004": {
+            code:"PH-00004",
+            name:"Future Care Pharmacy",
+            type:"Retail Pharmacy",
+            city:"Riyadh",
+            address:"Olaya District, Riyadh, KSA",
+            phone:"+966 50 000 4444",
+            email:"ops@futurecarepharmacy.sa",
+            legalEntity:"Future Care Pharmacy Co.",
+            crNumber:"1019999999",
+            vatNumber:"330000000000004",
+            submittedAt:"2026-01-10",
+            updatedAt:"2026-01-22",
+            status:"inactive",
+
+            documents:[
+              { id:"doc_owner_id", name:"Owner / Owners ID", required:true, critical:true, status:"approved", uploadedAt:"2026-01-10", fileName:"Owner_ID_FutureCare.pdf" },
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-01-10", fileName:"CR_FutureCare.pdf" },
+              { id:"doc_bank_letter", name:"Bank Account Letter", required:true, critical:false, status:"approved", uploadedAt:"2026-01-10", fileName:"Bank_Letter_FutureCare.pdf" },
+              { id:"doc_suppliers_file", name:"Suppliers File", required:true, critical:false, status:"approved", uploadedAt:"2026-01-11", fileName:"Suppliers_File_FutureCare.pdf" }
+            ],
+
+            branches:[
+              {
+                id:"BR-501",
+                name:"Future Care Pharmacy - Main",
+                city:"Riyadh",
+                address:"Olaya, Riyadh",
+                status:"active",
+                docs:{ completion: 100 },
+                documents:[
+                  { id:"br_cr", name:"Commercial Registration (CR)", status:"approved", fileName:"BR501_CR.pdf", uploadedAt:"2026-01-12" }
+                ]
+              }
+            ],
+
+            branchRequests:[],
+
+            admins:[
+              { name:"Operations Lead", email:"ops@futurecarepharmacy.sa", role:"Operations", status:"active" }
+            ],
+
+            audit:[
+              { title:"Approved", time:"12/01/2026 10:00", note:"Pharmacy approved." },
+              { title:"Suspended", time:"22/01/2026 16:45", note:"Pharmacy suspended due to policy breach (mock)." }
+            ]
+          }
+        };
+
+        // ------------------------
+        // Elements
+        // ------------------------
+        const sumName = qs("#sumFacilityName");
+        const sumDescription = qs("#sumFacilityDescription");
+        const sumCode = qs("#sumFacilityCode span");
+        const sumCity = qs("#sumCity span");
+        const sumSubmitted = qs("#sumSubmitted span");
+        const sumUpdated = qs("#sumUpdated span");
+        const sumStatusBadge = qs("#sumStatusBadge");
+        const contextTabs = qs("#contextTabs");
+
+        const ovType = qs("#ovType");
+        const overviewGrid = qs("#overviewGrid");
+        const contactGrid = qs("#contactGrid");
+        const btnEditOverview = qs("#btnEditOverview");
+        const btnEditSummaryName = qs("#btnEditSummaryName");
+        const btnEditOwnerInfo = qs("#btnEditOwnerInfo");
+        const ownerResetHint = qs("#ownerResetHint");
+
+        const mDocsCompletion = qs("#mDocsCompletion");
+
+        const docsList = qs("#docsList");
+        const docsHint = qs("#docsHint");
+        const btnAddDocument = qs("#btnAddDocument");
+
+        const branchesTbody = qs("#branchesTbody");
+        const branchesHint = qs("#branchesHint");
+        const branchRequestsList = qs("#branchRequestsList");
+        const notifCount = qs("#notifCount");
+
+        const dpStatus = qs("#dpStatus");
+        const dpHint = qs("#dpHint");
+        const dpTargetName = qs("#dpTargetName");
+        const dpTargetMeta = qs("#dpTargetMeta");
+
+        const btnApprove = qs("#btnApprove");
+        const btnReject = qs("#btnReject");
+        const btnSuspend = qs("#btnSuspend");
+        const btnBan = qs("#btnBan");
+
+        // Modals
+        const docViewerModalEl = qs("#docViewerModal");
+        const branchModalEl = qs("#branchModal");
+
+        const docViewerTitle = qs("#docViewerTitle");
+        const docViewerMeta = qs("#docViewerMeta");
+        const docDownloadLink = qs("#docDownloadLink");
+
+        const branchModalTitle = qs("#branchModalTitle");
+        const branchModalGrid = qs("#branchModalGrid");
+        const branchDocsList = qs("#branchDocsList");
+
+        // Tabs
+        const tabButtons = qsa(".tab-btn");
+        const panels = qsa(".nk-tab-panel");
+
+        function showPanel(id){
+          panels.forEach(p => p.classList.remove("is-active"));
+          tabButtons.forEach(b => b.classList.remove("is-active"));
+
+          const panel = qs("#"+id);
+          if (panel) panel.classList.add("is-active");
+
+          const btn = tabButtons.find(x => x.getAttribute("data-tab") === id);
+          if (btn) btn.classList.add("is-active");
+        }
+
+        tabButtons.forEach(btn => {
+          btn.addEventListener("click", () => showPanel(btn.getAttribute("data-tab")));
+        });
+
+        // State
+        const code = (getParam("code") || sessionStorage.getItem("lastPharmacyCode") || "").toUpperCase();
+        const facility = PHARMACIES[code];
+        let selectedBranchId = null;
+        let branchRequests = [];
+        let overviewEditMode = false;
+
+        // If not found
+        if (!facility){
+          // Hide decision panel and summary actions
+          qs("#decisionPanel")?.classList.add("d-none");
+          qs("#facilitySummary")?.classList.add("d-none");
+          showPanel("tab-notfound");
+          return;
+        }
+
+        try{
+          const lastCode = (sessionStorage.getItem("lastPharmacyCode") || "").toUpperCase();
+          const lastContract = sessionStorage.getItem("lastPharmacyContract") || "";
+          const syncFlag = sessionStorage.getItem("lastPharmacyStatusSync") || "";
+          if (syncFlag === "1" && lastCode && lastCode === code){
+            const mapped = statusFromContract(lastContract);
+            if (mapped) facility.status = mapped;
+          }
+          sessionStorage.removeItem("lastPharmacyStatusSync");
+        }catch(e){}
+
+        function normalizePharmacyData(f){
+          const pharmacyMeta = {
+            "PH-00001": {
+              nameAr: "صيدلية BMC المجتمعية",
+              descriptionAr: "صيدلية مجتمعية تقدم خدمات صرف الأدوية ومنتجات الرعاية الصحية في الرياض.",
+              ownerName: "Ahmed Alqahtani",
+              ownerPhone: "+966 55 111 2200",
+              ownerEmail: "owner@bmcpharmacy.sa"
+            },
+            "PH-00002": {
+              nameAr: "صيدلية النور",
+              descriptionAr: "صيدلية تجزئة تقدم خدمات صرف الوصفات ومنتجات الرعاية الصحية في جدة.",
+              ownerName: "Fahad Salem",
+              ownerPhone: "+966 55 222 3300",
+              ownerEmail: "owner@alnoorpharmacy.sa"
+            },
+            "PH-00003": {
+              nameAr: "صيدلية جرين فالي",
+              descriptionAr: "صيدلية مجتمعية تقدم خدمات الأدوية الأساسية ومنتجات الصحة في الدمام.",
+              ownerName: "Green Valley Owner",
+              ownerPhone: "+966 55 333 4400",
+              ownerEmail: "owner@greenvalleypharmacy.sa"
+            },
+            "PH-00004": {
+              nameAr: "صيدلية فيوتشر كير",
+              descriptionAr: "صيدلية تجزئة تقدم خدمات الأدوية ومنتجات العناية في الرياض.",
+              ownerName: "Operations Lead",
+              ownerPhone: "+966 55 444 5500",
+              ownerEmail: "owner@futurecarepharmacy.sa"
+            }
+          };
+          const meta = pharmacyMeta[f.code] || {};
+          f.nameAr = f.nameAr || meta.nameAr || f.name;
+          f.descriptionAr = f.descriptionAr || meta.descriptionAr || "";
+          f.ownerName = f.ownerName || meta.ownerName || (f.admins || [])[0]?.name || "";
+          f.ownerPhone = f.ownerPhone || meta.ownerPhone || f.phone || "";
+          f.ownerEmail = f.ownerEmail || meta.ownerEmail || (f.admins || [])[0]?.email || f.email || "";
+          f.ownerPassword = f.ownerPassword || "Owner@2026";
+
+          const mapPharmacyDoc = {
+            "Owner / Owners ID": "Owner / Owners ID",
+            "Commercial Registration (CR)": "Commercial Registration (CR)",
+            "Bank Account Letter": "Bank Account Letter",
+            "Bank IBAN Letter": "Bank Account Letter",
+            "CR Number": "Commercial Registration (CR)",
+            "Suppliers File": "Suppliers File",
+            "Supplier File": "Suppliers File",
+            "Vendors File": "Suppliers File"
+          };
+
+          const defaults = [
+            { id:"doc_owner_id", name:"Owner / Owners ID", required:true, critical:true },
+            { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true },
+            { id:"doc_bank_letter", name:"Bank Account Letter", required:true, critical:false },
+            { id:"doc_suppliers_file", name:"Suppliers File", required:true, critical:false }
+          ];
+
+          const currentDocs = (f.documents || []).map(d => ({...d}));
+          const normalizedStatus = (doc) => {
+            if (!doc) return "missing";
+            if (doc.status) return doc.status;
+            return doc.fileName ? "pending" : "missing";
+          };
+
+          const normalizedDocs = defaults.map(def => {
+            const matched = currentDocs.find(d => mapPharmacyDoc[d.name] === def.name) || null;
+            return {
+              id: def.id,
+              name: def.name,
+              required: def.required,
+              critical: def.critical,
+              status: normalizedStatus(matched),
+              uploadedAt: matched?.uploadedAt || "",
+              fileName: matched?.fileName || "",
+              rejectionReason: matched?.rejectionReason || ""
+            };
+          });
+          f.documents = normalizedDocs;
+
+          f.branches = (f.branches || []).map(br => {
+            const existingCr = (br.documents || []).find(d => (d.name || "").includes("CR")) || (br.documents || [])[0];
+            const brDocs = [{
+              id: "br_cr",
+              name: "Commercial Registration (CR)",
+              status: normalizedStatus(existingCr),
+              fileName: existingCr?.fileName || "",
+              uploadedAt: existingCr?.uploadedAt || "",
+              rejectionReason: existingCr?.rejectionReason || ""
+            }];
+            return {
+              ...br,
+              status: br.status || "new",
+              docs: { completion: brDocs.length ? Math.round((brDocs.filter(x => x.status === "approved").length / brDocs.length) * 100) : 0 },
+              documents: brDocs
+            };
+          });
+
+          f.branchRequests = (f.branchRequests || []).filter(Boolean);
+        }
+
+        normalizePharmacyData(facility);
+        branchRequests = (facility.branchRequests || []).map(x => ({...x}));
+
+        // ------------------------
+        // Render functions
+        // ------------------------
+        function renderContextTabs(){
+          if (!contextTabs) return;
+          const branches = facility.branches || [];
+          if (selectedBranchId && !branches.find(x => x.id === selectedBranchId)) selectedBranchId = null;
+
+          const items = [
+            { id: "main", label: "Main Pharmacy" },
+            ...branches.map((br, idx) => ({ id: br.id, label: `Branch ${idx + 1}` }))
+          ];
+
+          contextTabs.innerHTML = "";
+          items.forEach(item => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "context-tab-btn" + (
+              (item.id === "main" && !selectedBranchId) || item.id === selectedBranchId ? " is-active" : ""
+            );
+            btn.textContent = item.label;
+            btn.addEventListener("click", () => {
+              selectedBranchId = item.id === "main" ? null : item.id;
+              renderAll();
+            });
+            contextTabs.appendChild(btn);
+          });
+        }
+
+        function renderSummary(){
+          const target = getDecisionTarget();
+
+          if (overviewEditMode) {
+            sumName.innerHTML = `<input class="summary-edit-input" data-summary-edit="pharmacyNamePair" value="${esc(`${facility.name || ""} / ${facility.nameAr || ""}`)}" />`;
+          } else {
+            sumName.textContent = `${facility.name || "-"} / ${facility.nameAr || facility.name || "-"}`;
+          }
+          if (sumDescription) {
+            const desc = facility.descriptionAr || "";
+            sumDescription.innerHTML = overviewEditMode
+              ? `<textarea class="summary-edit-textarea" data-summary-edit="descriptionAr">${esc(desc)}</textarea>`
+              : (desc || "-");
+          }
+          sumCode.textContent = formatCode(facility.code);
+          sumCity.textContent = target.kind === "branch" ? (target.entity.city || facility.city || "-") : (facility.city || "-");
+          sumSubmitted.textContent = "Submitted: " + niceDate(facility.submittedAt);
+          sumUpdated.textContent = "Updated: " + niceDate(facility.updatedAt);
+
+          const stCls = statusClass(target.entity.status);
+          sumStatusBadge.className = "pm-badge " + stCls;
+          sumStatusBadge.textContent = statusLabel(target.entity.status);
+
+          dpStatus.className = "pm-badge " + stCls;
+          dpStatus.textContent = statusLabel(target.entity.status);
+        }
+
+        function addOV(label, value, field){
+          const div = document.createElement("div");
+          div.className = "ov-item" + (overviewEditMode && field ? " is-editing" : "");
+          const editable = overviewEditMode && field ? ' contenteditable="true" spellcheck="false"' : "";
+          const fieldAttr = field ? ` data-edit-field="${esc(field)}"` : "";
+          div.innerHTML = `<div class="l">${esc(label)}</div><div class="v ov-edit-value"${fieldAttr}${editable}>${esc(value || "-")}</div>`;
+          return div;
+        }
+
+        function addOwnerPasswordOV(){
+          const div = document.createElement("div");
+          div.className = "ov-item" + (overviewEditMode ? " is-editing" : "");
+          const current = facility.ownerPassword || "";
+          const passwordControl = overviewEditMode
+            ? `<input class="ov-password-input" type="password" data-edit-field="ownerPassword" value="${esc(current)}" autocomplete="new-password" />`
+            : `<span class="owner-password-mask">${esc(current ? "********" : "-")}</span>`;
+          div.innerHTML = `
+            <div class="l">Password</div>
+            <div class="owner-password-line">
+              ${passwordControl}
+              <button class="btn-mini owner-reset-btn" type="button" data-owner-reset-link>
+                <i class="fi fi-rr-paper-plane"></i><span>Send Reset Link</span>
+              </button>
+            </div>
+          `;
+          return div;
+        }
+
+        function renderOverview(){
+          const target = getDecisionTarget();
+          const isBranch = target.kind === "branch";
+          const entity = target.entity;
+          const docs = isBranch ? (entity.documents || []) : (facility.documents || []);
+
+          ovType.textContent = isBranch ? "Branch overview" : (facility.type ? ("Type: " + facility.type) : "-");
+          [btnEditOverview, btnEditSummaryName, btnEditOwnerInfo].forEach(btn => {
+            if (!btn) return;
+            btn.classList.toggle("is-save", overviewEditMode);
+            btn.innerHTML = overviewEditMode
+              ? '<i class="fi fi-rr-disk"></i><span>Save</span>'
+              : '<i class="fi fi-rr-edit"></i><span>Edit</span>';
+          });
+          overviewGrid.innerHTML = "";
+
+          if (isBranch){
+            overviewGrid.appendChild(addOV("Branch Name", entity.name, "branch.name"));
+            overviewGrid.appendChild(addOV("Branch ID", entity.id, "branch.id"));
+            overviewGrid.appendChild(addOV("City", entity.city, "branch.city"));
+            overviewGrid.appendChild(addOV("Address", entity.address, "branch.address"));
+          }else{
+            overviewGrid.appendChild(addOV("Arabic Name", facility.nameAr, "nameAr"));
+            overviewGrid.appendChild(addOV("Description", facility.descriptionAr, "descriptionAr"));
+            overviewGrid.appendChild(addOV("Legal Entity", facility.legalEntity, "legalEntity"));
+            overviewGrid.appendChild(addOV("CR Number", facility.crNumber, "crNumber"));
+            overviewGrid.appendChild(addOV("VAT Number", facility.vatNumber, "vatNumber"));
+            overviewGrid.appendChild(addOV("Address", facility.address, "address"));
+          }
+
+          contactGrid.innerHTML = "";
+          contactGrid.appendChild(addOV("Owner Name", facility.ownerName, "ownerName"));
+          contactGrid.appendChild(addOV("Owner Mobile", formatPhone(facility.ownerPhone), "ownerPhone"));
+          contactGrid.appendChild(addOV("Owner Email", facility.ownerEmail, "ownerEmail"));
+          contactGrid.appendChild(addOwnerPasswordOV());
+          qsa("[data-owner-reset-link]", contactGrid).forEach(btn => {
+            btn.addEventListener("click", sendOwnerResetLink);
+          });
+          if (ownerResetHint) ownerResetHint.textContent = facility.ownerResetSentAt ? `Reset sent: ${niceDate(facility.ownerResetSentAt)}` : "Primary";
+
+          // Metrics
+          const approvedDocs = docs.filter(x => x.status === "approved").length;
+          const totalDocs = docs.length;
+          const pct = totalDocs ? Math.round((approvedDocs / totalDocs) * 100) : 0;
+
+          mDocsCompletion.textContent = `${pct}% (${approvedDocs}/${totalDocs})`;
+        }
+
+        function setPharmacyField(field, value){
+          const clean = String(value || "").trim();
+          const branch = getSelectedBranch();
+
+          if (field === "name") facility.name = clean;
+          if (field === "nameAr") facility.nameAr = clean;
+          if (field === "descriptionAr") facility.descriptionAr = clean;
+          if (field === "legalEntity") facility.legalEntity = clean;
+          if (field === "crNumber") facility.crNumber = clean;
+          if (field === "vatNumber") facility.vatNumber = clean;
+          if (field === "address") facility.address = clean;
+          if (field === "ownerName") facility.ownerName = clean;
+          if (field === "ownerPhone") facility.ownerPhone = clean;
+          if (field === "ownerEmail") facility.ownerEmail = clean;
+          if (field === "ownerPassword") facility.ownerPassword = clean;
+
+          if (branch) {
+            if (field === "branch.name") branch.name = clean;
+            if (field === "branch.id") {
+              const oldId = branch.id;
+              branch.id = clean;
+              if (selectedBranchId === oldId) selectedBranchId = clean;
+            }
+            if (field === "branch.city") branch.city = clean;
+            if (field === "branch.address") branch.address = clean;
+          }
+        }
+
+        function saveOverviewInlineEdits(){
+          const namePair = qs('[data-summary-edit="pharmacyNamePair"]');
+          if (namePair) {
+            const parts = String(namePair.value || "").split("/");
+            facility.name = (parts[0] || "").trim() || facility.name;
+            facility.nameAr = (parts.slice(1).join("/") || "").trim() || facility.nameAr || facility.name;
+          }
+          const desc = qs('[data-summary-edit="descriptionAr"]');
+          if (desc) facility.descriptionAr = String(desc.value || "").trim();
+
+          qsa("[data-edit-field]", overviewGrid).forEach(el => {
+            setPharmacyField(el.getAttribute("data-edit-field"), "value" in el ? el.value : el.textContent);
+          });
+          qsa("[data-edit-field]", contactGrid).forEach(el => {
+            setPharmacyField(el.getAttribute("data-edit-field"), "value" in el ? el.value : el.textContent);
+          });
+          touchUpdated();
+        }
+
+        function toggleOverviewInlineEdit(){
+          if (!overviewEditMode) {
+            overviewEditMode = true;
+            renderAll();
+            const first = qs('[data-summary-edit="pharmacyNamePair"]') || qs('[contenteditable="true"]', overviewGrid);
+            first?.focus();
+            return;
+          }
+          saveOverviewInlineEdits();
+          overviewEditMode = false;
+          renderAll();
+        }
+
+        function sendOwnerResetLink(){
+          facility.ownerResetSentAt = todayISO();
+          touchUpdated();
+          alert(`Reset link sent to ${facility.ownerEmail || "owner email"}.`);
+          renderAll();
+        }
+
+        function renderDocs(){
+          const target = getDecisionTarget();
+          const docs = target.kind === "branch" ? (target.entity.documents || []) : (facility.documents || []);
+          const approved = docs.filter(x => x.status === "approved").length;
+          const total = docs.length;
+          const pct = total ? Math.round((approved / total) * 100) : 0;
+
+          docsHint.textContent = `Completion: ${pct}% (${approved}/${total})`;
+
+          docsList.innerHTML = "";
+
+          docs.forEach(doc => {
+            const row = document.createElement("div");
+            row.className = "doc-row";
+            const docStatus = doc.status || "missing";
+            const canApprove = docStatus !== "approved" && docStatus !== "missing" && !!doc.fileName;
+            const canReject = docStatus !== "rejected" && docStatus !== "missing" && !!doc.fileName;
+
+            const chips = [];
+            chips.push(`<span class="doc-status ${esc(docStatus)}">${docStatusLabel(docStatus)}</span>`);
+            if (doc.uploadedAt) chips.push(`<span class="chip"><i class="fi fi-rr-calendar"></i> ${niceDate(doc.uploadedAt)}</span>`);
+            if (doc.fileName) chips.push(`<span class="chip"><i class="fi fi-rr-clip"></i> ${esc(doc.fileName)}</span>`);
+            if (doc.rejectionReason) chips.push(`<span class="chip"><i class="fi fi-rr-info"></i> ${esc(doc.rejectionReason)}</span>`);
+
+            const viewBtnDisabled = (doc.status === "missing" || !doc.fileName) ? "disabled" : "";
+
+            row.innerHTML = `
+              <div class="doc-left">
+                <div class="doc-ic"><i class="fi fi-rr-document"></i></div>
+                <div class="doc-meta">
+                  <p class="doc-name" title="${esc(doc.name)}">${esc(doc.name)}</p>
+                  <div class="doc-sub">${chips.join("")}</div>
+                </div>
+              </div>
+              <div class="doc-actions">
+                <button class="btn-mini view" type="button" data-doc-view="${esc(doc.id)}" ${viewBtnDisabled}>
+                  <i class="fi fi-rr-eye"></i><span>View</span>
+                </button>
+                <button class="btn-mini warning" type="button" data-doc-reupload="${esc(doc.id)}">
+                  <i class="fi fi-rr-upload"></i><span>Re-upload</span>
+                </button>
+                ${canApprove ? `<button class="btn-mini approve icon" type="button" data-doc-approve="${esc(doc.id)}" title="Approve">
+                  <i class="fi fi-rr-check"></i>
+                </button>` : ""}
+                ${canReject ? `<button class="btn-mini danger icon" type="button" data-doc-reject="${esc(doc.id)}" title="Reject">
+                  <i class="fi fi-rr-cross-small"></i>
+                </button>` : ""}
+              </div>
+            `;
+
+            docsList.appendChild(row);
+          });
+
+          // Doc buttons
+          qsa('[data-doc-view]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-view");
+              openDocViewer(id);
+            });
+          });
+
+          qsa('[data-doc-reupload]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-reupload");
+              reuploadDocument(id);
+            });
+          });
+
+          qsa('[data-doc-approve]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-approve");
+              approveDocument(id);
+            });
+          });
+
+          qsa('[data-doc-reject]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-reject");
+              markDocRejected(id);
+            });
+          });
+        }
+
+        function renderBranches(){
+          const branches = facility.branches || [];
+          branchesHint.textContent = branches.length ? `${branches.length} ${branches.length === 1 ? "branch" : "branches"}` : "No branches";
+          branchesTbody.innerHTML = "";
+
+          if (!branches.length){
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="5" class="nk-muted" style="padding:14px;">No branches found.</td>`;
+            branchesTbody.appendChild(tr);
+            selectedBranchId = null;
+            return;
+          }
+
+          if (selectedBranchId && !branches.find(x => x.id === selectedBranchId)){
+            selectedBranchId = null;
+          }
+
+          branches.forEach((br, idx) => {
+            const tr = document.createElement("tr");
+            tr.className = "branch-row" + (selectedBranchId === br.id ? " is-selected" : "");
+            tr.innerHTML = `
+              <td>${idx+1}</td>
+              <td>${esc(br.name)}</td>
+              <td>${esc(br.city)}</td>
+              <td class="text-center">${esc(br.docs?.completion ?? "-")}%</td>
+              <td class="text-right">
+                <div class="d-inline-flex flex-wrap gap-1 justify-content-end">
+                  <button type="button" class="btn-mini view" data-branch-review="${esc(br.id)}">
+                    <i class="fi fi-rr-check"></i><span>Review</span>
+                  </button>
+                  <button type="button" class="btn-mini" data-branch-details="${esc(br.id)}">
+                    <i class="fi fi-rr-eye"></i><span>Details</span>
+                  </button>
+                </div>
+              </td>
+            `;
+            branchesTbody.appendChild(tr);
+          });
+
+          qsa('[data-branch-review]', branchesTbody).forEach(btn => {
+            btn.addEventListener("click", () => {
+              const branchId = btn.getAttribute("data-branch-review");
+              selectedBranchId = (selectedBranchId === branchId) ? null : branchId;
+              updateDecisionTargetUI();
+              syncDecisionActions();
+              renderBranches();
+            });
+          });
+
+          qsa('[data-branch-details]', branchesTbody).forEach(btn => {
+            btn.addEventListener("click", () => openBranchModal(btn.getAttribute("data-branch-details")));
+          });
+        }
+
+        function touchUpdated(){
+          facility.updatedAt = todayISO();
+          sumUpdated.textContent = "Updated: " + niceDate(facility.updatedAt);
+        }
+
+        function getSelectedBranch(){
+          return (facility.branches || []).find(b => b.id === selectedBranchId) || null;
+        }
+
+        function getDecisionTarget(){
+          const branch = getSelectedBranch();
+          if (branch) return { kind: "branch", entity: branch };
+          return { kind: "facility", entity: facility };
+        }
+
+        function updateDecisionTargetUI(){
+          const target = getDecisionTarget();
+          const cls = statusClass(target.entity.status);
+
+          if (target.kind === "branch"){
+            dpTargetName.textContent = target.entity.name || "Branch";
+            dpTargetMeta.textContent = `Branch ID: ${target.entity.id}`;
+            dpHint.textContent = "Branch review mode.";
+          }else{
+            dpTargetName.textContent = facility.name || "Pharmacy";
+            dpTargetMeta.textContent = `Pharmacy Code: ${formatCode(facility.code)}`;
+            dpHint.textContent = "Pharmacy review mode.";
+          }
+
+          dpStatus.className = "pm-badge " + cls;
+          dpStatus.textContent = statusLabel(target.entity.status);
+        }
+
+        function syncDecisionActions(){
+          const target = getDecisionTarget();
+          const st = target.entity.status;
+          const reviewState = (st === "new" || st === "pending" || st === "under-review" || st === "needs-info" || st === "rejected");
+          const approvedState = (st === "active" || st === "approved" || st === "inactive" || st === "banned");
+          const deletedState = (st === "deleted");
+
+          btnApprove.innerHTML = `<i class="fi fi-rr-badge-check"></i>Approve`;
+          btnReject.innerHTML = `<i class="fi fi-rr-cross-circle"></i>Reject`;
+          btnBan.innerHTML = `<i class="fi fi-rr-ban"></i>Ban`;
+
+          btnApprove.classList.toggle("d-none", !reviewState || deletedState);
+          btnReject.classList.toggle("d-none", !reviewState || deletedState);
+          btnSuspend.classList.toggle("d-none", !approvedState || deletedState);
+          btnBan.classList.toggle("d-none", !approvedState || deletedState);
+        }
+
+        function renderBranchRequests(){
+          if (!branchRequestsList) return;
+          branchRequestsList.innerHTML = "";
+
+          if (!branchRequests.length){
+            const empty = document.createElement("div");
+            empty.className = "nk-muted";
+            empty.textContent = "No new branch notifications.";
+            branchRequestsList.appendChild(empty);
+          }else{
+            branchRequests.forEach(req => {
+              const branch = (facility.branches || []).find(b => b.id === req.branchId);
+              const meta = [req.title || "Branch notification", req.time || ""].filter(Boolean).join(" | ");
+              const row = document.createElement("div");
+              row.className = "branch-req-item";
+              row.innerHTML = `
+                <div class="branch-req-text">
+                  <p class="branch-req-title">${esc(branch?.name || req.branchId)}</p>
+                  <p class="branch-req-meta">${esc(meta)}</p>
+                </div>
+                <button type="button" class="branch-req-close" data-dismiss-request="${esc(req.id)}" aria-label="Dismiss notification">X</button>
+              `;
+              branchRequestsList.appendChild(row);
+            });
+          }
+
+          qsa('[data-dismiss-request]', branchRequestsList).forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-dismiss-request");
+              branchRequests = branchRequests.filter(x => x.id !== id);
+              if (notifCount) notifCount.textContent = String(branchRequests.length);
+              renderBranchRequests();
+            });
+          });
+
+          if (notifCount) notifCount.textContent = String(branchRequests.length);
+        }
+
+        function openDocViewer(docId){
+          const docs = getDecisionTarget().kind === "branch"
+            ? (getDecisionTarget().entity.documents || [])
+            : (facility.documents || []);
+          const doc = docs.find(d => d.id === docId);
+          if (!doc) return;
+
+          docViewerTitle.textContent = doc.name || "Document";
+          docViewerMeta.textContent = `Status: ${docStatusLabel(doc.status)} - Uploaded: ${doc.uploadedAt ? niceDate(doc.uploadedAt) : "-"} - File: ${doc.fileName || "-"}`;
+          docDownloadLink.setAttribute("href", "#");
+
+          if (window.bootstrap){
+            const m = new bootstrap.Modal(docViewerModalEl);
+            m.show();
+          }
+        }
+
+        function reuploadDocument(docId){
+          const docs = getDecisionTarget().kind === "branch"
+            ? (getDecisionTarget().entity.documents || [])
+            : (facility.documents || []);
+          const doc = docs.find(d => d.id === docId);
+          if (!doc) return;
+          const fileName = prompt("Re-upload file name:", doc.fileName || "Document.pdf");
+          if (fileName === null) return;
+
+          doc.status = "pending";
+          doc.fileName = (fileName || "").trim() || "Document.pdf";
+          doc.uploadedAt = todayISO();
+          delete doc.rejectionReason;
+          touchUpdated();
+          renderAll();
+        }
+
+        function approveDocument(docId){
+          const docs = getDecisionTarget().kind === "branch"
+            ? (getDecisionTarget().entity.documents || [])
+            : (facility.documents || []);
+          const doc = docs.find(d => d.id === docId);
+          if (!doc) return;
+          doc.status = "approved";
+          delete doc.rejectionReason;
+          if (!doc.uploadedAt) doc.uploadedAt = todayISO();
+          touchUpdated();
+          renderAll();
+        }
+
+        function markDocRejected(docId){
+          const docs = getDecisionTarget().kind === "branch"
+            ? (getDecisionTarget().entity.documents || [])
+            : (facility.documents || []);
+          const doc = docs.find(d => d.id === docId);
+          if (!doc) return;
+          const reason = prompt("Reject reason:", doc.rejectionReason || "");
+          if (reason === null) return;
+          doc.status = "rejected";
+          doc.rejectionReason = (reason || "").trim() || "Rejected by reviewer.";
+          touchUpdated();
+          renderAll();
+        }
+
+        btnApprove?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "approved";
+          if (target.kind === "branch"){
+            branchRequests = branchRequests.filter(r => r.branchId !== target.entity.id);
+          }
+          touchUpdated();
+          renderAll();
+        });
+
+        btnReject?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "rejected";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnSuspend?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "inactive";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnBan?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "banned";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnEditOverview?.addEventListener("click", toggleOverviewInlineEdit);
+        btnEditSummaryName?.addEventListener("click", toggleOverviewInlineEdit);
+        btnEditOwnerInfo?.addEventListener("click", toggleOverviewInlineEdit);
+
+        btnAddDocument?.addEventListener("click", () => {
+          const name = prompt("Document name:", "Additional Document");
+          if (name === null) return;
+          const clean = (name || "").trim();
+          if (!clean){
+            alert("Please enter document name.");
+            return;
+          }
+          const id = "doc_custom_" + Date.now();
+          const target = getDecisionTarget();
+          const docs = target.kind === "branch"
+            ? (target.entity.documents || (target.entity.documents = []))
+            : (facility.documents || (facility.documents = []));
+          docs.push({
+            id,
+            name: clean,
+            required: false,
+            critical: false,
+            status: "pending",
+            uploadedAt: todayISO(),
+            fileName: clean.replace(/[^a-zA-Z0-9]+/g, "_") + ".pdf"
+          });
+          touchUpdated();
+          renderAll();
+        });
+
+        function openBranchModal(branchId){
+          const br = (facility.branches || []).find(b => b.id === branchId);
+          if (!br) return;
+
+          branchModalTitle.textContent = br.name || "Branch";
+
+          branchModalGrid.innerHTML = "";
+          branchModalGrid.appendChild(addOV("Branch ID", br.id));
+          branchModalGrid.appendChild(addOV("City", br.city));
+          branchModalGrid.appendChild(addOV("Address", br.address));
+          branchModalGrid.appendChild(addOV("Docs Completion", (br.docs?.completion ?? "-") + "%"));
+
+          branchDocsList.innerHTML = "";
+          (br.documents || []).forEach(d => {
+            const row = document.createElement("div");
+            row.className = "doc-row";
+            row.style.marginTop = "10px";
+            row.innerHTML = `
+              <div class="doc-left">
+                <div class="doc-ic"><i class="fi fi-rr-document"></i></div>
+                <div class="doc-meta">
+                  <p class="doc-name">${esc(d.name)}</p>
+                  <div class="doc-sub">
+                    <span class="doc-status ${esc(d.status)}">${docStatusLabel(d.status)}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="doc-actions">
+                <button class="btn-mini view" type="button" disabled>
+                  <i class="fi fi-rr-eye"></i><span>View</span>
+                </button>
+              </div>
+            `;
+            branchDocsList.appendChild(row);
+          });
+
+          if (window.bootstrap){
+            const m = new bootstrap.Modal(branchModalEl);
+            m.show();
+          }
+        }
+
+        // ------------------------
+        // Render all
+        // ------------------------
+        function renderAll(){
+          renderContextTabs();
+          renderSummary();
+          renderOverview();
+          renderDocs();
+          updateDecisionTargetUI();
+          syncDecisionActions();
+
+          // Re-init tooltips
+          if (window.bootstrap){
+            qsa('[data-bs-toggle="tooltip"]').forEach(el => {
+              // avoid duplicates by disposing if exists
+              try{
+                const inst = bootstrap.Tooltip.getInstance(el);
+                if (inst) inst.dispose();
+              }catch(e){}
+              new bootstrap.Tooltip(el);
+            });
+          }
+        }
+
+        // Initial render
+        renderAll();
+
+        // Default tab: Overview
+        showPanel("tab-overview");
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+

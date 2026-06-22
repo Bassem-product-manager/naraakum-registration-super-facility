@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Add Branch</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- ✅ same calendar modal styles used in AddEmployee -->
+    <link rel="stylesheet" href="../assets/css/date-picker-styles.css" />
+
+    <style>
+      /* page-only layout (keeps theme) */
+      .form-card {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .form-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+      }
+      .form-body {
+        padding: 16px;
+      }
+      .req {
+        color: #ef4444;
+        margin-left: 4px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 16px;
+      }
+      .grid-1 {
+        grid-column: 1 / -1;
+      }
+
+      /* schedule icon (same idea as AddEmployee active state) */
+      .schedule-icon-btn.active {
+        background: rgba(34, 197, 94, 0.10);
+        border-color: rgba(34, 197, 94, 0.35);
+        color: #0b6b4f;
+      }
+      .schedule-icon-btn.active svg {
+        stroke: #0b6b4f;
+      }
+
+      @media (max-width: 992px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Add Branch</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="branches.html">Branches</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Branch</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="form-card">
+            <div class="form-head">
+              <b class="fsize-14 semiBold">Branch Information</b>
+            </div>
+
+            <div class="form-body">
+              <form id="addBranchForm" novalidate>
+                <div class="form-grid">
+                  <div>
+                    <label class="fsize-12 text-grey">City<span class="req">*</span></label>
+                    <select id="branchCity" class="form-control form-control-32" required>
+                      <option value="" selected>Select an option</option>
+                      <option value="Riyadh">Riyadh</option>
+                      <option value="Jeddah">Jeddah</option>
+                      <option value="Dammam">Dammam</option>
+                      <option value="Taif">Taif</option>
+                      <option value="Yanbu">Yanbu</option>
+                      <option value="Khobar">Khobar</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Branch name</label>
+                    <input id="branchName" class="form-control form-control-32" placeholder="Branch name" />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Phone Number<span class="req">*</span></label>
+                    <input id="branchPhone" class="form-control form-control-32" placeholder="Phone Number" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Commercial License</label>
+                    <input id="commercialLicense" class="form-control form-control-32" placeholder="Commercial license no." />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Commercial License PDF</label>
+                    <input id="commercialLicensePdf" type="file" class="form-control form-control-32" accept="application/pdf,.pdf" />
+                    <div class="fsize-12 text-grey mt-4" id="commercialLicensePdfName">No file selected</div>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Branch Status<span class="req">*</span></label>
+                    <select id="branchStatus" class="form-control form-control-32" required>
+                      <option value="Active" selected>Active</option>
+                      <option value="Under Review">Under Review</option>
+                      <option value="License Expired">License Expired</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Branch Schedule</label>
+                    <!-- ✅ same calendar icon pattern as AddEmployee -->
+                    <div class="d-flex align-items-center gap-3 p-2 border radius-12 bg-white" style="height: 58px;">
+                      <button
+                        type="button"
+                        class="schedule-icon-btn"
+                        id="btnOpenSchedule"
+                        style="width:40px; height:40px; border-radius:10px; border:1px solid #eef1f4;"
+                        title="Open Calendar"
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          style="width:20px; height:20px; display:block; margin:auto;"
+                        >
+                          <path d="M8 3v3M16 3v3"></path>
+                          <path d="M4.5 9.5h15"></path>
+                          <path d="M6.5 6h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z"></path>
+                        </svg>
+                      </button>
+                      <span class="fsize-14 fw-bold text-success d-none" id="scheduleStatus">Calendar Added</span>
+                    </div>
+                  </div>
+
+                  <div class="grid-1">
+                    <label class="fsize-12 text-grey">Address (English)<span class="req">*</span></label>
+                    <input id="addrEn" class="form-control form-control-32" placeholder="Address (English)" required />
+                  </div>
+
+                  <div class="grid-1">
+                    <label class="fsize-12 text-grey">العنوان (العربية)<span class="req">*</span></label>
+                    <input
+                      id="addrAr"
+                      class="form-control form-control-32"
+                      placeholder="العنوان (العربية)*"
+                      dir="rtl"
+                      style="text-align:right;"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-16">
+                  <a href="branches.html" class="btn btn-primary-revers">Cancel</a>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ✅ SCHEDULE MODAL (same ids used in AddEmployee: spHoursModal + spBtnSaveHours etc.) -->
+    <div class="modal fade bh-modal" id="spHoursModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="bh-header">
+            <div>
+              <h3 class="bh-title">Branch Calendar</h3>
+              <p class="bh-sub">Configuring schedule for <b id="spName">New Branch</b></p>
+            </div>
+            <div class="bh-right">
+              <div class="bh-enable">
+                <span>Enable</span>
+                <div class="nk-toggle on" id="spToggleEnable"></div>
+              </div>
+              <button class="x-close" type="button" data-bs-dismiss="modal" aria-label="Close">×</button>
+            </div>
+          </div>
+
+          <div class="bh-body">
+            <div class="bh-section">
+              <p class="bh-label">Timezone</p>
+              <select class="bh-select" id="spTimezone">
+                <option>(GMT+03:00) Riyadh, Saudi Arabia</option>
+              </select>
+            </div>
+
+            <div class="bh-section">
+              <p class="bh-label">WEEKLY SCHEDULE</p>
+
+              <!-- Monday -->
+              <div class="day-card">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Monday</span>
+                    <span class="pill-open" id="spMondayPill">OPEN</span>
+                  </div>
+                  <div class="nk-toggle on" id="spToggleMonday"></div>
+                </div>
+                <div class="intervals" id="spMondayIntervals"></div>
+                <div class="add-interval" id="spBtnAddMondayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Tuesday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Tuesday</span>
+                    <span class="pill-closed" id="spTuesdayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleTuesday"></div>
+                </div>
+                <div class="intervals" id="spTuesdayIntervals"></div>
+                <div class="add-interval" id="spBtnAddTuesdayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Wednesday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Wednesday</span>
+                    <span class="pill-closed" id="spWednesdayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleWednesday"></div>
+                </div>
+                <div class="intervals" id="spWednesdayIntervals"></div>
+                <div class="add-interval" id="spBtnAddWednesdayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Thursday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Thursday</span>
+                    <span class="pill-closed" id="spThursdayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleThursday"></div>
+                </div>
+                <div class="intervals" id="spThursdayIntervals"></div>
+                <div class="add-interval" id="spBtnAddThursdayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Friday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Friday</span>
+                    <span class="pill-closed" id="spFridayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleFriday"></div>
+                </div>
+                <div class="intervals" id="spFridayIntervals"></div>
+                <div class="add-interval" id="spBtnAddFridayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Saturday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Saturday</span>
+                    <span class="pill-closed" id="spSaturdayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleSaturday"></div>
+                </div>
+                <div class="intervals" id="spSaturdayIntervals"></div>
+                <div class="add-interval" id="spBtnAddSaturdayInterval">+ Add Interval</div>
+              </div>
+
+              <!-- Sunday -->
+              <div class="day-card" style="margin-top: 16px;">
+                <div class="day-head">
+                  <div class="day-name">
+                    <span>Sunday</span>
+                    <span class="pill-closed" id="spSundayPill">CLOSED</span>
+                  </div>
+                  <div class="nk-toggle" id="spToggleSunday"></div>
+                </div>
+                <div class="intervals" id="spSundayIntervals"></div>
+                <div class="add-interval" id="spBtnAddSundayInterval">+ Add Interval</div>
+              </div>
+            </div>
+
+            <div class="bh-section" style="margin-top: 16px;">
+              <p class="bh-label">EXCEPTIONS</p>
+              <div id="spExceptionsList"></div>
+              <button type="button" class="btn btn-light btn-40" id="spBtnAddException" style="margin-top: 10px;">
+                + Add Exception
+              </button>
+            </div>
+          </div>
+
+          <div class="bh-footer">
+            <button class="btn-cancel" type="button" data-bs-dismiss="modal">Cancel</button>
+            <button class="btn-save" type="button" id="spBtnSaveHours">
+              Save Changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+    <script>
+      (function () {
+        // --- Schedule logic (adapted to branch) ---
+        let scheduleData = null;
+        let licensePdfData = null;
+        let licensePdfName = "";
+
+        const days = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+
+        const spEls = {
+          modal: document.getElementById("spHoursModal"),
+          toggleEnable: document.getElementById("spToggleEnable"),
+          timezone: document.getElementById("spTimezone"),
+          name: document.getElementById("spName"),
+          btnOpen: document.getElementById("btnOpenSchedule"),
+          statusText: document.getElementById("scheduleStatus"),
+          btnAddException: document.getElementById("spBtnAddException"),
+          btnSave: document.getElementById("spBtnSaveHours"),
+          exceptionsList: document.getElementById("spExceptionsList"),
+          branchNameInput: document.getElementById("branchName")
+        };
+        const licensePdfInput = document.getElementById("commercialLicensePdf");
+        const licensePdfNameEl = document.getElementById("commercialLicensePdfName");
+
+        days.forEach((day) => {
+          const t = day.charAt(0).toUpperCase() + day.slice(1);
+          spEls["toggle" + t] = document.getElementById("spToggle" + t);
+          spEls[day + "Pill"] = document.getElementById("sp" + t + "Pill");
+          spEls[day + "Intervals"] = document.getElementById("sp" + t + "Intervals");
+          spEls["btnAdd" + t + "Interval"] = document.getElementById("spBtnAdd" + t + "Interval");
+        });
+
+        function setToggle(el, on) {
+          if (!el) return;
+          on ? el.classList.add("on") : el.classList.remove("on");
+        }
+        function getToggle(el) {
+          return el ? el.classList.contains("on") : false;
+        }
+
+        function esc(s) {
+          return (s || "").toString().replaceAll('"', "&quot;");
+        }
+        function fileToDataUrl(file) {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(String(reader.result || ""));
+            reader.onerror = () => reject(new Error("Failed to read file"));
+            reader.readAsDataURL(file);
+          });
+        }
+        function setPdfFileText(name) {
+          if (!licensePdfNameEl) return;
+          licensePdfNameEl.textContent = name || "No file selected";
+        }
+
+        if (licensePdfInput) {
+          licensePdfInput.addEventListener("change", async () => {
+            const file = licensePdfInput.files && licensePdfInput.files[0] ? licensePdfInput.files[0] : null;
+            licensePdfData = null;
+            licensePdfName = "";
+            if (!file) {
+              setPdfFileText("");
+              return;
+            }
+            const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+            if (!isPdf) {
+              licensePdfInput.value = "";
+              setPdfFileText("");
+              alert("Please upload a PDF file only.");
+              return;
+            }
+            try {
+              licensePdfData = await fileToDataUrl(file);
+              licensePdfName = file.name;
+              setPdfFileText(file.name);
+            } catch (err) {
+              licensePdfInput.value = "";
+              setPdfFileText("");
+              alert("Unable to read PDF file.");
+            }
+          });
+        }
+
+        function spIntervalRow(from = "08:00", to = "12:00") {
+          return `
+            <div class="interval">
+              <input class="time-input" type="time" value="${esc(from)}" />
+              <span class="to-label">to</span>
+              <input class="time-input" type="time" value="${esc(to)}" />
+              <button class="trash" type="button" data-action="delSpInterval" title="Delete">🗑</button>
+            </div>
+          `;
+        }
+
+        function spExceptionItem(name, date) {
+          return `
+            <div class="exception-item">
+              <div>
+                <p class="ex-title">${esc(name)}</p>
+                <p class="ex-sub">${esc(date)} • All day</p>
+              </div>
+              <button class="trash" type="button" data-action="delSpException" title="Delete" style="width:40px;">🗑</button>
+            </div>
+          `;
+        }
+
+        function updateScheduleButtonState() {
+          if (scheduleData && scheduleData.enabled) {
+            spEls.btnOpen.classList.add("active");
+            spEls.statusText.classList.remove("d-none");
+          } else {
+            spEls.btnOpen.classList.remove("active");
+            spEls.statusText.classList.add("d-none");
+          }
+        }
+
+        function updateDayUI(day) {
+          const t = day.charAt(0).toUpperCase() + day.slice(1);
+          const toggle = spEls["toggle" + t];
+          const pill = spEls[day + "Pill"];
+          const intervals = spEls[day + "Intervals"];
+          const btnAdd = spEls["btnAdd" + t + "Interval"];
+
+          const on = getToggle(toggle);
+          if (pill) {
+            pill.textContent = on ? "OPEN" : "CLOSED";
+            pill.className = on ? "pill-open" : "pill-closed";
+          }
+          if (intervals) intervals.style.opacity = on ? "1" : "0.5";
+          if (btnAdd) {
+            btnAdd.style.pointerEvents = on ? "auto" : "none";
+            btnAdd.style.opacity = on ? "1" : "0.5";
+          }
+        }
+
+        // Open modal
+        if (spEls.btnOpen) {
+          spEls.btnOpen.addEventListener("click", () => {
+            const branchName = (spEls.branchNameInput?.value || "").trim() || "New Branch";
+            spEls.name.textContent = branchName;
+
+            const saved = scheduleData || {};
+            setToggle(spEls.toggleEnable, saved.enabled !== false);
+            if (spEls.timezone) spEls.timezone.value = saved.timezone || "(GMT+03:00) Riyadh, Saudi Arabia";
+
+            days.forEach((day) => {
+              const t = day.charAt(0).toUpperCase() + day.slice(1);
+              const dayOpen = saved[day + "Open"];
+              const dayIntervals = saved[day + "Intervals"];
+
+              setToggle(spEls["toggle" + t], dayOpen !== false);
+
+              const intervals = Array.isArray(dayIntervals) && dayIntervals.length
+                ? dayIntervals
+                : (day === "monday" ? [{ from: "08:00", to: "12:00" }, { from: "13:00", to: "17:00" }] : []);
+
+              if (spEls[day + "Intervals"]) {
+                spEls[day + "Intervals"].innerHTML = intervals.map((x) => spIntervalRow(x.from, x.to)).join("");
+              }
+              updateDayUI(day);
+            });
+
+            const exceptions = Array.isArray(saved.exceptions) ? saved.exceptions : [];
+            if (spEls.exceptionsList) spEls.exceptionsList.innerHTML = exceptions.map((x) => spExceptionItem(x.name, x.date)).join("");
+
+            new bootstrap.Modal(spEls.modal).show();
+          });
+        }
+
+        // Enable toggle
+        if (spEls.toggleEnable) {
+          spEls.toggleEnable.addEventListener("click", () => setToggle(spEls.toggleEnable, !getToggle(spEls.toggleEnable)));
+        }
+
+        // Day toggles + add interval
+        days.forEach((day) => {
+          const t = day.charAt(0).toUpperCase() + day.slice(1);
+
+          const toggle = spEls["toggle" + t];
+          if (toggle) {
+            toggle.addEventListener("click", () => {
+              setToggle(toggle, !getToggle(toggle));
+              updateDayUI(day);
+            });
+          }
+
+          const btnAdd = spEls["btnAdd" + t + "Interval"];
+          const intervals = spEls[day + "Intervals"];
+          if (btnAdd && intervals) {
+            btnAdd.addEventListener("click", () => {
+              intervals.insertAdjacentHTML("beforeend", spIntervalRow("09:00", "13:00"));
+            });
+          }
+        });
+
+        // Add exception
+        if (spEls.btnAddException) {
+          spEls.btnAddException.addEventListener("click", () => {
+            const name = prompt("Exception name:", "Holiday");
+            if (name === null) return;
+            const date = prompt("Date (e.g. Dec 25, 2026):", "Dec 25, 2026");
+            if (date === null) return;
+            spEls.exceptionsList.insertAdjacentHTML("beforeend", spExceptionItem(name, date));
+          });
+        }
+
+        // Delete handlers
+        if (spEls.modal) {
+          spEls.modal.addEventListener("click", (e) => {
+            const btn = e.target.closest("button[data-action]");
+            if (!btn) return;
+            const action = btn.getAttribute("data-action");
+            if (action === "delSpInterval") btn.closest(".interval")?.remove();
+            if (action === "delSpException") btn.closest(".exception-item")?.remove();
+          });
+        }
+
+        // Save schedule
+        if (spEls.btnSave) {
+          spEls.btnSave.addEventListener("click", () => {
+            const data = {
+              enabled: getToggle(spEls.toggleEnable),
+              timezone: spEls.timezone ? spEls.timezone.value : "(GMT+03:00) Riyadh, Saudi Arabia",
+              exceptions: Array.from(spEls.exceptionsList?.querySelectorAll(".exception-item") || []).map((item) => {
+                const t = item.querySelector(".ex-title")?.textContent?.trim() || "Exception";
+                const s = item.querySelector(".ex-sub")?.textContent?.split("•")[0]?.trim() || "Date";
+                return { name: t, date: s };
+              }),
+            };
+
+            days.forEach((day) => {
+              const T = day.charAt(0).toUpperCase() + day.slice(1);
+              const intervals = spEls[day + "Intervals"];
+              data[day + "Open"] = getToggle(spEls["toggle" + T]);
+              data[day + "Intervals"] = intervals
+                ? Array.from(intervals.querySelectorAll(".interval")).map((row) => {
+                    const inputs = row.querySelectorAll('input[type="time"]');
+                    return { from: inputs[0]?.value || "08:00", to: inputs[1]?.value || "12:00" };
+                  })
+                : [];
+            });
+
+            scheduleData = data;
+            updateScheduleButtonState();
+            bootstrap.Modal.getInstance(spEls.modal).hide();
+          });
+        }
+
+        // Form submit
+        const form = document.getElementById("addBranchForm");
+        if (form) {
+          form.addEventListener("submit", async (e) => {
+            if (!form.checkValidity()) {
+              e.preventDefault();
+              e.stopPropagation();
+              form.classList.add("was-validated");
+              return;
+            }
+            e.preventDefault();
+            const selectedPdf = licensePdfInput?.files && licensePdfInput.files[0] ? licensePdfInput.files[0] : null;
+            if (selectedPdf && (!licensePdfData || licensePdfName !== selectedPdf.name)) {
+              try {
+                licensePdfData = await fileToDataUrl(selectedPdf);
+                licensePdfName = selectedPdf.name;
+              } catch (err) {
+                alert("Unable to read PDF file.");
+                return;
+              }
+            }
+            const BRANCHES_KEY = "nk_facility_branches";
+            const defaults = [
+              { id: "1", city: "Yanbu", name: "Main Branch", phone: "0548877493", commercialLicense: "CR-10004511", status: "Active", addrEn: "8451 King Abdullah Street, Yanbu", addrAr: "Address AR", scheduleData: null, commercialLicensePdfName: null, commercialLicensePdfData: null },
+              { id: "2", city: "Khobar", name: "Downtown Branch", phone: "0551192238", commercialLicense: "CR-10007239", status: "Active", addrEn: "1112 King Abdullah Street, Khobar", addrAr: "Address AR", scheduleData: null, commercialLicensePdfName: null, commercialLicensePdfData: null },
+              { id: "3", city: "Taif", name: "North Branch", phone: "0531419320", commercialLicense: "CR-10008762", status: "Under Review", addrEn: "2212 Tahlia Street, Taif", addrAr: "Address AR", scheduleData: null, commercialLicensePdfName: null, commercialLicensePdfData: null },
+              { id: "4", city: "Taif", name: "South Branch", phone: "0519200474", commercialLicense: "CR-10003188", status: "License Expired", addrEn: "3266 King Abdullah Street, Taif", addrAr: "Address AR", scheduleData: null, commercialLicensePdfName: null, commercialLicensePdfData: null }
+            ];
+            const safeRead = (k, fallback) => {
+              try {
+                const raw = localStorage.getItem(k);
+                const parsed = raw ? JSON.parse(raw) : null;
+                return Array.isArray(parsed) ? parsed : fallback;
+              } catch {
+                return fallback;
+              }
+            };
+            const list = safeRead(BRANCHES_KEY, defaults.slice());
+            const id = String(Date.now());
+            list.push({
+              id,
+              city: (document.getElementById("branchCity")?.value || "").trim(),
+              name: (document.getElementById("branchName")?.value || "").trim(),
+              phone: (document.getElementById("branchPhone")?.value || "").trim(),
+              commercialLicense: (document.getElementById("commercialLicense")?.value || "").trim(),
+              status: (document.getElementById("branchStatus")?.value || "Active").trim(),
+              addrEn: (document.getElementById("addrEn")?.value || "").trim(),
+              addrAr: (document.getElementById("addrAr")?.value || "").trim(),
+              scheduleData: scheduleData || null,
+              commercialLicensePdfName: licensePdfName || null,
+              commercialLicensePdfData: licensePdfData || null,
+            });
+            localStorage.setItem(BRANCHES_KEY, JSON.stringify(list));
+            window.location.href = "branches.html";
+          });
+        }
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+

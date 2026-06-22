@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Insurance Invoice Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .summary-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 1200px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .summary-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .summary-item .label {
+        font-size: 11px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .summary-item .value {
+        margin-top: 4px;
+        font-size: 13px;
+        color: #101828;
+        font-weight: 900;
+      }
+
+      .status-badge {
+        display: inline-flex;
+        align-items: center;
+        height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        color: #101828;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .doc-tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .doc-tab-btn {
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        background: #fff;
+        color: #101828;
+        border-radius: 999px;
+        height: 30px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .doc-tab-btn.active {
+        border-color: rgba(15, 140, 140, 0.35);
+        background: rgba(15, 140, 140, 0.1);
+        color: #0b6f6f;
+      }
+
+      .doc-preview {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .doc-preview .title {
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .doc-preview .muted {
+        color: #667085;
+        font-size: 12px;
+      }
+
+      .doc-preview-grid {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .doc-preview-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .timeline-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .timeline-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 10px;
+      }
+
+      .timeline-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 10px;
+        background: rgba(16, 24, 40, 0.01);
+      }
+
+      .timeline-item .head {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .timeline-item .status {
+        color: #0b6f6f;
+        font-weight: 900;
+      }
+
+      .timeline-item .meta {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .transition-panel {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .transition-list {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .flash-msg {
+        min-height: 20px;
+        margin-top: 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .flash-msg.ok {
+        color: #027a48;
+      }
+
+      .flash-msg.err {
+        color: #b42318;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-payments">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Insurance Invoice Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">12-03-000011</span>
+                    </span>
+                    <span class="fsize-12 text-grey">12/02/2026 - 401.35 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="insurance-invoices.html">Insurance Invoices</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="crumbClaim">Claim</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="summary-card">
+            <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+              <div>
+                <h4 class="mb-4" id="sumClaimNo">-</h4>
+                <p class="mb-0 text-grey fsize-12">
+                  <span id="sumInsuranceName">-</span>
+                  <span class="mx-1">|</span>
+                  <span id="sumPolicyNo">-</span>
+                </p>
+              </div>
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="status-badge" id="sumLifecycle">-</span>
+                <span class="status-badge" id="sumRemittance">-</span>
+              </div>
+            </div>
+
+            <div class="summary-grid mt-12">
+              <div class="summary-item"><div class="label">Order No</div><div class="value" id="sumOrderNo">-</div></div>
+              <div class="summary-item"><div class="label">Transaction No</div><div class="value" id="sumTransactionNo">-</div></div>
+              <div class="summary-item"><div class="label">Provider</div><div class="value" id="sumProvider">-</div></div>
+              <div class="summary-item"><div class="label">Patient</div><div class="value" id="sumPatient">-</div></div>
+              <div class="summary-item"><div class="label">Claim Amount</div><div class="value" id="sumClaimAmount">-</div></div>
+              <div class="summary-item"><div class="label">Approved Amount</div><div class="value" id="sumApprovedAmount">-</div></div>
+              <div class="summary-item"><div class="label">Paid Amount</div><div class="value" id="sumPaidAmount">-</div></div>
+              <div class="summary-item"><div class="label">Outstanding</div><div class="value" id="sumOutstanding">-</div></div>
+            </div>
+
+            <div class="d-flex gap-2 flex-wrap mt-12">
+              <a id="btnBackToList" href="insurance-invoices.html" class="btn btn-primary-revers btn-32">
+                <i class="fi fi-rr-angle-left"></i>
+                <span>Back to List</span>
+              </a>
+              <a id="btnOpenOrder" href="#" class="btn btn-primary-revers btn-32">
+                <i class="fi fi-rr-shopping-bag"></i>
+                <span>Open Order</span>
+              </a>
+              <span class="status-badge">Phase 1: Manual Upload, No Integration</span>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-8">
+            <div class="col-lg-8">
+              <div class="doc-preview">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                  <h5 class="mb-0">Documents</h5>
+                  <div class="doc-tabs" id="docTabs"></div>
+                </div>
+                <div id="docPanel" class="mt-12"></div>
+
+                <div class="mt-16">
+                  <h6 class="mb-8">Manual Upload</h6>
+                  <div class="row g-2">
+                    <div class="col-md-4">
+                      <label class="fsize-12 text-grey">Document Type</label>
+                      <select id="manualDocType" class="form-control form-control-32">
+                        <option value="claim">Claim</option>
+                        <option value="insurance_invoice">Insurance Invoice</option>
+                        <option value="remittance_credit">Remittance / Credit</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="fsize-12 text-grey">Invoice / Reference No</label>
+                      <input id="manualInvoiceNo" type="text" class="form-control form-control-32" placeholder="INV / REF No" />
+                    </div>
+                    <div class="col-md-4">
+                      <label class="fsize-12 text-grey">Amount (optional)</label>
+                      <input id="manualAmount" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="0.00" />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="fsize-12 text-grey">File</label>
+                      <input id="manualDocFile" type="file" class="form-control form-control-32" />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="fsize-12 text-grey">Note (optional)</label>
+                      <input id="manualNote" type="text" class="form-control form-control-32" placeholder="Internal note" />
+                    </div>
+                    <div class="col-12 d-flex justify-content-end">
+                      <button id="btnSaveManualDoc" type="button" class="btn btn-primary btn-32">
+                        <i class="fi fi-rr-upload"></i>
+                        <span>Save Manual Upload</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-12">
+                  <div class="table-responsive">
+                    <table class="staff-table naraakum-table table-tight">
+                      <thead>
+                        <tr>
+                          <th>Type</th>
+                          <th>File</th>
+                          <th>Reference</th>
+                          <th>Amount</th>
+                          <th>Uploaded At</th>
+                          <th class="text-center">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="manualDocsBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4">
+              <div class="transition-panel">
+                <h6 class="mb-8">Status Actions</h6>
+                <p class="text-grey fsize-12 mb-8">Allowed next statuses for this claim.</p>
+                <div class="transition-list" id="transitionList"></div>
+                <div id="statusFlash" class="flash-msg"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-card mt-12">
+            <h5 class="mb-10">Timeline</h5>
+            <ul class="timeline-list" id="claimTimeline"></ul>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/payment-data.js"></script>
+    <script src="../assets/js/payment-insurance-invoice-details.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Naraakm Package</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .nk-card {
+        background: #fff;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .nk-card-title {
+        margin: 0 0 6px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .nk-help {
+        margin: 0 0 12px;
+        color: #667085;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .nk-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .nk-grid-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .nk-field label {
+        display: block;
+        font-weight: 900;
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+
+      .nk-required {
+        color: #b42318;
+      }
+
+      .nk-divider {
+        height: 1px;
+        background: #eef1f4;
+        margin: 12px 0;
+      }
+
+      .nk-note {
+        margin-top: 6px;
+        color: #667085;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .nk-multiselect {
+        min-height: 124px;
+        padding: 8px;
+      }
+
+      .np-main-selector {
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .np-main-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .np-main-pill {
+        border: 1px solid rgba(16, 24, 40, 0.16);
+        background: #fff;
+        color: #344054;
+        border-radius: 999px;
+        height: 30px;
+        padding: 0 12px;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .np-main-pill.is-active {
+        border-color: rgba(15, 140, 140, 0.38);
+        background: rgba(15, 140, 140, 0.1);
+        color: #0f8c8c;
+      }
+
+      .np-selected-box {
+        margin-top: 10px;
+        border: 1px dashed rgba(16, 24, 40, 0.18);
+        border-radius: 10px;
+        background: #f8fafc;
+        min-height: 44px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .np-selected-empty {
+        font-size: 11px;
+        font-weight: 800;
+        color: #667085;
+      }
+
+      .np-selected-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid rgba(15, 140, 140, 0.28);
+        background: rgba(15, 140, 140, 0.12);
+        color: #0f8c8c;
+        border-radius: 999px;
+        height: 26px;
+        padding: 0 10px;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .np-selected-chip button {
+        border: 0;
+        background: transparent;
+        color: inherit;
+        font-size: 12px;
+        line-height: 1;
+        padding: 0;
+      }
+
+      .nk-section {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        background: #fcfdfd;
+        padding: 12px;
+      }
+
+      .nk-section-title {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .nk-subtitle {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .nk-subtools {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .nk-subtools .form-control {
+        min-width: 220px;
+      }
+
+      .nk-table-wrap {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        overflow: auto;
+        margin-top: 10px;
+      }
+
+      .nk-table {
+        width: 100%;
+        min-width: 760px;
+        border-collapse: collapse;
+      }
+
+      .nk-table th,
+      .nk-table td {
+        padding: 8px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+        vertical-align: middle;
+      }
+
+      .nk-table th {
+        background: #f8fafc;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .nk-table td {
+        color: #101828;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .np-service-name {
+        font-weight: 900;
+      }
+
+      .np-service-sub {
+        color: #667085;
+        font-size: 11px;
+        margin-top: 2px;
+      }
+
+      .np-empty {
+        padding: 14px;
+        text-align: center;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .np-qty-input {
+        max-width: 84px;
+      }
+
+      .np-summary {
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        border-radius: 12px;
+        background: rgba(15, 140, 140, 0.06);
+        padding: 10px 12px;
+      }
+
+      .np-summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        color: #1d2939;
+      }
+
+      .np-summary-row + .np-summary-row {
+        margin-top: 6px;
+      }
+
+      .np-summary-row.total {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px dashed rgba(15, 140, 140, 0.3);
+        color: #0f8c8c;
+      }
+
+      .nk-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .inline-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      @media (max-width: 992px) {
+        .nk-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2 id="formPageTitle">Add Naraakm Package</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="naraakm-packages.html">Naraakm Package</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="formBreadcrumbCurrent">Add</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="nk-card">
+            <h3 class="nk-card-title" id="formCardTitle">Add Naraakm Package</h3>
+            <p class="nk-help">
+              Choose services with full flexibility: multiple mains, multiple sub services, and optionally merge other packages.
+            </p>
+
+            <div id="naraakmPackageFormAlert" class="alert d-none mb-3" role="alert"></div>
+
+            <form id="naraakmPackageForm" novalidate>
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Package Name (Arabic)</label>
+                  <input id="npNameAr" type="text" class="form-control form-control-40" placeholder="Arabic package name" />
+                </div>
+
+                <div class="nk-field">
+                  <label>Package Name (English)</label>
+                  <input id="npNameEn" type="text" class="form-control form-control-40" placeholder="English package name" />
+                </div>
+              </div>
+
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Package Code (Optional)</label>
+                  <input id="npCode" type="text" class="form-control form-control-40" placeholder="e.g., NRP-REHAB-01" />
+                </div>
+
+                <div class="nk-field">
+                  <label>Main Services (Optional)</label>
+                  <input
+                    id="npMainServiceSearch"
+                    type="text"
+                    class="form-control form-control-40"
+                    placeholder="Search main service"
+                    style="margin-bottom: 8px"
+                  />
+                  <div class="np-main-selector">
+                    <div id="npMainServiceOptions" class="np-main-options"></div>
+                    <div id="npMainServiceSelected" class="np-selected-box">
+                      <span class="np-selected-empty">No main services selected</span>
+                    </div>
+                  </div>
+                  <div class="nk-note">Click to select. Selected items appear as chips below.</div>
+                </div>
+              </div>
+
+              <div class="nk-divider"></div>
+
+              <div class="nk-section">
+                <h4 class="nk-section-title">Sub Services Bundle</h4>
+                <p class="nk-subtitle">Sub services are free to combine across different main services.</p>
+                <div class="nk-subtools">
+                  <input
+                    id="npSubServiceSearch"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search sub service by name"
+                  />
+                  <button id="btnSubServicesReset" type="button" class="btn btn-primary-revers btn-32">Reset</button>
+                </div>
+
+                <div class="nk-table-wrap">
+                  <table class="nk-table">
+                    <thead>
+                      <tr>
+                        <th class="text-center">Include</th>
+                        <th>Sub Service</th>
+                        <th>Main Service</th>
+                        <th>Base Price</th>
+                        <th>Qty</th>
+                        <th>Line Total</th>
+                      </tr>
+                    </thead>
+                    <tbody id="npSubServiceTbody"></tbody>
+                  </table>
+                  <div id="npSubServiceEmpty" class="np-empty d-none">No sub services found.</div>
+                </div>
+              </div>
+
+              <div class="nk-divider"></div>
+
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Naraakm Commission Type <span class="nk-required">*</span></label>
+                  <select id="npCommissionType" class="form-control form-control-40">
+                    <option value="percent" selected>Percent (%)</option>
+                    <option value="fixed">Fixed Amount (SAR)</option>
+                  </select>
+                </div>
+
+                <div class="nk-field">
+                  <label>Naraakm Commission Value <span class="nk-required">*</span></label>
+                  <input id="npCommissionValue" type="number" min="0" max="22" step="0.01" class="form-control form-control-40" value="0" />
+                  <div id="npCommissionHint" class="nk-note">Percent commission max is 22%.</div>
+                </div>
+              </div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="np-summary">
+                  <div class="np-summary-row">
+                    <span>Subtotal (All Included Services)</span>
+                    <strong id="npSummarySubtotal">0.00 SAR</strong>
+                  </div>
+                  <div class="np-summary-row">
+                    <span>Naraakm Commission</span>
+                    <strong id="npSummaryCommission">0.00 SAR</strong>
+                  </div>
+                  <div class="np-summary-row total">
+                    <span>Final Total</span>
+                    <strong id="npSummaryTotal">0.00 SAR</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-divider"></div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="nk-field">
+                  <label>Active</label>
+                  <div class="inline-status">
+                    <label class="switch m-0">
+                      <input id="npIsActive" type="checkbox" checked />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="fsize-12 semiBold text-grey" id="npActiveStateText">Active</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-actions">
+                <a href="naraakm-packages.html" class="btn btn-primary-revers btn-40">Cancel</a>
+                <button id="btnSaveNaraakmPackage" type="submit" class="btn btn-primary btn-40">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/naraakm-package-store.js"></script>
+    <script src="../assets/js/naraakm-package-form.js"></script>
+  </body>
+</html>

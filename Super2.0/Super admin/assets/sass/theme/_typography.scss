@@ -1,0 +1,215 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap");
+
+html,
+body {
+  font-family: "Cairo", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  overflow-x: hidden !important;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 0 !important;
+  padding-right: 0 !important ;
+  position: relative;
+
+  /* ---- 1366 screen -----*/
+  @media screen and (min-width: 1200px) and (max-width: 1440px) {
+    font-size: 13px;
+  }
+
+  @media screen and (max-width: 1200px) {
+    font-size: 14px;
+  }
+}
+
+/*/---------------- Font weight---------------------*/
+$regular: 400;
+$medium: 500;
+$semiBold: 600;
+$bold: 700;
+$extraBold: 800;
+
+.regular {
+  font-weight: $regular !important;
+}
+
+.medium {
+  font-weight: $medium !important;
+}
+
+.semiBold {
+  font-weight: $semiBold !important;
+}
+
+.bold {
+  font-weight: $bold !important;
+}
+.extraBold {
+  font-weight: $extraBold !important;
+}
+
+/*/---------------- Font size---------------------*/
+$fsize-12: 0.75rem;
+$fsize-14: 0.875rem;
+$fsize-16: 1rem;
+$fsize-18: 1.125rem;
+$fsize-20: 1.25rem;
+$fsize-22: 1.375rem;
+$fsize-24: 1.5rem;
+$fsize-26: 1.625rem;
+$fsize-28: 1.75rem;
+$fsize-30: 1.875rem;
+$fsize-32: 2rem;
+$fsize-34: 2.125rem;
+$fsize-36: 2.25rem;
+$fsize-38: 2.375rem;
+$fsize-40: 2.5rem;
+$fsize-42: 2.625rem;
+$fsize-44: 2.75rem;
+$fsize-46: 2.875rem;
+$fsize-48: 3rem;
+$fsize-50: 3.125rem;
+$fsize-52: 3.25rem;
+$fsize-54: 3.375rem;
+$fsize-56: 3.5rem;
+
+.fsize-12 {
+  font-size: $fsize-12;
+  line-height: calc($fsize-12 + $value-8);
+}
+.fsize-14 {
+  font-size: $fsize-14;
+  line-height: calc($fsize-14 + $value-8);
+}
+.fsize-16 {
+  font-size: $fsize-16;
+  line-height: calc($fsize-16 + $value-8);
+}
+.fsize-18 {
+  font-size: $fsize-18;
+  line-height: calc($fsize-18 + $value-8);
+}
+.fsize-20 {
+  font-size: $fsize-20;
+  line-height: calc($fsize-20 + $value-8);
+}
+.fsize-22 {
+  font-size: $fsize-22;
+  line-height: calc($fsize-22 + $value-8);
+}
+.fsize-24 {
+  font-size: $fsize-24;
+  line-height: calc($fsize-24 + $value-8);
+}
+.fsize-26 {
+  font-size: $fsize-26;
+  line-height: calc($fsize-26 + $value-8);
+}
+.fsize-28 {
+  font-size: $fsize-28;
+  line-height: calc($fsize-28 + $value-8);
+}
+.fsize-30 {
+  font-size: $fsize-30;
+  line-height: calc($fsize-30 + $value-8);
+}
+.fsize-32 {
+  font-size: $fsize-32;
+  line-height: calc($fsize-32 + $value-8);
+}
+.fsize-34 {
+  font-size: $fsize-34;
+  line-height: calc($fsize-34 + $value-8);
+}
+.fsize-36 {
+  font-size: $fsize-36;
+  line-height: calc($fsize-36 + $value-8);
+}
+.fsize-38 {
+  font-size: $fsize-38;
+  line-height: calc($fsize-38 + $value-8);
+}
+.fsize-40 {
+  font-size: $fsize-40;
+  line-height: calc($fsize-40 + $value-8);
+}
+.fsize-42 {
+  font-size: $fsize-42;
+  line-height: calc($fsize-42 + $value-8);
+}
+.fsize-44 {
+  font-size: $fsize-44;
+  line-height: calc($fsize-44 + $value-8);
+}
+.fsize-46 {
+  font-size: $fsize-46;
+  line-height: calc($fsize-46 + $value-8);
+}
+.fsize-48 {
+  font-size: $fsize-48;
+  line-height: calc($fsize-48 + $value-8);
+}
+.fsize-50 {
+  font-size: $fsize-50;
+  line-height: calc($fsize-50 + $value-8);
+}
+.fsize-52 {
+  font-size: $fsize-52;
+  line-height: calc($fsize-52 + $value-8);
+}
+.fsize-54 {
+  font-size: $fsize-54;
+  line-height: calc($fsize-54 + $value-8);
+}
+.fsize-56 {
+  font-size: $fsize-56;
+  line-height: calc($fsize-56 + $value-8);
+}
+
+/*/------------------Font Color-------------------*/
+
+.fcolor-primary {
+  color: $primary-600;
+}
+.fcolor-secondary {
+  color: $secondary-600;
+}
+
+.fcolor-gray {
+  color: #666;
+}
+.fcolor-black {
+  color: #1b1b2b;
+}
+
+/*/*/
+
+ul,
+dl,
+li {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+a,
+strong,
+i,
+big {
+  font-weight: normal;
+  font-style: normal;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  padding: 0px;
+  margin: 0px;
+}

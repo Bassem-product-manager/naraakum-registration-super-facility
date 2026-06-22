@@ -1,0 +1,33 @@
+.custom-pills-tabs {
+  .nav-pills {
+    gap: $value-4;
+    .nav-item {
+      .nav-link {
+        background-color: $surface-secondary-1;
+        border: 1px solid $surface-secondary-1;
+        border-top: $value-4 solid $surface-secondary-1;
+        color: $text-primary;
+        font-size: $value-16;
+        &:hover {
+          color: $primary-500;
+        }
+      }
+
+      .active {
+        background-color: #fff;
+        border-top: $value-4 solid $primary-500;
+        color: $primary-500;
+        border-bottom-color: #fff;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 0px;
+      }
+    }
+  }
+}
+
+/*/*/
+
+.badge {
+  font-weight: 400;
+  padding-top: 0.4rem;
+}

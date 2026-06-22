@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | API Provider Details</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root {
+        --api-brand: #0f8c8c;
+        --api-brand-dark: #0b6f6f;
+        --api-brand-soft: rgba(15, 140, 140, 0.12);
+        --api-border: rgba(16, 24, 40, 0.12);
+        --api-text: #101828;
+        --api-muted: #667085;
+        --api-shadow: 0 10px 28px rgba(16, 24, 40, 0.06);
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        color: var(--api-text);
+      }
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .ksa-clock .tz {
+        color: var(--api-brand);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+      .top-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+      .provider-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .provider-title h3 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 900;
+      }
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        border: 1px solid transparent;
+      }
+      .st-active {
+        background: #ecfdf3;
+        color: #027a48;
+        border-color: #abefc6;
+      }
+      .st-inactive {
+        background: rgba(16, 24, 40, 0.08);
+        color: #475467;
+        border-color: rgba(16, 24, 40, 0.14);
+      }
+      .btn-outline-api {
+        border: 1px solid var(--api-brand) !important;
+        color: var(--api-brand) !important;
+        background: #fff !important;
+      }
+      .btn-outline-api:hover,
+      .btn-outline-api:focus {
+        background: var(--api-brand-soft) !important;
+      }
+      .section-card {
+        border: 1px solid var(--api-border);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: var(--api-shadow);
+        padding: 14px;
+        margin-bottom: 14px;
+      }
+      .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .section-head h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+      }
+      .section-head p {
+        margin: 3px 0 0;
+        font-size: 12px;
+        color: var(--api-muted);
+      }
+      .overview-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .meta-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px 12px;
+      }
+      .meta-item .label {
+        font-size: 12px;
+        color: var(--api-muted);
+        font-weight: 700;
+        margin-bottom: 4px;
+      }
+      .meta-item .value {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--api-text);
+      }
+      .overview-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+      }
+      .overview-actions {
+        display: grid;
+        align-content: start;
+        gap: 8px;
+        min-width: 240px;
+      }
+      .toggle-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        padding: 10px;
+        background: #fff;
+        gap: 10px;
+      }
+      .toggle-item .label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #344054;
+      }
+      .state-text {
+        font-size: 12px;
+        font-weight: 800;
+        color: #344054;
+      }
+      .state-text.active {
+        color: #027a48;
+      }
+      .state-text.inactive {
+        color: #475467;
+      }
+      .status-toggle {
+        width: 2.3rem;
+        height: 1.2rem;
+        cursor: pointer;
+        border-color: rgba(16, 24, 40, 0.22);
+        background-color: #f2f4f7;
+      }
+      .status-toggle:checked {
+        background-color: var(--api-brand);
+        border-color: var(--api-brand);
+      }
+      .status-toggle:focus {
+        border-color: var(--api-brand);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+      .credential-list {
+        display: grid;
+        gap: 8px;
+        margin-top: 8px;
+      }
+      .credential-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        padding: 8px 10px;
+      }
+      .cred-label {
+        font-size: 12px;
+        color: var(--api-muted);
+        font-weight: 700;
+      }
+      .cred-value {
+        font-size: 13px;
+        font-weight: 800;
+        color: var(--api-text);
+        word-break: break-all;
+      }
+      .reveal-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 8px;
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        background: #fff;
+        color: #344054;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .reveal-btn:hover {
+        border-color: var(--api-brand);
+        color: var(--api-brand);
+        background: var(--api-brand-soft);
+      }
+      .ip-list {
+        margin: 8px 0 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #344054;
+      }
+      .cap-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .cap-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        padding: 8px 10px;
+      }
+      .cap-item input {
+        accent-color: var(--api-brand);
+      }
+      .table-api {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .table-api thead th {
+        background: #1f8f8b;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 800;
+        padding: 10px;
+        white-space: nowrap;
+      }
+      .table-api tbody td {
+        border-bottom: 1px solid #eef1f6;
+        padding: 10px;
+        font-size: 13px;
+        vertical-align: middle;
+      }
+      .table-api tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .badge-yes,
+      .badge-no,
+      .result-success,
+      .result-error {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 3px 8px;
+        font-size: 12px;
+        font-weight: 800;
+        border: 1px solid transparent;
+      }
+      .badge-yes,
+      .result-success {
+        background: #ecfdf3;
+        color: #027a48;
+        border-color: #abefc6;
+      }
+      .badge-no {
+        background: rgba(16, 24, 40, 0.08);
+        color: #475467;
+        border-color: rgba(16, 24, 40, 0.14);
+      }
+      .result-error {
+        background: #fef3f2;
+        color: #b42318;
+        border-color: #fecdca;
+      }
+      .inline-msg {
+        display: none;
+        margin-top: 10px;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .inline-msg.show {
+        display: block;
+      }
+      .inline-msg.info {
+        background: #eff8ff;
+        border: 1px solid #b2ddff;
+        color: #175cd3;
+      }
+      .inline-msg.success {
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #027a48;
+      }
+      .inline-msg.error {
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+      .missing-card {
+        text-align: center;
+        padding: 26px;
+      }
+      .missing-card h4 {
+        margin: 0 0 8px;
+      }
+      .missing-card p {
+        margin: 0;
+        color: var(--api-muted);
+      }
+      @media (max-width: 992px) {
+        .overview-layout {
+          grid-template-columns: 1fr;
+        }
+        .overview-grid,
+        .cap-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 768px) {
+        .provider-title h3 {
+          font-size: 19px;
+        }
+      }
+    </style>
+  </head>
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>API Provider Details</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+          </div>
+        </header>
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="api-management.html">API Management</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Provider Details</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div id="missingProvider" class="section-card missing-card d-none">
+            <h4>Provider Not Found</h4>
+            <p>The selected provider ID is not available in the current dataset.</p>
+          </div>
+          <div id="detailsContent" class="d-none">
+            <div class="top-row">
+              <div class="provider-title">
+                <h3 id="providerTitle">Provider Name</h3>
+                <span id="titleStatusPill" class="status-pill st-active">Active</span>
+              </div>
+            </div>
+            <section class="section-card">
+              <div class="section-head"><div><h4>Overview</h4><p>Main profile and environment metadata.</p></div></div>
+              <div class="overview-layout">
+                <div class="overview-grid">
+                  <div class="meta-item"><div class="label">Provider Name</div><div id="ovName" class="value">-</div></div>
+                  <div class="meta-item"><div class="label">Provider Code</div><div id="ovCode" class="value">-</div></div>
+                  <div class="meta-item"><div class="label">Type</div><div id="ovType" class="value">-</div></div>
+                  <div class="meta-item"><div class="label">Environment</div><div id="ovEnv" class="value">-</div></div>
+                  <div class="meta-item"><div class="label">Status</div><div id="ovStatus" class="value">-</div></div>
+                  <div class="meta-item"><div class="label">Base URL</div><div id="ovBaseUrl" class="value">-</div></div>
+                  <div class="meta-item" style="grid-column: 1 / -1"><div class="label">Description</div><div id="ovDescription" class="value">-</div></div>
+                </div>
+                <div class="overview-actions">
+                  <div class="toggle-item">
+                    <span class="label">Integration Active</span>
+                    <div class="d-flex align-items-center gap-2">
+                      <span id="activeStateText" class="state-text active">Active</span>
+                      <div class="form-check form-switch m-0">
+                        <input id="activeToggle" class="form-check-input status-toggle" type="checkbox" role="switch" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="overviewMsg" class="inline-msg info"></div>
+            </section>
+            <section class="section-card">
+              <div class="section-head"><div><h4>Connection & Authentication</h4><p>Authentication profile, sensitive values, and allowed access IPs.</p></div></div>
+              <div class="overview-grid">
+                <div class="meta-item"><div class="label">Auth Method</div><div id="authMethodValue" class="value">-</div></div>
+                <div class="meta-item"><div class="label">Token Expiration</div><div id="tokenExpiryValue" class="value">-</div></div>
+              </div>
+              <div id="credentialsList" class="credential-list"></div>
+              <div class="meta-item mt-10"><div class="label">Allowed IPs</div><ul id="allowedIpsList" class="ip-list"></ul></div>
+            </section>
+            <section class="section-card">
+              <div class="section-head"><div><h4>Capabilities</h4><p>Read-only capabilities enabled for this provider.</p></div></div>
+              <div id="capabilitiesList" class="cap-grid"></div>
+            </section>
+            <section class="section-card">
+              <div class="section-head">
+                <div><h4>Webhooks & Events</h4><p>Provider callback endpoint and subscribed events.</p></div>
+                <button id="testWebhookBtn" type="button" class="btn btn-outline-api btn-32"><i class="fi fi-rr-paper-plane me-4"></i>Test Webhook</button>
+              </div>
+              <div class="meta-item mb-10"><div class="label">Webhook URL</div><div id="webhookUrlValue" class="value">-</div></div>
+              <div class="table-responsive"><table class="table-api"><thead><tr><th>Event Name</th><th>Enabled</th><th>Notes</th></tr></thead><tbody id="eventsTableBody"></tbody></table></div>
+              <div id="webhookMsg" class="inline-msg info"></div>
+            </section>
+            <section class="section-card">
+              <div class="section-head">
+                <div><h4>Logs</h4><p>Recent API requests and provider responses.</p></div>
+                <button id="downloadLogsBtn" type="button" class="btn btn-outline-api btn-32"><i class="fi fi-rr-download me-4"></i>Download Logs</button>
+              </div>
+              <div class="table-responsive"><table class="table-api"><thead><tr><th>Date/Time</th><th>Endpoint</th><th>Result</th><th>Message</th></tr></thead><tbody id="logsTableBody"></tbody></table></div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/api-integrations-store.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Riyadh", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var store = window.NKApiIntegrationsStore;
+        if (!store) return;
+
+        store.ensureSeedData();
+
+        var providerId = new URLSearchParams(window.location.search).get("id");
+        var missingProvider = document.getElementById("missingProvider");
+        var detailsContent = document.getElementById("detailsContent");
+        var overviewMsg = document.getElementById("overviewMsg");
+        var webhookMsg = document.getElementById("webhookMsg");
+
+        var provider = store.getById(providerId);
+        if (!provider) {
+          missingProvider.classList.remove("d-none");
+          return;
+        }
+
+        detailsContent.classList.remove("d-none");
+        var model = JSON.parse(JSON.stringify(provider));
+
+        function maskValue(value) {
+          if (!value) return "-";
+          var str = String(value);
+          return "........" + str.slice(-4);
+        }
+
+        function showMsg(el, text, type) {
+          el.textContent = text;
+          el.className = "inline-msg show " + (type || "info");
+          clearTimeout(showMsg.timer);
+          showMsg.timer = setTimeout(function () {
+            el.className = "inline-msg info";
+            el.textContent = "";
+          }, 2400);
+        }
+
+        function csvEscape(v) {
+          var s = String(v == null ? "" : v)
+            .replace(/\r?\n/g, " ")
+            .trim();
+          return /[\",]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+        }
+
+        function setStatusUI() {
+          var status = model.status === "Active" ? "Active" : "Inactive";
+          var titlePill = document.getElementById("titleStatusPill");
+          var activeToggle = document.getElementById("activeToggle");
+          var activeStateText = document.getElementById("activeStateText");
+
+          titlePill.className = "status-pill " + (status === "Active" ? "st-active" : "st-inactive");
+          titlePill.textContent = status;
+          document.getElementById("ovStatus").textContent = status;
+
+          activeToggle.checked = status === "Active";
+          activeStateText.textContent = status;
+          activeStateText.className = "state-text " + (status === "Active" ? "active" : "inactive");
+        }
+
+        function credentialItems() {
+          var out = [];
+          var credentials = model.credentials || {};
+
+          if (model.authMethod === "OAuth2") {
+            out.push({ label: "Client ID", value: credentials.clientId });
+            out.push({ label: "Client Secret", value: credentials.clientSecret });
+            out.push({ label: "Access Token", value: credentials.token });
+          } else if (model.authMethod === "API Key") {
+            out.push({ label: "API Key", value: credentials.apiKey });
+          } else if (model.authMethod === "Basic") {
+            out.push({ label: "Username", value: credentials.username });
+            out.push({ label: "Password", value: credentials.password });
+          } else if (model.authMethod === "Token") {
+            out.push({ label: "Token", value: credentials.token });
+          }
+
+          return out.filter(function (item) {
+            return !!item.value;
+          });
+        }
+
+        document.getElementById("providerTitle").textContent = model.name;
+        document.getElementById("ovName").textContent = model.name;
+        document.getElementById("ovCode").textContent = model.code;
+        document.getElementById("ovType").textContent = model.type;
+        document.getElementById("ovEnv").textContent = model.environment;
+        document.getElementById("ovBaseUrl").textContent = model.baseUrl;
+        document.getElementById("ovDescription").textContent = model.description || "-";
+        document.getElementById("authMethodValue").textContent = model.authMethod;
+        document.getElementById("tokenExpiryValue").textContent = (model.credentials && model.credentials.tokenExpiry) || "Not applicable";
+        document.getElementById("webhookUrlValue").textContent = model.webhookUrl || "-";
+
+        var creds = credentialItems();
+        var credentialsList = document.getElementById("credentialsList");
+        credentialsList.innerHTML = creds.length
+          ? creds
+              .map(function (item, index) {
+                return (
+                  '<div class="credential-row">' +
+                  '<div><div class="cred-label">' +
+                  item.label +
+                  '</div><div class="cred-value" data-real="' +
+                  item.value +
+                  '" data-open="0" id="credValue' +
+                  index +
+                  '">' +
+                  maskValue(item.value) +
+                  '</div></div><button type="button" class="reveal-btn" data-target="credValue' +
+                  index +
+                  '" aria-label="Reveal"><i class="fi fi-rr-eye"></i></button></div>'
+                );
+              })
+              .join("")
+          : '<div class="meta-item"><div class="value">No sensitive fields for this auth method.</div></div>';
+
+        var ips = document.getElementById("allowedIpsList");
+        ips.innerHTML = (model.allowedIps || []).length ? model.allowedIps.map(function (ip) { return "<li>" + ip + "</li>"; }).join("") : "<li>No restrictions configured.</li>";
+
+        document.getElementById("capabilitiesList").innerHTML = (model.capabilities || [])
+          .map(function (cap, index) {
+            return '<label class="cap-item"><input type="checkbox" checked disabled aria-label="Capability ' + (index + 1) + '" /><span>' + cap + "</span></label>";
+          })
+          .join("");
+
+        document.getElementById("eventsTableBody").innerHTML = (model.events || [])
+          .map(function (ev) {
+            return "<tr><td>" + ev.name + '</td><td><span class="' + (ev.enabled ? "badge-yes" : "badge-no") + '">' + (ev.enabled ? "Enabled" : "Disabled") + "</span></td><td>" + ev.notes + "</td></tr>";
+          })
+          .join("");
+
+        document.getElementById("logsTableBody").innerHTML = (model.logs || [])
+          .map(function (lg) {
+            return "<tr><td>" + lg.at + "</td><td>" + lg.endpoint + '</td><td><span class="' + (lg.result === "Success" ? "result-success" : "result-error") + '">' + lg.result + "</span></td><td>" + lg.message + "</td></tr>";
+          })
+          .join("");
+
+        setStatusUI();
+
+        credentialsList.addEventListener("click", function (event) {
+          var target = event.target;
+          if (!(target instanceof Element)) return;
+
+          var btn = target.closest(".reveal-btn");
+          if (!btn) return;
+
+          var id = btn.getAttribute("data-target");
+          var valueEl = document.getElementById(id);
+          if (!valueEl) return;
+
+          var open = valueEl.getAttribute("data-open") === "1";
+          var real = valueEl.getAttribute("data-real") || "";
+
+          valueEl.textContent = open ? maskValue(real) : real;
+          valueEl.setAttribute("data-open", open ? "0" : "1");
+          btn.innerHTML = open ? '<i class="fi fi-rr-eye"></i>' : '<i class="fi fi-rr-eye-crossed"></i>';
+        });
+
+        document.getElementById("activeToggle").addEventListener("change", function (event) {
+          var shouldBeActive = !!event.target.checked;
+          var result = shouldBeActive ? store.setIntegrationActive(model.id) : store.setIntegrationInactive(model.id);
+
+          if (!result || !result.ok) {
+            event.target.checked = !shouldBeActive;
+            showMsg(overviewMsg, (result && result.message) || "Unable to update provider status.", "error");
+            return;
+          }
+
+          model.status = result.integration.status;
+          setStatusUI();
+          showMsg(overviewMsg, "Provider status changed to " + model.status + ".", "success");
+        });
+
+        document.getElementById("testWebhookBtn").addEventListener("click", function () {
+          showMsg(webhookMsg, "Webhook test sent to " + (model.webhookUrl || "this endpoint") + ".", "success");
+        });
+
+        document.getElementById("downloadLogsBtn").addEventListener("click", function () {
+          var headers = ["Date/Time", "Endpoint", "Result", "Message"];
+          var lines = [headers.map(csvEscape).join(",")];
+          (model.logs || []).forEach(function (log) {
+            lines.push([log.at, log.endpoint, log.result, log.message].map(csvEscape).join(","));
+          });
+
+          var csv = "\ufeff" + lines.join("\n");
+          var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = model.id + "-logs.csv";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        });
+      })();
+    </script>
+  </body>
+</html>

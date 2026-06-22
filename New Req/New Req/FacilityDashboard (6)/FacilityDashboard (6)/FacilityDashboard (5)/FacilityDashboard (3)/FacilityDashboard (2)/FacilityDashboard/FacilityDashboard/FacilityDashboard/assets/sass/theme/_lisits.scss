@@ -1,0 +1,23 @@
+.inline-list {
+  display: flex;
+  flex-direction: column;
+  gap: $value-4;
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.time-list-view {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  li {
+    p {
+      color: #666;
+    }
+    span {
+      font-weight: 600;
+    }
+  }
+}

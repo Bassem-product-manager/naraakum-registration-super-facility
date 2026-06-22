@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | API Settings</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .summary-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 992px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .summary-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+      }
+
+      .summary-item .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .summary-item .value {
+        margin-top: 4px;
+        font-size: 18px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .empty-state {
+        border: 1px dashed #d0d5dd;
+        border-radius: 14px;
+        background: #fff;
+        padding: 24px;
+        text-align: center;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>API Settings</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">API</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="summary-card">
+            <div class="summary-grid">
+              <div class="summary-item">
+                <div class="label">Environment</div>
+                <div class="value">Sandbox</div>
+              </div>
+              <div class="summary-item">
+                <div class="label">Current API Version</div>
+                <div class="value">v2.1</div>
+              </div>
+              <div class="summary-item">
+                <div class="label">Last Sync</div>
+                <div class="value">16/02/2026</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="empty-state mt-16">
+            <h5 class="mb-8">API Console Coming Soon</h5>
+            <p class="text-grey mb-0">Webhook management, token rotation, and endpoint policies will be available in the next release.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

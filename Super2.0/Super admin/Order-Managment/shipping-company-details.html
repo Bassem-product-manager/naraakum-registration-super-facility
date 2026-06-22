@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Shipping Company Details</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root { --ship-brand:#0f8c8c; --ship-border:rgba(16,24,40,.12); --ship-soft:rgba(15,140,140,.08); --ship-muted:#667085; }
+      .details-shell{margin-top:12px;display:grid;grid-template-columns:1fr 340px;gap:16px;align-items:start}
+      .summary-card,.nk-tabs,.decision-panel,.missing-card,.integration-section,.meta-box{border:1px solid var(--ship-border);background:#fff;border-radius:14px}
+      .summary-card{padding:14px;display:flex;justify-content:space-between;gap:12px}
+      .summary-left{display:flex;gap:12px;min-width:0}.summary-logo{width:46px;height:46px;border-radius:12px;border:1px solid rgba(16,24,40,.1);object-fit:contain;padding:4px;background:#fff}
+      .summary-name{margin:0;font-size:18px;font-weight:1000;color:#101828}.summary-sub{margin-top:6px;display:flex;flex-wrap:wrap;gap:7px}
+      .summary-chip{display:inline-flex;align-items:center;gap:6px;border-radius:999px;border:1px solid rgba(16,24,40,.1);background:rgba(16,24,40,.03);color:#475467;font-size:12px;font-weight:800;height:28px;padding:0 10px}
+      .summary-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+      .status-pill{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;border:1px solid transparent;font-weight:900;min-width:92px;height:30px;padding:0 10px;font-size:12px}
+      .status-pill.active{color:#067647;background:#ecfdf3;border-color:#abefc6}.status-pill.approved{color:#175cd3;background:#eff4ff;border-color:#b2ddff}
+      .status-pill.pending{color:#b54708;background:rgba(247,144,9,.1);border-color:rgba(247,144,9,.25)}
+      .status-pill.needs-info,.status-pill.suspended{color:#b54708;background:rgba(247,144,9,.12);border-color:rgba(247,144,9,.3)}
+      .status-pill.inactive{color:#475467;background:rgba(16,24,40,.08);border-color:rgba(16,24,40,.15)}
+      .status-pill.error,.status-pill.rejected,.status-pill.banned{color:#b42318;background:#fef3f2;border-color:#fecdca}
+      .nk-tabs-header{display:flex;gap:8px;flex-wrap:wrap;padding:10px;border-bottom:1px solid rgba(16,24,40,.08);background:rgba(16,24,40,.02)}
+      .tab-btn{border:1px solid rgba(15,140,140,.2);background:#fff;color:#101828;font-size:12px;font-weight:900;border-radius:12px;height:34px;padding:0 12px;display:inline-flex;align-items:center;gap:7px}
+      .tab-btn.is-active{color:var(--ship-brand);border-color:rgba(15,140,140,.32);background:var(--ship-soft)}
+      .nk-tab-panel{padding:14px}.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+      .section-head h4{margin:0;font-size:16px;font-weight:900}.section-head p{margin:3px 0 0;font-size:12px;color:var(--ship-muted)}
+      .nk-muted{color:var(--ship-muted);font-size:12px;font-weight:800}
+      .grid-2,.integration-layout{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.integration-overview-layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px}
+      .meta-box{padding:10px}.meta-box .label{font-size:12px;color:var(--ship-muted);font-weight:700;margin-bottom:4px}.meta-box .value{font-size:13px;color:#101828;font-weight:900;word-break:break-word}
+      .table-ship{width:100%;border-collapse:separate;border-spacing:0}.table-ship thead th{padding:10px;font-size:12px;font-weight:900;color:#344054;background:rgba(16,24,40,.02);border-bottom:1px solid rgba(16,24,40,.1)}
+      .table-ship tbody td{padding:10px;font-size:13px;color:#101828;font-weight:700;border-bottom:1px solid rgba(16,24,40,.08);vertical-align:top}.table-ship tbody tr:last-child td{border-bottom:0}
+      .doc-pill,.badge-yes,.badge-no,.result-success,.result-error{display:inline-flex;align-items:center;justify-content:center;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:900;border:1px solid transparent}
+      .doc-pill.approved,.badge-yes,.result-success{color:#067647;background:#ecfdf3;border-color:#abefc6}.doc-pill.pending{color:#b54708;background:rgba(247,144,9,.1);border-color:rgba(247,144,9,.24)}
+      .doc-pill.missing,.badge-no{color:#475467;background:rgba(16,24,40,.08);border-color:rgba(16,24,40,.15)}.doc-pill.rejected,.result-error{color:#b42318;background:#fef3f2;border-color:#fecdca}
+      .doc-actions{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;justify-content:flex-end}.doc-reason{margin-top:4px;color:#b42318;font-size:11px;font-weight:700}
+      .btn-mini{display:inline-flex;align-items:center;gap:7px;height:40px;padding:0 14px;border-radius:12px;border:1px solid rgba(16,24,40,.12);background:#fff;color:#101828;font-weight:1000;font-size:13px;text-decoration:none;white-space:nowrap}
+      .btn-mini:hover{background:rgba(16,24,40,.02)}
+      .btn-mini.view{border-color:rgba(15,140,140,.22);background:rgba(15,140,140,.06);color:var(--ship-brand)}
+      .btn-mini.view:hover{background:rgba(15,140,140,.10)}
+      .btn-mini.warning{border-color:rgba(247,144,9,.28);background:rgba(247,144,9,.08);color:#B54708}
+      .btn-mini.danger{border-color:rgba(240,68,56,.25);background:rgba(240,68,56,.06);color:#B42318}
+      .btn-mini.approve{border-color:rgba(18,183,106,.25);background:rgba(18,183,106,.08);color:#067647}
+      .btn-mini.icon{width:40px;min-width:40px;padding:0;justify-content:center;gap:0}
+      .btn-mini.icon span{display:none}
+      .toggle-item{border:1px solid rgba(16,24,40,.1);border-radius:10px;background:#fff;padding:10px;display:flex;align-items:center;justify-content:space-between}
+      .toggle-item .label{font-size:13px;font-weight:800;color:#344054}.state-text{font-size:12px;font-weight:800;color:#475467}.state-text.active{color:#027a48}
+      .status-toggle{width:2.3rem;height:1.2rem;cursor:pointer;border-color:rgba(16,24,40,.22);background-color:#f2f4f7}.status-toggle:checked{background-color:var(--ship-brand);border-color:var(--ship-brand)}
+      .integration-section{padding:12px}.integration-section+.integration-section{margin-top:10px}.cap-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-top:8px}
+      .cap-chip{display:inline-flex;align-items:center;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:var(--ship-soft);color:var(--ship-brand);font-size:12px;font-weight:800;height:28px;padding:0 10px}
+      .credential-list{display:grid;gap:8px;margin-top:8px}.credential-row{border:1px solid rgba(16,24,40,.1);border-radius:10px;padding:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+      .cred-label{font-size:12px;color:var(--ship-muted);font-weight:700}.cred-value{font-size:13px;font-weight:900;color:#101828;word-break:break-all}
+      .reveal-btn{width:30px;height:30px;border-radius:8px;border:1px solid rgba(16,24,40,.14);background:#fff;color:#344054}.ip-list{margin:8px 0 0;padding-left:18px;font-size:13px;color:#344054}
+      .btn-outline-api{border:1px solid var(--ship-brand)!important;color:var(--ship-brand)!important;background:#fff!important}.btn-outline-api:hover,.btn-outline-api:focus{background:var(--ship-soft)!important}
+      .decision-panel{padding:14px;position:sticky;top:14px}.dp-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.dp-title h4{margin:0;font-size:14px;font-weight:1000}
+      .dp-hint{color:var(--ship-muted);font-size:12px;font-weight:800;margin:10px 0}.dp-reason{border:1px solid rgba(16,24,40,.08);border-radius:10px;background:rgba(16,24,40,.02);padding:10px;margin-bottom:10px}
+      .dp-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dp-actions .btn{height:40px;border-radius:12px;font-weight:1000;white-space:nowrap}.dp-actions .btn i{margin-right:8px}
+      .dp-actions .btn-suspend{border-color:rgba(247,144,9,.35);background:rgba(247,144,9,.10);color:#B54708}
+      .dp-actions .btn-suspend:hover{border-color:rgba(247,144,9,.48);background:rgba(247,144,9,.16);color:#9A3412}
+      .dp-actions .btn-ban{border-color:rgba(240,68,56,.35);background:rgba(240,68,56,.10);color:#B42318}
+      .dp-actions .btn-ban:hover{border-color:rgba(240,68,56,.50);background:rgba(240,68,56,.16);color:#912018}
+      .dp-audit{margin-top:12px;border-top:1px solid rgba(16,24,40,.08);padding-top:12px}.dp-audit-head{margin-bottom:8px;color:#344054;font-size:12px;font-weight:900}
+      .audit-list{display:grid;gap:8px}.audit-item{border:1px solid rgba(16,24,40,.1);border-radius:10px;padding:8px}.audit-item h5{margin:0;font-size:12px;font-weight:900}
+      .audit-item .time{font-size:11px;color:var(--ship-muted);font-weight:800}.audit-item .note{margin-top:4px;font-size:12px;color:#475467;font-weight:700}.audit-empty{font-size:12px;color:var(--ship-muted);font-weight:700}
+      .inline-msg{display:none;margin-top:10px;border-radius:10px;padding:8px 10px;font-size:12px;font-weight:800}.inline-msg.show{display:block}
+      .inline-msg.info{background:#eff8ff;border:1px solid #b2ddff;color:#175cd3}.inline-msg.success{background:#ecfdf3;border:1px solid #abefc6;color:#027a48}.inline-msg.error{background:#fef3f2;border:1px solid #fecdca;color:#b42318}
+      .missing-card{padding:24px;text-align:center}.missing-card h4{margin:0 0 8px;font-size:20px;font-weight:900}.missing-card p{margin:0 0 14px;color:var(--ship-muted)}
+      @media (max-width:1200px){.doc-actions{flex-wrap:wrap;justify-content:flex-start}}
+      @media (max-width:992px){.summary-card{flex-direction:column}.details-shell,.grid-2,.integration-layout,.integration-overview-layout{grid-template-columns:1fr}.decision-panel{position:static}}
+    </style>
+  </head>
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="Ar" /><span>AR</span></a>
+            </div>
+          </div>
+        </header>
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item">Provider Management</li>
+              <li class="breadcrumb-item"><a href="../Order-Managment/shipping-companies.html">Shipping Companies</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Company Details</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div id="shippingMissingState" class="missing-card d-none">
+            <h4>Shipping Company Not Found</h4>
+            <p>We could not find the selected shipping company. Please return to the shipping companies list.</p>
+            <a href="../Order-Managment/shipping-companies.html" class="btn btn-primary btn-40"><i class="fi fi-rr-arrow-left"></i><span>Back to Shipping Companies</span></a>
+          </div>
+          <div id="shippingDetailsContent" class="d-none">
+            <section class="summary-card">
+              <div class="summary-left">
+                <img id="summaryLogo" class="summary-logo" src="../assets/images/logo.svg" alt="Company" />
+                <div>
+                  <h3 id="summaryName" class="summary-name">Shipping Company</h3>
+                  <div class="summary-sub">
+                    <span class="summary-chip"><i class="fi fi-rr-hastag"></i><span id="summaryCode">-</span></span>
+                    <span class="summary-chip"><i class="fi fi-rr-envelope"></i><span id="summaryEmail">-</span></span>
+                    <span class="summary-chip"><i class="fi fi-rr-user"></i><span id="summaryContact">-</span></span>
+                    <span class="summary-chip"><i class="fi fi-rr-document"></i><span id="summaryDocProgress">-</span></span>
+                    <span id="summaryIntegrationStatusChip" class="summary-chip"><i class="fi fi-rr-plug"></i><span>Integration: -</span></span>
+                  </div>
+                </div>
+              </div>
+              <div class="summary-right">
+                <span id="summaryCompanyStatus" class="status-pill pending">Pending</span>
+                <a href="../Order-Managment/shipping-companies.html" class="btn btn-primary-revers btn-40"><i class="fi fi-rr-arrow-left"></i><span>Back</span></a>
+              </div>
+            </section>
+
+            <div class="details-shell">
+              <section class="nk-tabs">
+                <div class="nk-tabs-header">
+                  <button type="button" class="tab-btn is-active" data-tab-target="tab-overview"><i class="fi fi-rr-building"></i><span>Company Overview</span></button>
+                  <button type="button" class="tab-btn" data-tab-target="tab-documents"><i class="fi fi-rr-document"></i><span>Documents</span></button>
+                  <button type="button" class="tab-btn" data-tab-target="tab-integration"><i class="fi fi-rr-plug"></i><span>Integration Review</span></button>
+                </div>
+
+                <div class="nk-tab-panel is-active" data-tab-id="tab-overview">
+                  <div class="section-head">
+                    <div>
+                      <h4>Company Data</h4>
+                      <p>Main profile and contact information for this shipping partner.</p>
+                    </div>
+                  </div>
+                  <div class="grid-2">
+                    <div class="meta-box"><div class="label">Company Code</div><div id="ovCompanyCode" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Company Name</div><div id="ovCompanyName" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">City</div><div id="ovCity" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Email</div><div id="ovEmail" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Contact Name</div><div id="ovContactName" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Phone</div><div id="ovPhone" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Company Status</div><div id="ovCompanyStatus" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Integration Status</div><div id="ovIntegrationStatus" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Integration Provider</div><div id="ovIntegrationProvider" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Decision Updated</div><div id="ovDecisionUpdatedAt" class="value">-</div></div>
+                    <div class="meta-box"><div class="label">Last Updated</div><div id="ovUpdatedAt" class="value">-</div></div>
+                  </div>
+                </div>
+
+                <div class="nk-tab-panel d-none" data-tab-id="tab-documents">
+                  <div class="section-head">
+                    <div>
+                      <h4>Company Documents</h4>
+                      <p>Commercial registration, owner identity, and bank account proof.</p>
+                    </div>
+                    <span id="documentsProgressChip" class="status-pill pending">0/0 Approved</span>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table-ship">
+                      <thead>
+                        <tr>
+                          <th style="width: 180px">Document</th>
+                          <th style="width: 140px">Reference</th>
+                          <th style="width: 170px">File Name</th>
+                          <th style="width: 120px">Updated At</th>
+                          <th style="width: 150px">Status</th>
+                          <th class="text-end" style="width: 250px">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="documentsTableBody"></tbody>
+                    </table>
+                  </div>
+                  <div id="documentsInlineMsg" class="inline-msg info"></div>
+                </div>
+
+                <div class="nk-tab-panel d-none" data-tab-id="tab-integration">
+                  <div class="integration-section">
+                    <div class="section-head">
+                      <div>
+                        <h4>Integration Overview</h4>
+                        <p>Operational snapshot for the API integration used by this shipping company.</p>
+                      </div>
+                      <span id="integrationStatusBadge" class="status-pill inactive">Inactive</span>
+                    </div>
+                    <div class="integration-overview-layout">
+                      <div class="integration-layout">
+                        <div class="meta-box"><div class="label">Provider Name</div><div id="integrationProviderName" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Provider Code</div><div id="integrationProviderCode" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Provider Type</div><div id="integrationType" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Environment</div><div id="integrationEnvironment" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Status</div><div id="integrationStatusText" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Last Sync</div><div id="integrationLastSync" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Failure Rate</div><div id="integrationFailureRate" class="value">-</div></div>
+                        <div class="meta-box"><div class="label">Base URL</div><div id="integrationBaseUrl" class="value">-</div></div>
+                        <div class="meta-box" style="grid-column: 1 / -1"><div class="label">Description / Notes</div><div id="integrationNotes" class="value">-</div></div>
+                      </div>
+                      <div>
+                        <div class="toggle-item">
+                          <span class="label">Integration Active</span>
+                          <div class="d-flex align-items-center gap-2">
+                            <span id="integrationActiveStateText" class="state-text inactive">Inactive</span>
+                            <div class="form-check form-switch m-0">
+                              <input id="companyIntegrationToggle" class="form-check-input status-toggle" type="checkbox" role="switch" />
+                            </div>
+                          </div>
+                        </div>
+                        <a id="btnReviewIntegration" href="#" class="btn btn-outline-api btn-40 d-none mt-8" target="_blank" rel="noopener"><i class="fi fi-rr-arrow-up-right-from-square"></i><span>Open API Details</span></a>
+                      </div>
+                    </div>
+                    <div id="integrationInlineMsg" class="inline-msg info"></div>
+                  </div>
+
+                  <div class="integration-section">
+                    <div class="section-head">
+                      <div>
+                        <h4>Connection & Authentication</h4>
+                        <p>Auth profile, sensitive credentials, and allowed IPs for this integration.</p>
+                      </div>
+                    </div>
+                    <div class="integration-layout">
+                      <div class="meta-box"><div class="label">Auth Method</div><div id="authMethodValue" class="value">-</div></div>
+                      <div class="meta-box"><div class="label">Token Expiration</div><div id="tokenExpiryValue" class="value">-</div></div>
+                    </div>
+                    <div id="credentialsList" class="credential-list"></div>
+                    <div class="meta-box mt-10">
+                      <div class="label">Allowed IPs</div>
+                      <ul id="allowedIpsList" class="ip-list"></ul>
+                    </div>
+                  </div>
+
+                  <div class="integration-section">
+                    <div class="section-head">
+                      <div>
+                        <h4>Capabilities</h4>
+                        <p>Available integration actions exposed by this provider.</p>
+                      </div>
+                    </div>
+                    <div id="integrationCapabilities" class="cap-wrap"></div>
+                  </div>
+
+                  <div class="integration-section">
+                    <div class="section-head">
+                      <div>
+                        <h4>Webhooks & Events</h4>
+                        <p>Callback endpoint and subscribed event types.</p>
+                      </div>
+                      <button id="btnTestWebhook" type="button" class="btn btn-outline-api btn-32"><i class="fi fi-rr-paper-plane"></i><span>Test Webhook</span></button>
+                    </div>
+                    <div class="meta-box mb-10"><div class="label">Webhook URL</div><div id="webhookUrlValue" class="value">-</div></div>
+                    <div class="table-responsive">
+                      <table class="table-ship">
+                        <thead>
+                          <tr>
+                            <th style="width: 220px">Event Name</th>
+                            <th style="width: 130px">Enabled</th>
+                            <th>Notes</th>
+                          </tr>
+                        </thead>
+                        <tbody id="integrationEventsBody"></tbody>
+                      </table>
+                    </div>
+                    <div id="webhookInlineMsg" class="inline-msg info"></div>
+                  </div>
+
+                  <div class="integration-section">
+                    <div class="section-head">
+                      <div>
+                        <h4>Logs</h4>
+                        <p>Recent API requests and responses for this integration.</p>
+                      </div>
+                      <button id="btnDownloadIntegrationLogs" type="button" class="btn btn-outline-api btn-32"><i class="fi fi-rr-download"></i><span>Download Logs</span></button>
+                    </div>
+                    <div class="table-responsive">
+                      <table class="table-ship">
+                        <thead>
+                          <tr>
+                            <th style="width: 180px">Date/Time</th>
+                            <th style="width: 190px">Endpoint</th>
+                            <th style="width: 120px">Result</th>
+                            <th>Message</th>
+                          </tr>
+                        </thead>
+                        <tbody id="integrationLogsBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <aside class="decision-panel" id="decisionPanel">
+                <div class="dp-title">
+                  <h4>Decision Panel</h4>
+                  <span id="dpStatus" class="status-pill pending">Pending</span>
+                </div>
+                <div class="meta-box">
+                  <div class="label">Decision Target</div>
+                  <div id="dpTargetName" class="value">Shipping Company</div>
+                  <div id="dpTargetMeta" class="nk-muted mt-2">-</div>
+                </div>
+                <p id="dpHint" class="dp-hint">Review target and apply decision.</p>
+                <div class="dp-reason d-none" id="dpReasonWrap">
+                  <div class="label">Latest Decision Reason</div>
+                  <div id="dpReasonText" class="value">-</div>
+                </div>
+                <div class="dp-actions">
+                  <button class="btn btn-primary" id="btnApprove" type="button"><i class="fi fi-rr-badge-check"></i>Approve</button>
+                  <button class="btn btn-secondary" id="btnReject" type="button"><i class="fi fi-rr-cross-circle"></i>Reject</button>
+                  <button class="btn btn-primary-revers btn-suspend" id="btnSuspend" type="button"><i class="fi fi-rr-ban"></i>Suspend</button>
+                  <button class="btn btn-primary-revers btn-ban" id="btnBan" type="button"><i class="fi fi-rr-ban"></i>Ban</button>
+                </div>
+                <div id="decisionInlineMsg" class="inline-msg info"></div>
+                <div class="dp-audit">
+                  <div class="dp-audit-head">Decision Audit</div>
+                  <div id="dpAuditList" class="audit-list"></div>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="modal fade" id="docPreviewModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="docPreviewTitle">Document Preview</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="docPreviewBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers btn-40" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/shipping-companies-store.js"></script>
+    <script src="../assets/js/api-integrations-store.js"></script>
+    <script src="../assets/js/shipping-company-details.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Riyadh", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+            el.textContent = fmt.format(new Date());
+          } catch (err) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

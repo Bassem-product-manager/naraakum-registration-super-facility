@@ -1,0 +1,11 @@
+/*==========================================repeat colors========================================*/
+
+$colors: #fef2e6, #d5ecf9, #bde5e5, #ffd4c9, #f5f4fa, #eaf7f7, #f2f9fd;
+
+@for $i from 1 through length($colors) {
+  .color-cards-group .item:nth-child(#{length($colors)}n + #{$i}) {
+    .apply-color {
+      background: nth($colors, $i) !important;
+    }
+  }
+}

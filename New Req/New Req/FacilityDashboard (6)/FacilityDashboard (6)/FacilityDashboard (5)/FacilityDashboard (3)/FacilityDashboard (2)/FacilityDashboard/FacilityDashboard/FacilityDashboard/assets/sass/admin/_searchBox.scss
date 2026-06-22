@@ -1,0 +1,21 @@
+.search-box-group {
+  border: 1px solid $border-color;
+  border-radius: $value-8;
+  background-color: #fff;
+  display: flex;
+  gap: 0.2rem;
+  padding: $value-4;
+  .form-control {
+    border: 0px;
+    box-shadow: none !important;
+  }
+  .btn {
+    width: $value-32;
+    font-size: 0.8rem;
+    border-radius: 0.4rem;
+    i {
+      padding-top: 0.2rem;
+      font-weight: 700;
+    }
+  }
+}

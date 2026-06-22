@@ -1,0 +1,19 @@
+#rows-container {
+  padding-#{$left}: $value-24;
+  .row-wrapper {
+    position: relative;
+    padding-bottom: $value-8;
+    .delete-btn {
+      position: absolute;
+      top: 0;
+      #{$left}: 0;
+      margin-#{$left}: -1.5rem;
+      width: $value-20;
+      height: $value-20;
+      background: url(../images/remove.svg);
+      background-size: contain;
+      border: 0px;
+      margin-top: 0.6rem;
+    }
+  }
+}

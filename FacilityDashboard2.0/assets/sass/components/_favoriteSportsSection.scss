@@ -1,0 +1,36 @@
+.sport-figure {
+  margin: 0px;
+  padding: 0px;
+  background-color: #fff;
+  border-radius: $value-12;
+  padding: 1rem 0.5rem 1rem 0.75rem;
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  justify-content: space-between;
+
+  img {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+  }
+  figcaption {
+    text-align: left;
+    h3 {
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+    p {
+      font-size: 0.75rem;
+      font-style: normal;
+      color: $text-body;
+    }
+  }
+
+  .card-options-list {
+    margin: 0.5rem;
+  }
+}

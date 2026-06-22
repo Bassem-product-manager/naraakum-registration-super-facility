@@ -1,0 +1,1189 @@
+<!-- custom-price.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Custom Price</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      /* small helpers (non-destructive) */
+      .price-muted { opacity: 0.7; }
+      .custom-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .custom-pill .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        background: #bbb;
+      }
+      .custom-pill.is-set .dot { background: #2ecc71; }
+      .custom-pill.is-set .txt { font-weight: 600; }
+      .actions-cell .assign-btn { white-space: nowrap; }
+    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+          <p class="text-grey fsize-12">Name of Facility</p>
+          <p class="text-grey fsize-12">ID : SA-000111222444</p>
+        </div>
+
+        <ul class="side-menu-list d-flex flex-column flex-grow-1">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <!-- Orders -->
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Orders</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Order Management</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transactions</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Staff Management -->
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Services & Packages -->
+          <li id="menu-services" class="active">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list show">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html" class="active">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Calendar -->
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Patients -->
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Messages -->
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Tracking -->
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <!-- Payments -->
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Facility Settings -->
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- Admin -->
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <!-- More -->
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li class="mt-auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page services-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Custom Price</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Custom Price</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top operations bar -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="customPriceSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by doctor / phone / service / main service"
+                  />
+                  <button id="btnCustomPriceSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnCustomPriceReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#custom-price-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <button id="btnImportCustomPrice" type="button" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-file-import"></i>
+                  <span>Import</span>
+                </button>
+
+                <button id="btnExportCustomPrice" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+
+                <input id="customPriceImportFileInput" type="file" accept=".csv,.xlsx,.xls" hidden />
+              </div>
+            </div>
+          </div>
+
+          <!-- Custom Price table -->
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="customPriceTable">
+                  <thead>
+                    <tr>
+                      <th class="col-check">
+                        <div class="head-check">
+                          <input type="checkbox" id="checkAllVisibleCustomPrice" title="Select visible rows" />
+                        </div>
+                      </th>
+
+                      <th class="col-seq"># <span class="sort-icon">▲▼</span></th>
+                      <th>Doctor <span class="sort-icon">▲▼</span></th>
+                      <th>Job Title <span class="sort-icon">▲▼</span></th>
+                      <th>Phone <span class="sort-icon">▲▼</span></th>
+                      <th>Service <span class="sort-icon">▲▼</span></th>
+                      <th class="text-center">Active</th>
+                      <th>General Price</th>
+                      <th>Custom Price</th>
+                      <th class="col-actions text-center">Edit Price</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="customPriceTbody">
+                    <!-- Demo rows (replace with backend render later) -->
+                    <tr
+                      data-doctor="ahmed ali"
+                      data-phone="+966500001111"
+                      data-role="doctor"
+                      data-job="doctor"
+                      data-main="telemedicine"
+                      data-service="video consultation"
+                      data-active="1"
+                      data-general-price="150.00"
+                      data-custom-price="175.00"
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">1</span></td>
+
+                      <!-- Doctor (like staff list cell) -->
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="staff" /></div>
+                          <div class="staff-info">
+                            <p class="name">Ahmed Ali</p>
+                            <div class="meta">Doctor</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="job-title">Doctor</div>
+                        <div class="job-sub">Dentistry • Consultant</div>
+                      </td>
+
+                      <td>+966 50 000 1111</td>
+
+                      <!-- Service (like services cell: service + main) -->
+                      <td>
+                        <div class="service-name">Video Consultation</div>
+                        <div class="service-main">Telemedicine</div>
+                      </td>
+
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+
+                      <td class="general-price-cell"><span class="bold">150.00</span> SR</td>
+
+                      <td class="custom-price-cell">
+                        <span class="custom-pill is-set">
+                          <span class="dot"></span>
+                          <span class="txt"><span class="bold">175.00</span> SR</span>
+                        </span>
+                      </td>
+
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-custom-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr
+                      data-doctor="mona hassan"
+                      data-phone="+966500001222"
+                      data-role="nurse"
+                      data-job="nurse"
+                      data-main="nursing visit"
+                      data-service="nursing at home"
+                      data-active="1"
+                      data-general-price="180.00"
+                      data-custom-price=""
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">2</span></td>
+
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="staff" /></div>
+                          <div class="staff-info">
+                            <p class="name">Mona Hassan</p>
+                            <div class="meta">Nurse</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="job-title">Nurse</div>
+                        <div class="job-sub">ICU • Registered Nurse</div>
+                      </td>
+
+                      <td>+966 50 000 1222</td>
+
+                      <td>
+                        <div class="service-name">Nursing at Home</div>
+                        <div class="service-main">Nursing Visit</div>
+                      </td>
+
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" checked />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+
+                      <td class="general-price-cell"><span class="bold">180.00</span> SR</td>
+
+                      <td class="custom-price-cell">
+                        <span class="custom-pill">
+                          <span class="dot"></span>
+                          <span class="txt price-muted">—</span>
+                        </span>
+                      </td>
+
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-custom-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr
+                      data-doctor="omar saleh"
+                      data-phone="+966500001333"
+                      data-role="physiotherapist"
+                      data-job="physiotherapist"
+                      data-main="physiotherapy"
+                      data-service="physiotherapy session"
+                      data-active="0"
+                      data-general-price="220.00"
+                      data-custom-price="210.00"
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                      <td class="col-seq"><span class="row-seq">3</span></td>
+
+                      <td>
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="staff" /></div>
+                          <div class="staff-info">
+                            <p class="name">Omar Saleh</p>
+                            <div class="meta">Physiotherapist</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="job-title">Physiotherapist</div>
+                        <div class="job-sub">Orthopedic Rehab</div>
+                      </td>
+
+                      <td>+966 50 000 1333</td>
+
+                      <td>
+                        <div class="service-name">Physiotherapy Session</div>
+                        <div class="service-main">Physiotherapy</div>
+                      </td>
+
+                      <td class="text-center">
+                        <label class="switch">
+                          <input class="active-switch" type="checkbox" />
+                          <span class="slider"></span>
+                        </label>
+                      </td>
+
+                      <td class="general-price-cell"><span class="bold">220.00</span> SR</td>
+
+                      <td class="custom-price-cell">
+                        <span class="custom-pill is-set">
+                          <span class="dot"></span>
+                          <span class="txt"><span class="bold">210.00</span> SR</span>
+                        </span>
+                      </td>
+
+                      <td class="col-actions">
+                        <div class="actions-cell">
+                          <button class="assign-btn edit-custom-price-btn" type="button" title="Edit Price">
+                            <i class="fi fi-rr-coins"></i>
+                            Edit Price
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="customPriceRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="customPricePageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="customPriceFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="customPricePrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="customPriceCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="customPriceNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="customPriceLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="custom-price-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Custom Prices</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Job Type</label>
+                <select id="cpfRole" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="doctor">Doctor</option>
+                  <option value="physiotherapist">Physiotherapist</option>
+                  <option value="nurse">Nurse</option>
+                  <option value="caregiver">Caregiver</option>
+                  <option value="phlebotomist">Phlebotomist</option>
+                  <option value="medical engineer">Medical Engineer</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="cpfMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="telemedicine">Telemedicine</option>
+                  <option value="doctor visit">Doctor Visit</option>
+                  <option value="nursing visit">Nursing Visit</option>
+                  <option value="health companion">Health Companion</option>
+                  <option value="home dialysis">Home Dialysis</option>
+                  <option value="physiotherapy">Physiotherapy</option>
+                  <option value="lab tests">Lab Tests</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Service</label>
+                <select id="cpfService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="video consultation">Video Consultation</option>
+                  <option value="home doctor visit">Home Doctor Visit</option>
+                  <option value="lab sample collection">Lab Sample Collection</option>
+                  <option value="nursing at home">Nursing at Home</option>
+                  <option value="physiotherapy session">Physiotherapy Session</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Active</label>
+                <select id="cpfActive" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Custom Price</label>
+                <select id="cpfHasCustom" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="1">Has Custom</option>
+                  <option value="0">No Custom</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnCustomPriceFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnCustomPriceApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Custom Price Modal -->
+    <div class="modal fade" id="editCustomPriceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Custom Price</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-2">
+              <div class="fsize-12 text-grey">Doctor</div>
+              <div class="semiBold" id="cpDoctorLabel">—</div>
+            </div>
+
+            <div class="mb-2">
+              <div class="fsize-12 text-grey">Service</div>
+              <div class="semiBold" id="cpServiceLabel">—</div>
+              <div class="fsize-12 text-grey" id="cpMainLabel">—</div>
+            </div>
+
+            <div class="mb-2">
+              <div class="fsize-12 text-grey">General Price</div>
+              <div class="semiBold" id="cpGeneralLabel">—</div>
+            </div>
+
+            <label class="fsize-12 text-grey">Custom Price (SR)</label>
+            <input
+              id="cpPriceInput"
+              type="number"
+              min="0"
+              step="0.01"
+              class="form-control form-control-32"
+              placeholder="Leave empty to remove custom price"
+            />
+            <div class="fsize-12 text-grey mt-2">
+              Tip: leave empty to remove custom price and fallback to general price.
+            </div>
+
+            <div class="text-red fsize-12 mt-2 d-none" id="cpPriceError">
+              Invalid price.
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnSaveCustomPrice" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("customPriceTbody");
+        if (!tbody) return;
+
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        // Search
+        const searchInput = document.getElementById("customPriceSearchInput");
+        const btnSearch = document.getElementById("btnCustomPriceSearch");
+        const btnReset = document.getElementById("btnCustomPriceReset");
+
+        // Pagination
+        const rowsSelect = document.getElementById("customPriceRowsPerPage");
+        const indicator = document.getElementById("customPricePageIndicator");
+        const currentBadge = document.getElementById("customPriceCurrentPageBadge");
+        const btnFirst = document.getElementById("customPriceFirstPage");
+        const btnPrev = document.getElementById("customPricePrevPage");
+        const btnNext = document.getElementById("customPriceNextPage");
+        const btnLast = document.getElementById("customPriceLastPage");
+
+        // Select visible
+        const checkAllVisible = document.getElementById("checkAllVisibleCustomPrice");
+
+        // Filters
+        const cpfRole = document.getElementById("cpfRole");
+        const cpfMain = document.getElementById("cpfMainService");
+        const cpfService = document.getElementById("cpfService");
+        const cpfActive = document.getElementById("cpfActive");
+        const cpfHasCustom = document.getElementById("cpfHasCustom");
+
+        const btnApplyFilter = document.getElementById("btnCustomPriceApplyFilter");
+        const btnFilterReset = document.getElementById("btnCustomPriceFilterReset");
+
+        // Import / Export
+        const btnImport = document.getElementById("btnImportCustomPrice");
+        const importInput = document.getElementById("customPriceImportFileInput");
+        const btnExport = document.getElementById("btnExportCustomPrice");
+
+        // Edit modal
+        const editModalEl = document.getElementById("editCustomPriceModal");
+        const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
+
+        const cpDoctorLabel = document.getElementById("cpDoctorLabel");
+        const cpServiceLabel = document.getElementById("cpServiceLabel");
+        const cpMainLabel = document.getElementById("cpMainLabel");
+        const cpGeneralLabel = document.getElementById("cpGeneralLabel");
+        const cpPriceInput = document.getElementById("cpPriceInput");
+        const cpPriceError = document.getElementById("cpPriceError");
+        const btnSave = document.getElementById("btnSaveCustomPrice");
+
+        let currentPage = 1;
+        let filteredRows = [...allRows];
+        let currentRow = null;
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function getRowData(tr) {
+          return {
+            doctor: norm(tr.getAttribute("data-doctor")),
+            phone: norm(tr.getAttribute("data-phone")),
+            role: norm(tr.getAttribute("data-role")),
+            main: norm(tr.getAttribute("data-main")),
+            service: norm(tr.getAttribute("data-service")),
+            active: norm(tr.getAttribute("data-active")),
+            generalPrice: (tr.getAttribute("data-general-price") || "").trim(),
+            customPrice: (tr.getAttribute("data-custom-price") || "").trim(),
+          };
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput?.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return (
+            d.doctor.includes(q) ||
+            d.phone.includes(q) ||
+            d.service.includes(q) ||
+            d.main.includes(q)
+          );
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+
+          const r = norm(cpfRole?.value);
+          const m = norm(cpfMain?.value);
+          const s = norm(cpfService?.value);
+          const a = norm(cpfActive?.value);
+          const hc = norm(cpfHasCustom?.value);
+
+          if (r && d.role !== r) return false;
+          if (m && d.main !== m) return false;
+          if (s && d.service !== s) return false;
+          if (a && d.active !== a) return false;
+
+          if (hc === "1" && !d.customPrice) return false;
+          if (hc === "0" && !!d.customPrice) return false;
+
+          return true;
+        }
+
+        function perPageVal() {
+          const v = rowsSelect?.value || "10";
+          return v === "all" ? filteredRows.length : parseInt(v, 10) || 10;
+        }
+
+        function totalPages() {
+          const p = perPageVal();
+          if (p <= 0) return 1;
+          return Math.max(1, Math.ceil(filteredRows.length / p));
+        }
+
+        function getVisibleRows() {
+          return filteredRows.filter((tr) => !tr.classList.contains("d-none"));
+        }
+
+        function refreshCustomCell(tr) {
+          const d = getRowData(tr);
+          const cell = tr.querySelector(".custom-price-cell");
+          if (!cell) return;
+
+          if (d.customPrice) {
+            cell.innerHTML = `
+              <span class="custom-pill is-set">
+                <span class="dot"></span>
+                <span class="txt"><span class="bold">${Number(d.customPrice).toFixed(2)}</span> SR</span>
+              </span>
+            `;
+          } else {
+            cell.innerHTML = `
+              <span class="custom-pill">
+                <span class="dot"></span>
+                <span class="txt price-muted">—</span>
+              </span>
+            `;
+          }
+        }
+
+        function render() {
+          allRows.forEach((tr) => tr.classList.add("d-none"));
+
+          const p = perPageVal();
+          const pages = totalPages();
+
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+          } else {
+            const start = (currentPage - 1) * p;
+            const end = start + p;
+            filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+
+          if (checkAllVisible) {
+            const vis = getVisibleRows();
+            if (vis.length === 0) {
+              checkAllVisible.checked = false;
+              checkAllVisible.indeterminate = false;
+            } else {
+              const checkedCount = vis.filter((tr) => tr.querySelector(".row-check")?.checked).length;
+              checkAllVisible.checked = checkedCount === vis.length;
+              checkAllVisible.indeterminate = checkedCount > 0 && checkedCount < vis.length;
+            }
+          }
+        }
+
+        function applyAll() {
+          filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+          currentPage = 1;
+
+          if (checkAllVisible) {
+            checkAllVisible.checked = false;
+            checkAllVisible.indeterminate = false;
+          }
+          render();
+        }
+
+        // Search events
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+
+        // Reset (clears search + filters)
+        if (btnReset)
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            if (cpfRole) cpfRole.value = "";
+            if (cpfMain) cpfMain.value = "";
+            if (cpfService) cpfService.value = "";
+            if (cpfActive) cpfActive.value = "";
+            if (cpfHasCustom) cpfHasCustom.value = "";
+            applyAll();
+          });
+
+        // Filters
+        if (btnApplyFilter)
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll();
+            const modal = bootstrap.Modal.getInstance(document.getElementById("custom-price-filter-modal"));
+            if (modal) modal.hide();
+          });
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", () => {
+            if (cpfRole) cpfRole.value = "";
+            if (cpfMain) cpfMain.value = "";
+            if (cpfService) cpfService.value = "";
+            if (cpfActive) cpfActive.value = "";
+            if (cpfHasCustom) cpfHasCustom.value = "";
+            applyAll();
+          });
+
+        // Pagination
+        if (rowsSelect)
+          rowsSelect.addEventListener("change", () => {
+            currentPage = 1;
+            if (checkAllVisible) {
+              checkAllVisible.checked = false;
+              checkAllVisible.indeterminate = false;
+            }
+            render();
+          });
+
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        // Select visible rows
+        if (checkAllVisible)
+          checkAllVisible.addEventListener("change", () => {
+            const vis = getVisibleRows();
+            vis.forEach((tr) => {
+              const cb = tr.querySelector(".row-check");
+              if (cb) cb.checked = checkAllVisible.checked;
+            });
+            render();
+          });
+
+        // Active toggle + row checkbox
+        tbody.addEventListener("change", (e) => {
+          const t = e.target;
+          if (!(t instanceof HTMLInputElement)) return;
+
+          if (t.classList.contains("row-check")) {
+            render();
+            return;
+          }
+
+          if (t.classList.contains("active-switch")) {
+            const tr = t.closest("tr");
+            if (!tr) return;
+            tr.setAttribute("data-active", t.checked ? "1" : "0");
+            applyAll();
+          }
+        });
+
+        // Open edit modal
+        tbody.addEventListener("click", (e) => {
+          const btn = e.target.closest(".edit-custom-price-btn");
+          if (!btn) return;
+
+          const tr = btn.closest("tr");
+          if (!tr) return;
+          currentRow = tr;
+
+          const doctorTxt = tr.querySelector(".staff-info .name")?.textContent?.trim() || "—";
+          const serviceTxt = tr.querySelector(".service-name")?.textContent?.trim() || "—";
+          const mainTxt = tr.querySelector(".service-main")?.textContent?.trim() || "—";
+
+          const general = (tr.getAttribute("data-general-price") || "").trim();
+          const custom = (tr.getAttribute("data-custom-price") || "").trim();
+
+          cpDoctorLabel.textContent = doctorTxt;
+          cpServiceLabel.textContent = serviceTxt;
+          cpMainLabel.textContent = mainTxt;
+          cpGeneralLabel.textContent = general ? `${Number(general).toFixed(2)} SR` : "—";
+
+          cpPriceInput.value = custom ? Number(custom).toFixed(2) : "";
+          if (cpPriceError) cpPriceError.classList.add("d-none");
+
+          if (editModal) editModal.show();
+        });
+
+        // Save custom price
+        if (btnSave)
+          btnSave.addEventListener("click", () => {
+            if (!currentRow) return;
+
+            const raw = (cpPriceInput.value || "").trim();
+
+            // empty => remove custom price
+            if (!raw) {
+              currentRow.setAttribute("data-custom-price", "");
+              refreshCustomCell(currentRow);
+              if (editModal) editModal.hide();
+              return;
+            }
+
+            const num = Number(raw);
+            if (!isFinite(num) || num < 0) {
+              if (cpPriceError) cpPriceError.classList.remove("d-none");
+              cpPriceInput.focus();
+              return;
+            }
+
+            const fixed = num.toFixed(2);
+            currentRow.setAttribute("data-custom-price", fixed);
+            refreshCustomCell(currentRow);
+
+            if (editModal) editModal.hide();
+          });
+
+        // Import placeholder
+        if (btnImport && importInput) {
+          btnImport.addEventListener("click", () => importInput.click());
+          importInput.addEventListener("change", () => {
+            if (!importInput.files || !importInput.files.length) return;
+            const f = importInput.files[0];
+            alert(`Selected file: ${f.name}\n(Parsing can be added in backend / with XLSX library later.)`);
+            importInput.value = "";
+          });
+        }
+
+        // Export selected to CSV
+        function csvEscape(v) {
+          const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+          if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+          return s;
+        }
+
+        if (btnExport)
+          btnExport.addEventListener("click", () => {
+            const selected = allRows.filter((tr) => tr.querySelector(".row-check")?.checked);
+            if (selected.length === 0) {
+              alert("Please select at least one row to export.");
+              return;
+            }
+
+            const headers = [
+              "Doctor",
+              "Job Title",
+              "Phone",
+              "Main Service",
+              "Service",
+              "Active",
+              "General Price",
+              "Custom Price",
+            ];
+
+            const lines = [headers.map(csvEscape).join(",")];
+
+            selected.forEach((tr) => {
+              const doctor = tr.querySelector(".staff-info .name")?.textContent?.trim() || "";
+              const job = tr.querySelector(".job-title")?.textContent?.trim() || "";
+              const phone = tr.querySelector("td:nth-child(5)")?.textContent?.trim() || "";
+              const service = tr.querySelector(".service-name")?.textContent?.trim() || "";
+              const main = tr.querySelector(".service-main")?.textContent?.trim() || "";
+
+              const active = tr.getAttribute("data-active") === "1" ? "Active" : "Inactive";
+              const gp = (tr.getAttribute("data-general-price") || "").trim();
+              const cp = (tr.getAttribute("data-custom-price") || "").trim();
+
+              lines.push([
+                doctor,
+                job,
+                phone,
+                main,
+                service,
+                active,
+                gp ? Number(gp).toFixed(2) : "",
+                cp ? Number(cp).toFixed(2) : "",
+              ].map(csvEscape).join(","));
+            });
+
+            const csvContent = "\ufeff" + lines.join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "custom-price-export.csv";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          });
+
+        // Tooltips init
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach((el) => new bootstrap.Tooltip(el));
+
+        // Init custom cells + apply
+        allRows.forEach(refreshCustomCell);
+        applyAll();
+      })();
+    </script>
+  </body>
+</html>

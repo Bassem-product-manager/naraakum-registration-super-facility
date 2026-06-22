@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Order Management</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green:#0f8c8c; }
+
+    /* Hide duplicated order-code shown inside patient name */
+    .patient-cell .patient-info .name .staff-code { display: none !important; }
+
+    /* ===== Fix Assign / Invoice alignment ===== */
+    .orders-table th, .orders-table td { vertical-align: middle; }
+    .orders-table .col-code { white-space: nowrap; }
+    .orders-table .assign-cell,
+    .orders-table .invoice-cell{
+      text-align:center;
+      white-space: nowrap;
+    }
+    .orders-table .assign-name{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width: 92px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(16,24,40,.12);
+      background: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      user-select:none;
+    }
+    .orders-table .assign-name.is-empty{
+      border-style: dashed;
+      color: rgba(16,24,40,.65);
+    }
+    .orders-table .assign-btn,
+    .orders-table .invoice-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(16,24,40,.12);
+      background:#fff;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .orders-table .assign-btn:hover,
+    .orders-table .invoice-btn:hover,
+    .orders-table .assign-name:hover{
+      border-color: rgba(15,140,140,.35);
+      box-shadow: 0 0 0 3px rgba(15,140,140,.08);
+    }
+    .orders-table .assign-btn i,
+    .orders-table .invoice-btn i{ color: var(--nk-green); }
+
+    /* ===== Status: Under Review (replacing Pending) ===== */
+    .status-pill.st-underreview{
+      background: rgba(255, 193, 7, .14);
+      border: 1px solid rgba(255, 193, 7, .30);
+      color: rgba(133, 92, 0, 1);
+      font-weight: 900;
+    }
+
+    /* ===== Assign Modal UI ===== */
+    .assign-modal .modal-content{ border-radius: 16px; overflow: hidden; }
+    .assign-modal .modal-header{ border-bottom: 1px solid rgba(0,0,0,.06); }
+    .assign-modal .modal-title{ font-weight: 900; }
+    .assign-modal .search-mini{
+      display:flex; gap:10px; align-items:center;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      background:#fff;
+    }
+    .assign-modal .search-mini input{
+      border:none; outline:none; width:100%;
+      font-size: 14px;
+    }
+    .assign-modal .doc-list{
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .assign-modal .doc-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      background:#fff;
+      cursor:pointer;
+    }
+    .assign-modal .doc-item:hover{
+      border-color: rgba(15,140,140,.35);
+      box-shadow: 0 0 0 3px rgba(15,140,140,.08);
+    }
+    .assign-modal .doc-left{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .assign-modal .doc-avatar{
+      width: 36px; height:36px; border-radius: 12px;
+      border: 1px solid rgba(15,140,140,.18);
+      background: rgba(15,140,140,.06);
+      display:grid; place-items:center;
+      flex: 0 0 36px;
+    }
+    .assign-modal .doc-meta{ min-width:0; }
+    .assign-modal .doc-name{
+      margin:0; font-weight: 900; font-size: 14px;
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+    }
+    .assign-modal .doc-spec{
+      margin:2px 0 0; font-size: 12px; color: rgba(0,0,0,.55);
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+    }
+    .assign-modal .doc-action{
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight: 900; font-size: 12px;
+      color: var(--nk-green);
+      white-space: nowrap;
+    }
+
+    /* ===== KSA Clock ===== */
+    .ksa-clock{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:34px;
+      padding:0 10px;
+      border:1px solid rgba(16,24,40,.10);
+      background:#fff;
+      border-radius:12px;
+      font-weight:900;
+      font-size:12px;
+      color:#101828;
+      white-space:nowrap;
+    }
+    .ksa-clock .tz{
+      color:var(--nk-green);
+      font-weight:900;
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(15,140,140,.22);
+      background:rgba(15,140,140,.06);
+    }
+
+    /* ==== Sidebar logo area (BMC) ==== */
+    .facility-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:6px;
+    }
+    .facility-mini-logo{
+      width:22px;
+      height:22px;
+      border-radius:8px;
+      border:1px solid rgba(15,140,140,.18);
+      background:#fff;
+      padding:3px;
+      object-fit:contain;
+      flex:0 0 22px;
+    }
+    .facility-name{
+      font-weight:900;
+      line-height:1;
+      margin:0;
+    }
+        .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+    <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+<body>
+  <div class="preloader"></div>
+
+  <div id="full-container">
+    <!-- Side Menu -->
+                      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/orders-list-2.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List 2</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+    <main class="main-page">
+                              <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Order Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+      <div class="page-root">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+            <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="page-content">
+        <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-lg">
+              <div class="search-box-group w-100 search-box-group--md">
+                <input id="ordersSearchInput" type="text" class="form-control form-control-32" placeholder="Search by Order No / Patient / Assignee" />
+                <button id="btnOrdersSearch" type="button" class="btn btn-primary btn-32" title="Search"><i class="fi fi-rr-search"></i></button>
+                <button id="btnOrdersReset" type="button" class="btn btn-primary-revers btn-32"><i class="fi fi-rr-rotate-right"></i></button>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-auto">
+              <div class="search-actions">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#orders-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+                <a href="create-order.html" class="btn btn-primary btn-icon btn-40"><i class="fi fi-rr-plus-small"></i><span>New Order</span></a>
+                <button id="btnOrdersExport" type="button" class="btn btn-primary-revers btn-icon btn-40"><i class="fi fi-rr-download"></i><span>Export</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabel-box-item mt-24 orders-table-wrap">
+          <div class="box-body p-12">
+            <div class="table-responsive">
+              <table class="staff-table naraakum-table table-tight orders-table" id="ordersTable">
+                <thead>
+                  <tr>
+                    <th class="col-check"><div class="head-check"><input type="checkbox" id="checkAllVisibleOrders" title="Select visible rows" /></div></th>
+                    <th class="col-seq">#</th>
+                    <th class="col-code">Order No</th>
+                    <th>Patient Name</th>
+                    <th>Service</th>
+                    <th>Order Date</th>
+                    <th>Scheduled Date</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th class="text-center">Assign</th>
+                    <th class="text-center">Invoices</th>
+                    <th class="col-actions text-center">Actions</th>
+                  </tr>
+                </thead>
+
+                <tbody id="ordersTbody">
+                  <tr data-order="br03-or-00001" data-patient="john doe" data-assignment="dr. walled" data-service="consultation" data-main="cardiology" data-status="accepted" data-orderdate="2026-01-16">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">1</span></td>
+                    <td class="col-code"><span class="staff-code order-code">BR03-OR-00001</span></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">BR03-OR-00001</span>John Doe</p>
+                          <div class="meta">Male, 45</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Consultation</div><div class="service-main">Cardiology</div></td>
+                    <td><div class="date-top">Jan 16, 2026</div><div class="date-sub">10:15 AM</div></td>
+                    <td><div class="date-top">Jan 20, 2026</div><div class="date-sub">01:30 AM</div></td>
+                    <td class="price-cell"><span class="bold">401.35</span> SR</td>
+                    <td><span class="status-pill st-accepted">Accepted</span></td>
+                    <td class="assign-cell"><span class="assign-name" role="button" tabindex="0">Dr. Walled</span></td>
+                    <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+                    <td class="col-actions">
+                      <div class="actions-cell">
+                        <a class="action-icon" href="orders-details.html?order=BR03-OR-00001" title="Details"><i class="fi fi-rr-eye"></i></a>
+                        <button class="action-icon danger" type="button" title="Cancel"><i class="fi fi-rr-cross-small"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00002" data-patient="jane roe" data-assignment="assign" data-service="x-ray scan" data-main="radiology" data-status="pending" data-orderdate="2026-01-16">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">2</span></td>
+                    <td class="col-code"><span class="staff-code order-code">BR03-OR-00002</span></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">BR03-OR-00002</span>Jane Roe</p>
+                          <div class="meta">Female, 32</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">X-Ray Scan</div><div class="service-main">Radiology</div></td>
+                    <td><div class="date-top">Jan 16, 2026</div><div class="date-sub">11:05 AM</div></td>
+                    <td><div class="date-top">Jan 20, 2026</div><div class="date-sub">09:00 AM</div></td>
+                    <td class="price-cell"><span class="bold">115.00</span> SR</td>
+                    <td><span class="status-pill st-pending">Pending</span></td>
+                    <td class="assign-cell"><button type="button" class="assign-btn"><i class="fi fi-rr-user-add"></i>Assign</button></td>
+                    <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+                    <td class="col-actions">
+                      <div class="actions-cell">
+                        <a class="action-icon" href="orders-details.html?order=BR03-OR-00002" title="Details"><i class="fi fi-rr-eye"></i></a>
+                        <button class="action-icon danger" type="button" title="Cancel"><i class="fi fi-rr-cross-small"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00003" data-patient="mike lee" data-assignment="assign" data-service="annual checkup" data-main="general" data-status="completed" data-orderdate="2026-01-15">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">3</span></td>
+                    <td class="col-code"><span class="staff-code order-code">BR03-OR-00003</span></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">BR03-OR-00003</span>Mike Lee</p>
+                          <div class="meta">Male, 28</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Annual Checkup</div><div class="service-main">General</div></td>
+                    <td><div class="date-top">Jan 15, 2026</div><div class="date-sub">03:20 AM</div></td>
+                    <td><div class="date-top">Jan 21, 2026</div><div class="date-sub">02:15 AM</div></td>
+                    <td class="price-cell"><span class="bold">0.00</span> SR</td>
+                    <td><span class="status-pill st-complete">Completed</span></td>
+                    <td class="assign-cell"><button type="button" class="assign-btn"><i class="fi fi-rr-user-add"></i>Assign</button></td>
+                    <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+                    <td class="col-actions">
+                      <div class="actions-cell">
+                        <a class="action-icon" href="orders-details.html?order=BR03-OR-00003" title="Details"><i class="fi fi-rr-eye"></i></a>
+                        <button class="action-icon danger" type="button" title="Cancel"><i class="fi fi-rr-cross-small"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00004" data-patient="omar hassan" data-assignment="dr. walled" data-service="blood sugar" data-main="laboratory tests" data-package="sugar control package" data-status="accepted" data-orderdate="2026-01-17">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">4</span></td>
+                    <td class="col-code"><span class="staff-code order-code">BR03-OR-00004</span></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">BR03-OR-00004</span>Omar Hassan</p>
+                          <div class="meta">Male, 39</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Blood Sugar</div><div class="service-main">Sugar Control Package</div></td>
+                    <td><div class="date-top">Jan 17, 2026</div><div class="date-sub">09:20 AM</div></td>
+                    <td><div class="date-top">Jan 22, 2026</div><div class="date-sub">08:30 AM</div></td>
+                    <td class="price-cell"><span class="bold">401.35</span> SR</td>
+                    <td><span class="status-pill st-accepted">Accepted</span></td>
+                    <td class="assign-cell"><span class="assign-name" role="button" tabindex="0">Dr. Walled</span></td>
+                    <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+                    <td class="col-actions">
+                      <div class="actions-cell">
+                        <a class="action-icon" href="orders-details.html?order=BR03-OR-00004" title="Details"><i class="fi fi-rr-eye"></i></a>
+                        <button class="action-icon danger" type="button" title="Cancel"><i class="fi fi-rr-cross-small"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00005" data-patient="salma adel" data-assignment="assign" data-service="cardiology" data-main="heart clinic" data-package="heart check package" data-status="pending" data-orderdate="2026-01-18">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">5</span></td>
+                    <td class="col-code"><span class="staff-code order-code">BR03-OR-00005</span></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">BR03-OR-00005</span>Salma Adel</p>
+                          <div class="meta">Female, 34</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Cardiology</div><div class="service-main">Heart Check Package</div></td>
+                    <td><div class="date-top">Jan 18, 2026</div><div class="date-sub">12:10 PM</div></td>
+                    <td><div class="date-top">Jan 24, 2026</div><div class="date-sub">10:00 AM</div></td>
+                    <td class="price-cell"><span class="bold">525.00</span> SR</td>
+                    <td><span class="status-pill st-pending">Pending</span></td>
+                    <td class="assign-cell"><button type="button" class="assign-btn"><i class="fi fi-rr-user-add"></i>Assign</button></td>
+                    <td class="invoice-cell"><a class="invoice-btn" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i>Invoice</a></td>
+                    <td class="col-actions">
+                      <div class="actions-cell">
+                        <a class="action-icon" href="orders-details.html?order=BR03-OR-00005" title="Details"><i class="fi fi-rr-eye"></i></a>
+                        <button class="action-icon danger" type="button" title="Cancel"><i class="fi fi-rr-cross-small"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="table-footer">
+                <div class="rows-select">
+                  <select id="ordersRowsPerPage">
+                    <option value="1">1</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="all">All</option>
+                  </select>
+                  <span class="fsize-12 text-grey">Rows per page</span>
+                </div>
+
+                <div class="page-indicator" id="ordersPageIndicator">Page 1 of 1</div>
+
+                <div class="pager">
+                  <button class="pg-btn" id="ordersFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                  <button class="pg-btn" id="ordersPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                  <span class="pg-current" id="ordersCurrentPageBadge">1</span>
+                  <button class="pg-btn" id="ordersNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                  <button class="pg-btn" id="ordersLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modal fade" id="orders-filter-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Filter Orders</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Main Service</label>
+              <select id="ofMainService" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Cardiology</option>
+                <option>Radiology</option>
+                <option>General</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Service</label>
+              <select id="ofService" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Consultation</option>
+                <option>X-Ray Scan</option>
+                <option>Annual Checkup</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Status</label>
+              <select id="ofStatus" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Accepted</option>
+                <option>Under Review</option>
+                <option>In Progress</option>
+                <option>Cancelled</option>
+                <option>Completed</option>
+                <option>Missed</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Assignment</label>
+              <select id="ofAssignment" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Dr. Walled</option>
+                <option>Dr. Mohamed</option>
+                <option>Nurse Mona</option>
+                <option>Assign</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date From</label>
+              <input id="ofDateFrom" type="date" class="form-control form-control-32" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date To</label>
+              <input id="ofDateTo" type="date" class="form-control form-control-32" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-between">
+          <button id="btnOrdersFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnOrdersApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Modal -->
+  <div class="modal fade assign-modal" id="assignModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">Assign Doctor</h5>
+            <p class="fsize-12 text-grey m-0">Choose one doctor to assign for this order.</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="search-mini">
+            <i class="fi fi-rr-search" style="color: var(--nk-green);"></i>
+            <input id="assignSearch" type="text" placeholder="Search doctor..." />
+          </div>
+
+          <div class="doc-list" id="doctorList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (ONCE only) -->
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/adminSideMenu.js"></script>
+
+  <script>
+    /* KSA Clock (12h) */
+    (function(){
+      const el = document.getElementById("ksaTime");
+      if(!el) return;
+      function tick(){
+        try{
+          const fmt = new Intl.DateTimeFormat("en-US",{
+            timeZone:"Asia/Riyadh",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:true
+          });
+          el.textContent = fmt.format(new Date());
+        }catch(e){
+          el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+        }
+      }
+      tick(); setInterval(tick, 1000);
+    })();
+
+    /* Order No format: 2 digits + '-' + 6 digits */
+    function formatOrderNoFromDataOrder(dataOrder){
+      const s = (dataOrder || "").toLowerCase();
+      const m = s.match(/br(\d{1,2})-or-(\d{1,6})/);
+      if(!m) return (dataOrder || "").toUpperCase();
+      const br = String(parseInt(m[1],10)).padStart(2,"0");
+      const num = String(parseInt(m[2],10)).padStart(6,"0");
+      return `${br}-${num}`;
+    }
+
+    /* Pending => Under Review */
+    function normalizeStatusRow(tr){
+      const ds = (tr.getAttribute("data-status") || "").toLowerCase().trim();
+      if(ds === "pending"){
+        tr.setAttribute("data-status","under-review");
+        const pill = tr.querySelector(".status-pill");
+        if(pill){
+          pill.textContent = "Under Review";
+          pill.classList.remove("st-pending");
+          pill.classList.add("st-underreview");
+        }
+      }
+    }
+
+    /* Assign modal */
+    (function(){
+      const assignModalEl = document.getElementById("assignModal");
+      const doctorListEl = document.getElementById("doctorList");
+      const searchEl = document.getElementById("assignSearch");
+      if(!assignModalEl || !doctorListEl) return;
+
+      const doctors = [
+        {name:"Dr. Walled", spec:"Cardiology"},
+        {name:"Dr. Mohamed", spec:"Radiology"},
+        {name:"Dr. Sara", spec:"Dermatology"},
+        {name:"Dr. Ahmed", spec:"Internal Medicine"},
+        {name:"Dr. Mona", spec:"Pediatrics"},
+        {name:"Nurse Mona", spec:"Home Care"}
+      ];
+
+      let activeRow = null;
+
+      function renderDoctors(filter){
+        const q = (filter || "").toLowerCase().trim();
+        const list = doctors.filter(d => !q || d.name.toLowerCase().includes(q) || d.spec.toLowerCase().includes(q));
+        doctorListEl.innerHTML = list.map(d => `
+          <div class="doc-item" role="button" tabindex="0" data-name="${d.name}">
+            <div class="doc-left">
+              <div class="doc-avatar"><i class="fi fi-rr-user" style="color: var(--nk-green);"></i></div>
+              <div class="doc-meta">
+                <p class="doc-name">${d.name}</p>
+                <p class="doc-spec">${d.spec}</p>
+              </div>
+            </div>
+            <div class="doc-action"><i class="fi fi-rr-check" style="color: var(--nk-green);"></i>Assign</div>
+          </div>
+        `).join("");
+      }
+
+      function openAssignForRow(tr){
+        activeRow = tr;
+        if(searchEl) searchEl.value = "";
+        renderDoctors("");
+        const m = bootstrap.Modal.getOrCreateInstance(assignModalEl);
+        m.show();
+        setTimeout(()=> searchEl && searchEl.focus(), 100);
+      }
+
+      document.addEventListener("click", function(e){
+        const btn = e.target.closest(".assign-btn");
+        const chip = e.target.closest(".assign-name");
+        if(btn || chip){
+          const tr = (btn || chip).closest("tr");
+          if(tr) openAssignForRow(tr);
+        }
+      });
+
+      doctorListEl.addEventListener("click", function(e){
+        const item = e.target.closest(".doc-item");
+        if(!item || !activeRow) return;
+        const chosen = item.getAttribute("data-name") || "Assign";
+        activeRow.setAttribute("data-assignment", chosen.toLowerCase());
+
+        const assignCell = activeRow.querySelector("td.assign-cell");
+        if(assignCell){
+          assignCell.innerHTML = `<span class="assign-name" role="button" tabindex="0">${chosen}</span>`;
+        }
+        bootstrap.Modal.getOrCreateInstance(assignModalEl).hide();
+      });
+
+      if(searchEl){
+        searchEl.addEventListener("input", function(){ renderDoctors(searchEl.value); });
+      }
+    })();
+
+    /* Orders table logic */
+    (function () {
+      const ORDER_DETAILS_KEY = "nk_facility_order_details";
+      const packageOverrides = {
+        "BR03-OR-00004": {
+          serviceName: "Blood Sugar",
+          packageName: "Sugar Control Package",
+          serviceFamily: "Laboratory Tests",
+          items: [
+            { quantity: "1 Test", serviceName: "Fasting Blood Sugar", status: "Accepted", providerName: "Naraakum Lab", phone: "+966530516730", email: "lab@naraakum.com", price: 120.00 },
+            { quantity: "1 Test", serviceName: "HbA1c", status: "Accepted", providerName: "Naraakum Lab", phone: "+966530516730", email: "lab@naraakum.com", price: 135.00 },
+            { quantity: "1 Test", serviceName: "Postprandial Blood Sugar", status: "Accepted", providerName: "Naraakum Lab", phone: "+966530516730", email: "lab@naraakum.com", price: 146.35 }
+          ]
+        },
+        "BR03-OR-00005": {
+          serviceName: "Cardiology",
+          packageName: "Heart Check Package",
+          serviceFamily: "Heart Clinic",
+          items: [
+            { quantity: "1 Test", serviceName: "ECG", status: "Under Review", providerName: "Cardio Unit", phone: "+966530516731", email: "cardio@naraakum.com", price: 145.00 },
+            { quantity: "1 Visit", serviceName: "Cardiology Consultation", status: "Under Review", providerName: "Dr. Kareem Salah", phone: "+966530516732", email: "dr.kareem@naraakum.com", price: 220.00 },
+            { quantity: "1 Test", serviceName: "Lipid Profile", status: "Under Review", providerName: "Naraakum Lab", phone: "+966530516730", email: "lab@naraakum.com", price: 160.00 }
+          ]
+        }
+      };
+      const table = document.getElementById("ordersTable");
+      if (!table) return;
+
+      const tbody = document.getElementById("ordersTbody") || table.querySelector("tbody");
+      const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+      function parseJson(v, fallback) {
+        try { return JSON.parse(v); } catch (_) { return fallback; }
+      }
+
+      function getRowOrderNo(tr) {
+        return (tr.querySelector(".order-code")?.textContent || tr.getAttribute("data-order") || "")
+          .toString()
+          .trim()
+          .toUpperCase();
+      }
+
+      function toNumber(text) {
+        const n = parseFloat((text || "").toString().replace(/[^\d.]/g, ""));
+        return Number.isFinite(n) ? n : 0;
+      }
+
+      function applyPackagePresentation(tr) {
+        const override = packageOverrides[getRowOrderNo(tr)];
+        if (!override) return;
+
+        tr.setAttribute("data-service", override.serviceName.toLowerCase());
+        tr.setAttribute("data-main", override.serviceFamily.toLowerCase());
+        tr.setAttribute("data-package", override.packageName.toLowerCase());
+
+        const serviceNameEl = tr.querySelector(".service-name");
+        const serviceMainEl = tr.querySelector(".service-main");
+        if (serviceNameEl) serviceNameEl.textContent = override.serviceName;
+        if (serviceMainEl) serviceMainEl.textContent = override.packageName;
+      }
+
+      function buildOrderDetailPayload(tr) {
+        const orderNo = getRowOrderNo(tr);
+        const override = packageOverrides[orderNo];
+        const status = (tr.querySelector(".status-pill")?.textContent || "").trim() || "Accepted";
+        const assignment = (tr.querySelector(".assign-name, .assign-btn")?.textContent || "").trim() || "To be assigned";
+        const price = toNumber(tr.querySelector(".price-cell")?.textContent || "0");
+        const patientName = ((tr.querySelector(".patient-info .name")?.textContent || "").replace(orderNo, "")).trim();
+        const patientMeta = (tr.querySelector(".patient-info .meta")?.textContent || "").split(",");
+        const orderDate = (tr.querySelectorAll(".date-top")[0]?.textContent || "").trim();
+        const orderTime = (tr.querySelectorAll(".date-sub")[0]?.textContent || "").trim();
+        const appointmentDate = (tr.querySelectorAll(".date-top")[1]?.textContent || "").trim();
+        const appointmentTime = (tr.querySelectorAll(".date-sub")[1]?.textContent || "").trim();
+        const serviceName = override
+          ? override.serviceName
+          : (tr.querySelector(".service-name")?.textContent || "").trim();
+        const packageName = override ? override.packageName : "";
+        const serviceFamily = override
+          ? override.serviceFamily
+          : ((tr.getAttribute("data-main") || "").trim());
+
+        return {
+          orderNo,
+          patientName,
+          patientGender: (patientMeta[0] || "").trim(),
+          patientAge: (patientMeta[1] || "").trim(),
+          price,
+          status,
+          paymentMethod: "Wallet Payment",
+          orderDate,
+          orderTime,
+          appointmentDate,
+          appointmentTime,
+          serviceName,
+          serviceFamily,
+          packageName,
+          itemCountLabel: `${override ? override.items.length : 1} Item${override && override.items.length > 1 ? "s" : ""}`,
+          items: override
+            ? override.items
+            : [
+                {
+                  quantity: "1 Session",
+                  serviceName,
+                  status,
+                  providerName: assignment === "Assign" ? "To be assigned" : assignment,
+                  phone: "-",
+                  email: "-",
+                  price
+                }
+              ]
+        };
+      }
+
+      function persistOrderDetails() {
+        const existing = parseJson(localStorage.getItem(ORDER_DETAILS_KEY), {});
+        const next = Object.assign({}, existing);
+        allRows.forEach((tr) => {
+          const detail = buildOrderDetailPayload(tr);
+          if (detail.orderNo) next[detail.orderNo] = detail;
+        });
+        localStorage.setItem(ORDER_DETAILS_KEY, JSON.stringify(next));
+      }
+
+      // apply formatting
+      allRows.forEach(tr=>{
+        const formatted = formatOrderNoFromDataOrder(tr.getAttribute("data-order"));
+        const codeEl = tr.querySelector(".order-code");
+        if(codeEl) codeEl.textContent = formatted;
+
+        applyPackagePresentation(tr);
+        normalizeStatusRow(tr);
+
+        const chip = tr.querySelector(".assign-name");
+        if(chip){
+          const t = (chip.textContent || "").trim().toLowerCase();
+          if(t === "assign" || t === ""){
+            chip.classList.add("is-empty");
+            chip.textContent = "Assign";
+          }
+        }
+      });
+
+      const searchInput = document.getElementById("ordersSearchInput");
+      const btnSearch = document.getElementById("btnOrdersSearch");
+      const btnReset = document.getElementById("btnOrdersReset");
+
+      const rowsSelect = document.getElementById("ordersRowsPerPage");
+      const indicator = document.getElementById("ordersPageIndicator");
+      const currentBadge = document.getElementById("ordersCurrentPageBadge");
+      const btnFirst = document.getElementById("ordersFirstPage");
+      const btnPrev = document.getElementById("ordersPrevPage");
+      const btnNext = document.getElementById("ordersNextPage");
+      const btnLast = document.getElementById("ordersLastPage");
+
+      const checkAllVisible = document.getElementById("checkAllVisibleOrders");
+
+      const ofMainService = document.getElementById("ofMainService");
+      const ofService = document.getElementById("ofService");
+      const ofStatus = document.getElementById("ofStatus");
+      const ofAssignment = document.getElementById("ofAssignment");
+      const ofDateFrom = document.getElementById("ofDateFrom");
+      const ofDateTo = document.getElementById("ofDateTo");
+      const btnApplyFilter = document.getElementById("btnOrdersApplyFilter");
+      const btnFilterReset = document.getElementById("btnOrdersFilterReset");
+
+      const btnExport = document.getElementById("btnOrdersExport");
+
+      let currentPage = 1;
+      let filteredRows = [...allRows];
+
+      function norm(v) { return (v || "").toString().trim().toLowerCase(); }
+
+      function getRowData(tr) {
+        const st = norm(tr.getAttribute("data-status"));
+        return {
+          order: norm(tr.querySelector(".order-code")?.textContent || tr.getAttribute("data-order")),
+          patient: norm(tr.getAttribute("data-patient")),
+          assignment: norm(tr.getAttribute("data-assignment")),
+          service: norm(tr.getAttribute("data-service")),
+          main: norm(tr.getAttribute("data-main")),
+          packageName: norm(tr.getAttribute("data-package")),
+          status: st,
+          orderdate: norm(tr.getAttribute("data-orderdate")),
+        };
+      }
+
+      function matchesSearch(tr) {
+        const q = norm(searchInput.value);
+        if (!q) return true;
+        const d = getRowData(tr);
+        return d.order.includes(q) || d.patient.includes(q) || d.assignment.includes(q) || d.service.includes(q) || d.packageName.includes(q);
+      }
+
+      function matchesFilters(tr) {
+        const d = getRowData(tr);
+        const ms = norm(ofMainService.value);
+        const s = norm(ofService.value);
+        const st = norm(ofStatus.value);
+        const as = norm(ofAssignment.value);
+        const from = norm(ofDateFrom.value);
+        const to = norm(ofDateTo.value);
+
+        if (ms && d.main !== ms) return false;
+        if (s && d.service !== s) return false;
+
+        if (st) {
+          const stKey = (st === "under review") ? "under-review" : st;
+          if (d.status !== stKey) return false;
+        }
+
+        if (as && d.assignment !== as) return false;
+
+        if (from && d.orderdate && d.orderdate < from) return false;
+        if (to && d.orderdate && d.orderdate > to) return false;
+
+        return true;
+      }
+
+      function perPageVal() {
+        const v = rowsSelect.value;
+        return v === "all" ? filteredRows.length : parseInt(v, 10);
+      }
+
+      function totalPages() {
+        const p = perPageVal();
+        if (p <= 0) return 1;
+        return Math.max(1, Math.ceil(filteredRows.length / p));
+      }
+
+      function getVisibleRows() {
+        return filteredRows.filter((tr) => !tr.classList.contains("d-none"));
+      }
+
+      function render() {
+        allRows.forEach((tr) => tr.classList.add("d-none"));
+
+        const p = perPageVal();
+        const pages = totalPages();
+
+        if (currentPage > pages) currentPage = pages;
+        if (currentPage < 1) currentPage = 1;
+
+        if (rowsSelect.value === "all") {
+          filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+        } else {
+          const start = (currentPage - 1) * p;
+          const end = start + p;
+          filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+        }
+
+        indicator.textContent = `Page ${currentPage} of ${pages}`;
+        currentBadge.textContent = String(currentPage);
+
+        const disableNav = rowsSelect.value === "all" || pages === 1;
+        btnFirst.disabled = disableNav || currentPage === 1;
+        btnPrev.disabled = disableNav || currentPage === 1;
+        btnNext.disabled = disableNav || currentPage === pages;
+        btnLast.disabled = disableNav || currentPage === pages;
+
+        const vis = getVisibleRows();
+        if (!vis.length) {
+          if (checkAllVisible) checkAllVisible.checked = false;
+        } else {
+          const allChecked = vis.every((tr) => tr.querySelector(".row-check")?.checked);
+          if (checkAllVisible) checkAllVisible.checked = allChecked;
+        }
+      }
+
+      function applyAll() {
+        filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+        currentPage = 1;
+        if (checkAllVisible) checkAllVisible.checked = false;
+        render();
+      }
+
+      btnSearch.addEventListener("click", applyAll);
+      searchInput.addEventListener("input", applyAll);
+
+      btnReset.addEventListener("click", () => {
+        searchInput.value = "";
+        ofMainService.value = "";
+        ofService.value = "";
+        ofStatus.value = "";
+        ofAssignment.value = "";
+        ofDateFrom.value = "";
+        ofDateTo.value = "";
+        applyAll();
+      });
+
+      btnApplyFilter.addEventListener("click", () => {
+        applyAll();
+        const el = document.getElementById("orders-filter-modal");
+        if (el && window.bootstrap) bootstrap.Modal.getOrCreateInstance(el).hide();
+      });
+
+      btnFilterReset.addEventListener("click", () => {
+        ofMainService.value = "";
+        ofService.value = "";
+        ofStatus.value = "";
+        ofAssignment.value = "";
+        ofDateFrom.value = "";
+        ofDateTo.value = "";
+        applyAll();
+      });
+
+      rowsSelect.addEventListener("change", () => {
+        currentPage = 1;
+        if (checkAllVisible) checkAllVisible.checked = false;
+        render();
+      });
+
+      btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+      btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+      btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+      btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+      checkAllVisible.addEventListener("change", () => {
+        const vis = getVisibleRows();
+        vis.forEach((tr) => {
+          const cb = tr.querySelector(".row-check");
+          if (cb) cb.checked = checkAllVisible.checked;
+        });
+      });
+
+      tbody.addEventListener("change", (e) => {
+        const t = e.target;
+        if (!(t instanceof HTMLInputElement)) return;
+        if (!t.classList.contains("row-check")) return;
+        render();
+      });
+
+      function csvEscape(v) {
+        const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+        if (/[",]/.test(s)) return `"\${s.replace(/"/g, '""')}"`;
+        return s;
+      }
+
+      btnExport.addEventListener("click", () => {
+        const selected = allRows.filter((tr) => tr.querySelector(".row-check")?.checked);
+        if (!selected.length) { alert("Please select at least one order to export."); return; }
+
+        const headers = ["Order No","Patient Name","Gender","Age","Service","Main Service","Order Date","Scheduled Date","Price","Status","Assignment"];
+        const lines = [];
+        lines.push(headers.map(csvEscape).join(","));
+
+        selected.forEach((tr) => {
+          const d = getRowData(tr);
+          const orderNo = (tr.querySelector(".order-code")?.textContent || d.order || "").trim().toUpperCase();
+          const patientName = (tr.querySelector(".patient-info .name")?.textContent || "").replace(orderNo, "").trim();
+          const meta = (tr.querySelector(".patient-info .meta")?.textContent || "").trim();
+          const parts = meta.split(",").map((x) => (x || "").trim());
+          const gender = parts[0] || "";
+          const age = parts[1] || "";
+
+          const service = (tr.querySelector(".service-name")?.textContent || "").trim();
+          const mainService = (tr.querySelector(".service-main")?.textContent || "").trim();
+
+          const orderDate = (tr.querySelectorAll(".date-top")[0]?.textContent || "").trim();
+          const orderTime = (tr.querySelectorAll(".date-sub")[0]?.textContent || "").trim();
+          const scheduledDate = (tr.querySelectorAll(".date-top")[1]?.textContent || "").trim();
+          const scheduledTime = (tr.querySelectorAll(".date-sub")[1]?.textContent || "").trim();
+
+          const price = (tr.querySelector(".price-cell")?.textContent || "").replace(/\s+/g, " ").trim();
+          const status = (tr.querySelector(".status-pill")?.textContent || "").trim();
+
+          let assignment = (tr.querySelector(".assign-name")?.textContent || "").trim();
+          if (!assignment) assignment = "Assign";
+
+          const row = [
+            orderNo, patientName, gender, age, service, mainService,
+            `${orderDate} ${orderTime}`.trim(), `${scheduledDate} ${scheduledTime}`.trim(),
+            price, status, assignment
+          ];
+          lines.push(row.map(csvEscape).join(","));
+        });
+
+        const csvContent = "\ufeff" + lines.join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "orders-export.csv";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      persistOrderDetails();
+      applyAll();
+    })();
+  </script>
+</body>
+</html>

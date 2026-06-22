@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Question</title>
+    <meta name="description" content="Naraakum Super Admin Registration Questions" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+  </head>
+
+  <body data-menu="menu-registration-questions">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Registration Questions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="AR" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14 switch-account-item" href="../template.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Registration Questions</li>
+              <li class="breadcrumb-item active" aria-current="page">Add Question</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <form class="rq-panel rq-form rq-form--compact" id="addQuestionForm" novalidate>
+            <div class="rq-panel-head">
+              <div>
+                <h3>Add Question</h3>
+              </div>
+            </div>
+
+            <div class="rq-alert" id="formAlert" hidden></div>
+
+            <section class="rq-form-section">
+              <h4>Question Details</h4>
+              <div class="rq-form-grid">
+                <div class="rq-field rq-span-2">
+                  <label for="questionTextAr">Arabic question text</label>
+                  <textarea id="questionTextAr" class="form-control" rows="3" dir="rtl" placeholder="Write the Arabic question text"></textarea>
+                </div>
+                <div class="rq-field rq-span-2">
+                  <label for="questionTextEn">English text, if available</label>
+                  <textarea id="questionTextEn" class="form-control" rows="3" placeholder="Write the English question text"></textarea>
+                </div>
+                <div class="rq-field rq-span-2">
+                  <label for="helperText">Helper description, if available</label>
+                  <textarea id="helperText" class="form-control" rows="2" placeholder="Short helper text shown under the question"></textarea>
+                </div>
+                <div class="rq-field">
+                  <label for="questionType">Question type</label>
+                  <select id="questionType" class="form-control form-control-40"></select>
+                </div>
+                <div class="rq-field">
+                  <label for="questionRequired">Required</label>
+                  <select id="questionRequired" class="form-control form-control-40">
+                    <option value="required">Required</option>
+                    <option value="optional">Optional</option>
+                  </select>
+                </div>
+                <div class="rq-field rq-span-2 rq-conditional" id="optionsWrap" hidden>
+                  <label>Choice options</label>
+                  <div class="rq-choice-builder" id="choiceOptions">
+                    <div class="rq-option-list" id="choiceOptionsList"></div>
+                    <button type="button" class="btn btn-primary-revers btn-32 rq-add-option" id="addChoiceOption">
+                      <i class="fi fi-rr-plus"></i><span>Add option</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="rq-form-section rq-conditional" id="attachmentWrap" hidden>
+              <h4>Attachment Settings</h4>
+              <div class="rq-form-grid">
+                <div class="rq-field">
+                  <label for="attachmentType">Allowed file type</label>
+                  <select id="attachmentType" class="form-control form-control-40">
+                    <option value="image">Image only</option>
+                    <option value="pdf">PDF only</option>
+                    <option value="image_pdf">Image or PDF</option>
+                  </select>
+                </div>
+                <div class="rq-field">
+                  <label for="attachmentCount">Allowed files count</label>
+                  <input id="attachmentCount" type="number" min="1" value="1" class="form-control form-control-40" />
+                </div>
+                <div class="rq-field">
+                  <label for="attachmentSize">Maximum size (MB)</label>
+                  <input id="attachmentSize" type="number" min="1" value="5" class="form-control form-control-40" />
+                </div>
+              </div>
+            </section>
+
+            <section class="rq-form-section">
+              <h4>Question Application Scope</h4>
+              <div class="rq-radio-group">
+                <label><input type="radio" name="scope" value="general" checked /> General / Uncategorized</label>
+                <label><input type="radio" name="scope" value="specialty" /> Linked to a specialty</label>
+              </div>
+
+              <div class="rq-form-grid rq-conditional" id="specialtyScopeWrap" hidden>
+                <div class="rq-field">
+                  <label for="specialtySelect">Specialty</label>
+                  <select id="specialtySelect" class="form-control form-control-40"></select>
+                </div>
+                <div class="rq-field">
+                  <label for="specialtyApplyMode">Apply to</label>
+                  <select id="specialtyApplyMode" class="form-control form-control-40">
+                    <option value="all">All doctors in this specialty</option>
+                    <option value="selected">Selected doctors only</option>
+                    <option value="except">All doctors except selected</option>
+                  </select>
+                </div>
+                <div class="rq-field rq-span-2 rq-conditional" id="specialtyDoctorsWrap" hidden>
+                  <label for="specialtyDoctorSelect">Doctor selection</label>
+                  <div class="rq-target-picker">
+                    <p class="rq-target-copy">Select one or more doctors from your staff list.</p>
+                    <div class="rq-target-controls">
+                      <select id="specialtyDoctorSelect" class="form-control form-control-40"></select>
+                      <button type="button" class="btn btn-primary-revers btn-40" id="addSpecialtyDoctor">Add doctor</button>
+                    </div>
+                    <div class="rq-target-title">Selected Targets</div>
+                    <div class="rq-selected-targets is-empty" id="specialtyDoctorTargets">No doctors selected</div>
+                  </div>
+                </div>
+              </div>
+
+            </section>
+
+            <section class="rq-form-section">
+              <h4>Follow-up Logic</h4>
+              <div class="rq-radio-group">
+                <label><input type="radio" name="followMode" value="standalone" checked /> Standalone question</label>
+                <label><input type="radio" name="followMode" value="followup" /> Follow-up question</label>
+              </div>
+
+              <div class="rq-form-grid rq-conditional" id="followupWrap" hidden>
+                <div class="rq-field rq-span-2">
+                  <label for="parentQuestion">Parent question</label>
+                  <select id="parentQuestion" class="form-control form-control-40"></select>
+                </div>
+                <div class="rq-field">
+                  <label for="triggerValue">Trigger answer / value</label>
+                  <select id="triggerValue" class="form-control form-control-40"></select>
+                </div>
+                <div class="rq-field rq-span-2">
+                  <div class="rq-switch-row">
+                    <label><input type="checkbox" id="followupRequired" checked /> Required when shown</label>
+                    <label><input type="checkbox" id="hiddenDefault" checked /> Hidden by default until condition is met</label>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <div class="rq-form-actions">
+              <button type="reset" class="btn btn-primary-revers btn-40">Reset</button>
+              <button type="submit" class="btn btn-primary btn-40">Save Question</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/registration-questions-data.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            el.textContent = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            }).format(new Date());
+          } catch (err) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var data = window.NKRegistrationQuestionsData;
+        if (!data) return;
+
+        var form = document.getElementById("addQuestionForm");
+        var alertBox = document.getElementById("formAlert");
+        var questionType = document.getElementById("questionType");
+        var attachmentWrap = document.getElementById("attachmentWrap");
+        var optionsWrap = document.getElementById("optionsWrap");
+        var choiceOptionsList = document.getElementById("choiceOptionsList");
+        var addChoiceOption = document.getElementById("addChoiceOption");
+        var specialtyScopeWrap = document.getElementById("specialtyScopeWrap");
+        var specialtySelect = document.getElementById("specialtySelect");
+        var specialtyApplyMode = document.getElementById("specialtyApplyMode");
+        var specialtyDoctorsWrap = document.getElementById("specialtyDoctorsWrap");
+        var specialtyDoctorSelect = document.getElementById("specialtyDoctorSelect");
+        var specialtyDoctorTargets = document.getElementById("specialtyDoctorTargets");
+        var addSpecialtyDoctor = document.getElementById("addSpecialtyDoctor");
+        var followupWrap = document.getElementById("followupWrap");
+        var parentQuestion = document.getElementById("parentQuestion");
+        var triggerValue = document.getElementById("triggerValue");
+        var choiceOptionValues = ["", "", ""];
+        var selectedSpecialtyDoctorIds = [];
+
+        function esc(value) {
+          return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function setHidden(el, hidden) {
+          if (el) el.hidden = hidden;
+        }
+
+        function option(value, label) {
+          return '<option value="' + esc(value) + '">' + esc(label) + '</option>';
+        }
+
+        function getDoctorById(id) {
+          return data.doctors.find(function (doctor) {
+            return doctor.id === id;
+          });
+        }
+
+        function doctorOptionLabel(doctor) {
+          return doctor.name + " - " + doctor.specialtyName + " (" + (doctor.branchName || "Main Branch") + ")";
+        }
+
+        function doctorChipLabel(doctor) {
+          return "Doctor: " + doctor.name + " - " + doctor.specialtyName + " (" + (doctor.branchName || "Main Branch") + ")";
+        }
+
+        function renderChoiceOptions() {
+          choiceOptionsList.innerHTML = choiceOptionValues.map(function (value, index) {
+            return ''
+              + '<div class="rq-option-row">'
+              + '  <span class="rq-option-number">' + (index + 1) + '</span>'
+              + '  <input type="text" class="form-control form-control-40" name="choiceOption[]" data-option-index="' + index + '" value="' + esc(value) + '" placeholder="Option ' + (index + 1) + '" />'
+              + '  <button type="button" class="rq-option-remove" data-remove-option="' + index + '" aria-label="Remove option" ' + (choiceOptionValues.length <= 2 ? "disabled" : "") + '><i class="fi fi-rr-trash"></i></button>'
+              + '</div>';
+          }).join("");
+
+          choiceOptionsList.querySelectorAll("input").forEach(function (input) {
+            input.addEventListener("input", function () {
+              choiceOptionValues[Number(input.getAttribute("data-option-index"))] = input.value;
+            });
+          });
+
+          choiceOptionsList.querySelectorAll("[data-remove-option]").forEach(function (button) {
+            button.addEventListener("click", function () {
+              if (choiceOptionValues.length <= 2) return;
+              choiceOptionValues.splice(Number(button.getAttribute("data-remove-option")), 1);
+              renderChoiceOptions();
+            });
+          });
+        }
+
+        function resetChoiceOptions() {
+          choiceOptionValues = ["", "", ""];
+          renderChoiceOptions();
+        }
+
+        function populateDoctorSelect(select, doctors, selectedIds) {
+          var availableDoctors = doctors.filter(function (doctor) {
+            return selectedIds.indexOf(doctor.id) === -1;
+          });
+          select.disabled = !availableDoctors.length;
+          select.innerHTML = availableDoctors.length
+            ? availableDoctors.map(function (doctor) { return option(doctor.id, doctorOptionLabel(doctor)); }).join("")
+            : option("", "No doctors available");
+        }
+
+        function renderDoctorTargets() {
+          var ids = selectedSpecialtyDoctorIds;
+          var doctors = data.getDoctorsBySpecialty(specialtySelect.value);
+
+          ids = ids.filter(function (id) {
+            return doctors.some(function (doctor) { return doctor.id === id; });
+          });
+
+          selectedSpecialtyDoctorIds = ids;
+
+          populateDoctorSelect(specialtyDoctorSelect, doctors, ids);
+
+          if (!ids.length) {
+            specialtyDoctorTargets.className = "rq-selected-targets is-empty";
+            specialtyDoctorTargets.textContent = "No doctors selected";
+            return;
+          }
+
+          specialtyDoctorTargets.className = "rq-selected-targets";
+          specialtyDoctorTargets.innerHTML = ids.map(function (id) {
+            var doctor = getDoctorById(id);
+            if (!doctor) return "";
+            return ''
+              + '<button type="button" class="rq-target-chip" data-remove-doctor="' + esc(id) + '" title="Click to remove">'
+              + '  <span>' + esc(doctorChipLabel(doctor)) + '</span>'
+              + '  <i class="fi fi-rr-cross-small"></i>'
+              + '</button>';
+          }).join("");
+
+          specialtyDoctorTargets.querySelectorAll("[data-remove-doctor]").forEach(function (button) {
+            button.addEventListener("click", function () {
+              var doctorId = button.getAttribute("data-remove-doctor");
+              selectedSpecialtyDoctorIds = selectedSpecialtyDoctorIds.filter(function (id) { return id !== doctorId; });
+              renderDoctorTargets();
+            });
+          });
+        }
+
+        function addDoctorTarget() {
+          var doctorId = specialtyDoctorSelect.value;
+          if (!doctorId) return;
+
+          if (selectedSpecialtyDoctorIds.indexOf(doctorId) === -1) selectedSpecialtyDoctorIds.push(doctorId);
+
+          renderDoctorTargets();
+        }
+
+        function populate() {
+          questionType.innerHTML = data.questionTypes.map(function (type) {
+            return option(type.id, type.label);
+          }).join("");
+
+          var specialtyOptions = data.specialties
+            .filter(function (item) { return !item.isGeneral; })
+            .map(function (item) { return option(item.id, item.name); })
+            .join("");
+          specialtySelect.innerHTML = specialtyOptions;
+
+          parentQuestion.innerHTML = data.questions.map(function (question) {
+            return option(question.id, question.id + " - " + question.text);
+          }).join("");
+
+          renderChoiceOptions();
+          renderDoctorTargets();
+        }
+
+        function populateSpecialtyDoctors() {
+          renderDoctorTargets();
+        }
+
+        function updateQuestionType() {
+          var value = questionType.value;
+          setHidden(attachmentWrap, value !== "attachment");
+          setHidden(optionsWrap, value !== "single_choice" && value !== "multiple_choice");
+        }
+
+        function updateScope() {
+          var selected = form.querySelector('input[name="scope"]:checked').value;
+          setHidden(specialtyScopeWrap, selected !== "specialty");
+          populateSpecialtyDoctors();
+          updateApplyMode();
+        }
+
+        function updateApplyMode() {
+          var selected = specialtyApplyMode.value;
+          setHidden(specialtyDoctorsWrap, selected === "all");
+          if (selected !== "all") populateSpecialtyDoctors();
+        }
+
+        function getParentChoices(question) {
+          if (!question) return [];
+          if (question.typeId === "yes_no") return ["Yes", "No"];
+          if (Array.isArray(question.options) && question.options.length) return question.options;
+          if (question.typeId === "text") return ["Text is answered"];
+          if (question.typeId === "number") return ["Number is provided"];
+          if (question.typeId === "attachment") return ["Attachment is uploaded"];
+          return ["Question is answered"];
+        }
+
+        function updateTriggerValues() {
+          var selectedQuestion = data.getQuestionById(parentQuestion.value);
+          var choices = getParentChoices(selectedQuestion);
+          triggerValue.innerHTML = choices.map(function (choice) {
+            return option(choice, choice);
+          }).join("");
+        }
+
+        function updateFollowup() {
+          var selected = form.querySelector('input[name="followMode"]:checked').value;
+          setHidden(followupWrap, selected !== "followup");
+          updateTriggerValues();
+        }
+
+        function showAlert(message, type) {
+          alertBox.textContent = message;
+          alertBox.className = "rq-alert " + (type || "success");
+          alertBox.hidden = false;
+        }
+
+        populate();
+        updateQuestionType();
+        updateScope();
+        updateFollowup();
+
+        addChoiceOption.addEventListener("click", function () {
+          choiceOptionValues.push("");
+          renderChoiceOptions();
+          var inputs = choiceOptionsList.querySelectorAll("input");
+          if (inputs.length) inputs[inputs.length - 1].focus();
+        });
+        addSpecialtyDoctor.addEventListener("click", function () {
+          addDoctorTarget();
+        });
+        questionType.addEventListener("change", updateQuestionType);
+        specialtySelect.addEventListener("change", function () {
+          populateSpecialtyDoctors();
+          updateApplyMode();
+        });
+        specialtyApplyMode.addEventListener("change", updateApplyMode);
+        parentQuestion.addEventListener("change", updateTriggerValues);
+
+        form.querySelectorAll('input[name="scope"]').forEach(function (input) {
+          input.addEventListener("change", updateScope);
+        });
+        form.querySelectorAll('input[name="followMode"]').forEach(function (input) {
+          input.addEventListener("change", updateFollowup);
+        });
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          var arText = document.getElementById("questionTextAr").value.trim();
+          var enText = document.getElementById("questionTextEn").value.trim();
+          if (!arText && !enText) {
+            showAlert("Add Arabic or English question text before saving the static preview.", "error");
+            return;
+          }
+          showAlert("Static preview only. The question was not saved or added to the bank.", "success");
+        });
+
+        form.addEventListener("reset", function () {
+          setTimeout(function () {
+            alertBox.hidden = true;
+            resetChoiceOptions();
+            selectedSpecialtyDoctorIds = [];
+            renderDoctorTargets();
+            updateQuestionType();
+            updateScope();
+            updateFollowup();
+          }, 0);
+        });
+      })();
+    </script>
+  </body>
+</html>

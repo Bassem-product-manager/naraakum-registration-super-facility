@@ -1,0 +1,55 @@
+.img-block-40 {
+  width: $value-40;
+  height: $value-40;
+}
+.img-block-44 {
+  width: $value-44;
+  height: $value-44;
+}
+.img-block-48 {
+  width: $value-48;
+  height: $value-48;
+}
+.img-block-52 {
+  width: $value-52;
+  height: $value-52;
+}
+.img-block-56 {
+  width: $value-56;
+  height: $value-56;
+}
+.img-block-60 {
+  width: $value-60;
+  height: $value-60;
+}
+.img-block-64 {
+  width: $value-64;
+  height: $value-64;
+}
+.img-block-68 {
+  width: $value-68;
+  height: $value-68;
+}
+.img-block-72 {
+  width: $value-72;
+  height: $value-72;
+}
+.img-block-76 {
+  width: $value-76;
+  height: $value-76;
+}
+.img-block-80 {
+  width: $value-80;
+  height: $value-80;
+}
+
+/*//////////////////////////////////*/
+.img-cover {
+  object-fit: cover !important;
+}
+.img-contain {
+  object-fit: contain !important;
+}
+.img-fill {
+  object-fit: fill !important;
+}

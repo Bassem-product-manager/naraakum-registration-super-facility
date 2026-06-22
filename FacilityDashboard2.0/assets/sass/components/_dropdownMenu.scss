@@ -1,0 +1,169 @@
+.dropdown-menu {
+  box-shadow: 0px 2px 3rem 0px rgba(0, 0, 0, 0.2);
+  border: 0px !important;
+}
+.dropdown-item {
+  font-size: $value-14;
+}
+
+/*/*/
+.actions-mega-menu {
+  box-shadow: 0px 2px 3rem 0px rgba(0, 0, 0, 0.4);
+  border: 0px !important;
+  background-color: #fff;
+  padding: $value-12;
+
+  .actions-list {
+    min-width: 10rem;
+    h4 {
+      font-size: 1.2rem;
+      padding: $value-4 $value-8;
+      display: flex;
+      gap: $value-4;
+      margin-bottom: $value-8;
+
+      border-bottom: 2px solid;
+
+      i {
+        font-size: 0.9rem;
+        padding-top: 0.3rem;
+      }
+    }
+    h6 {
+      font-weight: 600;
+      padding-top: 0.5rem;
+    }
+    a {
+      display: block;
+      font-size: $value-16;
+      border-bottom: 1px solid $border-color;
+
+      padding: 0.4rem 0rem;
+      line-height: 1.2rem;
+
+      &:last-of-type {
+        border-bottom: 0px;
+      }
+    }
+  }
+
+  .green-view {
+    h4,
+    h6 {
+      color: #00ab94;
+    }
+    a:hover {
+      color: #00ab94;
+    }
+  }
+  .yellow-view {
+    h4,
+    h6 {
+      color: #cd6133;
+    }
+    a:hover {
+      color: #cd6133;
+    }
+  }
+  .blue-view {
+    h4,
+    h6 {
+      color: #0377df;
+    }
+    a:hover {
+      color: #0377df;
+    }
+  }
+  .purple-view {
+    h4,
+    h6 {
+      color: #9b59b6;
+    }
+    a:hover {
+      color: #9b59b6;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .actions-mega-menu {
+    .d-flex {
+      flex-direction: row;
+      flex-wrap: wrap !important;
+      width: 24rem !important;
+      .actions-list {
+        width: 47% !important;
+      }
+    }
+  }
+}
+
+/*/*/
+
+.multiple-select-dropdown {
+  cursor: pointer !important;
+  .dropdown-toggle {
+    background-color: #fff;
+    padding: 0.1rem $value-8 0px $value-8;
+    border-radius: $value-8;
+    border: 1px solid $border-color;
+    width: 100%;
+    position: relative;
+    height: $value-44;
+    label {
+      display: block;
+      height: $value-20;
+      cursor: pointer !important;
+    }
+    .selected-items {
+      font-size: 0.9rem;
+      color: #666;
+
+      width: 96%;
+      display: inline-block;
+      text-wrap: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin-bottom: 0px;
+      span {
+        padding-#{$right}: 0.1rem;
+        &::after {
+          content: ",";
+        }
+      }
+    }
+    &::after {
+      top: 0;
+      #{$right}: 0;
+      margin: 1.8rem 0.5rem;
+      position: absolute !important;
+    }
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    padding: $value-8;
+    max-height: 12rem;
+    overflow-y: auto;
+
+    .form-check {
+      &:hover {
+        background-color: $surface-secondary-2;
+      }
+    }
+    .form-check-label {
+      cursor: pointer;
+      font-size: 1rem;
+
+      display: block;
+    }
+  }
+
+  &:hover {
+    .dropdown-toggle {
+      label {
+        color: $primary-500;
+      }
+    }
+  }
+}

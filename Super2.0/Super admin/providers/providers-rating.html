@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Providers Ratings</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Unified Ratings Dashboard -->
+    <style>
+      .ratings-summary .summary-card {
+        background: #fff;
+        border: 1px solid #e7edf3;
+        border-radius: 12px;
+        padding: 12px 14px;
+        min-height: 84px;
+      }
+
+      .summary-title {
+        font-size: 12px;
+        color: #667085;
+        margin: 0 0 8px;
+        font-weight: 700;
+      }
+
+      .summary-value {
+        font-size: 24px;
+        font-weight: 900;
+        color: #101828;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .filter-bar {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .search-box-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #fff;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+      }
+
+      .search-box-group:focus-within {
+        border-color: var(--nk-green, #0f8c8c);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.1);
+      }
+
+      #drSearchInput {
+        flex: 1;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: 14px;
+        outline: none;
+      }
+
+      #drSearchInput:focus {
+        box-shadow: none !important;
+      }
+
+      #btnDrSearch,
+      #btnDrReset {
+        padding: 0 !important;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+      }
+
+      #btnDrSearch {
+        background: var(--nk-green, #0f8c8c);
+        border: none;
+        color: #fff;
+      }
+
+      #btnDrReset {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        color: #666;
+      }
+
+      .ratings-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .rating-tab-btn {
+        border: 1px solid #d4dae2;
+        background: #fff;
+        color: #344054;
+        border-radius: 999px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .rating-tab-btn.active {
+        border-color: rgba(15, 140, 140, 0.35);
+        background: rgba(15, 140, 140, 0.1);
+        color: #0f8c8c;
+      }
+
+      .tab-count {
+        background: rgba(15, 140, 140, 0.16);
+        color: #0f8c8c;
+        border-radius: 999px;
+        min-width: 24px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        padding: 0 6px;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      #doctorRatingsTable {
+        width: 100%;
+        min-width: 1120px;
+        border-collapse: collapse;
+      }
+
+      #doctorRatingsTable thead th {
+        white-space: nowrap;
+      }
+
+      #doctorRatingsTable td {
+        vertical-align: middle;
+      }
+
+      .provider-type-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1.5;
+      }
+
+      .provider-type-badge.facility {
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+      }
+
+      .provider-type-badge.pharmacy {
+        background: rgba(16, 185, 129, 0.12);
+        color: #047857;
+      }
+
+      .provider-type-badge.individual {
+        background: rgba(139, 92, 246, 0.12);
+        color: #6d28d9;
+      }
+
+      .order-item-type-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: 11px;
+        font-weight: 900;
+        line-height: 1.5;
+      }
+
+      .order-item-type-badge.service {
+        background: rgba(15, 140, 140, 0.12);
+        color: #0f8c8c;
+      }
+
+      .order-item-type-badge.product {
+        background: rgba(217, 119, 6, 0.12);
+        color: #b45309;
+      }
+
+      .comment-snippet {
+        display: block;
+        max-width: 260px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .created-at-cell {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        line-height: 1.2;
+      }
+
+      .created-at-date {
+        font-size: 12px;
+        font-weight: 800;
+        color: #101828;
+      }
+
+      .created-at-time {
+        font-size: 11px;
+        color: #667085;
+      }
+
+      .stars-wrap {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+      }
+
+      .preview-meta {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 8px 14px;
+      }
+
+      .preview-meta dt {
+        margin: 0;
+        color: #667085;
+        font-weight: 700;
+        font-size: 12px;
+      }
+
+      .preview-meta dd {
+        margin: 0;
+        color: #101828;
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      @media (max-width: 992px) {
+        .preview-meta {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+      }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <div id="sidebar-slot" data-base="../"></div>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Providers Ratings</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 â€¢ 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Providers Ratings</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div class="ratings-summary row g-3 mb-16">
+            <div class="col-12 col-sm-6 col-xl">
+              <div class="summary-card">
+                <p class="summary-title">Total Ratings</p>
+                <p class="summary-value" id="sumTotal">0</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl">
+              <div class="summary-card">
+                <p class="summary-title">Average Rating</p>
+                <p class="summary-value" id="sumAvg">0.0</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl">
+              <div class="summary-card">
+                <p class="summary-title">Facility Count</p>
+                <p class="summary-value" id="sumFacility">0</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl">
+              <div class="summary-card">
+                <p class="summary-title">Pharmacy Count</p>
+                <p class="summary-value" id="sumPharmacy">0</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl">
+              <div class="summary-card">
+                <p class="summary-title">Individuals Count</p>
+                <p class="summary-value" id="sumIndividuals">0</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="drSearchInput" type="text" class="form-control form-control-32" placeholder="Search by Order / Type / Provider / Patient / City" />
+                  <button id="btnDrSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button id="btnDrReset" type="button" class="btn btn-primary-revers btn-32" title="Reset">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#dr-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="ratings-tabs mt-16 mb-16">
+            <button type="button" class="rating-tab-btn active" data-tab="all" id="drTabAll">All <span class="tab-count" id="drCountAll">0</span></button>
+            <button type="button" class="rating-tab-btn" data-tab="facility" id="drTabFacility">Facility <span class="tab-count" id="drCountFacility">0</span></button>
+            <button type="button" class="rating-tab-btn" data-tab="pharmacy" id="drTabPharmacy">Pharmacy <span class="tab-count" id="drCountPharmacy">0</span></button>
+            <button type="button" class="rating-tab-btn" data-tab="individual" id="drTabIndividual">Individuals <span class="tab-count" id="drCountIndividual">0</span></button>
+          </div>
+
+          <div class="tabel-box-item mt-16">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="doctorRatingsTable">
+                  <thead>
+                    <tr>
+                      <th>Order No</th>
+                      <th>Order Item Type</th>
+                      <th>Provider Type</th>
+                      <th>Provider Name</th>
+                      <th>City</th>
+                      <th class="text-center">Rating</th>
+                      <th>Comment</th>
+                      <th>Created At</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody id="drTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="drRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="drPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="drFirst" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="drPrev" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="drCurrentBadge">1</span>
+                    <button class="pg-btn" id="drNext" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="drLast" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+        <!-- Filter Modal -->
+    <div class="modal fade" id="dr-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Ratings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Provider Type</label>
+                <select id="drfProviderType" class="form-control form-control-32">
+                  <option value="all">All</option>
+                  <option value="facility">Facility</option>
+                  <option value="pharmacy">Pharmacy</option>
+                  <option value="individual">Individuals</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Provider Name</label>
+                <input id="drfProviderQuery" type="text" class="form-control form-control-32" placeholder="e.g. BMC Hospital" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Order Item Type</label>
+                <select id="drfItemType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="service">Service</option>
+                  <option value="product">Product</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Stars</label>
+                <select id="drfStars" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="5">5</option>
+                  <option value="4">4</option>
+                  <option value="3">3</option>
+                  <option value="2">2</option>
+                  <option value="1">1</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Date From</label>
+                <input id="drfDateFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Date To</label>
+                <input id="drfDateTo" type="date" class="form-control form-control-32" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnDrFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnDrApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Preview Comment Modal -->
+    <div class="modal fade" id="dr-preview-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title">Rating Preview</h5>
+              <div class="fsize-12 text-grey" id="drPreviewProviderSub">-</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <dl class="preview-meta mb-16">
+              <dt>Order No</dt><dd id="drPreviewOrderNo">-</dd>
+              <dt>Order Item Type</dt><dd id="drPreviewItemType">-</dd>
+              <dt>Provider</dt><dd id="drPreviewProvider">-</dd>
+              <dt>Patient</dt><dd id="drPreviewPatient">-</dd>
+              <dt>Stars</dt><dd id="drPreviewStars">-</dd>
+              <dt>Created At</dt><dd id="drPreviewCreatedAt">-</dd>
+            </dl>
+
+            <div class="fsize-12 text-grey mb-8">Full Comment</div>
+            <p class="fsize-14" id="drPreviewComment" style="margin: 0">-</p>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+        <script>
+      (function () {
+        const tbody = document.getElementById("drTbody");
+
+        const searchInput = document.getElementById("drSearchInput");
+        const btnSearch = document.getElementById("btnDrSearch");
+        const btnReset = document.getElementById("btnDrReset");
+
+        const tabButtons = Array.from(document.querySelectorAll(".rating-tab-btn"));
+
+        const drfProviderType = document.getElementById("drfProviderType");
+        const drfProviderQuery = document.getElementById("drfProviderQuery");
+        const drfItemType = document.getElementById("drfItemType");
+        const drfStars = document.getElementById("drfStars");
+        const drfDateFrom = document.getElementById("drfDateFrom");
+        const drfDateTo = document.getElementById("drfDateTo");
+
+        const btnApplyFilter = document.getElementById("btnDrApplyFilter");
+        const btnFilterReset = document.getElementById("btnDrFilterReset");
+
+        const rowsSelect = document.getElementById("drRowsPerPage");
+        const indicator = document.getElementById("drPageIndicator");
+        const currentBadge = document.getElementById("drCurrentBadge");
+        const btnFirst = document.getElementById("drFirst");
+        const btnPrev = document.getElementById("drPrev");
+        const btnNext = document.getElementById("drNext");
+        const btnLast = document.getElementById("drLast");
+
+        const sumTotal = document.getElementById("sumTotal");
+        const sumAvg = document.getElementById("sumAvg");
+        const sumFacility = document.getElementById("sumFacility");
+        const sumPharmacy = document.getElementById("sumPharmacy");
+        const sumIndividuals = document.getElementById("sumIndividuals");
+
+        const drCountAll = document.getElementById("drCountAll");
+        const drCountFacility = document.getElementById("drCountFacility");
+        const drCountPharmacy = document.getElementById("drCountPharmacy");
+        const drCountIndividual = document.getElementById("drCountIndividual");
+
+        const drPreviewProviderSub = document.getElementById("drPreviewProviderSub");
+        const drPreviewOrderNo = document.getElementById("drPreviewOrderNo");
+        const drPreviewItemType = document.getElementById("drPreviewItemType");
+        const drPreviewProvider = document.getElementById("drPreviewProvider");
+        const drPreviewPatient = document.getElementById("drPreviewPatient");
+        const drPreviewStars = document.getElementById("drPreviewStars");
+        const drPreviewCreatedAt = document.getElementById("drPreviewCreatedAt");
+        const drPreviewComment = document.getElementById("drPreviewComment");
+
+        const rows = [
+          {
+            orderNo: "BR03-OR-00011",
+            providerType: "facility",
+            providerName: "BMC Hospital",
+            providerCode: "FC-00001",
+            orderItemType: "service",
+            patientName: "John Doe",
+            city: "Riyadh",
+            stars: 5,
+            ratingSeq: "R01",
+            comment: "Patient followed all discharge instructions and maintained good communication with the facility team.",
+            createdAt: "2026-02-12T10:30:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00011",
+            providerType: "pharmacy",
+            providerName: "BMC Community Pharmacy",
+            providerCode: "PH-00001",
+            orderItemType: "product",
+            patientName: "John Doe",
+            city: "Riyadh",
+            stars: 4,
+            ratingSeq: "R01",
+            comment: "Medication handover was smooth, but delivery ETA could be improved in peak hours.",
+            createdAt: "2026-02-12T10:42:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00011",
+            providerType: "individual",
+            providerName: "Dr. Ahmed Alqahtani",
+            providerCode: "DR-00001",
+            orderItemType: "service",
+            patientName: "John Doe",
+            city: "Riyadh",
+            stars: 5,
+            ratingSeq: "R02",
+            comment: "Doctor was clear and professional, and explained the care plan in simple steps.",
+            createdAt: "2026-02-12T10:55:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00012",
+            providerType: "facility",
+            providerName: "Al Noor Medical Center",
+            providerCode: "FC-00002",
+            orderItemType: "service",
+            patientName: "Jane Roe",
+            city: "Jeddah",
+            stars: 3,
+            ratingSeq: "R01",
+            comment: "Service quality was acceptable but check-in took longer than expected.",
+            createdAt: "2026-02-11T14:20:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00012",
+            providerType: "pharmacy",
+            providerName: "Al Noor Pharmacy",
+            providerCode: "PH-00002",
+            orderItemType: "product",
+            patientName: "Jane Roe",
+            city: "Jeddah",
+            stars: 2,
+            ratingSeq: "R01",
+            comment: "One requested item was out of stock and replacement options were limited.",
+            createdAt: "2026-02-11T14:40:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00013",
+            providerType: "individual",
+            providerName: "Nurse Mona Saleh",
+            providerCode: "NR-00001",
+            orderItemType: "service",
+            patientName: "Omar Adeeb",
+            city: "Dammam",
+            stars: 4,
+            ratingSeq: "R01",
+            comment: "Nurse was on time and very supportive during home follow-up.",
+            createdAt: "2026-02-10T08:10:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00014",
+            providerType: "pharmacy",
+            providerName: "Future Care Pharmacy",
+            providerCode: "PH-00004",
+            orderItemType: "product",
+            patientName: "Aisha Karim",
+            city: "Riyadh",
+            stars: 5,
+            ratingSeq: "R01",
+            comment: "Excellent support and clear medication instructions from the pharmacy team.",
+            createdAt: "2026-02-09T16:00:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00015",
+            providerType: "facility",
+            providerName: "Green Valley Clinic",
+            providerCode: "FC-00003",
+            orderItemType: "service",
+            patientName: "Omar Saad",
+            city: "Dammam",
+            stars: 1,
+            ratingSeq: "R01",
+            comment: "Appointment handling and waiting time were poor in this visit.",
+            createdAt: "2026-02-08T11:05:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00016",
+            providerType: "individual",
+            providerName: "Dr. Sara Ibrahim",
+            providerCode: "DR-00002",
+            orderItemType: "service",
+            patientName: "Lina Adel",
+            city: "Jeddah",
+            stars: 3,
+            ratingSeq: "R01",
+            comment: "Consultation was useful, but follow-up explanation needed more detail.",
+            createdAt: "2026-02-08T12:30:00Z"
+          },
+          {
+            orderNo: "BR03-OR-00017",
+            providerType: "facility",
+            providerName: "Future Care Hospital",
+            providerCode: "FC-00004",
+            orderItemType: "product",
+            patientName: "Mona Hamed",
+            city: "Riyadh",
+            stars: 4,
+            ratingSeq: "R01",
+            comment: "Facility support was reliable and the team handled the case efficiently.",
+            createdAt: "2026-02-07T09:00:00Z"
+          }
+        ];
+
+        let currentPage = 1;
+        let activeTab = "all";
+        let baseRows = [];
+        let filteredRows = [];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function escapeHtml(value) {
+          return (value || "")
+            .toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function providerTypeLabel(type) {
+          if (type === "facility") return "Facility";
+          if (type === "pharmacy") return "Pharmacy";
+          return "Individuals";
+        }
+
+        function orderItemTypeLabel(type) {
+          if (type === "product") return "Product";
+          return "Service";
+        }
+
+        function orderPrefix(row) {
+          if (row.providerType === "facility") return "FC";
+          if (row.providerType === "pharmacy") return "PH";
+          const codePrefix = (row.providerCode || "").split("-")[0].toUpperCase();
+          return codePrefix || "IN";
+        }
+
+        function formatOrderNo(row) {
+          const raw = (row.orderNo || "").toUpperCase();
+          const match = raw.match(/^BR(\d{2})-OR-(\d{1,6})$/);
+          if (!match) return raw;
+          const branch = match[1];
+          const serial = match[2].padStart(6, "0");
+          return `${orderPrefix(row)}-${branch}-${serial}`;
+        }
+
+        function formatCreatedAtParts(dateInput) {
+          const date = dateInput instanceof Date ? dateInput : new Date(dateInput);
+          const dateText = new Intl.DateTimeFormat("en-GB", {
+            timeZone: "Asia/Riyadh",
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          }).format(date);
+          const timeText = new Intl.DateTimeFormat("en-GB", {
+            timeZone: "Asia/Riyadh",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          }).format(date);
+          return { dateText, timeText };
+        }
+
+        function starsHTML(value) {
+          const v = Math.max(0, Math.min(5, parseInt(value, 10) || 0));
+          let html = '<span class="stars-wrap">';
+          for (let i = 1; i <= 5; i++) {
+            if (i <= v) html += '<i class="fi fi-sr-star" style="color:#F5C542;"></i>';
+            else html += '<i class="fi fi-rr-star" style="color:#C9CED6;"></i>';
+          }
+          html += "</span>";
+          return html;
+        }
+
+        function snippet(text, max) {
+          const t = (text || "").toString().trim();
+          if (t.length <= max) return t;
+          return t.slice(0, max).trim() + "...";
+        }
+
+        const normalizedRows = rows
+          .map((row) => {
+            const createdAtDate = new Date(row.createdAt);
+            const createdAtParts = formatCreatedAtParts(createdAtDate);
+            return {
+              ...row,
+              createdAtDate,
+              rowKey: `${row.providerCode}-${row.orderNo}-${createdAtDate.getTime()}`,
+              displayOrderNo: formatOrderNo(row),
+              providerTypeLabel: providerTypeLabel(row.providerType),
+              orderItemTypeLabel: orderItemTypeLabel(row.orderItemType),
+              createdAtDateText: createdAtParts.dateText,
+              createdAtTimeText: createdAtParts.timeText
+            };
+          })
+          .sort((a, b) => b.createdAtDate - a.createdAtDate);
+
+        function matchesSearch(row, q) {
+          if (!q) return true;
+          const key = norm([
+            row.displayOrderNo,
+            row.orderNo,
+            row.orderItemType,
+            row.orderItemTypeLabel,
+            row.providerName,
+            row.patientName,
+            row.city
+          ].join(" "));
+          return key.includes(q);
+        }
+
+        function matchesFilters(row) {
+          const fType = drfProviderType ? drfProviderType.value : "all";
+          const fProviderQuery = norm(drfProviderQuery ? drfProviderQuery.value : "");
+          const fItemType = drfItemType ? drfItemType.value : "";
+          const fStars = drfStars && drfStars.value ? parseInt(drfStars.value, 10) : null;
+          const fFrom = drfDateFrom && drfDateFrom.value ? new Date(`${drfDateFrom.value}T00:00:00`) : null;
+          const fTo = drfDateTo && drfDateTo.value ? new Date(`${drfDateTo.value}T23:59:59`) : null;
+
+          if (fType && fType !== "all" && row.providerType !== fType) return false;
+
+          if (fProviderQuery) {
+            const key = norm(`${row.providerName}`);
+            if (!key.includes(fProviderQuery)) return false;
+          }
+
+          if (fItemType && row.orderItemType !== fItemType) return false;
+          if (fStars && row.stars !== fStars) return false;
+
+          if (fFrom && row.createdAtDate < fFrom) return false;
+          if (fTo && row.createdAtDate > fTo) return false;
+
+          return true;
+        }
+
+        function updateTabCounts(rowsForCounts) {
+          const allCount = rowsForCounts.length;
+          const facilityCount = rowsForCounts.filter((r) => r.providerType === "facility").length;
+          const pharmacyCount = rowsForCounts.filter((r) => r.providerType === "pharmacy").length;
+          const individualCount = rowsForCounts.filter((r) => r.providerType === "individual").length;
+
+          if (drCountAll) drCountAll.textContent = allCount;
+          if (drCountFacility) drCountFacility.textContent = facilityCount;
+          if (drCountPharmacy) drCountPharmacy.textContent = pharmacyCount;
+          if (drCountIndividual) drCountIndividual.textContent = individualCount;
+        }
+
+        function updateSummary(rowsForSummary) {
+          const total = rowsForSummary.length;
+          const facility = rowsForSummary.filter((r) => r.providerType === "facility").length;
+          const pharmacy = rowsForSummary.filter((r) => r.providerType === "pharmacy").length;
+          const individual = rowsForSummary.filter((r) => r.providerType === "individual").length;
+          const avg = total ? (rowsForSummary.reduce((acc, r) => acc + r.stars, 0) / total).toFixed(1) : "0.0";
+
+          if (sumTotal) sumTotal.textContent = total;
+          if (sumAvg) sumAvg.textContent = avg;
+          if (sumFacility) sumFacility.textContent = facility;
+          if (sumPharmacy) sumPharmacy.textContent = pharmacy;
+          if (sumIndividuals) sumIndividuals.textContent = individual;
+        }
+
+        function rowsPerPageVal() {
+          const v = rowsSelect ? rowsSelect.value : "10";
+          if (v === "all") return Infinity;
+          const n = parseInt(v, 10);
+          return Number.isFinite(n) ? n : 10;
+        }
+
+        function updatePager(totalPages) {
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          const safeCurrent = Math.min(Math.max(currentPage, 1), safeTotal);
+
+          if (indicator) indicator.textContent = `Page ${safeCurrent} of ${safeTotal}`;
+          if (currentBadge) currentBadge.textContent = safeCurrent;
+
+          const disable = (btn, state) => btn && (btn.disabled = !!state);
+          disable(btnFirst, safeCurrent <= 1);
+          disable(btnPrev, safeCurrent <= 1);
+          disable(btnNext, safeCurrent >= safeTotal);
+          disable(btnLast, safeCurrent >= safeTotal);
+        }
+
+        function render() {
+          if (!tbody) return;
+          tbody.innerHTML = "";
+
+          const perPage = rowsPerPageVal();
+          const total = filteredRows.length;
+          const totalPages = perPage === Infinity ? 1 : Math.ceil(total / perPage) || 1;
+
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? total : start + perPage;
+          const visible = filteredRows.slice(start, end);
+
+          if (!visible.length) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = '<td colspan="9" class="text-center text-grey">No data available</td>';
+            tbody.appendChild(tr);
+            updatePager(totalPages);
+            return;
+          }
+
+          visible.forEach((row) => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td><span class="staff-code">${escapeHtml(row.displayOrderNo)}</span></td>
+              <td><span class="order-item-type-badge ${escapeHtml(row.orderItemType)}">${escapeHtml(row.orderItemTypeLabel)}</span></td>
+              <td><span class="provider-type-badge ${escapeHtml(row.providerType)}">${escapeHtml(row.providerTypeLabel)}</span></td>
+              <td><span class="fsize-14 semiBold">${escapeHtml(row.providerName)}</span></td>
+              <td><span class="fsize-13">${escapeHtml(row.city)}</span></td>
+              <td class="text-center">${starsHTML(row.stars)}</td>
+              <td><span class="fsize-12 text-grey comment-snippet">${escapeHtml(snippet(row.comment, 65))}</span></td>
+              <td>
+                <span class="created-at-cell">
+                  <span class="created-at-date">${escapeHtml(row.createdAtDateText)}</span>
+                  <span class="created-at-time">${escapeHtml(row.createdAtTimeText)}</span>
+                </span>
+              </td>
+              <td class="text-center">
+                <button type="button" class="btn btn-primary-revers btn-32 js-preview" data-key="${escapeHtml(row.rowKey)}" data-bs-toggle="modal" data-bs-target="#dr-preview-modal" title="Preview">
+                  <i class="fi fi-rr-eye" style="color: var(--nk-green, #0f8c8c);"></i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+
+          updatePager(totalPages);
+        }
+
+        function applySearchAndFilter() {
+          const q = norm(searchInput ? searchInput.value : "");
+
+          baseRows = normalizedRows.filter((row) => matchesSearch(row, q) && matchesFilters(row));
+          updateTabCounts(baseRows);
+
+          filteredRows = activeTab === "all" ? baseRows : baseRows.filter((row) => row.providerType === activeTab);
+
+          currentPage = 1;
+          render();
+          updateSummary(filteredRows);
+        }
+
+        function setActiveTab(tab) {
+          activeTab = tab;
+          tabButtons.forEach((btn) => {
+            const isActive = btn.getAttribute("data-tab") === tab;
+            btn.classList.toggle("active", isActive);
+          });
+        }
+
+        tabButtons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            setActiveTab(btn.getAttribute("data-tab") || "all");
+            applySearchAndFilter();
+          });
+        });
+
+        if (btnSearch) btnSearch.addEventListener("click", applySearchAndFilter);
+
+        if (searchInput) {
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") applySearchAndFilter();
+          });
+        }
+
+        if (btnReset) {
+          btnReset.addEventListener("click", function () {
+            if (searchInput) searchInput.value = "";
+            if (drfProviderType) drfProviderType.value = "all";
+            if (drfProviderQuery) drfProviderQuery.value = "";
+            if (drfItemType) drfItemType.value = "";
+            if (drfStars) drfStars.value = "";
+            if (drfDateFrom) drfDateFrom.value = "";
+            if (drfDateTo) drfDateTo.value = "";
+            setActiveTab("all");
+            applySearchAndFilter();
+          });
+        }
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", applySearchAndFilter);
+
+        if (btnFilterReset) {
+          btnFilterReset.addEventListener("click", function () {
+            if (drfProviderType) drfProviderType.value = "all";
+            if (drfProviderQuery) drfProviderQuery.value = "";
+            if (drfItemType) drfItemType.value = "";
+            if (drfStars) drfStars.value = "";
+            if (drfDateFrom) drfDateFrom.value = "";
+            if (drfDateTo) drfDateTo.value = "";
+            applySearchAndFilter();
+          });
+        }
+
+        if (rowsSelect) {
+          rowsSelect.addEventListener("change", function () {
+            currentPage = 1;
+            render();
+          });
+        }
+
+        if (btnFirst) btnFirst.addEventListener("click", () => ((currentPage = 1), render()));
+        if (btnPrev) btnPrev.addEventListener("click", () => ((currentPage = Math.max(1, currentPage - 1)), render()));
+        if (btnNext) btnNext.addEventListener("click", () => ((currentPage = currentPage + 1), render()));
+        if (btnLast) {
+          btnLast.addEventListener("click", function () {
+            const perPage = rowsPerPageVal();
+            const totalPages = perPage === Infinity ? 1 : Math.ceil(filteredRows.length / perPage) || 1;
+            currentPage = totalPages;
+            render();
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          const btn = e.target.closest(".js-preview");
+          if (!btn) return;
+
+          const rowKey = btn.getAttribute("data-key") || "";
+          const row = normalizedRows.find((r) => r.rowKey === rowKey);
+          if (!row) return;
+
+          if (drPreviewProviderSub) drPreviewProviderSub.textContent = `${row.providerTypeLabel}`;
+          if (drPreviewOrderNo) drPreviewOrderNo.textContent = row.displayOrderNo;
+          if (drPreviewItemType) drPreviewItemType.textContent = row.orderItemTypeLabel;
+          if (drPreviewProvider) drPreviewProvider.textContent = `${row.providerTypeLabel} - ${row.providerName}`;
+          if (drPreviewPatient) drPreviewPatient.textContent = row.patientName;
+          if (drPreviewStars) drPreviewStars.innerHTML = `${starsHTML(row.stars)} <span class="ms-2">${row.stars}/5</span>`;
+          if (drPreviewCreatedAt) drPreviewCreatedAt.textContent = `${row.createdAtDateText} ${row.createdAtTimeText}`;
+          if (drPreviewComment) drPreviewComment.textContent = row.comment;
+        });
+
+        setActiveTab("all");
+        applySearchAndFilter();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+
+
+
+
+
+
+
+

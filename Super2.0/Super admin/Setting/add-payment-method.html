@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Payment Method</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .form-card {
+        border: 1px solid rgba(16, 24, 40, 0.09);
+        border-radius: 16px;
+        background: #fff;
+        padding: 18px;
+        box-shadow: 0 10px 24px rgba(16, 24, 40, 0.06);
+      }
+
+      .form-card h5 {
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .form-card .row.g-3 {
+        --bs-gutter-y: 0.85rem;
+      }
+
+      .form-card label.fsize-12.text-grey {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 700;
+        color: #475467 !important;
+      }
+
+      .segmented-control {
+        display: inline-flex;
+        width: 100%;
+        max-width: 420px;
+        border: 1px solid rgba(16, 24, 40, 0.18);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #f9fafb;
+      }
+
+      .segmented-control .seg-item {
+        flex: 1;
+        margin: 0;
+      }
+
+      .segmented-control input[type="radio"] {
+        display: none;
+      }
+
+      .segmented-control .seg-label {
+        display: block;
+        text-align: center;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #344054;
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.2s ease, color 0.2s ease;
+      }
+
+      .segmented-control .seg-item + .seg-item .seg-label {
+        border-left: 1px solid rgba(16, 24, 40, 0.12);
+      }
+
+      .segmented-control input[type="radio"]:checked + .seg-label {
+        background: rgba(15, 140, 140, 0.14);
+        color: #0b7777;
+      }
+
+      .form-control.form-control-32 {
+        border-color: rgba(16, 24, 40, 0.18);
+        border-radius: 10px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .form-control.form-control-32:focus {
+        border-color: var(--nk-green);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+
+      .field-error {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #b42318;
+        font-weight: 700;
+      }
+
+      .empty-state {
+        border: 1px dashed #d0d5dd;
+        border-radius: 14px;
+        background: #fff;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .alert-box {
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .alert-success {
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #027a48;
+      }
+
+      .alert-danger {
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+
+      .form-check-input:checked {
+        background-color: var(--nk-green);
+        border-color: var(--nk-green);
+      }
+
+      .form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+        border-color: var(--nk-green);
+      }
+
+      .form-card .btn.btn-primary-revers {
+        border-color: rgba(16, 24, 40, 0.18);
+      }
+
+      .form-card .btn.btn-primary-revers:hover {
+        border-color: rgba(15, 140, 140, 0.35);
+        color: #0b7777;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Add Payment Method</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a class="js-back-to-list" href="#">Payment Methods</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Payment Method</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="pmAddMissingEntity" class="empty-state d-none">
+            <h5 class="mb-8">No Entity Selected</h5>
+            <p class="text-grey mb-12">Open this page using a valid <code>?entityId=...</code> query parameter.</p>
+            <a href="payment_methods.html" class="btn btn-primary btn-32">Back to Payment Methods</a>
+          </div>
+
+          <div id="pmAddContent" class="d-none">
+            <div class="form-card">
+              <div class="mb-12">
+                <h5 class="mb-0">Add Payment Method</h5>
+              </div>
+
+              <div id="pmFormMessage" class="alert-box d-none mb-12"></div>
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="fsize-12 text-grey">Method Type</label>
+                  <div class="segmented-control">
+                    <label class="seg-item">
+                      <input id="pmTypeBank" type="radio" name="pmMethodType" value="bank" checked />
+                      <span class="seg-label">Bank Account</span>
+                    </label>
+                    <label class="seg-item">
+                      <input id="pmTypeWallet" type="radio" name="pmMethodType" value="wallet" />
+                      <span class="seg-label">Wallet</span>
+                    </label>
+                  </div>
+                  <div id="errMethodType" class="field-error d-none"></div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Label (Optional)</label>
+                  <input id="pmLabel" type="text" class="form-control form-control-32" placeholder="Friendly internal name" />
+                </div>
+
+                <div class="col-md-6">
+                  <div class="form-check form-switch mt-24">
+                    <input class="form-check-input" type="checkbox" role="switch" id="pmActive" checked />
+                    <label class="form-check-label" for="pmActive">Active</label>
+                  </div>
+                </div>
+              </div>
+
+              <div id="bankFields" class="row g-3 mt-4">
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Beneficiary Name *</label>
+                  <input id="pmBeneficiaryName" type="text" class="form-control form-control-32" />
+                  <div id="errBeneficiaryName" class="field-error d-none"></div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">IBAN *</label>
+                  <input id="pmIban" type="text" class="form-control form-control-32" placeholder="SAxxxxxxxxxxxxxxxxxxxxxx" />
+                  <div id="errIban" class="field-error d-none"></div>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Bank Name (Optional)</label>
+                  <input id="pmBankName" type="text" class="form-control form-control-32" />
+                </div>
+              </div>
+
+              <div id="walletFields" class="row g-3 mt-4 d-none">
+                <div class="col-md-4">
+                  <label class="fsize-12 text-grey">Wallet Provider *</label>
+                  <select id="pmWalletProvider" class="form-control form-control-32">
+                    <option value="">Select</option>
+                    <option value="STC Pay">STC Pay</option>
+                    <option value="urpay">urpay</option>
+                    <option value="Other">Other</option>
+                  </select>
+                  <div id="errWalletProvider" class="field-error d-none"></div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="fsize-12 text-grey">Owner Name *</label>
+                  <input id="pmWalletOwnerName" type="text" class="form-control form-control-32" />
+                  <div id="errWalletOwnerName" class="field-error d-none"></div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="fsize-12 text-grey">Mobile Number *</label>
+                  <input id="pmWalletMobile" type="text" class="form-control form-control-32" placeholder="+9665xxxxxxxx" />
+                  <div id="errWalletMobile" class="field-error d-none"></div>
+                </div>
+              </div>
+
+              <div class="d-flex gap-2 justify-content-end mt-16">
+                <a class="btn btn-primary-revers btn-32 js-back-to-list" href="#">Cancel</a>
+                <button id="btnSaveMethod" type="button" class="btn btn-primary btn-32">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/payment-methods-store.js"></script>
+    <script src="../assets/js/setting-add-payment-method.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

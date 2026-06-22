@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Insurance Invoices</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      @media (max-width: 1200px) {
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .kpi-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .kpi-card .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .kpi-card .value {
+        margin-top: 8px;
+        font-size: 20px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .kpi-card .value.green {
+        color: #067647;
+      }
+
+      .ins-table th,
+      .ins-table td {
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+
+      .status-pill.submitted {
+        background: rgba(23, 92, 211, 0.1);
+        border-color: rgba(23, 92, 211, 0.24);
+        color: #175cd3;
+      }
+
+      .status-pill.in_review {
+        background: rgba(247, 144, 9, 0.1);
+        border-color: rgba(247, 144, 9, 0.24);
+        color: #b54708;
+      }
+
+      .status-pill.approved {
+        background: rgba(18, 183, 106, 0.1);
+        border-color: rgba(18, 183, 106, 0.24);
+        color: #027a48;
+      }
+
+      .status-pill.partially_paid {
+        background: rgba(15, 140, 140, 0.1);
+        border-color: rgba(15, 140, 140, 0.24);
+        color: #0b6f6f;
+      }
+
+      .status-pill.paid {
+        background: rgba(6, 118, 71, 0.1);
+        border-color: rgba(6, 118, 71, 0.24);
+        color: #067647;
+      }
+
+      .status-pill.denied,
+      .status-pill.closed {
+        background: rgba(240, 68, 56, 0.1);
+        border-color: rgba(240, 68, 56, 0.24);
+        color: #b42318;
+      }
+
+      .status-pill.appealed {
+        background: rgba(127, 86, 217, 0.1);
+        border-color: rgba(127, 86, 217, 0.24);
+        color: #6941c6;
+      }
+
+      .remit-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 24px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        color: #101828;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .remit-pill.pending {
+        border-color: rgba(247, 144, 9, 0.24);
+        background: rgba(247, 144, 9, 0.1);
+        color: #b54708;
+      }
+
+      .remit-pill.partial {
+        border-color: rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.1);
+        color: #0b6f6f;
+      }
+
+      .remit-pill.paid {
+        border-color: rgba(18, 183, 106, 0.24);
+        background: rgba(18, 183, 106, 0.1);
+        color: #067647;
+      }
+
+      .remit-pill.rejected {
+        border-color: rgba(240, 68, 56, 0.24);
+        background: rgba(240, 68, 56, 0.1);
+        color: #b42318;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-payments">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Insurance Invoices</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">12-03-000011</span>
+                    </span>
+                    <span class="fsize-12 text-grey">12/02/2026 - 401.35 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance Invoices</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="kpi-grid">
+            <div class="kpi-card"><div class="label">Submitted</div><div id="kpiInsSubmitted" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">In Review</div><div id="kpiInsReview" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Approved</div><div id="kpiInsApproved" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Partially Paid</div><div id="kpiInsPartial" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Paid</div><div id="kpiInsPaid" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Denied</div><div id="kpiInsDenied" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Appealed</div><div id="kpiInsAppealed" class="value">0</div></div>
+            <div class="kpi-card"><div class="label">Outstanding</div><div id="kpiInsOutstanding" class="value green">0.00 SAR</div></div>
+          </div>
+
+          <div class="filter-bar surface-light-50 p-12 radius-8 mt-16">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">From</label>
+                <input id="fInsFrom" type="date" class="form-control form-control-32" />
+              </div>
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">To</label>
+                <input id="fInsTo" type="date" class="form-control form-control-32" />
+              </div>
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Insurance</label>
+                <select id="fInsCode" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Provider Type</label>
+                <select id="fInsProviderType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="facility">Facility</option>
+                  <option value="pharmacy">Pharmacy</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Lifecycle Status</label>
+                <select id="fInsLifecycle" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="submitted">Submitted</option>
+                  <option value="in_review">In Review</option>
+                  <option value="approved">Approved</option>
+                  <option value="partially_paid">Partially Paid</option>
+                  <option value="paid">Paid</option>
+                  <option value="denied">Denied</option>
+                  <option value="appealed">Appealed</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Remittance Status</label>
+                <select id="fInsRemittance" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="pending">Pending</option>
+                  <option value="partial">Partial</option>
+                  <option value="paid">Paid</option>
+                  <option value="rejected">Rejected</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Search</label>
+                <input id="insSearchInput" type="text" class="form-control form-control-32" placeholder="Claim / order / insurance / provider / patient" />
+              </div>
+              <div class="col-md-2 d-flex gap-2">
+                <button id="btnInsApply" type="button" class="btn btn-primary btn-32 w-100">Apply</button>
+                <button id="btnInsReset" type="button" class="btn btn-primary-revers btn-32 w-100">Reset</button>
+              </div>
+              <div class="col-md-2">
+                <button id="btnInsExport" type="button" class="btn btn-primary-revers btn-icon btn-40 w-100">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight ins-table" id="insTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Claim No</th>
+                      <th>Order No</th>
+                      <th>Insurance</th>
+                      <th>Provider</th>
+                      <th>Patient</th>
+                      <th>Claim</th>
+                      <th>Approved</th>
+                      <th>Paid</th>
+                      <th>Outstanding</th>
+                      <th>Docs</th>
+                      <th>Uploaded Files</th>
+                      <th>Lifecycle</th>
+                      <th>Remittance</th>
+                      <th>Updated</th>
+                      <th class="text-center">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="insTbody"></tbody>
+                </table>
+              </div>
+
+              <div class="table-footer">
+                <div class="rows-select">
+                  <select id="insRowsPerPage">
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="all">All</option>
+                  </select>
+                  <span class="fsize-12 text-grey">Rows per page</span>
+                </div>
+
+                <div class="page-indicator" id="insPageIndicator">Page 1 of 1</div>
+
+                <div class="pager">
+                  <button class="pg-btn" id="insFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                  <button class="pg-btn" id="insPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                  <span class="pg-current" id="insCurrentPageBadge">1</span>
+                  <button class="pg-btn" id="insNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                  <button class="pg-btn" id="insLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/payment-data.js"></script>
+    <script src="../assets/js/payment-insurance-invoices.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

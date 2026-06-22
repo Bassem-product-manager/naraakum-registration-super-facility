@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Provider Management - Insurance</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root{
+        --nk-green:#0f8c8c;
+        --nk-border:#e6eaef;
+      }
+
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.3px;
+        color:#0b6f6f;
+        text-shadow:0 1px 0 rgba(255,255,255,.5);
+        line-height:1;
+        margin:0;
+      }
+
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      .side-menu.is-open{ transform: translateX(0); }
+      .side-menu-list li.is-open > .sub-list{ display:block; }
+      .side-menu-list li > .sub-list{ display:none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down{ transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active{
+        background: rgba(15,140,140,.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      /* License circle */
+      .license-dot{
+        width:12px;height:12px;border-radius:999px;display:inline-block;vertical-align:middle;
+        box-shadow:0 0 0 3px rgba(16,24,40,.03);
+      }
+      .lic-valid{ background:#12B76A; }
+      .lic-expired{ background:#F04438; }
+      .lic-na{ background:#98A2B3; }
+
+      /* Facility cell (NO image, NO sub text) */
+      .provider-name{
+        display:block;
+        font-weight:900;
+        color:#101828;
+        font-size:14px;
+        line-height:1.2;
+        margin:0;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .provider-specialty{
+        display:block;
+        margin-top:2px;
+        font-size:12px;
+        font-weight:700;
+        color:#667085;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      /* Actions */
+      .pm-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;}
+      .link-details{
+        display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 12px;border-radius:10px;
+        border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);
+        color:var(--nk-green);font-weight:900;font-size:12px;text-decoration:none;white-space:nowrap;
+      }
+      .link-details:hover{ background:rgba(15,140,140,.10); }
+
+      /* ===== Table cleanup (fix "table is messy") ===== */
+      .providers-table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:13px;
+      }
+      .providers-table thead th{
+        font-weight:900;
+        color:#344054;
+        font-size:12px;
+        white-space:nowrap;
+        background:#fff;
+        border-bottom:1px solid rgba(16,24,40,.10);
+        padding:12px 12px;
+        vertical-align:middle;
+      }
+      .providers-table tbody td{
+        padding:12px 12px;
+        vertical-align:middle;
+        border-bottom:1px solid rgba(16,24,40,.08);
+        color:#101828;
+        font-weight:700;
+      }
+      .providers-table tbody tr:hover td{ background:rgba(15,140,140,.04); }
+      .providers-table tbody tr:last-child td{ border-bottom:0; }
+
+      .providers-table .col-seq{ width:52px; }
+      .providers-table .col-code{ width:130px; }
+      .providers-table .col-name{ width:260px; }
+      .providers-table .col-phone{ width:170px; }
+      .providers-table .col-email{ width:260px; }
+      .providers-table .col-license{ width:130px; }
+      .providers-table .col-contract{ width:140px; }
+      .providers-table .col-orders{ width:145px; }
+      .providers-table .col-actions{ width:150px; text-align:right; }
+
+      .providers-table td.text-center,
+      .providers-table th.text-center{ text-align:center; }
+
+      .providers-table .staff-code{
+        display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:10px;
+        border:1px solid rgba(15,140,140,.18);background:rgba(15,140,140,.06);
+        color:var(--nk-green);font-weight:900;font-size:12px;
+      }
+      .providers-table .seq-cell,
+      .providers-table .staff-code,
+      .providers-table .cell-name,
+      .providers-table .cell-phone,
+      .providers-table .cell-email,
+      .providers-table .cell-orders{
+        white-space:nowrap;
+      }
+
+      .staff-code.num-code{
+        min-width:38px;
+        justify-content:center;
+      }
+
+      .contract-pill{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-width:88px;
+        height:28px;
+        padding:0 10px;
+        border-radius:999px;
+        border:1px solid transparent;
+        font-size:12px;
+        font-weight:900;
+        letter-spacing:.2px;
+        white-space:nowrap;
+      }
+      .contract-pill.active{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .contract-pill.pending{
+        color:#B54708;
+        background:rgba(247,144,9,.10);
+        border-color:rgba(247,144,9,.24);
+      }
+      .contract-pill.expired{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.24);
+      }
+
+      .orders-chip{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        min-width:86px;
+        height:28px;
+        padding:0 10px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+        color:#0b6f6f;
+        font-size:12px;
+        font-weight:900;
+      }
+
+      @media (max-width: 992px){
+        .filter-bar .row{ gap:12px; }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">â€”</span>
+                      <span class="fsize-12 surface-secondary-400">â€”</span>
+                    </span>
+                    <span class="fsize-12 text-grey">â€”</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input id="providerSearchInput" type="text" class="form-control form-control-32"
+                    placeholder="Search by insurance company / code / payer license / phone / email / contract / orders" />
+                  <button id="btnProviderSearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                  <button id="btnProviderReset" type="button" class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reset" data-bs-custom-class="custom-tooltip">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#providerFilterModal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+                <a href="../providers/add-insurance.html" class="btn btn-primary btn-icon btn-40">
+                  <i class="fi fi-rr-plus-small"></i><span>Add Insurance</span>
+                </a>
+                <button id="btnExportProviders" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i><span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-16">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="naraakum-table providers-table" id="providersTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq text-center">#</th>
+                      <th class="col-code">Insurance Code</th>
+                      <th class="col-name">Insurance Company</th>
+                      <th>City</th>
+                      <th class="col-phone">Phone</th>
+                      <th class="col-email">Email</th>
+                      <th class="text-center col-license">Payer License</th>
+                      <th class="text-center col-contract">Contract Status</th>
+                      <th class="text-center col-orders">Completed / Total Orders</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="providersTbody">
+                    <tr data-code="IN-00001" data-name="BMC Insurance Co." data-specialty="PL-548210" data-city="riyadh" data-phone="+966500101111"
+                      data-email="onboarding@bmcinsurance.sa" data-license="valid" data-expiry="2027-12-30" data-contract="active"
+                      data-completed-orders="142" data-total-orders="156" data-type="insurance">
+                      <td class="text-center seq-cell">1</td>
+                      <td><span class="staff-code num-code">1</span></td>
+                      <td class="cell-name">
+                        <span class="provider-name">BMC Insurance Co.</span>
+                        <span class="provider-specialty">Payer License: PL-548210</span>
+                      </td>
+                      <td>Riyadh</td>
+                      <td class="cell-phone">+966 50 010 1111</td>
+                      <td class="cell-email">onboarding@bmcinsurance.sa</td>
+                      <td class="text-center"><span class="license-dot lic-valid" title="Valid"></span></td>
+                      <td class="text-center"><span class="contract-pill active">Active</span></td>
+                      <td class="text-center cell-orders"><span class="orders-chip">142 / 156</span></td>
+                      <td class="col-actions">
+                        <div class="pm-actions">
+                          <a class="link-details" href="../providers/insurance-details.html?code=IN-00001"><i class="fi fi-rr-eye"></i><span>Details</span></a>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr data-code="IN-00002" data-name="Al Noor Insurance" data-specialty="PL-661092" data-city="jeddah" data-phone="+966500102222"
+                      data-email="admin@alnoorinsurance.sa" data-license="valid" data-expiry="2026-08-15" data-contract="pending"
+                      data-completed-orders="74" data-total-orders="89" data-type="insurance">
+                      <td class="text-center seq-cell">2</td>
+                      <td><span class="staff-code num-code">2</span></td>
+                      <td class="cell-name">
+                        <span class="provider-name">Al Noor Insurance</span>
+                        <span class="provider-specialty">Payer License: PL-661092</span>
+                      </td>
+                      <td>Jeddah</td>
+                      <td class="cell-phone">+966 50 010 2222</td>
+                      <td class="cell-email">admin@alnoorinsurance.sa</td>
+                      <td class="text-center"><span class="license-dot lic-valid" title="Valid"></span></td>
+                      <td class="text-center"><span class="contract-pill pending">Pending</span></td>
+                      <td class="text-center cell-orders"><span class="orders-chip">74 / 89</span></td>
+                      <td class="col-actions">
+                        <div class="pm-actions">
+                          <a class="link-details" href="../providers/insurance-details.html?code=IN-00002"><i class="fi fi-rr-eye"></i><span>Details</span></a>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr data-code="IN-00003" data-name="Green Shield Takaful" data-specialty="PL-300774" data-city="dammam" data-phone="+966500103333"
+                      data-email="care@greenshield.sa" data-license="expired" data-expiry="2025-12-01" data-contract="expired"
+                      data-completed-orders="33" data-total-orders="60" data-type="insurance">
+                      <td class="text-center seq-cell">3</td>
+                      <td><span class="staff-code num-code">3</span></td>
+                      <td class="cell-name">
+                        <span class="provider-name">Green Shield Takaful</span>
+                        <span class="provider-specialty">Payer License: PL-300774</span>
+                      </td>
+                      <td>Dammam</td>
+                      <td class="cell-phone">+966 50 010 3333</td>
+                      <td class="cell-email">care@greenshield.sa</td>
+                      <td class="text-center"><span class="license-dot lic-expired" title="Expired"></span></td>
+                      <td class="text-center"><span class="contract-pill expired">Expired</span></td>
+                      <td class="text-center cell-orders"><span class="orders-chip">33 / 60</span></td>
+                      <td class="col-actions">
+                        <div class="pm-actions">
+                          <a class="link-details" href="../providers/insurance-details.html?code=IN-00003"><i class="fi fi-rr-eye"></i><span>Details</span></a>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr data-code="IN-00004" data-name="Future Care Insurance" data-specialty="PL-990118" data-city="riyadh" data-phone="+966500104444"
+                      data-email="ops@futurecareinsurance.sa" data-license="valid" data-expiry="2027-03-20" data-contract="active"
+                      data-completed-orders="118" data-total-orders="133" data-type="insurance">
+                      <td class="text-center seq-cell">4</td>
+                      <td><span class="staff-code num-code">4</span></td>
+                      <td class="cell-name">
+                        <span class="provider-name">Future Care Insurance</span>
+                        <span class="provider-specialty">Payer License: PL-990118</span>
+                      </td>
+                      <td>Riyadh</td>
+                      <td class="cell-phone">+966 50 010 4444</td>
+                      <td class="cell-email">ops@futurecareinsurance.sa</td>
+                      <td class="text-center"><span class="license-dot lic-valid" title="Valid"></span></td>
+                      <td class="text-center"><span class="contract-pill active">Active</span></td>
+                      <td class="text-center cell-orders"><span class="orders-chip">118 / 133</span></td>
+                      <td class="col-actions">
+                        <div class="pm-actions">
+                          <a class="link-details" href="../providers/insurance-details.html?code=IN-00004"><i class="fi fi-rr-eye"></i><span>Details</span></a>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="providersRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="providersPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="providersFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="providersPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="providersCurrentPageBadge">1</span>
+                    <button class="pg-btn" id="providersNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="providersLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="providerFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Insurance</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Contract Status</label>
+                <select id="pfContract" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="pending">Pending</option>
+                  <option value="expired">Expired</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">City</label>
+                <select id="pfCity" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="riyadh">Riyadh</option>
+                  <option value="jeddah">Jeddah</option>
+                  <option value="dammam">Dammam</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Payer License Status</label>
+                <select id="pfLicense" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="valid">Valid</option>
+                  <option value="expired">Expired</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnProviderFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnProviderApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-plan-store.js"></script>
+
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function(){
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function(){ aside.classList.toggle("is-open"); });
+
+        list.querySelectorAll("li").forEach(function(li){
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function(){ li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function(){
+        const tbody = document.getElementById("providersTbody");
+        if (!tbody) return;
+
+        function safeText(v){
+          return (v == null ? "" : String(v))
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function cityNorm(v){
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function parseLicenseState(entity){
+          const expiry = ((entity && entity.license && entity.license.expiry) || "").toString().trim();
+          if (!expiry) return "valid";
+          const now = new Date();
+          const d = new Date(expiry + "T00:00:00");
+          if (Number.isNaN(d.getTime())) return "valid";
+          return d < now ? "expired" : "valid";
+        }
+
+        function appendLocalInsuranceRows(){
+          let entities = [];
+          if (window.NKInsurancePlanStore && typeof window.NKInsurancePlanStore.getEntities === "function"){
+            entities = window.NKInsurancePlanStore.getEntities();
+          } else {
+            try{
+              const raw = localStorage.getItem("nk_insurance_entities_v1");
+              const parsed = raw ? JSON.parse(raw) : [];
+              entities = Array.isArray(parsed) ? parsed : [];
+            }catch(err){
+              entities = [];
+            }
+          }
+          if (!entities.length) return;
+
+          const existing = new Set(Array.from(tbody.querySelectorAll("tr")).map(function(tr){
+            return ((tr.getAttribute("data-code") || "").toUpperCase()).trim();
+          }));
+
+          entities.forEach(function(entity){
+            const code = ((entity && entity.code) || "").toUpperCase().trim();
+            if (!code || existing.has(code)) return;
+
+            const name = (entity.name || entity.entityName || "Insurance Company").toString().trim();
+            const payerLicense = (entity.payerLicenseNo || (entity.license && entity.license.number) || "").toString().trim();
+            const city = (entity.city || "").toString().trim();
+            const cityLower = cityNorm(city);
+            const phone = (entity.phone || entity.responsiblePhone || "").toString().trim();
+            const email = (entity.email || entity.responsibleEmail || "").toString().trim();
+            const contract = ((entity.contract || "pending") + "").toLowerCase().trim();
+            const licenseState = parseLicenseState(entity);
+            const completed = Number(entity.completedOrders || 0);
+            const total = Number(entity.totalOrders || 0);
+
+            const seq = tbody.querySelectorAll("tr").length + 1;
+            const row = document.createElement("tr");
+            row.setAttribute("data-code", code);
+            row.setAttribute("data-name", name);
+            row.setAttribute("data-specialty", payerLicense);
+            row.setAttribute("data-city", cityLower);
+            row.setAttribute("data-phone", phone);
+            row.setAttribute("data-email", email);
+            row.setAttribute("data-license", licenseState);
+            row.setAttribute("data-expiry", (entity.license && entity.license.expiry) || "");
+            row.setAttribute("data-contract", contract || "pending");
+            row.setAttribute("data-completed-orders", String(Number.isFinite(completed) ? completed : 0));
+            row.setAttribute("data-total-orders", String(Number.isFinite(total) ? total : 0));
+            row.setAttribute("data-type", "insurance");
+
+            const contractClass = contract === "active" ? "active" : (contract === "expired" ? "expired" : "pending");
+            const contractLabel = contract === "active" ? "Active" : (contract === "expired" ? "Expired" : "Pending");
+            const licenseClass = licenseState === "expired" ? "lic-expired" : "lic-valid";
+            const safeCode = safeText(code);
+
+            row.innerHTML = ""
+              + '<td class="text-center seq-cell">' + seq + '</td>'
+              + '<td><span class="staff-code num-code">' + safeCode + '</span></td>'
+              + '<td class="cell-name"><span class="provider-name">' + safeText(name) + '</span><span class="provider-specialty">Payer License: ' + safeText(payerLicense) + '</span></td>'
+              + "<td>" + safeText(city) + "</td>"
+              + '<td class="cell-phone">' + safeText(phone) + "</td>"
+              + '<td class="cell-email">' + safeText(email) + "</td>"
+              + '<td class="text-center"><span class="license-dot ' + licenseClass + '" title="' + (licenseState === "expired" ? "Expired" : "Valid") + '"></span></td>'
+              + '<td class="text-center"><span class="contract-pill ' + contractClass + '">' + contractLabel + "</span></td>"
+              + '<td class="text-center cell-orders"><span class="orders-chip">' + (Number.isFinite(completed) ? completed : 0) + " / " + (Number.isFinite(total) ? total : 0) + "</span></td>"
+              + '<td class="col-actions"><div class="pm-actions"><a class="link-details" href="../providers/insurance-details.html?code=' + encodeURIComponent(code) + '"><i class="fi fi-rr-eye"></i><span>Details</span></a></div></td>';
+
+            tbody.appendChild(row);
+            existing.add(code);
+          });
+        }
+
+        appendLocalInsuranceRows();
+
+        const rowsAll = Array.from(tbody.querySelectorAll("tr"));
+
+        const searchInput = document.getElementById("providerSearchInput");
+        const btnSearch = document.getElementById("btnProviderSearch");
+        const btnReset = document.getElementById("btnProviderReset");
+
+        const pfContract = document.getElementById("pfContract");
+        const pfCity = document.getElementById("pfCity");
+        const pfLicense = document.getElementById("pfLicense");
+
+        const btnApplyFilter = document.getElementById("btnProviderApplyFilter");
+        const btnFilterReset = document.getElementById("btnProviderFilterReset");
+
+        const rowsSelect = document.getElementById("providersRowsPerPage");
+        const indicator = document.getElementById("providersPageIndicator");
+        const currentBadge = document.getElementById("providersCurrentPageBadge");
+        const btnFirst = document.getElementById("providersFirstPage");
+        const btnPrev = document.getElementById("providersPrevPage");
+        const btnNext = document.getElementById("providersNextPage");
+        const btnLast = document.getElementById("providersLastPage");
+
+        const btnExport = document.getElementById("btnExportProviders");
+
+        let currentPage = 1;
+        let rowsFiltered = [...rowsAll];
+
+        function norm(v){ return (v || "").toString().trim().toLowerCase(); }
+        function formatCode(code){
+          return (code || "").toString().toUpperCase();
+        }
+        function contractLabel(contract){
+          if (contract === "active") return "Active";
+          if (contract === "pending") return "Pending";
+          if (contract === "expired") return "Expired";
+          return contract || "";
+        }
+
+        function getRowData(tr){
+          return {
+            codeRaw: (tr.getAttribute("data-code") || "").toUpperCase(),
+            code: norm(tr.getAttribute("data-code")),
+            codeDisplay: norm(formatCode(tr.getAttribute("data-code") || "")),
+            name: norm(tr.getAttribute("data-name")),
+            specialty: norm(tr.getAttribute("data-specialty")),
+            city: norm(tr.getAttribute("data-city")),
+            phone: norm(tr.getAttribute("data-phone")),
+            email: norm(tr.getAttribute("data-email")),
+            license: norm(tr.getAttribute("data-license")),
+            expiry: norm(tr.getAttribute("data-expiry")),
+            contract: norm(tr.getAttribute("data-contract")),
+            completedOrders: norm(tr.getAttribute("data-completed-orders")),
+            totalOrders: norm(tr.getAttribute("data-total-orders")),
+            ordersMetric: `${norm(tr.getAttribute("data-completed-orders"))}/${norm(tr.getAttribute("data-total-orders"))}`
+          };
+        }
+
+        function matchesSearch(tr){
+          const q = norm(searchInput?.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.name.includes(q) ||
+            d.code.includes(q) ||
+            d.codeDisplay.includes(q) ||
+            d.specialty.includes(q) ||
+            d.phone.includes(q) ||
+            d.email.includes(q) ||
+            d.contract.includes(q) ||
+            d.ordersMetric.includes(q);
+        }
+
+        function matchesFilters(tr){
+          const d = getRowData(tr);
+          const ct = norm(pfContract?.value);
+          const c = norm(pfCity?.value);
+          const lic = norm(pfLicense?.value);
+
+          if (ct && d.contract !== ct) return false;
+          if (c && d.city !== c) return false;
+          if (lic && d.license !== lic) return false;
+          return true;
+        }
+
+        rowsAll.forEach(tr => {
+          const codeBadge = tr.querySelector(".num-code");
+          if (codeBadge) codeBadge.textContent = formatCode(tr.getAttribute("data-code") || "");
+        });
+
+        function perPageVal(){
+          if (!rowsSelect) return rowsFiltered.length || 1;
+          const v = rowsSelect.value;
+          return v === "all" ? rowsFiltered.length : parseInt(v, 10) || 10;
+        }
+
+        function totalPages(){
+          const p = perPageVal();
+          return Math.max(1, Math.ceil(rowsFiltered.length / (p || 1)));
+        }
+
+        function render(){
+          rowsAll.forEach(tr => tr.classList.add("d-none"));
+
+          const p = perPageVal();
+          const pages = totalPages();
+
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            rowsFiltered.forEach(tr => tr.classList.remove("d-none"));
+          } else {
+            const start = (currentPage - 1) * p;
+            const end = start + p;
+            rowsFiltered.slice(start, end).forEach(tr => tr.classList.remove("d-none"));
+          }
+
+          // Keep sequence column as the first visible row number after filtering/paging.
+          const visibleRows = rowsAll.filter(tr => !tr.classList.contains("d-none"));
+          visibleRows.forEach((tr, idx) => {
+            const seqCell = tr.querySelector(".seq-cell");
+            if (seqCell) seqCell.textContent = String(idx + 1);
+          });
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+        }
+
+        function applyAll(){
+          rowsFiltered = rowsAll.filter(tr => matchesSearch(tr) && matchesFilters(tr));
+          currentPage = 1;
+          render();
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+
+        if (btnReset) btnReset.addEventListener("click", () => {
+          if (searchInput) searchInput.value = "";
+          if (pfContract) pfContract.value = "";
+          if (pfCity) pfCity.value = "";
+          if (pfLicense) pfLicense.value = "";
+          applyAll();
+        });
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", () => {
+          applyAll();
+          const el = document.getElementById("providerFilterModal");
+          if (el && window.bootstrap) {
+            const m = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+            m.hide();
+          }
+        });
+
+        if (btnFilterReset) btnFilterReset.addEventListener("click", () => {
+          if (pfContract) pfContract.value = "";
+          if (pfCity) pfCity.value = "";
+          if (pfLicense) pfLicense.value = "";
+          applyAll();
+        });
+
+        if (rowsSelect) rowsSelect.addEventListener("change", () => { currentPage = 1; render(); });
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        function csvEscape(v){
+          const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+          if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+          return s;
+        }
+        function niceDate(iso){
+          if (!iso) return "";
+          const parts = iso.split("-");
+          if (parts.length !== 3) return iso;
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        if (btnExport) btnExport.addEventListener("click", () => {
+          const src = rowsFiltered.length ? rowsFiltered : rowsAll;
+
+          const headers = ["Insurance Code","Insurance Company","Payer License No","City","Phone","Email","License Status","Contract Status","Completed / Total Orders"];
+          const lines = [headers.map(csvEscape).join(",")];
+
+          src.forEach(tr => {
+            const d = getRowData(tr);
+            const lic = d.license === "expired" ? "Expired" : (d.license === "valid" ? "Valid" : "N/A");
+            const companyName = (tr.querySelector(".provider-name")?.textContent || "").trim();
+            const payerLicense = (tr.querySelector(".provider-specialty")?.textContent || "").replace(/^Payer License:\s*/i, "").trim();
+
+            lines.push([
+              formatCode(d.codeRaw),
+              companyName,
+              payerLicense,
+              d.city ? (d.city.charAt(0).toUpperCase() + d.city.slice(1)) : "",
+              tr.getAttribute("data-phone") || "",
+              tr.getAttribute("data-email") || "",
+              lic,
+              contractLabel(d.contract),
+              `${tr.getAttribute("data-completed-orders") || "0"} / ${tr.getAttribute("data-total-orders") || "0"}`
+            ].map(csvEscape).join(","));
+          });
+
+          const csv = "\ufeff" + lines.join("\n");
+          const blob = new Blob([csv], { type:"text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "insurances-export.csv";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        });
+
+        // Keep the last selected insurance for insurance-details fallback routing.
+        document.querySelectorAll('a[href*="insurance-details.html?code="]').forEach(link => {
+          link.addEventListener("click", () => {
+            try{
+              const u = new URL(link.href, window.location.href);
+              const c = (u.searchParams.get("code") || "").toUpperCase();
+              const row = link.closest("tr");
+              const contract = ((row && row.getAttribute("data-contract")) || "").toLowerCase();
+              if (c) sessionStorage.setItem("lastInsuranceCode", c);
+              if (contract) sessionStorage.setItem("lastInsuranceContract", contract);
+              sessionStorage.setItem("lastInsuranceStatusSync", "1");
+            }catch(e){}
+          });
+        });
+
+        applyAll();
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+

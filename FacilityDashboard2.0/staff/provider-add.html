@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Provider</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; --nk-border:#e6eaef; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;height:64px;border-radius:16px;border:1px solid rgba(15,140,140,.18);
+        background:#fff;padding:6px;object-fit:contain;display:block;margin:8px auto 10px;
+      }
+      .facility-line{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+      .facility-mini-logo{
+        width:22px;height:22px;border-radius:8px;border:1px solid rgba(15,140,140,.18);
+        background:#fff;padding:3px;object-fit:contain;flex:0 0 22px;
+      }
+      .facility-name{font-weight:900;line-height:1;margin:0;}
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:12px;
+        font-weight:900;font-size:12px;color:#101828;white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);font-weight:900;font-size:11px;padding:2px 8px;border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      /* ===== Wizard shell ===== */
+      .wizard-wrap{
+        border:1px solid rgba(0,0,0,.06);
+        background:#fff;
+        border-radius:12px;
+        overflow:hidden;
+        max-width:1180px;
+        margin:0 auto;
+      }
+      .wizard-steps{
+        display:flex;
+        gap:12px;
+        align-items:center;
+        padding:14px 16px;
+        background:rgba(0,0,0,.02);
+        border-bottom:1px solid rgba(0,0,0,.06);
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+      .wizard-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        flex-wrap:wrap;
+      }
+      .wizard-title{min-width:0;}
+      .wizard-actions{
+        display:flex;
+        align-items:center;
+        justify-content:flex-end;
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      .wizard-head .wizard-steps{
+        padding:0;
+        background:transparent;
+        border-bottom:0;
+        justify-content:flex-end;
+      }
+      .step-pill{
+        display:inline-flex;
+        align-items:center;
+        gap:10px;
+        padding:8px 12px;
+        border-radius:999px;
+        border:1px solid rgba(0,0,0,.10);
+        background:#fff;
+        user-select:none;
+      }
+      .step-pill .num{
+        width:26px;height:26px;border-radius:999px;display:grid;place-items:center;
+        border:1px solid rgba(0,0,0,.14);font-weight:900;font-size:12px;background:#fff;
+      }
+      .step-pill .label{font-weight:800;font-size:13px;opacity:.85;}
+      .step-pill.active{border-color:rgba(15,140,140,.35);box-shadow:0 0 0 3px rgba(15,140,140,.10);}
+      .step-pill.done{border-color:rgba(15,140,140,.35);background:rgba(15,140,140,.06);}
+      .step-pill.done .num{background:rgba(15,140,140,.12);border-color:rgba(15,140,140,.45);}
+      .step-pill.hidden-step{display:none!important;}
+
+      .wizard-body{padding:16px;}
+      .wizard-footer{
+        display:flex;justify-content:space-between;gap:10px;padding:14px 16px;
+        border-top:1px solid rgba(0,0,0,.06);background:rgba(0,0,0,.02);flex-wrap:wrap;
+      }
+      .alert-inline{
+        display:none;
+        padding:10px 12px;border-radius:10px;
+        background:rgba(220,53,69,.08);
+        border:1px solid rgba(220,53,69,.18);
+        color:rgba(220,53,69,.95);
+        font-size:13px;
+        margin-bottom:12px;
+      }
+
+      /* ===== License upload ===== */
+      .upload-box{
+        border:2px dashed rgba(0,0,0,.18);
+        border-radius:12px;
+        padding:18px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        min-height:120px;
+        cursor:pointer;
+        position:relative;
+        background:rgba(0,0,0,.02);
+      }
+      .upload-box:hover{background:rgba(0,0,0,.03);border-color:rgba(15,140,140,.35);}
+      .upload-box input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;}
+      .upload-box .hint{text-align:center;}
+      .upload-box .hint b{display:block;margin-top:8px;}
+      .mini-note{font-size:12px;color:rgba(0,0,0,.55);margin:6px 0 0;}
+
+      /* ===== Service activation (Step 3) ===== */
+      .svc-activate{
+        border:1px solid rgba(0,0,0,.08);
+        border-radius:14px;
+        background:#fff;
+        overflow:hidden;
+      }
+      .svc-activate .head{
+        padding:12px 14px;
+        background:rgba(0,0,0,.02);
+        border-bottom:1px solid rgba(0,0,0,.06);
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+      }
+      .svc-activate .head h4{margin:0;font-weight:900;font-size:14px;}
+      .svc-item{
+        border-top:1px solid rgba(230,234,239,.7);
+        background:#fff;
+      }
+      .svc-item:first-child{border-top:none;}
+      .svc-item-bar{
+        padding:12px 14px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        cursor:pointer;
+        user-select:none;
+      }
+      .svc-left{display:flex;align-items:center;gap:10px;min-width:0;}
+      .svc-ico{
+        width:44px;height:44px;border-radius:14px;border:1px solid rgba(15,140,140,.2);
+        background:rgba(15,140,140,.08);display:grid;place-items:center;flex:0 0 44px;color:var(--nk-green);
+      }
+      .svc-ico i{font-size:18px;}
+      .svc-txt{min-width:0;}
+      .svc-title{margin:0;font-weight:900;font-size:14px;line-height:1.2;}
+      .svc-sub{margin-top:6px;font-size:12px;color:#6b7280;font-weight:700;}
+      .svc-right{display:flex;align-items:center;gap:10px;flex:0 0 auto;}
+      .svc-chip{
+        height:26px;padding:0 10px;border-radius:999px;border:1px solid rgba(0,0,0,.12);
+        background:#fff;font-weight:900;font-size:12px;color:rgba(0,0,0,.70);
+        display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;
+      }
+
+      /* Toggle (same style used in business hours page) */
+      .nk-toggle{
+        width:42px;height:24px;border-radius:999px;border:1px solid rgba(0,0,0,.14);
+        background:rgba(0,0,0,.08);position:relative;cursor:pointer;flex:0 0 auto;
+      }
+      .nk-toggle::after{
+        content:"";position:absolute;top:50%;left:3px;transform:translateY(-50%);
+        width:18px;height:18px;border-radius:999px;background:#fff;box-shadow:0 4px 10px rgba(0,0,0,.12);
+        transition:all .18s ease;
+      }
+      .nk-toggle.on{background:rgba(15,140,140,.22);border-color:rgba(15,140,140,.35);}
+      .nk-toggle.on::after{left:calc(100% - 21px);background:var(--nk-green);}
+
+      .svc-expand{
+        display:none;
+        padding:14px;
+        border-top:1px solid rgba(230,234,239,.7);
+        background:rgba(15,140,140,.02);
+      }
+      .svc-item.open .svc-expand{display:block;}
+
+      /* ===== Business hours UI (embedded, based on your service-business-hours page style) ===== */
+      .bh-box{
+        border:1px solid var(--nk-border);
+        border-radius:14px;
+        overflow:hidden;
+        background:#fff;
+      }
+      .bh-box-head{
+        padding:12px 14px;
+        border-bottom:1px solid var(--nk-border);
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        background:rgba(0, 0, 0, 0.015);
+      }
+      .bh-box-head .ttl{font-weight:900;font-size:13px;}
+      .date-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+      @media (max-width: 992px){.date-row{grid-template-columns:1fr;}}
+      .day-card{border-top:1px solid rgba(230,234,239,.7);background:#fff;}
+      .day-head{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+      .day-name{display:flex;align-items:center;gap:10px;font-weight:900;font-size:13px;color:#101828;white-space:nowrap;}
+      .pill-open,.pill-closed{
+        display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;
+        font-size:12px;font-weight:900;border:1px solid var(--nk-border);white-space:nowrap;
+      }
+      .pill-open{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.25);color:#16a34a;}
+      .pill-closed{background:rgba(148,163,184,.16);border-color:rgba(148,163,184,.25);color:#475569;}
+      .intervals{padding:12px 14px;display:grid;gap:10px;}
+      .interval{
+        display:grid;grid-template-columns:1fr auto 1fr auto;
+        gap:10px;align-items:center;padding:10px;border-radius:12px;
+        border:1px solid rgba(0,0,0,.08);background:#fff;
+      }
+      @media (max-width: 768px){.interval{grid-template-columns:1fr;}.to-label{display:none;}.trash{width:100%;}}
+      .time-input{
+        height:38px;border-radius:12px;border:1px solid rgba(0,0,0,.12);
+        padding:0 12px;font-size:14px;background:#fff;
+      }
+      .time-input:focus{
+        outline:none;border-color:rgba(15,140,140,.55);
+        box-shadow:0 0 0 .2rem rgba(15,140,140,.12);
+      }
+      .to-label{font-size:12px;font-weight:900;color:rgba(0,0,0,.5);white-space:nowrap;}
+      .trash{
+        width:38px;height:38px;border-radius:12px;border:1px solid rgba(220,53,69,.25);
+        background:rgba(220,53,69,.06);cursor:pointer;display:grid;place-items:center;
+      }
+      .trash:hover{background:rgba(220,53,69,.10);border-color:rgba(220,53,69,.35);}
+      .add-interval{
+        padding:12px 14px;border-top:1px solid rgba(230,234,239,.7);
+        font-size:13px;font-weight:900;color:var(--nk-green);
+        cursor:pointer;user-select:none;background:rgba(15,140,140,.03);
+      }
+      .add-interval:hover{background:rgba(15,140,140,.06);}
+      .day-card[data-open="0"] .intervals{opacity:.45;}
+      .day-card[data-open="0"] .add-interval{opacity:.45;pointer-events:none;}
+
+      /* ===== Optional profile repeaters (Arabic+English split) ===== */
+      .optional-block{border:1px solid rgba(0,0,0,.08);border-radius:12px;overflow:hidden;background:#fff;margin-top:12px;}
+      .optional-head{padding:10px 12px;background:rgba(0,0,0,.02);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;user-select:none;}
+      .optional-head b{font-size:13px;}
+      .optional-body{padding:12px;display:none;}
+      .optional-block.open .optional-body{display:block;}
+      .repeat-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+      .repeat-row .form-control{flex:1 1 340px;min-width:240px;}
+      .icon-btn{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;}
+      .icon-btn:hover{border-color:rgba(15,140,140,.35);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .icon-btn.danger{border-color:rgba(220,53,69,.25);background:rgba(220,53,69,.06);color:rgba(220,53,69,1);}
+      .icon-btn.danger:hover{box-shadow:0 0 0 3px rgba(220,53,69,.10);}
+      .mini-hint{font-size:12px;color:rgba(0,0,0,.55);margin:8px 0 0;}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE (FULL) ===================== -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ===================== MAIN ===================== -->
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Add Provider</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Staff Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Add Provider</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="wizard-wrap">
+            <div class="wizard-steps" id="wizardSteps">
+              <div class="step-pill active" data-step-pill="1"><span class="num">1</span><span class="label">Provider Information</span></div>
+              <div class="step-pill" data-step-pill="2" id="pillLicense"><span class="num">2</span><span class="label">License & Specialty</span></div>
+              <div class="step-pill" data-step-pill="3" id="pillServices"><span class="num">3</span><span class="label">Service Profile</span></div>
+              <div class="step-pill" data-step-pill="4" id="pillProfile"><span class="num">4</span><span class="label">Personal Profile</span></div>
+            </div>
+
+            <div class="wizard-body">
+              <div class="alert-inline" id="wizardAlert">Please fill the required fields before continuing.</div>
+
+              <!-- STEP 1 -->
+              <section class="wizard-step" data-step="1">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="wizard-head">
+                    <div class="wizard-title">
+                      <h3 class="m-0">Provider Information</h3>
+                      <p class="text-grey mt-8 mb-0">Basic account info for the provider.</p>
+                    </div>
+                    <div class="wizard-actions">
+                      <div class="wizard-steps-slot"></div>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="row g-3">
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Job Title <span class="text-red">*</span></label>
+                      <select class="form-select form-select-40" id="jobTitle" required>
+                        <option value="" selected>-- Select --</option>
+                        <option value="Doctor">Doctor</option>
+                        <option value="Nurse">Nurse</option>
+                        <option value="Physiotherapist">Physiotherapist</option>
+                        <option value="Caregiver">Caregiver</option>
+                        <option value="Phlebotomist">Phlebotomist</option>
+                        <option value="Medical Engineer">Medical Engineer</option>
+                      </select>
+                      <div class="mini-hint">License is required for all roles except Medical Engineer.</div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Full Name (English) <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" id="fullNameEn" placeholder="Name in English" required />
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Full Name (Arabic) <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" id="fullNameAr" placeholder="Name in Arabic" required />
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Birth Date <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" type="date" id="birthDate" required />
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Gender <span class="text-red">*</span></label>
+                      <select class="form-select form-select-40" id="gender" required>
+                        <option value="" selected>-- Select --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Nationality <span class="text-red">*</span></label>
+                      <select class="form-select form-select-40" id="nationality" required>
+                        <option value="" selected>-- Select --</option>
+                        <option>Saudi</option>
+                        <option>Egyptian</option>
+                        <option>Emirati</option>
+                        <option>Kuwaiti</option>
+                        <option>Jordanian</option>
+                        <option>Syrian</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Phone No. <span class="text-red">*</span></label>
+                      <div class="d-flex gap-2">
+                        <select class="form-select form-select-40" id="phoneCode" style="max-width:120px;">
+                          <option selected>+966</option>
+                          <option>+20</option>
+                          <option>+971</option>
+                        </select>
+                        <input class="form-control form-control-40" id="phone" placeholder="Phone Number" required />
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Email <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" type="email" id="email" placeholder="Email" required />
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Branch</label>
+                      <select class="form-select form-select-40" id="branch">
+                        <option>Main Branch</option>
+                        <option>Branch A</option>
+                        <option>Branch B</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Enter Password <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" type="password" id="password" placeholder="Password" required />
+                    </div>
+
+                    <div class="col-12 col-lg-4">
+                      <label class="form-label">Confirm Password <span class="text-red">*</span></label>
+                      <input class="form-control form-control-40" type="password" id="confirmPassword" placeholder="Retype Password" required />
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- STEP 2 -->
+              <section class="wizard-step" data-step="2" id="stepLicense">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="wizard-head">
+                    <div class="wizard-title">
+                      <h3 class="m-0">License & Specialty</h3>
+                      <p class="text-grey mt-8 mb-0">Upload certificates and select specialty and level.</p>
+                    </div>
+                    <div class="wizard-actions">
+                      <span class="nk-badge" id="licenseRoleBadge"><i class="fi fi-rr-shield-check"></i><span>License Required</span></span>
+                      <div class="wizard-steps-slot"></div>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label">Upload your Certificates <span class="text-red" id="certReqStar">*</span></label>
+                      <div class="upload-box" id="certUploadBox">
+                        <div class="hint">
+                          <i class="fi fi-rr-cloud-upload-alt" style="font-size:22px;color:var(--nk-green);"></i>
+                          <b>Upload certificates / license files</b>
+                          <div class="mini-note">pdf, jpg, png (multiple allowed)</div>
+                        </div>
+                        <input type="file" id="certFiles" multiple />
+                      </div>
+                      <div class="mini-note" id="certStatus">No files selected.</div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                      <label class="form-label">Specialty <span class="text-red">*</span></label>
+                      <select class="form-select form-select-40" id="speciality" required>
+                        <option value="" selected>-- Select --</option>
+                        <option value="General Practitioner">General Practitioner</option>
+                        <option value="Internal Medicine">Internal Medicine</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                        <option value="Dermatology">Dermatology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Physiotherapy">Physiotherapy</option>
+                        <option value="Nursing">Nursing</option>
+                        <option value="Phlebotomy">Phlebotomy</option>
+                      </select>
+                      <div class="mini-hint">If you choose General Practitioner, Level is not required.</div>
+                    </div>
+
+                    <div class="col-12 col-lg-6" id="levelWrap">
+                      <label class="form-label">Level <span class="text-red">*</span></label>
+                      <select class="form-select form-select-40" id="licenseLevel">
+                        <option value="" selected>-- Select --</option>
+                        <option value="Specialist">Specialist</option>
+                        <option value="Consultant">Consultant</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <!-- STEP 3 -->
+              <section class="wizard-step" data-step="3" id="stepServices">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="wizard-head">
+                    <div class="wizard-title">
+                      <h3 class="m-0">Service Profile</h3>
+                      <p class="text-grey mt-8 mb-0">Enable services, then set Business Hours for each enabled service.</p>
+                    </div>
+                    <div class="wizard-actions">
+                      <button type="button" class="btn btn-primary-revers btn-40" id="btnSkipServices">
+                        Skip
+                      </button>
+                      <div class="wizard-steps-slot"></div>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="row g-3">
+                    <div class="col-12 col-lg-6">
+                      <label class="form-label">Medical License Number</label>
+                      <input class="form-control form-control-40" id="medicalLicenseNo" placeholder="Enter Text" />
+                    </div>
+                  </div>
+
+                  <div class="svc-activate" id="svcActivate" style="margin-top:14px;">
+                    <!-- Online Consultation -->
+                    <div class="svc-item" data-svc="online">
+                      <div class="svc-item-bar">
+                        <div class="svc-left">
+                          <div class="svc-ico"><i class="fi fi-rr-video-camera"></i></div>
+                          <div class="svc-txt">
+                            <p class="svc-title">Online Consultation</p>
+                            <div class="svc-sub">Online Consultation</div>
+                          </div>
+                        </div>
+                        <div class="svc-right">
+                          <span class="svc-chip" data-chip>Disabled</span>
+                          <div class="nk-toggle" data-toggle></div>
+                        </div>
+                      </div>
+                      <div class="svc-expand">
+                        <div class="date-row">
+                          <div>
+                            <label class="fsize-12 text-grey">Start Date</label>
+                            <input type="date" class="form-control form-control-40" data-start />
+                          </div>
+                          <div>
+                            <label class="fsize-12 text-grey">End Date</label>
+                            <input type="date" class="form-control form-control-40" data-end />
+                          </div>
+                        </div>
+
+                        <div class="bh-box">
+                          <div class="bh-box-head"><div class="ttl">Business Hours</div></div>
+                          <div data-days></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Home Visit -->
+                    <div class="svc-item" data-svc="home">
+                      <div class="svc-item-bar">
+                        <div class="svc-left">
+                          <div class="svc-ico"><i class="fi fi-rr-house-chimney-medical"></i></div>
+                          <div class="svc-txt">
+                            <p class="svc-title">Home Visit</p>
+                            <div class="svc-sub">Home Visit</div>
+                          </div>
+                        </div>
+                        <div class="svc-right">
+                          <span class="svc-chip" data-chip>Disabled</span>
+                          <div class="nk-toggle" data-toggle></div>
+                        </div>
+                      </div>
+                      <div class="svc-expand">
+                        <div class="date-row">
+                          <div>
+                            <label class="fsize-12 text-grey">Start Date</label>
+                            <input type="date" class="form-control form-control-40" data-start />
+                          </div>
+                          <div>
+                            <label class="fsize-12 text-grey">End Date</label>
+                            <input type="date" class="form-control form-control-40" data-end />
+                          </div>
+                        </div>
+
+                        <div class="bh-box">
+                          <div class="bh-box-head"><div class="ttl">Business Hours</div></div>
+                          <div data-days></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Clinic Visit -->
+                    <div class="svc-item" data-svc="clinic">
+                      <div class="svc-item-bar">
+                        <div class="svc-left">
+                          <div class="svc-ico"><i class="fi fi-rr-hospital"></i></div>
+                          <div class="svc-txt">
+                            <p class="svc-title">Clinic Visit</p>
+                            <div class="svc-sub">Clinic Visit</div>
+                          </div>
+                        </div>
+                        <div class="svc-right">
+                          <span class="svc-chip" data-chip>Disabled</span>
+                          <div class="nk-toggle" data-toggle></div>
+                        </div>
+                      </div>
+                      <div class="svc-expand">
+                        <div class="date-row">
+                          <div>
+                            <label class="fsize-12 text-grey">Start Date</label>
+                            <input type="date" class="form-control form-control-40" data-start />
+                          </div>
+                          <div>
+                            <label class="fsize-12 text-grey">End Date</label>
+                            <input type="date" class="form-control form-control-40" data-end />
+                          </div>
+                        </div>
+
+                        <div class="bh-box">
+                          <div class="bh-box-head"><div class="ttl">Business Hours</div></div>
+                          <div data-days></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mini-hint" style="margin-top:10px;">
+                    Business hours UI is embedded to match your <b>Service Business Hours</b> page behavior (expand/collapse per service). 
+                  </div>
+                </div>
+              </section>
+
+              <!-- STEP 4 -->
+              <section class="wizard-step" data-step="4" id="stepProfile">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="wizard-head">
+                    <div class="wizard-title">
+                      <h3 class="m-0">Personal Profile</h3>
+                      <p class="text-grey mt-8 mb-0">Fill provider profile details. Bio (EN & AR) is required.</p>
+                    </div>
+                    <div class="wizard-actions">
+                      <div class="wizard-steps-slot"></div>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <label class="form-label">Bio (English) <span class="text-red">*</span></label>
+                      <textarea class="form-control" rows="3" id="bioEn" placeholder="Enter Text" required></textarea>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label">Bio (Arabic) <span class="text-red">*</span></label>
+                      <textarea class="form-control" rows="3" id="bioAr" placeholder="اكتب النبذة بالعربية" dir="rtl" style="text-align:right;" required></textarea>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label text-red">Expectations</label>
+                      <textarea class="form-control" rows="3" id="expectations" placeholder="Add expectations"></textarea>
+                    </div>
+
+                  </div>
+
+                  <div class="optional-block open" data-repeater="university" style="margin-top:14px;">
+                    <div class="optional-head"><b>University</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-university"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="university">+ Add Item</button>
+                      <div class="mini-hint">Each item will have Arabic + English inputs.</div>
+                    </div>
+                  </div>
+
+                  <div class="optional-block" data-repeater="fellowship">
+                    <div class="optional-head"><b>Fellowship Program</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-fellowship"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="fellowship">+ Add Item</button>
+                    </div>
+                  </div>
+
+                  <div class="optional-block" data-repeater="subspecialty">
+                    <div class="optional-head"><b>Sub-specialty</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-subspecialty"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="subspecialty">+ Add Item</button>
+                    </div>
+                  </div>
+
+                  <div class="optional-block" data-repeater="experience">
+                    <div class="optional-head"><b>Experience in cases</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-experience"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="experience">+ Add Item</button>
+                    </div>
+                  </div>
+
+                  <div class="optional-block" data-repeater="memberOf">
+                    <div class="optional-head"><b>Member of</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-memberOf"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="memberOf">+ Add Item</button>
+                    </div>
+                  </div>
+
+                  <div class="optional-block" data-repeater="publications">
+                    <div class="optional-head"><b>Publications</b><i class="fi fi-rr-angle-small-down"></i></div>
+                    <div class="optional-body">
+                      <div class="repeat-list" id="list-publications"></div>
+                      <button type="button" class="btn btn-light btn-40 mt-10" data-add-item="publications">+ Add Item</button>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+            </div>
+
+            <div class="wizard-footer">
+              <div class="d-flex gap-2 flex-wrap">
+                <a href="staff-list.html" class="btn btn-light btn-40">Cancel</a>
+              </div>
+
+              <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-light btn-40" id="btnBack">Back</button>
+                <button type="button" class="btn btn-primary btn-40" id="btnNext">Next</button>
+                <button type="button" class="btn btn-primary btn-40" id="btnSave" style="display:none;">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts (ONCE) -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      /* ✅ KSA Clock script (12-hour AM/PM) */
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+
+    <script>
+      (function(){
+        const KEY = "naraakum_providers_v2";
+
+        function safeParse(json, fallback){ try{ return JSON.parse(json);}catch(e){ return fallback; } }
+        function getList(){ return safeParse(localStorage.getItem(KEY) || "[]", []); }
+        function setList(list){ localStorage.setItem(KEY, JSON.stringify(list)); }
+
+        const steps = Array.from(document.querySelectorAll(".wizard-step"));
+        const pills = Array.from(document.querySelectorAll(".step-pill"));
+        const wizardSteps = document.getElementById("wizardSteps");
+        const alertBox = document.getElementById("wizardAlert");
+
+        const btnBack = document.getElementById("btnBack");
+        const btnNext = document.getElementById("btnNext");
+        const btnSave = document.getElementById("btnSave");
+        const btnSkipServices = document.getElementById("btnSkipServices");
+
+        const jobTitle = document.getElementById("jobTitle");
+        const speciality = document.getElementById("speciality");
+        const levelWrap = document.getElementById("levelWrap");
+        const licenseLevel = document.getElementById("licenseLevel");
+
+        const certFiles = document.getElementById("certFiles");
+        const certStatus = document.getElementById("certStatus");
+        const certReqStar = document.getElementById("certReqStar");
+        const licenseRoleBadge = document.getElementById("licenseRoleBadge");
+
+        const pillLicense = document.getElementById("pillLicense");
+        const stepLicense = document.getElementById("stepLicense");
+
+        const pillServices = document.getElementById("pillServices");
+        const stepServices = document.getElementById("stepServices");
+
+        const pillProfile = document.getElementById("pillProfile");
+        const stepProfile = document.getElementById("stepProfile");
+
+        // profile required
+        const bioEn = document.getElementById("bioEn");
+        const bioAr = document.getElementById("bioAr");
+
+        let currentStep = 1;
+
+        function showAlert(msg){
+          alertBox.textContent = msg || "Please fill the required fields before continuing.";
+          alertBox.style.display = "block";
+          window.scrollTo({top:0, behavior:"smooth"});
+        }
+        function hideAlert(){ alertBox.style.display = "none"; }
+
+        function isLicenseRequired(){
+          const jt = (jobTitle.value || "").toLowerCase();
+          return jt && jt !== "medical engineer";
+        }
+
+        function isGeneralPractitioner(){
+          return (speciality.value || "") === "General Practitioner";
+        }
+
+        function syncLevelVisibility(){
+          if(isGeneralPractitioner()){
+            levelWrap.style.display = "none";
+            licenseLevel.value = "";
+          }else{
+            levelWrap.style.display = "";
+          }
+        }
+
+        function syncLicenseRequirementUI(){
+          const req = isLicenseRequired();
+          if(req){
+            certReqStar.style.display = "";
+            licenseRoleBadge.innerHTML = '<i class="fi fi-rr-shield-check"></i><span>License Required</span>';
+          }else{
+            certReqStar.style.display = "none";
+            licenseRoleBadge.innerHTML = '<i class="fi fi-rr-info"></i><span>No License Required</span>';
+          }
+        }
+
+        function syncWizardForRole(){
+          const req = isLicenseRequired();
+          pillLicense.classList.toggle("hidden-step", !req);
+
+          const numServices = req ? "3" : "2";
+          const numProfile = req ? "4" : "3";
+          const svcNum = pillServices.querySelector(".num");
+          const profNum = pillProfile.querySelector(".num");
+          if(svcNum) svcNum.textContent = numServices;
+          if(profNum) profNum.textContent = numProfile;
+
+          if(!req){
+            stepLicense.style.display = "none";
+            if(currentStep === 2){
+              setStep(3);
+              return;
+            }
+          }
+        }
+
+        function attachStepsToStep(step){
+          if(!wizardSteps) return;
+          const active = steps.find(s => parseInt(s.getAttribute("data-step"), 10) === step);
+          if(!active) return;
+          const slot = active.querySelector(".wizard-steps-slot");
+          if(slot) slot.appendChild(wizardSteps);
+        }
+
+        function setStep(step){
+          currentStep = step;
+
+          steps.forEach(s => {
+            const n = parseInt(s.getAttribute("data-step"), 10);
+            s.style.display = (n === step) ? "" : "none";
+          });
+
+          pills.forEach(p => {
+            const n = parseInt(p.getAttribute("data-step-pill"), 10);
+            p.classList.remove("active","done");
+            if(n < step) p.classList.add("done");
+            if(n === step) p.classList.add("active");
+          });
+
+          attachStepsToStep(step);
+
+          btnBack.style.display = (step === 1) ? "none" : "";
+          btnNext.style.display = (step === 4) ? "none" : "";
+          btnSave.style.display = (step === 4) ? "" : "none";
+        }
+
+        function validateStep1(){
+          const requiredIds = ["jobTitle","fullNameEn","fullNameAr","birthDate","gender","nationality","phone","email","password","confirmPassword"];
+          for(const id of requiredIds){
+            const el = document.getElementById(id);
+            if(!el) continue;
+            const v = (el.value || "").trim();
+            if(!v) return { ok:false, msg:"Step 1: Please fill all required fields." };
+          }
+          const pass = (document.getElementById("password").value || "");
+          const conf = (document.getElementById("confirmPassword").value || "");
+          if(pass !== conf) return { ok:false, msg:"Step 1: Password and Confirm Password must match." };
+          return { ok:true };
+        }
+
+        function validateStep2(){
+          // If Medical Engineer, we allow skip license validations (still must pick a specialty though)
+          const spec = (speciality.value || "").trim();
+          if(!spec) return { ok:false, msg:"Step 2: Please select Specialty." };
+
+          if(!isGeneralPractitioner()){
+            const lvl = (licenseLevel.value || "").trim();
+            if(!lvl) return { ok:false, msg:"Step 2: Please select Level for this Specialty." };
+          }
+
+          if(isLicenseRequired()){
+            const files = certFiles.files || [];
+            if(!files.length) return { ok:false, msg:"Step 2: Please upload your Certificates / License files." };
+          }
+          return { ok:true };
+        }
+
+        function validateStep3(){
+          // Step 3 is skippable; if user stays here, no hard required.
+          return { ok:true };
+        }
+
+        function validateStep4(){
+          const en = (bioEn.value || "").trim();
+          const ar = (bioAr.value || "").trim();
+          if(!en || !ar) return { ok:false, msg:"Step 4: Bio (English) and Bio (Arabic) are required." };
+          return { ok:true };
+        }
+
+        // ===== Repeaters (Arabic + English split) =====
+        function createRepeatRow(listId, valObj){
+          const host = document.getElementById(listId);
+          if(!host) return;
+
+          const wrap = document.createElement("div");
+          wrap.className = "repeat-row";
+
+          const vAr = (valObj && valObj.ar) || "";
+          const vEn = (valObj && valObj.en) || "";
+
+          const inputAr = document.createElement("input");
+          inputAr.className = "form-control form-control-40";
+          inputAr.placeholder = "Arabic / العربية";
+          inputAr.dir = "rtl";
+          inputAr.style.textAlign = "right";
+          inputAr.value = vAr;
+          inputAr.setAttribute("data-field","ar");
+
+          const inputEn = document.createElement("input");
+          inputEn.className = "form-control form-control-40";
+          inputEn.placeholder = "English";
+          inputEn.value = vEn;
+          inputEn.setAttribute("data-field","en");
+
+          const del = document.createElement("button");
+          del.type = "button";
+          del.className = "icon-btn danger";
+          del.innerHTML = '<i class="fi fi-rr-trash"></i>';
+          del.addEventListener("click", () => wrap.remove());
+
+          wrap.appendChild(inputAr);
+          wrap.appendChild(inputEn);
+          wrap.appendChild(del);
+
+          host.appendChild(wrap);
+        }
+
+        function readRepeat(listId){
+          const host = document.getElementById(listId);
+          if(!host) return [];
+          return Array.from(host.querySelectorAll(".repeat-row")).map(row => {
+            const ar = row.querySelector('[data-field="ar"]')?.value?.trim() || "";
+            const en = row.querySelector('[data-field="en"]')?.value?.trim() || "";
+            if(!ar && !en) return null;
+            return { ar, en };
+          }).filter(Boolean);
+        }
+
+        document.querySelectorAll("[data-add-item]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const key = btn.getAttribute("data-add-item");
+            createRepeatRow("list-" + key);
+          });
+        });
+
+        document.querySelectorAll(".optional-block .optional-head").forEach(head => {
+          head.addEventListener("click", () => {
+            const block = head.closest(".optional-block");
+            block.classList.toggle("open");
+          });
+        });
+
+        // ===== Business hours builder for each service =====
+        const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+        function intervalRow(from="09:00", to="13:00"){
+          return `
+            <div class="interval">
+              <input class="time-input" type="time" value="${from}" />
+              <span class="to-label">to</span>
+              <input class="time-input" type="time" value="${to}" />
+              <button class="trash" type="button" data-action="delInterval" title="Delete">
+                <i class="fi fi-rr-trash"></i>
+              </button>
+            </div>
+          `;
+        }
+
+        function dayCard(day, open=false){
+          const pill = open ? "pill-open" : "pill-closed";
+          const text = open ? "OPEN" : "CLOSED";
+          const toggleOn = open ? "on" : "";
+          const openAttr = open ? "1" : "0";
+          return `
+            <div class="day-card" data-day="${day}" data-open="${openAttr}">
+              <div class="day-head">
+                <div class="day-name">
+                  <span>${day}</span>
+                  <span class="${pill}" data-pill>${text}</span>
+                </div>
+                <div class="nk-toggle ${toggleOn}" data-day-toggle></div>
+              </div>
+              <div class="intervals" data-intervals>
+                ${open ? intervalRow() : ""}
+              </div>
+              <div class="add-interval" data-add-interval>+ Add Interval</div>
+            </div>
+          `;
+        }
+
+        function initServiceHours(svcItem){
+          const daysHost = svcItem.querySelector("[data-days]");
+          if(!daysHost) return;
+
+          // default: Monday open with one interval, others closed
+          daysHost.innerHTML = DAYS.map(d => {
+            const open = (d === "Monday");
+            return dayCard(d, open);
+          }).join("");
+
+          // Toggle day open/closed
+          daysHost.addEventListener("click", (e) => {
+            const tgl = e.target.closest("[data-day-toggle]");
+            const addBtn = e.target.closest("[data-add-interval]");
+            const delBtn = e.target.closest('button[data-action="delInterval"]');
+
+            if(delBtn){
+              delBtn.closest(".interval")?.remove();
+              return;
+            }
+
+            if(addBtn){
+              const card = addBtn.closest(".day-card");
+              if(!card || card.getAttribute("data-open") !== "1") return;
+              const intervals = card.querySelector("[data-intervals]");
+              intervals.insertAdjacentHTML("beforeend", intervalRow());
+              return;
+            }
+
+            if(tgl){
+              const card = tgl.closest(".day-card");
+              const isOn = tgl.classList.toggle("on");
+              card.setAttribute("data-open", isOn ? "1" : "0");
+              const pill = card.querySelector("[data-pill]");
+              const intervals = card.querySelector("[data-intervals]");
+              if(isOn){
+                pill.className = "pill-open";
+                pill.textContent = "OPEN";
+                if(!intervals.querySelector(".interval")) intervals.insertAdjacentHTML("beforeend", intervalRow());
+              }else{
+                pill.className = "pill-closed";
+                pill.textContent = "CLOSED";
+              }
+            }
+          });
+        }
+
+        function setToggle(el, on){
+          if(!el) return;
+          on ? el.classList.add("on") : el.classList.remove("on");
+        }
+        function getToggle(el){ return el && el.classList.contains("on"); }
+
+        // Service enable toggles & expand
+        document.querySelectorAll(".svc-item").forEach(item => {
+          const tgl = item.querySelector("[data-toggle]");
+          const chip = item.querySelector("[data-chip]");
+          const bar = item.querySelector(".svc-item-bar");
+          const expand = item.querySelector(".svc-expand");
+
+          initServiceHours(item);
+
+          function apply(){
+            const on = getToggle(tgl);
+            chip.textContent = on ? "Enabled" : "Disabled";
+            chip.style.borderColor = on ? "rgba(15,140,140,.25)" : "rgba(0,0,0,.12)";
+            chip.style.color = on ? "var(--nk-green)" : "rgba(0,0,0,.70)";
+            chip.style.background = on ? "rgba(15,140,140,.06)" : "#fff";
+
+            if(on){
+              item.classList.add("open");
+            }else{
+              item.classList.remove("open");
+            }
+          }
+
+          bar.addEventListener("click", (e) => {
+            // prevent toggle double on button clicks
+            if(e.target.closest("[data-toggle]")){
+              setToggle(tgl, !getToggle(tgl));
+              apply();
+              return;
+            }
+            // click bar toggles open only if enabled
+            if(getToggle(tgl)) item.classList.toggle("open");
+          });
+
+          tgl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setToggle(tgl, !getToggle(tgl));
+            apply();
+          });
+
+          apply();
+        });
+
+        // Skip services
+        btnSkipServices.addEventListener("click", () => {
+          hideAlert();
+          setStep(4);
+        });
+
+        // Specialty -> level rule
+        speciality.addEventListener("change", () => syncLevelVisibility());
+
+        // Job title -> license required rule
+        jobTitle.addEventListener("change", () => {
+          syncLicenseRequirementUI();
+          syncWizardForRole();
+        });
+
+        // Cert file status
+        certFiles.addEventListener("change", () => {
+          const n = (certFiles.files || []).length;
+          certStatus.textContent = n ? (n + " file(s) selected.") : "No files selected.";
+        });
+
+        // Navigation
+        btnBack.addEventListener("click", () => {
+          hideAlert();
+          const prev = Math.max(1, currentStep - 1);
+          if(currentStep === 3 && !isLicenseRequired()){
+            setStep(1);
+            return;
+          }
+          setStep(prev);
+        });
+
+        btnNext.addEventListener("click", () => {
+          hideAlert();
+
+          if(currentStep === 1){
+            const v = validateStep1();
+            if(!v.ok){ showAlert(v.msg); return; }
+            setStep(isLicenseRequired() ? 2 : 3);
+            return;
+          }
+
+          if(currentStep === 2){
+            syncLevelVisibility();
+            syncLicenseRequirementUI();
+            const v = validateStep2();
+            if(!v.ok){ showAlert(v.msg); return; }
+            setStep(3);
+            return;
+          }
+
+          if(currentStep === 3){
+            const v = validateStep3();
+            if(!v.ok){ showAlert(v.msg); return; }
+            setStep(4);
+            return;
+          }
+        });
+
+        btnSave.addEventListener("click", () => {
+          hideAlert();
+          const v = validateStep4();
+          if(!v.ok){ showAlert(v.msg); return; }
+
+          const payload = {
+            id: "prov_" + Date.now(),
+            jobTitle: jobTitle.value,
+            fullNameEn: document.getElementById("fullNameEn").value.trim(),
+            fullNameAr: document.getElementById("fullNameAr").value.trim(),
+            birthDate: document.getElementById("birthDate").value.trim(),
+            gender: document.getElementById("gender").value.trim(),
+            nationality: document.getElementById("nationality").value.trim(),
+            phoneCode: document.getElementById("phoneCode").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            branch: document.getElementById("branch").value.trim(),
+
+            speciality: speciality.value,
+            level: licenseLevel.value,
+            // files are not stored; just a flag for demo
+            hasCertificates: (certFiles.files || []).length > 0,
+
+            services: Array.from(document.querySelectorAll(".svc-item")).map(item => {
+              const key = item.getAttribute("data-svc");
+              const enabled = item.querySelector("[data-toggle]")?.classList.contains("on");
+              const start = item.querySelector("[data-start]")?.value || "";
+              const end = item.querySelector("[data-end]")?.value || "";
+              const days = Array.from(item.querySelectorAll(".day-card")).map(dc => {
+                const day = dc.getAttribute("data-day");
+                const open = dc.getAttribute("data-open") === "1";
+                const intervals = Array.from(dc.querySelectorAll(".interval")).map(row => {
+                  const inputs = row.querySelectorAll('input[type="time"]');
+                  return { from: inputs[0]?.value || "09:00", to: inputs[1]?.value || "13:00" };
+                });
+                return { day, open, intervals };
+              });
+              return { key, enabled, start, end, days };
+            }),
+
+            profile: {
+              bioEn: bioEn.value.trim(),
+              bioAr: bioAr.value.trim(),
+              medicalLicenseNo: document.getElementById("medicalLicenseNo").value.trim(),
+              university: readRepeat("list-university"),
+              fellowship: readRepeat("list-fellowship"),
+              subspecialty: readRepeat("list-subspecialty"),
+              experience: readRepeat("list-experience"),
+              memberOf: readRepeat("list-memberOf"),
+              publications: readRepeat("list-publications")
+            }
+          };
+
+          const list = getList();
+          list.push(payload);
+          setList(list);
+
+          window.location.href = "staff-list.html";
+        });
+
+        // Init
+        syncLevelVisibility();
+        syncLicenseRequirementUI();
+        syncWizardForRole();
+        setStep(1);
+
+        // seed one row for university to show split behavior
+        createRepeatRow("list-university");
+      })();
+    </script>
+  </body>
+</html>

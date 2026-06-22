@@ -1,0 +1,388 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Individual Return</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green: #0f8c8c; }
+    .facility-line { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 6px; }
+    .facility-name { font-weight: 900; line-height: 1; margin: 0; }
+    .ksa-clock { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 10px; border: 1px solid rgba(16,24,40,.1); background: #fff; border-radius: 12px; font-weight: 900; font-size: 12px; color: #101828; white-space: nowrap; }
+    .ksa-clock .tz { color: var(--nk-green); font-weight: 900; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); }
+    .switch-account-item { display: flex; align-items: center; gap: 10px; }
+    .switch-account-item i { color: var(--nk-green); }
+    .page-title { margin: 0; font-size: 22px; font-weight: 900; color: #101828; }
+
+    .returns-wrap { border: 1px solid rgba(16,24,40,.08); border-radius: 14px; overflow: hidden; background: #fff; }
+    .returns-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .returns-table thead th { font-size: 12px; font-weight: 900; color: #344054; background: #fff; border-bottom: 1px solid rgba(16,24,40,.1); padding: 12px; white-space: nowrap; vertical-align: middle; }
+    .returns-table tbody td { border-bottom: 1px solid rgba(16,24,40,.08); padding: 12px; vertical-align: middle; font-size: 13px; font-weight: 700; color: #101828; }
+    .returns-table tbody tr:last-child td { border-bottom: 0; }
+    .returns-table tbody tr:hover td { background: rgba(15,140,140,.04); }
+
+    .status-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 116px; height: 28px; border-radius: 999px; border: 1px solid transparent; font-size: 12px; font-weight: 900; padding: 0 10px; white-space: nowrap; }
+    .r-under-review { color: #b54708; background: rgba(247,144,9,.1); border-color: rgba(247,144,9,.24); }
+    .r-approved-full { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .r-approved-partial { color: #0b6f6f; background: rgba(15,140,140,.1); border-color: rgba(15,140,140,.24); }
+    .r-rejected { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+
+    .f-not-released { color: #475467; background: rgba(71,84,103,.08); border-color: rgba(71,84,103,.22); }
+    .f-ready { color: #155eef; background: rgba(41,112,255,.1); border-color: rgba(41,112,255,.24); }
+    .f-released { color: #067647; background: rgba(18,183,106,.1); border-color: rgba(18,183,106,.22); }
+    .f-failed { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+
+    .c-cancelled { color: #b42318; background: rgba(240,68,56,.1); border-color: rgba(240,68,56,.24); }
+    .c-failed { color: #912018; background: rgba(240,68,56,.16); border-color: rgba(240,68,56,.3); }
+    .s-customer, .s-facility, .s-individual { color: #0b6f6f; background: rgba(15,140,140,.1); border-color: rgba(15,140,140,.24); min-width: 90px; }
+
+    .order-link { color: var(--nk-green); text-decoration: none; font-weight: 900; }
+    .order-link:hover { text-decoration: underline; }
+    .amount-cell { font-weight: 900; white-space: nowrap; }
+    .link-details { display: inline-flex; align-items: center; height: 32px; border-radius: 10px; border: 1px solid rgba(15,140,140,.22); background: rgba(15,140,140,.06); color: var(--nk-green); font-size: 12px; font-weight: 900; text-decoration: none; padding: 0 12px; }
+    .link-details:hover { background: rgba(15,140,140,.1); }
+    .empty-state { border: 1px dashed rgba(16,24,40,.2); border-radius: 14px; background: #fff; text-align: center; padding: 30px 16px; }
+  </style>
+</head>
+
+<body data-menu="menu-orders">
+  <div class="preloader"></div>
+
+  <div id="full-container">
+    <div id="sidebar-slot" data-base="../"></div>
+
+    <main class="main-page">
+      <header class="page-header">
+        <div class="page-name">
+          <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+          <h2>Order Management</h2>
+        </div>
+
+        <div class="member-side d-flex align-items-center gap-2">
+          <div class="Orders notifcation-box dropdown">
+            <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              Notifications <span class="fsize-12 surface-secondary-400">13</span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-start">
+              <li class="dropdown-item d-flex justify-content-between align-items-center"><span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span></li>
+              <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+            </ul>
+          </div>
+
+          <div class="ksa-clock" title="Saudi Arabia Time">
+            <span class="time" id="ksaTime">--:-- --</span>
+            <span class="tz">KSA</span>
+          </div>
+
+          <div class="language-box">
+            <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+            <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+          </div>
+
+          <div class="user dropdown">
+            <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+              <img src="../assets/images/avatar.svg" alt="avatar" />
+            </figure>
+            <ul class="dropdown-menu">
+              <li>
+                <div class="p-12 pb-0">
+                  <b class="fsize-14 semiBold">Sror Rashad</b>
+                  <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                </div>
+              </li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li>
+              <div class="dropdown-divider"></div>
+              <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+
+      <div class="page-root">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+            <li class="breadcrumb-item active" aria-current="page">Individual Return</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="page-content">
+        <h3 class="page-title mb-12">Individual Return</h3>
+
+        <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8 mb-16">
+          <div class="row g-3 justify-content-between align-items-center">
+            <div class="col">
+              <div class="search-box-group w-100">
+                <input id="searchInput" class="form-control form-control-32" type="text" placeholder="Return ID / Order No / Provider / Patient" />
+                <button id="btnSearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                <button id="btnReset" type="button" class="btn btn-primary-revers btn-32" title="Reset"><i class="fi fi-rr-rotate-right"></i></button>
+              </div>
+            </div>
+            <div class="col-auto d-flex gap-2">
+              <button type="button" class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#returnsFilterModal"><i class="fi fi-rr-bars-filter"></i><span>Filter</span></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="returns-wrap">
+          <div class="table-responsive">
+            <table class="returns-table staff-table naraakum-table table-tight">
+              <thead>
+                <tr>
+                  <th>Return ID</th>
+                  <th>Order No</th>
+                  <th>Individual</th>
+                  <th>Patient</th>
+                  <th>Cancel Status</th>
+                  <th>Cancel Source</th>
+                  <th>Return Status</th>
+                  <th>Refund Status</th>
+                  <th>Refund Amount (SAR)</th>
+                  <th class="text-end">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="returnsTbody"></tbody>
+            </table>
+          </div>
+          <div id="emptyState" class="empty-state d-none">
+            <div class="fsize-16 bold mb-4">No returns found</div>
+            <p class="text-grey mb-0">Try a different filter.</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div class="modal fade" id="returnsFilterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content custom-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Filter Returns</h5>
+          <button type="button" class="btn-close m-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-16">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="fsize-12 text-grey mb-4">Return Status</label>
+              <select id="statusFilter" class="form-control form-control-32">
+                <option value="">All</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="fsize-12 text-grey mb-4">Cancellation Source</label>
+              <select id="sourceFilter" class="form-control form-control-32">
+                <option value="">All</option>
+                <option value="customer">Customer</option>
+                <option value="facility">Facility</option>
+                <option value="individual">Individual</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="fsize-12 text-grey mb-4">Cancellation Status</label>
+              <select id="cancelStatusFilter" class="form-control form-control-32">
+                <option value="">All</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="fsize-12 text-grey mb-4">Date From</label>
+              <input id="dateFrom" class="form-control form-control-32" type="date" />
+            </div>
+            <div class="col-12">
+              <label class="fsize-12 text-grey mb-4">Date To</label>
+              <input id="dateTo" class="form-control form-control-32" type="date" />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button id="btnFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+          <button id="applyFilterBtn" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/includes.js"></script>
+  <script src="../assets/js/adminSideMenu.js"></script>
+  <script src="../assets/js/order-details-data.js"></script>
+  <script src="../assets/js/service-returns-data.js"></script>
+  <script>
+    (function () {
+      var ksaEl = document.getElementById("ksaTime");
+      function tick() {
+        try {
+          var fmt = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Riyadh", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true });
+          ksaEl.textContent = fmt.format(new Date());
+        } catch (e) {
+          ksaEl.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    })();
+
+    (function () {
+      var sourceType = "individual";
+      var tbody = document.getElementById("returnsTbody");
+      var emptyState = document.getElementById("emptyState");
+      var searchInput = document.getElementById("searchInput");
+      var btnSearch = document.getElementById("btnSearch");
+      var btnReset = document.getElementById("btnReset");
+      var statusFilter = document.getElementById("statusFilter");
+      var sourceFilter = document.getElementById("sourceFilter");
+      var cancelStatusFilter = document.getElementById("cancelStatusFilter");
+      var dateFrom = document.getElementById("dateFrom");
+      var dateTo = document.getElementById("dateTo");
+      var applyFilterBtn = document.getElementById("applyFilterBtn");
+      var btnFilterReset = document.getElementById("btnFilterReset");
+
+      function statusClass(status) {
+        if (status === "Approved (Full)") return "r-approved-full";
+        if (status === "Approved (Partial)") return "r-approved-partial";
+        if (status === "Rejected") return "r-rejected";
+        return "r-under-review";
+      }
+
+      function refundClass(status) {
+        if (status === "Ready to Release") return "f-ready";
+        if (status === "Released") return "f-released";
+        if (status === "Failed") return "f-failed";
+        return "f-not-released";
+      }
+
+      function cancelStatusClass(status) {
+        if (String(status || "").toLowerCase() === "failed") return "c-failed";
+        return "c-cancelled";
+      }
+
+      function cancelStatusLabel(status) {
+        return String(status || "").toLowerCase() === "failed" ? "Failed" : "Cancelled";
+      }
+
+      function cancelSourceLabel(source) {
+        var key = String(source || "").toLowerCase();
+        if (key === "facility") return "Facility";
+        if (key === "individual") return "Individual";
+        return "Customer";
+      }
+
+      function esc(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function load() {
+        if (!window.NKServiceReturns) return [];
+        return NKServiceReturns.load(sourceType);
+      }
+
+      function matches(entry) {
+        var q = (searchInput.value || "").trim().toLowerCase();
+        var st = statusFilter.value;
+        var src = sourceFilter.value;
+        var cst = cancelStatusFilter.value;
+        var from = dateFrom.value;
+        var to = dateTo.value;
+
+        if (q) {
+          var bag = (entry.id + " " + entry.orderNo + " " + entry.providerName + " " + entry.patientName + " " + entry.cancelType).toLowerCase();
+          if (bag.indexOf(q) === -1) return false;
+        }
+
+        if (st) {
+          if (st === "Approved") {
+            if (entry.computedReturnStatus.indexOf("Approved") !== 0) return false;
+          } else if (entry.computedReturnStatus !== st) {
+            return false;
+          }
+        }
+
+        if (src && String(entry.cancelSource || "").toLowerCase() !== src) return false;
+        if (cst && String(entry.cancelStatus || "").toLowerCase() !== cst) return false;
+        if (from && entry.returnDate && entry.returnDate < from) return false;
+        if (to && entry.returnDate && entry.returnDate > to) return false;
+
+        return true;
+      }
+
+      function render() {
+        var rows = load().filter(matches);
+        tbody.innerHTML = "";
+
+        if (!rows.length) {
+          emptyState.classList.remove("d-none");
+          return;
+        }
+
+        emptyState.classList.add("d-none");
+        rows.forEach(function (entry) {
+          var tr = document.createElement("tr");
+          tr.innerHTML =
+            '<td><span class="staff-code">' + esc(entry.id) + '</span></td>' +
+            '<td><a class="order-link" href="order-details-facility.html?order=' + encodeURIComponent(entry.orderNo) + '&providerType=individual&from=individual-returns">' + esc(entry.orderNo) + '</a></td>' +
+            '<td>' + esc(entry.providerName || "-") + '</td>' +
+            '<td>' + esc(entry.patientName || "-") + '</td>' +
+            '<td><span class="status-badge ' + cancelStatusClass(entry.cancelStatus) + '">' + esc(cancelStatusLabel(entry.cancelStatus)) + '</span></td>' +
+            '<td><span class="status-badge s-' + esc(entry.cancelSource || "customer") + '">' + esc(cancelSourceLabel(entry.cancelSource)) + '</span></td>' +
+            '<td><span class="status-badge ' + statusClass(entry.computedReturnStatus) + '">' + esc(entry.computedReturnStatus) + '</span></td>' +
+            '<td><span class="status-badge ' + refundClass(entry.computedRefundStatus) + '">' + esc(entry.computedRefundStatus) + '</span></td>' +
+            '<td class="amount-cell">' + NKServiceReturns.formatMoney(entry.computedFinalRefund) + '</td>' +
+            '<td class="text-end"><a class="link-details" href="return-service-details.html?returnId=' + encodeURIComponent(entry.id) + '&sourceType=individual">Details</a></td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      [searchInput, statusFilter, sourceFilter, cancelStatusFilter, dateFrom, dateTo].forEach(function (el) {
+        el.addEventListener("input", render);
+        el.addEventListener("change", render);
+      });
+
+      if (btnSearch) btnSearch.addEventListener("click", render);
+      if (btnReset) {
+        btnReset.addEventListener("click", function () {
+          searchInput.value = "";
+          render();
+        });
+      }
+
+      if (btnFilterReset) {
+        btnFilterReset.addEventListener("click", function () {
+          statusFilter.value = "";
+          sourceFilter.value = "";
+          cancelStatusFilter.value = "";
+          dateFrom.value = "";
+          dateTo.value = "";
+          render();
+        });
+      }
+
+      if (applyFilterBtn) applyFilterBtn.addEventListener("click", render);
+
+      render();
+      window.addEventListener("storage", render);
+    })();
+  </script>
+</body>
+</html>
+

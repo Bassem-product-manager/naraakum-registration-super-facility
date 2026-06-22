@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Tracking</title>
+    <meta name="description" content="Naraakum" />
+
+    <!-- ✅ Correct paths for a file inside /tracking/ -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Leaflet CSS (map) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Leaflet JS (no integrity to avoid local mismatch) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Page-only layout CSS (scoped to tracking only) -->
+    <style>
+      .tracking-page .tracking-grid {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+
+      .tracking-page .panel {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        border-radius: 12px;
+      }
+
+      .tracking-page .panel-head {
+        padding: 14px 14px 10px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .tracking-page .panel-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .tracking-page .badge-online {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: rgba(34, 197, 94, 0.1);
+        color: #16a34a;
+        white-space: nowrap;
+      }
+
+      .tracking-page .panel-body {
+        padding: 12px 14px;
+      }
+
+      .tracking-page .filters-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .tracking-page .filters-row .form-control,
+      .tracking-page .filters-row .form-select {
+        height: 32px;
+      }
+
+      .tracking-page .provider-search {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+      .tracking-page .provider-search input {
+        height: 32px;
+      }
+
+      .tracking-page .providers-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .tracking-page .provider-card {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        cursor: pointer;
+      }
+      .tracking-page .provider-card:hover {
+        background: rgba(15, 140, 140, 0.04);
+      }
+      .tracking-page .provider-card.active {
+        border-color: rgba(15, 140, 140, 0.4);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .tracking-page .prov-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .tracking-page .avatar-initials {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: #f7fafc;
+        flex: 0 0 auto;
+      }
+
+      .tracking-page .prov-meta {
+        min-width: 0;
+      }
+      .tracking-page .prov-name {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .tracking-page .prov-spec {
+        font-size: 12px;
+        color: #6b7280;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .tracking-page .prov-updated {
+        margin-top: 4px;
+        font-size: 12px;
+        color: #6b7280;
+        white-space: nowrap;
+      }
+
+      .tracking-page .trk-status-pill {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        white-space: nowrap;
+      }
+      .tracking-page .st-onroute {
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green, #0f8c8c);
+      }
+      .tracking-page .st-late {
+        background: rgba(245, 158, 11, 0.12);
+        color: #b45309;
+      }
+      .tracking-page .st-offline {
+        background: rgba(148, 163, 184, 0.16);
+        color: #475569;
+      }
+
+      /* Map area */
+      .tracking-page .map-wrap {
+        position: relative;
+        overflow: hidden;
+      }
+      .tracking-page .map-box {
+        height: 520px;
+        border-radius: 12px;
+        background: #eef1f4;
+        position: relative;
+      }
+      /* Make the Leaflet map fill the map-box */
+      #map {
+        height: 100%;
+        width: 100%;
+        border-radius: 12px;
+      }
+      .tracking-page .map-watermark {
+        position: absolute;
+        bottom: 10px;
+        left: 12px;
+        font-size: 12px;
+        color: #6b7280;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 6px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--nk-border, #e6eaef);
+      }
+      /* Map marker initials */
+      .marker-initials {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: #ffffff;
+        color: #0f8c8c;
+        box-shadow: 0 4px 10px rgba(16,24,40,0.08);
+        font-size: 13px;
+      }
+
+      /* Provider details card (overlay) */
+      .tracking-page .provider-details {
+        position: absolute;
+        right: 14px;
+        bottom: 14px;
+        width: 360px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(6px);
+        border-radius: 14px;
+        padding: 12px;
+        z-index: 1002;
+      }
+
+      .tracking-page .details-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .tracking-page .details-name {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .tracking-page .details-name .dname {
+        margin: 0;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+      .tracking-page .details-name .dspec {
+        font-size: 12px;
+        color: #6b7280;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 220px;
+      }
+
+      .tracking-page .details-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .tracking-page .mini-item {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+      }
+      .tracking-page .mini-item .lbl {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+      .tracking-page .mini-item .val {
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .tracking-page .details-actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      /* Timeline drawer */
+      .tracking-page .timeline-drawer {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        width: 360px;
+        max-height: 480px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(6px);
+        border-radius: 14px;
+        overflow: hidden;
+        display: none;
+        z-index: 1003;
+      }
+      .tracking-page .timeline-drawer.open {
+        display: block;
+      }
+      .tracking-page .tl-head {
+        padding: 12px 12px 10px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .tracking-page .tl-head b {
+        font-size: 14px;
+      }
+      .tracking-page .tl-close {
+        border: 0;
+        background: transparent;
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .tracking-page .tl-close:hover {
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .tracking-page .tl-body {
+        padding: 12px;
+        overflow: auto;
+        max-height: 380px;
+      }
+
+      .tracking-page .stop-item {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background: #fff;
+        cursor: pointer;
+      }
+      .tracking-page .stop-item:hover {
+        background: rgba(15, 140, 140, 0.04);
+      }
+      .tracking-page .stop-time {
+        font-weight: 700;
+        margin-bottom: 6px;
+        white-space: nowrap;
+      }
+      .tracking-page .stop-patient {
+        font-size: 13px;
+        margin-bottom: 6px;
+      }
+      .tracking-page .stop-focus {
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .tracking-page .stop-status {
+        margin-top: 8px;
+        font-size: 12px;
+        display: inline-flex;
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--nk-border, #e6eaef);
+      }
+      .tracking-page .st-completed {
+        background: rgba(34, 197, 94, 0.12);
+        color: #16a34a;
+      }
+      .tracking-page .st-scheduled {
+        background: rgba(148, 163, 184, 0.16);
+        color: #475569;
+      }
+
+      .tracking-page .tl-summary {
+        padding: 12px;
+        border-top: 1px solid var(--nk-border, #e6eaef);
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        background: #fff;
+      }
+
+      @media (max-width: 1100px) {
+        .tracking-page .tracking-grid {
+          grid-template-columns: 1fr;
+        }
+        .tracking-page .map-box {
+          height: 460px;
+        }
+        .tracking-page .provider-details {
+          position: static;
+          width: 100%;
+          margin-top: 12px;
+        }
+        .tracking-page .timeline-drawer {
+          width: calc(100% - 28px);
+        }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page tracking-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Tracking</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Tracking</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="tracking-grid">
+            <!-- Left panel -->
+            <div class="panel">
+              <div class="panel-head">
+                <div class="panel-title">
+                  <b class="fsize-14 semiBold">Live Providers</b>
+                  <span class="badge-online" id="onlineBadge">2 Online</span>
+                </div>
+              </div>
+
+              <div class="panel-body">
+                <div class="filters-row">
+                  <select id="branchFilter" class="form-control form-control-32">
+                    <option value="">All Branches</option>
+                    <option value="riyadh">Riyadh</option>
+                    <option value="jeddah">Jeddah</option>
+                  </select>
+
+                  <select id="specFilter" class="form-control form-control-32">
+                    <option value="">Specialty</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="General Practice">General Practice</option>
+                  </select>
+                </div>
+
+                <div class="provider-search">
+                  <input id="providerSearch" type="text" class="form-control form-control-32" placeholder="Search provider..." />
+                </div>
+
+                <div class="providers-list" id="providersList"></div>
+              </div>
+            </div>
+
+            <!-- Right panel -->
+            <div class="panel map-wrap">
+              <div class="panel-head">
+                <b class="fsize-14 semiBold">Map</b>
+              </div>
+
+              <div class="panel-body">
+                <div class="map-box" id="mapBox">
+                    <div id="map" aria-label="Map"></div>
+                    <div class="map-watermark">Leaflet | © OpenStreetMap</div>
+
+                  <!-- Timeline drawer -->
+                  <div class="timeline-drawer" id="timelineDrawer">
+                    <div class="tl-head">
+                      <b>Trip Timeline</b>
+                      <button class="tl-close" type="button" id="closeTimeline" aria-label="Close">✕</button>
+                    </div>
+
+                    <div class="tl-body" id="timelineBody"></div>
+
+                    <div class="tl-summary" id="timelineSummary"></div>
+                  </div>
+
+                  <!-- Provider details -->
+                  <div class="provider-details" id="providerDetails">
+                    <div class="details-top">
+                      <div class="details-name">
+                        <div class="avatar-initials" id="detInitials">DA</div>
+                        <div style="min-width: 0">
+                          <p class="dname" id="detName">Dr. Ahmed</p>
+                          <div class="dspec" id="detSpec">Cardiology Specialist</div>
+                        </div>
+                      </div>
+                      <span class="trk-status-pill st-onroute" id="detStatus">On Route</span>
+                    </div>
+
+                    <div class="details-grid">
+                      <div class="mini-item">
+                        <div class="lbl">Location</div>
+                        <div class="val" id="detLocation">Al Olaya, Riyadh</div>
+                      </div>
+                      <div class="mini-item">
+                        <div class="lbl">Distance</div>
+                        <div class="val" id="detDistance">45.2 km</div>
+                      </div>
+                      <div class="mini-item">
+                        <div class="lbl">Stops</div>
+                        <div class="val" id="detStops">5</div>
+                      </div>
+                      <div class="mini-item">
+                        <div class="lbl">Done</div>
+                        <div class="val" id="detDone">3</div>
+                      </div>
+                    </div>
+
+                    <div class="details-actions">
+                      <button class="btn btn-primary btn-32" type="button" id="openTimelineBtn">Open Timeline</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /Right -->
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const providers = [
+          {
+            id: "DA",
+            initials: "DA",
+            name: "Dr. Ahmed",
+            specialty: "Cardiology",
+            updated: "Updated 2m ago",
+            status: "On Route",
+            statusKey: "onroute",
+            branch: "riyadh",
+            location: "Al Olaya, Riyadh",
+            distance: "45.2 km",
+            stops: 5,
+            done: 3,
+            est: "02:30 PM",
+            timeline: [
+              { time: "09:30 AM", patient: "Sarah M.", state: "Completed" },
+              { time: "10:15 AM", patient: "John D.", state: "Completed" },
+              { time: "11:00 AM", patient: "Emily R.", state: "Scheduled" },
+              { time: "12:15 PM", patient: "Michael B.", state: "Scheduled" },
+              { time: "01:10 PM", patient: "Nada A.", state: "Scheduled" }
+            ]
+          },
+          {
+            id: "DS",
+            initials: "DS",
+            name: "Dr. Sarah",
+            specialty: "Pediatrics",
+            updated: "Updated 9m ago",
+            status: "Late",
+            statusKey: "late",
+            branch: "riyadh",
+            location: "Al Malaz, Riyadh",
+            distance: "18.4 km",
+            stops: 3,
+            done: 1,
+            est: "01:40 PM",
+            timeline: [
+              { time: "09:20 AM", patient: "Mona K.", state: "Completed" },
+              { time: "10:00 AM", patient: "Kareem H.", state: "Scheduled" },
+              { time: "11:10 AM", patient: "Salma N.", state: "Scheduled" }
+            ]
+          },
+          {
+            id: "DM",
+            initials: "DM",
+            name: "Dr. Michael",
+            specialty: "General Practice",
+            updated: "Updated 1h ago",
+            status: "Offline",
+            statusKey: "offline",
+            branch: "jeddah",
+            location: "Al Hamra, Jeddah",
+            distance: "—",
+            stops: 0,
+            done: 0,
+            est: "—",
+            timeline: []
+          }
+        ];
+
+        const els = {
+          list: document.getElementById("providersList"),
+          onlineBadge: document.getElementById("onlineBadge"),
+          branchFilter: document.getElementById("branchFilter"),
+          specFilter: document.getElementById("specFilter"),
+          search: document.getElementById("providerSearch"),
+
+          detInitials: document.getElementById("detInitials"),
+          detName: document.getElementById("detName"),
+          detSpec: document.getElementById("detSpec"),
+          detStatus: document.getElementById("detStatus"),
+          detLocation: document.getElementById("detLocation"),
+          detDistance: document.getElementById("detDistance"),
+          detStops: document.getElementById("detStops"),
+          detDone: document.getElementById("detDone"),
+
+          openTimelineBtn: document.getElementById("openTimelineBtn"),
+          drawer: document.getElementById("timelineDrawer"),
+          closeTimeline: document.getElementById("closeTimeline"),
+          timelineBody: document.getElementById("timelineBody"),
+          timelineSummary: document.getElementById("timelineSummary")
+        };
+
+        let activeId = "DA";
+        let filtered = [...providers];
+
+        function statusClass(key) {
+          if (key === "onroute") return "trk-status-pill st-onroute";
+          if (key === "late") return "trk-status-pill st-late";
+          return "trk-status-pill st-offline";
+        }
+
+        function stopStatusClass(text) {
+          return text === "Completed" ? "stop-status st-completed" : "stop-status st-scheduled";
+        }
+
+        function updateOnlineBadge() {
+          const online = providers.filter((p) => p.statusKey !== "offline").length;
+          els.onlineBadge.textContent = online + " Online";
+        }
+
+        function applyFilters() {
+          const b = (els.branchFilter.value || "").toLowerCase();
+          const s = (els.specFilter.value || "").toLowerCase();
+          const q = (els.search.value || "").trim().toLowerCase();
+
+          filtered = providers.filter((p) => {
+            const okB = !b || p.branch === b;
+            const okS = !s || p.specialty.toLowerCase() === s;
+            const key = (p.name + " " + p.specialty + " " + p.initials).toLowerCase();
+            const okQ = !q || key.includes(q);
+            return okB && okS && okQ;
+          });
+
+          renderList();
+        }
+
+        function renderList() {
+          els.list.innerHTML = "";
+
+          if (!filtered.length) {
+            const empty = document.createElement("div");
+            empty.className = "text-grey fsize-14";
+            empty.textContent = "No providers found";
+            els.list.appendChild(empty);
+            return;
+          }
+
+          filtered.forEach((p) => {
+            const card = document.createElement("div");
+            card.className = "provider-card" + (p.id === activeId ? " active" : "");
+            card.setAttribute("data-id", p.id);
+
+            card.innerHTML =
+              '<div class="prov-left">' +
+              '  <div class="avatar-initials">' + p.initials + '</div>' +
+              '  <div class="prov-meta">' +
+              '    <p class="prov-name">' + p.name + '</p>' +
+              '    <div class="prov-spec">' + p.specialty + '</div>' +
+              '    <div class="prov-updated">' + p.updated + '</div>' +
+              "  </div>" +
+              "</div>" +
+              '<span class="' + statusClass(p.statusKey) + '">' + p.status + "</span>";
+
+            card.addEventListener("click", function () {
+              activeId = p.id;
+              renderList();
+              setDetails(p);
+              closeTimeline();
+            });
+
+            els.list.appendChild(card);
+          });
+        }
+
+        function setDetails(p) {
+          els.detInitials.textContent = p.initials;
+          els.detName.textContent = p.name;
+          els.detSpec.textContent = p.specialty + " Specialist";
+          els.detStatus.textContent = p.status;
+          els.detStatus.className = statusClass(p.statusKey);
+
+          els.detLocation.textContent = p.location;
+          els.detDistance.textContent = p.distance;
+          els.detStops.textContent = String(p.stops);
+          els.detDone.textContent = String(p.done);
+
+          els.openTimelineBtn.disabled = !p.timeline.length;
+        }
+
+        function openTimeline() {
+          const p = providers.find((x) => x.id === activeId);
+          if (!p || !p.timeline.length) return;
+
+          els.timelineBody.innerHTML = "";
+          p.timeline.forEach((st) => {
+            const item = document.createElement("div");
+            item.className = "stop-item";
+            item.innerHTML =
+              '<div class="stop-time">' + st.time + "</div>" +
+              '<div class="stop-patient">Patient: ' + st.patient + "</div>" +
+              '<div class="stop-focus">Tap to focus</div>' +
+              '<div class="' + stopStatusClass(st.state) + '">' + st.state + "</div>";
+
+            item.addEventListener("click", function () {
+              els.timelineBody.querySelectorAll(".stop-item").forEach((x) => (x.style.outline = "none"));
+              item.style.outline = "2px solid rgba(15,140,140,0.35)";
+              item.style.outlineOffset = "2px";
+            });
+
+            els.timelineBody.appendChild(item);
+          });
+
+          els.timelineSummary.innerHTML =
+            '<div class="mini-item"><div class="lbl">Distance</div><div class="val">' + p.distance + "</div></div>" +
+            '<div class="mini-item"><div class="lbl">Done</div><div class="val">' + p.done + "</div></div>" +
+            '<div class="mini-item"><div class="lbl">Stops</div><div class="val">' + p.stops + "</div></div>" +
+            '<div class="mini-item"><div class="lbl">Est. Completion</div><div class="val">' + p.est + "</div></div>";
+
+          els.drawer.classList.add("open");
+        }
+
+        function closeTimeline() {
+          els.drawer.classList.remove("open");
+        }
+
+        els.branchFilter.addEventListener("change", applyFilters);
+        els.specFilter.addEventListener("change", applyFilters);
+        els.search.addEventListener("input", applyFilters);
+
+        els.openTimelineBtn.addEventListener("click", openTimeline);
+        els.closeTimeline.addEventListener("click", closeTimeline);
+
+        updateOnlineBadge();
+        applyFilters();
+
+        const init = providers.find((p) => p.id === activeId) || providers[0];
+        if (init) setDetails(init);
+
+        // Initialize Leaflet map and markers (demo coordinates)
+        let map;
+        const markersMap = {};
+        try {
+          map = L.map("map", { zoomControl: true }).setView([24.7136, 46.6753], 11);
+          L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+          }).addTo(map);
+
+          // Create demo coordinates for providers (small offsets)
+          const base = [24.7136, 46.6753];
+          providers.forEach((p, i) => {
+            const lat = base[0] + (i - 1) * 0.02; // spread north/south
+            const lng = base[1] + (i - 1) * 0.02 * (i % 2 === 0 ? 1 : -1); // alternate east/west
+            const icon = L.divIcon({
+              className: 'prov-marker',
+              html: '<div class="marker-initials">' + p.initials + '</div>',
+              iconSize: [40, 40],
+              iconAnchor: [20, 40]
+            });
+
+            const m = L.marker([lat, lng], { icon: icon }).addTo(map);
+            m.bindPopup('<b>' + p.name + '</b><br/>' + p.specialty + '<br/>' + p.status);
+            markersMap[p.id] = m;
+
+            // clicking marker selects provider, shows details and opens timeline
+            m.on('click', function () {
+              activeId = p.id;
+              renderList();
+              setDetails(p);
+              openTimeline();
+            });
+          });
+
+          // Pan to active provider when selecting from list
+          const originalRenderList = renderList;
+          renderList = function () {
+            originalRenderList();
+            const activeMarker = markersMap[activeId];
+            if (activeMarker) {
+              map.setView(activeMarker.getLatLng(), 13);
+              activeMarker.openPopup();
+            }
+          };
+
+          // Center map on initial provider
+          if (markersMap[init.id]) {
+            map.setView(markersMap[init.id].getLatLng(), 13);
+            markersMap[init.id].openPopup();
+          }
+        } catch (e) {
+          console.warn("Map initialization failed:", e);
+        }
+      })();
+    </script>
+    
+    
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

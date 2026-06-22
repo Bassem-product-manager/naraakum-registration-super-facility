@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Home (Statistics)</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+
+    <!-- =========================================================
+      INTERNAL OVERRIDES (paste at end of page as you wanted)
+    ========================================================== -->
+    <style>
+      :root{
+        --nk-green:#0f8c8c;
+        --nk-border:#e6eaef;
+        --nk-yellow:#F5C542;
+        --nk-text:#101828;
+        --nk-muted:#6b7280;
+        --nk-off:#C9CED6;
+      }
+
+      /* === Layout wrappers === */
+      .dash-wrap{display:grid;gap:12px;}
+      .card-box{border:1px solid var(--nk-border);border-radius:14px;background:#fff;overflow:hidden;}
+      .card-head{padding:12px 14px;border-bottom:1px solid var(--nk-border);display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(15,140,140,.03);}
+      .card-head b{font-size:14px;font-weight:900;color:#101828;}
+      .card-body{padding:12px 14px;}
+      .link-viewall{font-size:12px;font-weight:900;color:var(--nk-green);text-decoration:none;white-space:nowrap;}
+      .link-viewall:hover{text-decoration:underline;}
+
+      /* Home filter bar alignment */
+      .filter-bar--compact-search .search-box-group{
+        display:flex;
+        align-items:center;
+        gap:8px;
+      }
+      .filter-bar--compact-search .search-box-group .form-control{
+        flex:1 1 auto;
+        min-width:260px;
+        height:40px;
+        border-radius:12px;
+      }
+      .filter-bar--compact-search .search-box-group .btn-32{
+        width:40px;
+        height:40px;
+        padding:0;
+        border-radius:12px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+      }
+      .filter-bar--compact-search .search-box-group .btn-32 i{
+        font-size:18px;
+        line-height:1;
+      }
+
+      /* KPI */
+      .kpi-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+      .kpi-card{border:1px solid var(--nk-border);border-radius:14px;background:#fff;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:82px;}
+      .kpi-title{margin:0;font-size:12px;color:#6b7280;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .kpi-value{margin:8px 0 0;font-size:20px;font-weight:900;color:#101828;line-height:1;white-space:nowrap;}
+      .kpi-icon{width:44px;height:44px;border-radius:14px;border:1px solid rgba(15,140,140,.2);background:rgba(15,140,140,.08);display:grid;place-items:center;color:var(--nk-green);flex:0 0 44px;}
+      .kpi-icon svg{width:20px;height:20px;display:block;}
+
+      .grid-2{display:grid;grid-template-columns:1.25fr .75fr;gap:12px;align-items:start;}
+
+      /* Monthly chart */
+      .chart-box{border:1px solid #eef1f4;border-radius:14px;padding:10px 12px;background:#fff;}
+      .chart-sub{margin-top:8px;font-size:12px;color:#6b7280;font-weight:900;}
+      canvas{max-width:100%;}
+      .chart-filter select{
+        height:30px;
+        border:1px solid #eef1f4;
+        border-radius:999px;
+        padding:0 10px;
+        font-weight:900;
+        font-size:12px;
+        background:#fff;
+        color:var(--nk-text);
+      }
+      .chart-head{flex-wrap:wrap;gap:8px 12px;}
+      .chart-title{min-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .chart-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-left:auto;}
+
+      /* Pie hover-only */
+      .pie-wrap{display:grid;gap:10px;}
+      .radio-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+      .rb{display:inline-flex;align-items:center;gap:8px;border:1px solid #eef1f4;border-radius:999px;padding:8px 10px;background:#fff;font-weight:900;font-size:12px;cursor:pointer;user-select:none;}
+      .rb input{accent-color: var(--nk-green);}
+      .rb.active{background:rgba(15,140,140,.08);border-color:rgba(15,140,140,.35);color:var(--nk-green);}
+      .pie-box{border:1px solid #eef1f4;border-radius:14px;padding:10px 12px;background:#fff;position:relative;}
+      .pie-tooltip{position:absolute;display:none;pointer-events:none;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:12px;padding:10px 12px;box-shadow:0 12px 30px rgba(16,24,40,.15);font-size:12px;font-weight:900;color:#101828;z-index:5;white-space:nowrap;}
+      .pie-tooltip .sub{margin-top:6px;font-size:12px;color:#6b7280;font-weight:900;}
+      .pie-head{flex-wrap:wrap;gap:8px 12px;}
+      .pie-head #pieTitle{margin-right:auto;}
+      .pie-head .radio-row{flex-wrap:nowrap;gap:8px;}
+      .pie-head .chart-filter select{min-width:120px;}
+
+      /* =========================================================
+         LATEST ORDERS TABLE (Fix spacing + buttons + icons)
+      ========================================================= */
+      .tbl-wrap{
+        border:1px solid rgba(16,24,40,.08);
+        border-radius:14px;
+        background:#fff;
+        overflow:hidden; /* desktop: no scroll */
+      }
+
+      table.home-orders{
+        width:100% !important;
+        min-width:0 !important;
+        border-collapse:separate;
+        border-spacing:0;
+        table-layout:fixed;
+        background:#fff;
+      }
+
+      table.home-orders thead th{
+        position:sticky;
+        top:0;
+        z-index:2;
+        background:rgba(15,140,140,.95);
+        color:#fff;
+        font-weight:900;
+        font-size:12.5px;
+        padding:10px 10px;
+        white-space:nowrap;
+        border:none;
+        text-align:left;
+      }
+      table.home-orders thead th:first-child{border-top-left-radius:14px;}
+      table.home-orders thead th:last-child{border-top-right-radius:14px;}
+
+      table.home-orders tbody td{
+        padding:10px 10px;
+        border-bottom:1px solid rgba(16,24,40,.06);
+        font-size:12.8px;
+        color:var(--nk-text);
+        vertical-align:middle;
+        background:transparent;
+      }
+
+      /* remove hover */
+      table.home-orders tbody tr:hover{background:transparent !important;}
+
+      .nowrap{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+      .pname,.svcmeta{
+        margin:0;
+        font-weight:900;
+        line-height:1.15;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .pmeta,.svcspec{
+        margin-top:5px;
+        font-size:12px;
+        color:var(--nk-muted);
+        font-weight:800;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+
+      /* Column widths (with # column) */
+      #homeOrdersTable th:nth-child(1), #homeOrdersTable td:nth-child(1){width:5%  !important;}
+      #homeOrdersTable th:nth-child(2), #homeOrdersTable td:nth-child(2){width:20% !important;}
+      #homeOrdersTable th:nth-child(3), #homeOrdersTable td:nth-child(3){width:20% !important;}
+      #homeOrdersTable th:nth-child(4), #homeOrdersTable td:nth-child(4){width:14% !important;}
+      #homeOrdersTable th:nth-child(5), #homeOrdersTable td:nth-child(5){width:14% !important;}
+      #homeOrdersTable th:nth-child(6), #homeOrdersTable td:nth-child(6){width:13% !important;}
+      #homeOrdersTable th:nth-child(7), #homeOrdersTable td:nth-child(7){width:14% !important;}
+
+      /* # column center */
+      #homeOrdersTable th:nth-child(1),
+      #homeOrdersTable td:nth-child(1){
+        text-align:center !important;
+        font-weight:900;
+        color:#344054;
+        white-space:nowrap;
+      }
+
+      /* Status (pill) */
+      #homeOrdersTable th:nth-child(5),
+      #homeOrdersTable td:nth-child(5){
+        text-align:center !important;
+        white-space:nowrap !important;
+      }
+
+      #homeOrdersTable td{overflow:hidden;}
+
+      #homeOrdersTable .status-pill{
+        min-width:0;
+        width:100%;
+        max-width:100%;
+        padding:6px 10px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      #homeOrdersTable .status-pill.st-underreview{
+        background: rgba(255, 193, 7, .14);
+        border: 1px solid rgba(255, 193, 7, .30);
+        color: rgba(133, 92, 0, 1);
+        font-weight: 900;
+      }
+
+      /* Assign cell */
+      #homeOrdersTable th:nth-child(6),
+      #homeOrdersTable td:nth-child(6){
+        text-align:center !important;
+        white-space:nowrap !important;
+      }
+
+      #homeOrdersTable .assign-name{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:32px;
+        padding:0 10px;
+        max-width:100%;
+        min-width:0;
+        width:100%;
+        border-radius:12px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        font-weight:900;
+        font-size:12px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      }
+
+      /* icon-only assign button (person) */
+      .assign-icn{
+        appearance:none;
+        -webkit-appearance:none;
+        width:32px;
+        height:32px;
+        border-radius:12px;
+        border:1px solid rgba(15,140,140,.20);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green);
+        display:inline-grid;
+        place-items:center;
+        cursor:pointer;
+        padding:0;
+      }
+      .assign-icn i{
+        font-size:16px;
+        line-height:1;
+        transform:translateY(.5px);
+        display:block;
+      }
+      .assign-icn:hover{
+        background:rgba(15,140,140,.10);
+        border-color:rgba(15,140,140,.28);
+      }
+
+      /* Actions cell */
+      #homeOrdersTable th:nth-child(7),
+      #homeOrdersTable td:nth-child(7){
+        text-align:center !important;
+        white-space:nowrap !important;
+      }
+
+      .actions-cell{
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        align-items:center;
+      }
+
+      .action-icon{
+        width:32px;height:32px;border-radius:12px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        display:inline-grid;place-items:center;
+        cursor:pointer;color:var(--nk-text);text-decoration:none;
+        padding:0;
+      }
+
+      /* smaller eye */
+      .action-icon i{
+        font-size:16px;
+        line-height:1;
+        transform:translateY(.5px);
+        display:block;
+      }
+
+      .action-icon:hover{
+        background:rgba(15,140,140,.06);
+        border-color:rgba(15,140,140,.22);
+        color:var(--nk-green);
+      }
+
+      .action-icon.danger{
+        border-color:rgba(220,53,69,.25);
+        background:rgba(220,53,69,.06);
+        color:#b42318;
+      }
+      .action-icon.danger:hover{
+        background:rgba(220,53,69,.10);
+        border-color:rgba(220,53,69,.35);
+        color:#b42318;
+      }
+
+      /* Pagination */
+      .pager-line{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap;}
+      .pager-pages{display:flex;gap:6px;flex-wrap:wrap;}
+      .pg{min-width:32px;height:32px;padding:0 10px;border-radius:12px;border:1px solid #eef1f4;background:#fff;font-weight:900;color:#101828;cursor:pointer;}
+      .pg:hover{background:rgba(15,140,140,.06);border-color:rgba(15,140,140,.22);}
+      .pg.active{background:rgba(15,140,140,.12);border-color:rgba(15,140,140,.35);color:var(--nk-green);}
+      .pg.dots{cursor:default;opacity:.6;}
+      .pg.dots:hover{background:#fff;border-color:#eef1f4;}
+
+      /* =========================================================
+         Reviews Stars (Yellow)
+      ========================================================= */
+      .stars{display:inline-flex;gap:4px;align-items:center;justify-content:center;line-height:1;}
+      .stars i{color:var(--nk-yellow) !important;font-size:14px;line-height:1;vertical-align:middle;transform:translateY(0.5px);}
+      .stars i.fi-rr-star{color:var(--nk-off) !important;}
+      .rating-sub{margin-top:6px;font-size:12px;color:var(--nk-muted);font-weight:900;text-align:center;white-space:nowrap;}
+
+      /* Reviews */
+      .reviews-list{display:grid;gap:10px;}
+      .review-item{border:1px solid #eef1f4;border-radius:14px;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;}
+      .rev-left{min-width:0;display:flex;align-items:center;gap:12px;}
+      .rev-avatar{width:44px;height:44px;border-radius:14px;border:1px solid rgba(15,140,140,.2);background:rgba(15,140,140,.08);display:grid;place-items:center;font-weight:900;color:var(--nk-green);flex:0 0 44px;}
+      .rev-name{margin:0;font-weight:900;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .rev-role{margin-top:6px;font-size:12px;color:#6b7280;font-weight:900;}
+      .rev-right{display:grid;justify-items:end;gap:6px;}
+      .rev-count{font-size:12px;font-weight:900;border:1px solid #eef1f4;border-radius:999px;padding:6px 10px;white-space:nowrap;background:#fff;}
+
+      /* Filters */
+      .filters-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;align-items:end;}
+      .filter-control label{display:block;font-size:12px;font-weight:900;color:var(--nk-muted);margin-bottom:6px;}
+      .filter-control select,.filter-control input{width:100%;}
+      .filter-actions{display:flex;gap:8px;justify-content:flex-end;align-items:center;margin-top:12px;}
+      .filter-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+      .chip{
+        display:inline-flex;align-items:center;gap:6px;
+        border:1px solid rgba(15,140,140,.2);background:rgba(15,140,140,.06);
+        color:var(--nk-green);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900;
+      }
+
+      /* KPI sub text */
+      .kpi-sub{margin-top:6px;font-size:12px;color:var(--nk-muted);font-weight:900;}
+      .kpi-delta{
+        display:inline-flex;align-items:center;gap:6px;padding:2px 8px;border-radius:999px;
+        border:1px solid transparent;font-size:11px;font-weight:900;
+      }
+      .kpi-delta.up{color:#067647;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35);}
+      .kpi-delta.down{color:#b42318;background:rgba(220,53,69,.12);border-color:rgba(220,53,69,.35);}
+      .kpi-delta.neutral{color:#475467;background:rgba(71,84,103,.08);border-color:rgba(71,84,103,.18);}
+
+      /* Alerts */
+      .alert-list{display:grid;gap:10px;}
+      .alert-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px;border:1px solid #eef1f4;border-radius:12px;background:#fff;}
+      .alert-title{font-size:13px;font-weight:900;color:var(--nk-text);}
+      .alert-pill{
+        padding:4px 10px;border-radius:999px;border:1px solid rgba(16,24,40,.1);
+        font-size:12px;font-weight:900;background:#fff;color:var(--nk-text);
+      }
+      .alert-pill.ok{color:#067647;background:rgba(16,185,129,.12);border-color:rgba(16,185,129,.35);}
+      .alert-pill.warn{color:#b54708;background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.35);}
+      .alert-pill.danger{color:#b42318;background:rgba(220,53,69,.12);border-color:rgba(220,53,69,.35);}
+
+      /* Capacity */
+      .progress-wrap{display:grid;gap:12px;}
+      .progress-row{display:flex;align-items:center;justify-content:space-between;gap:12px;}
+      .progress-label{font-size:12px;font-weight:900;color:var(--nk-muted);}
+      .progress-val{font-size:12px;font-weight:900;color:var(--nk-text);}
+      .progress-line{height:8px;border-radius:999px;background:#eef1f4;overflow:hidden;}
+      .progress-line span{display:block;height:100%;background:var(--nk-green);border-radius:999px;}
+      .metric-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:6px;}
+      .metric-label{font-size:12px;font-weight:900;color:var(--nk-muted);}
+      .metric-value{font-size:12px;font-weight:900;color:var(--nk-text);}
+
+      /* Head title */
+      .head-title{display:grid;gap:4px;}
+      .head-sub{font-size:12px;color:#6b7280;font-weight:900;}
+
+      /* Responsive: allow scroll only on smaller screens */
+      @media (max-width: 1100px){
+        .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+        .grid-2{grid-template-columns:1fr;}
+        .tbl-wrap{overflow:auto;}
+        table.home-orders{min-width:900px;}
+      }
+      @media (max-width: 520px){
+        .kpi-grid{grid-template-columns:1fr;}
+      }
+      @media (max-width: 1200px){
+        .filters-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+        .filter-actions{justify-content:flex-start;}
+      }
+      @media (max-width: 640px){
+        .filters-grid{grid-template-columns:1fr;}
+      }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+      .header-branch-select-wrap{
+        position:relative;
+        min-width:210px;
+      }
+      .header-branch-select{
+        display:none;
+      }
+      .header-branch-trigger{
+        width:100%;
+        height:36px;
+        padding:0 34px 0 14px;
+        border:1px solid rgba(15,140,140,.22);
+        border-radius:12px;
+        background:#fff;
+        color:#101828;
+        font-size:13px;
+        font-weight:900;
+        outline:0;
+        cursor:pointer;
+        box-shadow:none;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        position:relative;
+      }
+      .header-branch-trigger:after{
+        content:"";
+        position:absolute;
+        right:13px;
+        top:50%;
+        width:8px;
+        height:8px;
+        border-right:2px solid #101828;
+        border-bottom:2px solid #101828;
+        transform:translateY(-70%) rotate(45deg);
+        pointer-events:none;
+      }
+      .header-branch-trigger:hover{
+        background:rgba(15,140,140,.04);
+        border-color:rgba(15,140,140,.36);
+      }
+      .header-branch-trigger:focus{
+        border-color:#0f8c8c;
+        box-shadow:0 0 0 3px rgba(15,140,140,.12);
+      }
+      .branch-choice{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        min-width:0;
+      }
+      .branch-choice-name{
+        white-space:nowrap;
+      }
+      .branch-choice-status{
+        border-radius:999px;
+        padding:2px 8px;
+        font-size:11px;
+        font-weight:900;
+        line-height:1.4;
+      }
+      .branch-choice-status.is-active{
+        color:#027a48;
+        border:1px solid rgba(18,183,106,.32);
+        background:rgba(18,183,106,.10);
+      }
+      .branch-choice-status.is-suspended{
+        color:#b42318;
+        border:1px solid rgba(220,53,69,.32);
+        background:rgba(220,53,69,.10);
+      }
+      .branch-options{
+        display:none;
+        position:absolute;
+        top:calc(100% + 6px);
+        left:0;
+        right:0;
+        z-index:1100;
+        margin:0;
+        padding:6px;
+        list-style:none;
+        border:1px solid rgba(15,140,140,.22);
+        border-radius:12px;
+        background:#fff;
+        box-shadow:none;
+      }
+      .header-branch-select-wrap.is-open .branch-options{display:block;}
+      .branch-option{
+        width:100%;
+        min-height:36px;
+        padding:7px 9px;
+        border:0;
+        border-radius:9px;
+        background:#fff;
+        color:#101828;
+        font-size:13px;
+        font-weight:900;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:8px;
+        cursor:pointer;
+      }
+      .branch-option:hover,
+      .branch-option.is-selected{
+        background:rgba(15,140,140,.06);
+      }
+      .branch-status-badge{
+        min-width:78px;
+        padding:6px 9px;
+        border-radius:999px;
+        font-size:11px;
+        font-weight:900;
+        text-align:center;
+        border:1px solid rgba(15,140,140,.22);
+        color:#0f8c8c;
+        background:rgba(15,140,140,.08);
+      }
+      .branch-status-badge.is-suspended{
+        color:#b54708;
+        border-color:rgba(245,158,11,.35);
+        background:rgba(245,158,11,.12);
+      }
+      .branch-status-badge.is-banned{
+        color:#b42318;
+        border-color:rgba(220,53,69,.32);
+        background:rgba(220,53,69,.10);
+      }
+      .branch-access-notice{
+        display:none;
+        border:1px solid rgba(220,53,69,.18);
+        border-radius:14px;
+        background:#fff;
+        padding:28px;
+        text-align:center;
+      }
+      .branch-access-notice.show{display:block;}
+      .branch-access-notice .notice-icon{
+        width:52px;
+        height:52px;
+        margin:0 auto 12px;
+        display:grid;
+        place-items:center;
+        border-radius:16px;
+        color:#b42318;
+        background:rgba(220,53,69,.10);
+      }
+      .branch-access-notice h3{margin:0 0 8px;font-size:20px;font-weight:900;color:#101828;}
+      .branch-access-notice p{margin:0;color:#667085;font-size:14px;font-weight:800;}
+      .menu-list-item.menu-link-locked{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        opacity:.62;
+        cursor:not-allowed;
+        pointer-events:none;
+      }
+      .menu-list-item .lock-mark{
+        width:24px;
+        height:24px;
+        display:none;
+        place-items:center;
+        flex:0 0 24px;
+        border-radius:8px;
+        color:#98a2b3;
+        background:#f2f4f7;
+      }
+      .menu-list-item.menu-link-locked .lock-mark{display:grid;}
+      .menu-list-item .lock-mark i{font-size:12px;line-height:1;}
+    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== SIDE MENU ===================== -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="index.html" class="menu-list-item" id="menu-home" data-lock-target><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item" data-lock-target>
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item" data-lock-target>
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item" data-lock-target>
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item" data-lock-target>
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item" data-lock-target>
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item" data-allowed-when-locked>
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="tracking/tracking.html" class="menu-list-item" id="menu-tracking" data-lock-target><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item" data-lock-target>
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item" data-lock-target>
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item" data-lock-target>
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item" data-lock-target>
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="auth/logout.html" class="menu-list-item logout-link" id="menu-logout" data-allowed-when-locked><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ===================== MAIN PAGE ===================== -->
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Home (Statistics)</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="header-branch-select-wrap">
+              <select class="header-branch-select" id="branchSwitcher" aria-label="Select branch">
+                <option value="Main Branch" data-status="active" selected>Main Branch - Active</option>
+                <option value="Branch 1" data-status="suspended">Branch 1 - Suspended</option>
+                <option value="Branch 2" data-status="active">Branch 2 - Active</option>
+              </select>
+              <button class="header-branch-trigger" id="branchSwitcherTrigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="branch-choice">
+                  <span class="branch-choice-name" id="branchSwitcherName">Main Branch</span>
+                  <span class="branch-choice-status is-active" id="branchSwitcherStatus">Active</span>
+                </span>
+              </button>
+              <ul class="branch-options" id="branchSwitcherMenu" role="listbox" aria-label="Select branch">
+                <li>
+                  <button class="branch-option is-selected" type="button" data-branch-option data-value="Main Branch" data-status="active" role="option" aria-selected="true">
+                    <span>Main Branch</span>
+                    <span class="branch-choice-status is-active">Active</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="branch-option" type="button" data-branch-option data-value="Branch 1" data-status="suspended" role="option" aria-selected="false">
+                    <span>Branch 1</span>
+                    <span class="branch-choice-status is-suspended">Suspended</span>
+                  </button>
+                </li>
+                <li>
+                  <button class="branch-option" type="button" data-branch-option data-value="Branch 2" data-status="active" role="option" aria-selected="false">
+                    <span>Branch 2</span>
+                    <span class="branch-choice-status is-active">Active</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Statistics</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="branchAccessNotice" class="branch-access-notice">
+            <div class="notice-icon"><i class="fi fi-rr-lock"></i></div>
+            <h3 id="branchAccessTitle">Branch access is suspended</h3>
+            <p>Please contact your Naraakum admin to reactivate this branch.</p>
+          </div>
+
+          <div class="dash-wrap">
+
+            <!-- KPI -->
+            <div class="kpi-grid">
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Revenue (Paid)</p>
+                  <div class="kpi-value" id="kpiRevenue">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiRevenueDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M12 1v22"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Refunds</p>
+                  <div class="kpi-value" id="kpiRefunds">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiRefundsDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Completed Orders</p>
+                  <div class="kpi-value" id="kpiCompleted">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiCompletedDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Avg Order Value</p>
+                  <div class="kpi-value" id="kpiAov">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiAovDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M3 7h18"></path><path d="M3 12h18"></path><path d="M3 17h18"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Active Patients</p>
+                  <div class="kpi-value" id="kpiPatients">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiPatientsDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">New Patients</p>
+                  <div class="kpi-value" id="kpiNewPatients">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiNewPatientsDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6"></path><path d="M16 11h6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">Cancellation Rate</p>
+                  <div class="kpi-value" id="kpiCancelRate">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiCancelRateDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="9"></circle><path d="M9 9l6 6"></path><path d="M15 9l-6 6"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="kpi-card">
+                <div>
+                  <p class="kpi-title">On-time Rate</p>
+                  <div class="kpi-value" id="kpiOnTime">--</div>
+                  <div class="kpi-sub"><span class="kpi-delta neutral" id="kpiOnTimeDelta">--</span> vs previous</div>
+                </div>
+                <div class="kpi-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path><path d="M8 12l2 2 4-4"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Operational health -->
+            <div class="grid-2">
+              <div class="card-box">
+                <div class="card-head pie-head">
+                  <b>Operations Summary</b>
+                  <a class="link-viewall" href="orders/orders-list.html">View Orders</a>
+                </div>
+                <div class="card-body">
+                  <div class="alert-list" id="alertList"></div>
+                </div>
+              </div>
+
+              <div class="card-box">
+                <div class="card-head">
+                  <div class="head-title">
+                    <b>Capacity &amp; SLA</b>
+                    <span class="head-sub" id="capacityRange">--</span>
+                  </div>
+                  <span class="fsize-12 text-grey" style="font-weight:900;">Live view</span>
+                </div>
+                <div class="card-body">
+                  <div class="progress-wrap">
+                    <div class="progress-row">
+                      <div class="progress-label">Staff on duty</div>
+                      <div class="progress-val" id="staffDutyVal">--</div>
+                    </div>
+                    <div class="progress-line"><span id="staffDutyBar"></span></div>
+
+                    <div class="progress-row">
+                      <div class="progress-label">Schedule utilization</div>
+                      <div class="progress-val" id="utilVal">--</div>
+                    </div>
+                    <div class="progress-line"><span id="utilBar"></span></div>
+
+                    <div class="progress-row">
+                      <div class="progress-label">On-time SLA</div>
+                      <div class="progress-val" id="slaVal">--</div>
+                    </div>
+                    <div class="progress-line"><span id="slaBar"></span></div>
+
+                    <div class="metric-row">
+                      <div class="metric-label">Avg response time</div>
+                      <div class="metric-value" id="avgResponse">--</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+                        <!-- Charts row -->
+            <div class="grid-2">
+              <div class="card-box">
+                <div class="card-head chart-head">
+                  <div class="head-title">
+                    <b id="monthlyTitle" class="chart-title">Revenue Trend</b>
+                    <span class="head-sub" id="monthlyRange">Last 12 months</span>
+                  </div>
+                  <div class="chart-controls">
+                    <div class="radio-row" id="monthlyMode">
+                      <label class="rb active" data-mode="revenue"><input type="radio" name="monthlyMode" checked />Revenue</label>
+                      <label class="rb" data-mode="orders"><input type="radio" name="monthlyMode" />Orders</label>
+                    </div>
+                    <div class="chart-filter">
+                      <select id="monthlyRangeSelect">
+                        <option value="6m">Last 6 months</option>
+                        <option value="12m" selected>Last 12 months</option>
+                        <option value="ytd">Year to date</option>
+                        <option value="all">All time</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div class="chart-box">
+                    <canvas id="monthlyChart" width="900" height="260"></canvas>
+                    <div class="chart-sub" id="monthlyTicks">0 - 500 - 1,000 - 1,500 - 2,000</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-box">
+                <div class="card-head chart-head">
+                  <b id="pieTitle" class="chart-title">Revenue by Service</b>
+                  <div class="chart-controls">
+                    <div class="radio-row" id="modeRadios">
+                      <label class="rb active" data-mode="revenue"><input type="radio" name="mode" checked />Revenue</label>
+                      <label class="rb" data-mode="orders"><input type="radio" name="mode" />Orders</label>
+                    </div>
+                    <div class="chart-filter">
+                      <select id="pieRange">
+                        <option value="7d">Last 7 days</option>
+                        <option value="30d" selected>Last 30 days</option>
+                        <option value="90d">Last 90 days</option>
+                        <option value="ytd">Year to date</option>
+                        <option value="all">All time</option>
+                      </select>
+                    </div>
+                    <div class="chart-filter">
+                      <select id="pieScope">
+                        <option value="top5" selected>Top 5</option>
+                        <option value="all">All services</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card-body pie-wrap">
+                  <div class="pie-box" id="pieBox">
+                    <div class="pie-tooltip" id="pieTooltip">
+                      <div id="ttName">--</div>
+                      <div class="sub" id="ttVal">--</div>
+                    </div>
+                    <canvas id="pieChart" width="500" height="320"></canvas>
+                  </div>
+                  <div class="chart-sub" id="pieTotal">Total revenue: --</div>
+                </div>
+              </div>
+            </div>
+<!-- Table + Reviews row -->
+            <div class="grid-2">
+              <div class="card-box">
+                <div class="card-head">
+                  <b>Latest Orders ( <span id="ordersCount">0</span> )</b>
+                  <a class="link-viewall" href="orders/orders-list.html">View All</a>
+                </div>
+
+                <div class="card-body">
+                  <div class="tbl-wrap">
+                    <table class="home-orders" id="homeOrdersTable">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Patient</th>
+                          <th>Service</th>
+                          <th>Order Date</th>
+                          <th>Status</th>
+                          <th>Assign</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="ordersTbody"></tbody>
+                    </table>
+                  </div>
+
+                  <div class="pager-line">
+                    <div class="fsize-12 text-grey" style="font-weight:900;">
+                      Page <span id="pgNow">1</span> of <span id="pgTotal">17</span>
+                    </div>
+                    <div class="pager-pages" id="pagerPages"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-box">
+                <div class="card-head"><b>Latest Reviews</b><a class="link-viewall" href="staff/ratings.html">View All</a></div>
+                <div class="card-body">
+                  <div class="reviews-list">
+                    <div class="review-item">
+                      <div class="rev-left"><div class="rev-avatar">DK</div><div style="min-width:0;"><p class="rev-name">Dr. Khaled Ali Bahgat</p><div class="rev-role">Doctor</div></div></div>
+                      <div class="rev-right">
+                        <div class="stars"><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-rr-star"></i></div>
+                        <div class="rating-sub">Total rating</div>
+                        <div class="rev-count">8 Review</div>
+                      </div>
+                    </div>
+
+                    <div class="review-item">
+                      <div class="rev-left"><div class="rev-avatar">MB</div><div style="min-width:0;"><p class="rev-name">Dr. Mohammed Beltagy</p><div class="rev-role">Doctor</div></div></div>
+                      <div class="rev-right">
+                        <div class="stars"><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-rr-star"></i><i class="fi fi-rr-star"></i></div>
+                        <div class="rating-sub">Total rating</div>
+                        <div class="rev-count">2 Review</div>
+                      </div>
+                    </div>
+
+                    <div class="review-item">
+                      <div class="rev-left"><div class="rev-avatar">MS</div><div style="min-width:0;"><p class="rev-name">Dr. Mohamed Sabry</p><div class="rev-role">Doctor</div></div></div>
+                      <div class="rev-right">
+                        <div class="stars"><i class="fi fi-sr-star"></i><i class="fi fi-sr-star"></i><i class="fi fi-rr-star"></i><i class="fi fi-rr-star"></i><i class="fi fi-rr-star"></i></div>
+                        <div class="rating-sub">Total rating</div>
+                        <div class="rev-count">1 Review</div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- keep your libs as-is -->
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/adminSideMenu.js"></script>
+
+    <script src="assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="assets/js/datepicker/datepicker.min.js"></script>
+    <script src="assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="assets/js/LightBox/fancybox.umd.js"></script>
+
+    <!-- =========================================================
+      PAGE JS (demo data + render)
+    ========================================================== -->
+    <script>
+      (function () {
+        const rangeLabels = {
+          "7d": "Last 7 days",
+          "30d": "Last 30 days",
+          "90d": "Last 90 days",
+          "ytd": "Year to date",
+          "all": "All time"
+        };
+
+        const monthlyRangeLabels = {
+          "6m": "Last 6 months",
+          "12m": "Last 12 months",
+          "ytd": "Year to date",
+          "all": "All time"
+        };
+
+        const state = {
+          range: "30d",
+          branch: "Main Branch",
+          service: "all",
+          status: "all",
+          dateStart: "",
+          dateEnd: "",
+          monthlyMode: "revenue",
+          monthlyRange: "12m",
+          pieRange: "30d",
+          search: ""
+        };
+
+        const servicesCatalog = [
+          { id:"svc1", name:"Consultation", specialization:"Cardiology", base:220 },
+          { id:"svc2", name:"Home Visit", specialization:"Family Medicine", base:320 },
+          { id:"svc3", name:"Laboratory", specialization:"Pathology", base:180 },
+          { id:"svc4", name:"Radiology", specialization:"X-Ray", base:260 },
+          { id:"svc5", name:"Physiotherapy", specialization:"Orthopedics", base:210 },
+          { id:"svc6", name:"Pediatrics", specialization:"Children", base:200 },
+          { id:"svc7", name:"Dermatology", specialization:"Skin Care", base:240 }
+        ];
+
+        const serviceMap = new Map(servicesCatalog.map(s => [s.id, s]));
+
+        const palette = [
+          "rgba(15,140,140,0.90)",
+          "rgba(11,111,111,0.86)",
+          "rgba(25,163,154,0.82)",
+          "rgba(15,140,140,0.68)",
+          "rgba(11,111,111,0.62)",
+          "rgba(25,163,154,0.58)",
+          "rgba(15,140,140,0.52)"
+        ];
+
+        const branches = ["Main Branch", "Branch 1", "Branch 2"];
+        const statusCycle = ["Accepted", "Completed", "Completed", "Pending", "In Progress", "Awaiting Payment", "Completed", "Canceled"];
+        const doctors = ["Dr. Walled", "Dr. Mohamed", "Dr. Ahmed", "Dr. Sarah", "Dr. Lina", "Dr. Kareem"];
+        const patients = [
+          { id:"p1", name:"John Doe", meta:"Male, 45" },
+          { id:"p2", name:"Jane Roe", meta:"Female, 32" },
+          { id:"p3", name:"Radwan Ali", meta:"Male, 38" },
+          { id:"p4", name:"Abdullah Omar", meta:"Male, 29" },
+          { id:"p5", name:"Hind Faris", meta:"Female, 27" },
+          { id:"p6", name:"Sara Youssef", meta:"Female, 31" },
+          { id:"p7", name:"Khaled Saad", meta:"Male, 52" },
+          { id:"p8", name:"Maha Saif", meta:"Female, 40" },
+          { id:"p9", name:"Yasser Adel", meta:"Male, 34" },
+          { id:"p10", name:"Noor Karim", meta:"Female, 26" }
+        ];
+
+        const today = new Date();
+        today.setHours(0,0,0,0);
+
+        const orders = [];
+        const seenPatients = new Set();
+        const totalOrdersSeed = 84;
+
+        for (let i = 0; i < totalOrdersSeed; i++) {
+          const service = servicesCatalog[i % servicesCatalog.length];
+          const branch = branches[i % branches.length];
+          const status = statusCycle[i % statusCycle.length];
+          const patient = patients[i % patients.length];
+
+          const daysAgo = (i * 3) % 120;
+          const date = new Date(today);
+          date.setDate(today.getDate() - daysAgo);
+
+          const extra = (i * 17) % 80;
+          const revenue = status === "Canceled" ? 0 : service.base + extra;
+          let refund = 0;
+          if (status === "Canceled") refund = Math.round(revenue * 0.85);
+
+          const assigned = (i % 4) !== 0;
+          const onTime = (i % 5) !== 0;
+          const responseMinutes = 15 + ((i * 7) % 40);
+
+          const isNewPatient = !seenPatients.has(patient.id);
+          seenPatients.add(patient.id);
+
+          orders.push({
+            id: `OR${String(i + 1).padStart(6,"0")}`,
+            patientId: patient.id,
+            patientName: patient.name,
+            patientMeta: patient.meta,
+            serviceId: service.id,
+            service: service.name,
+            specialization: service.specialization,
+            orderDate: date,
+            status,
+            branch,
+            revenue,
+            refund,
+            assigned,
+            assignName: doctors[i % doctors.length],
+            onTime,
+            responseMinutes,
+            isNewPatient
+          });
+        }
+
+        orders.sort((a,b) => b.orderDate - a.orderDate);
+
+        function formatNumber(n) {
+          return Math.round(n).toLocaleString("en-US");
+        }
+
+        function formatCurrency(n) {
+          return formatNumber(n) + " SAR";
+        }
+
+        function formatPercent(r) {
+          return (r * 100).toFixed(1) + "%";
+        }
+
+        function formatDate(d) {
+          return d.toLocaleDateString("en-US", { month:"short", day:"2-digit", year:"numeric" });
+        }
+
+        function parseDateInput(value) {
+          if (!value) return null;
+          const trimmed = String(value).trim();
+          if (!trimmed) return null;
+
+          const isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+          if (isoMatch) {
+            const y = Number(isoMatch[1]);
+            const m = Number(isoMatch[2]);
+            const d = Number(isoMatch[3]);
+            const dt = new Date(y, m - 1, d);
+            return isNaN(dt) ? null : dt;
+          }
+
+          const slashMatch = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+          if (slashMatch) {
+            const m = Number(slashMatch[1]);
+            const d = Number(slashMatch[2]);
+            const y = Number(slashMatch[3]);
+            const dt = new Date(y, m - 1, d);
+            return isNaN(dt) ? null : dt;
+          }
+
+          const dt = new Date(trimmed);
+          if (isNaN(dt)) return null;
+          return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+        }
+
+        function startOfDay(d) {
+          const out = new Date(d);
+          out.setHours(0,0,0,0);
+          return out;
+        }
+
+        function endOfDay(d) {
+          const out = new Date(d);
+          out.setHours(23,59,59,999);
+          return out;
+        }
+
+        function normalizeDates(start, end) {
+          let a = start ? new Date(start) : null;
+          let b = end ? new Date(end) : null;
+          if (a && b && a > b) {
+            const tmp = a;
+            a = b;
+            b = tmp;
+          }
+          return {
+            start: a ? startOfDay(a) : null,
+            end: b ? endOfDay(b) : null
+          };
+        }
+
+        function getCustomDates() {
+          const start = parseDateInput(state.dateStart);
+          const end = parseDateInput(state.dateEnd);
+          return normalizeDates(start, end);
+        }
+
+        function setText(id, value) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value;
+        }
+
+        function getRange(rangeKey, customStart, customEnd) {
+          const normalized = normalizeDates(customStart, customEnd);
+          if (normalized.start || normalized.end) return normalized;
+
+          if (rangeKey === "all") return null;
+          if (rangeKey === "ytd") {
+            return {
+              start: startOfDay(new Date(today.getFullYear(), 0, 1)),
+              end: endOfDay(today)
+            };
+          }
+          const daysMap = { "7d":7, "30d":30, "90d":90 };
+          const days = daysMap[rangeKey] || 30;
+          const start = new Date(today);
+          start.setDate(today.getDate() - (days - 1));
+          return { start: startOfDay(start), end: endOfDay(today) };
+        }
+
+        function getPrevRange(rangeKey, customStart, customEnd) {
+          const normalized = normalizeDates(customStart, customEnd);
+          if (normalized.start || normalized.end) {
+            const start = normalized.start || normalized.end;
+            const end = normalized.end || normalized.start;
+            const span = end.getTime() - start.getTime();
+            const prevEnd = new Date(start);
+            prevEnd.setDate(prevEnd.getDate() - 1);
+            const prevStart = new Date(prevEnd.getTime() - span);
+            return { start: startOfDay(prevStart), end: endOfDay(prevEnd) };
+          }
+
+          if (rangeKey === "all") return null;
+          if (rangeKey === "ytd") {
+            const prevStart = new Date(today.getFullYear() - 1, 0, 1);
+            const prevEnd = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+            return { start: startOfDay(prevStart), end: endOfDay(prevEnd) };
+          }
+          const daysMap = { "7d":7, "30d":30, "90d":90 };
+          const days = daysMap[rangeKey] || 30;
+          const end = new Date(today);
+          end.setDate(today.getDate() - days);
+          const start = new Date(end);
+          start.setDate(end.getDate() - (days - 1));
+          return { start: startOfDay(start), end: endOfDay(end) };
+        }
+
+        function getRangeLabel(rangeKey, customStart, customEnd) {
+          const normalized = normalizeDates(customStart, customEnd);
+          if (normalized.start || normalized.end) {
+            const startLabel = normalized.start ? formatDate(normalized.start) : "Any";
+            const endLabel = normalized.end ? formatDate(normalized.end) : "Any";
+            return { label: `${startLabel} - ${endLabel}`, isCustom: true };
+          }
+          return { label: rangeLabels[rangeKey] || "Custom", isCustom: false };
+        }
+
+        function filterByRange(list, rangeKey, customStart, customEnd) {
+          const range = getRange(rangeKey, customStart, customEnd);
+          if (!range) return list.slice();
+          return list.filter((o) => {
+            if (range.start && o.orderDate < range.start) return false;
+            if (range.end && o.orderDate > range.end) return false;
+            return true;
+          });
+        }
+
+        function filterList(list, range) {
+          const q = (state.search || "").trim().toLowerCase();
+          return list.filter((o) => {
+            if (range && range.start && o.orderDate < range.start) return false;
+            if (range && range.end && o.orderDate > range.end) return false;
+            if (state.branch !== "all" && o.branch !== state.branch) return false;
+            if (state.service !== "all" && o.serviceId !== state.service) return false;
+            if (state.status !== "all" && o.status !== state.status) return false;
+            if (q) {
+              const hay = [
+                o.id,
+                o.patientName,
+                o.service,
+                o.specialization,
+                o.status,
+                o.branch
+              ].join(" ").toLowerCase();
+              if (!hay.includes(q)) return false;
+            }
+            return true;
+          });
+        }
+
+        function calcMetrics(list) {
+          let revenue = 0;
+          let refunds = 0;
+          let completed = 0;
+          let canceled = 0;
+          let pending = 0;
+          let awaiting = 0;
+          let inProgress = 0;
+          let accepted = 0;
+          let onTime = 0;
+          let responseSum = 0;
+
+          const patientsSet = new Set();
+          const newPatientsSet = new Set();
+
+          list.forEach((o) => {
+            patientsSet.add(o.patientId);
+            if (o.isNewPatient) newPatientsSet.add(o.patientId);
+
+            if (o.status === "Completed") {
+              completed += 1;
+              revenue += o.revenue;
+              if (o.onTime) onTime += 1;
+            }
+
+            if (o.status === "Canceled") {
+              canceled += 1;
+              refunds += o.refund || 0;
+            }
+            if (o.status === "Pending") pending += 1;
+            if (o.status === "Awaiting Payment") awaiting += 1;
+            if (o.status === "In Progress") inProgress += 1;
+            if (o.status === "Accepted") accepted += 1;
+            responseSum += o.responseMinutes;
+          });
+
+          const totalOrders = list.length;
+          const aov = completed ? (revenue / completed) : 0;
+          const cancelRate = totalOrders ? (canceled / totalOrders) : 0;
+          const onTimeRate = completed ? (onTime / completed) : 0;
+          const avgResponse = totalOrders ? (responseSum / totalOrders) : 0;
+
+          return {
+            totalOrders,
+            revenue,
+            refunds,
+            completed,
+            aov,
+            activePatients: patientsSet.size,
+            newPatients: newPatientsSet.size,
+            cancelRate,
+            onTimeRate,
+            pending,
+            awaiting,
+            inProgress,
+            accepted,
+            avgResponse
+          };
+        }
+
+        function setDelta(id, curr, prev, usePoints) {
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (!prev || prev <= 0) {
+            el.textContent = "N/A";
+            el.className = "kpi-delta neutral";
+            return;
+          }
+          const diff = usePoints ? ((curr - prev) * 100) : (((curr - prev) / prev) * 100);
+          const cls = diff >= 0 ? "up" : "down";
+          el.textContent = (diff >= 0 ? "+" : "") + diff.toFixed(1) + "%";
+          el.className = "kpi-delta " + cls;
+        }
+
+        function updateKpis(list) {
+          const metrics = calcMetrics(list);
+
+          setText("kpiRevenue", formatCurrency(metrics.revenue));
+          setText("kpiRefunds", formatCurrency(metrics.refunds));
+          setText("kpiCompleted", formatNumber(metrics.completed));
+          setText("kpiAov", metrics.aov ? formatCurrency(metrics.aov) : "0 SAR");
+          setText("kpiPatients", formatNumber(metrics.activePatients));
+          setText("kpiNewPatients", formatNumber(metrics.newPatients));
+          setText("kpiCancelRate", formatPercent(metrics.cancelRate));
+          setText("kpiOnTime", formatPercent(metrics.onTimeRate));
+          setText("ordersCount", formatNumber(metrics.totalOrders));
+
+          const customDates = getCustomDates();
+          const prevRange = getPrevRange(state.range, customDates.start, customDates.end);
+          const prevList = prevRange ? filterList(orders, prevRange) : [];
+          const prevMetrics = prevRange ? calcMetrics(prevList) : null;
+
+          setDelta("kpiRevenueDelta", metrics.revenue, prevMetrics ? prevMetrics.revenue : 0, false);
+          setDelta("kpiRefundsDelta", metrics.refunds, prevMetrics ? prevMetrics.refunds : 0, false);
+          setDelta("kpiCompletedDelta", metrics.completed, prevMetrics ? prevMetrics.completed : 0, false);
+          setDelta("kpiAovDelta", metrics.aov, prevMetrics ? prevMetrics.aov : 0, false);
+          setDelta("kpiPatientsDelta", metrics.activePatients, prevMetrics ? prevMetrics.activePatients : 0, false);
+          setDelta("kpiNewPatientsDelta", metrics.newPatients, prevMetrics ? prevMetrics.newPatients : 0, false);
+          setDelta("kpiCancelRateDelta", metrics.cancelRate, prevMetrics ? prevMetrics.cancelRate : 0, true);
+          setDelta("kpiOnTimeDelta", metrics.onTimeRate, prevMetrics ? prevMetrics.onTimeRate : 0, true);
+
+          return metrics;
+        }
+
+        function updateFilterChips() {
+          const chips = [];
+          const rangeInfo = getRangeLabel(state.range, state.dateStart, state.dateEnd);
+          chips.push("Time: " + rangeInfo.label);
+
+          if (state.branch !== "all") chips.push("Branch: " + state.branch);
+          if (state.status !== "all") {
+            const statusLabels = {
+              "Pending": "Under Review",
+              "Awaiting Payment": "Awaiting Payment",
+              "In Progress": "In Progress",
+              "Completed": "Completed",
+              "Canceled": "Canceled",
+              "Accepted": "Accepted"
+            };
+            chips.push("Status: " + (statusLabels[state.status] || state.status));
+          }
+          if (state.service !== "all") {
+            const svc = serviceMap.get(state.service);
+            chips.push("Service: " + (svc ? svc.name : state.service));
+          }
+          if (state.search) chips.push("Search: " + state.search);
+
+          const wrap = document.getElementById("activeFilters");
+          if (!wrap) return;
+          wrap.innerHTML = chips.map(c => `<span class="chip">${c}</span>`).join("");
+        }
+
+        function updateLastUpdated() {
+          const now = new Date();
+          setText("lastUpdated", now.toLocaleString("en-US", { month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit" }));
+        }
+
+        function updateAlerts(list, metrics) {
+          const active = metrics.pending + metrics.awaiting + metrics.inProgress + metrics.accepted;
+          const slaLabel = metrics.completed ? formatPercent(metrics.onTimeRate) : "N/A";
+
+          const summary = [
+            {
+              title: `Active orders: ${formatNumber(active)}`,
+              label: "Active",
+              type: active > 10 ? "warn" : "ok"
+            },
+            {
+              title: `Awaiting payment: ${formatNumber(metrics.awaiting)}`,
+              label: "Payments",
+              type: metrics.awaiting > 5 ? "warn" : "ok"
+            },
+            {
+              title: `Refunds issued: ${formatCurrency(metrics.refunds)}`,
+              label: "Refunds",
+              type: metrics.refunds > 0 ? "warn" : "ok"
+            },
+            {
+              title: `On-time SLA: ${slaLabel}`,
+              label: "SLA",
+              type: metrics.completed && metrics.onTimeRate < 0.85 ? "danger" : "ok"
+            }
+          ];
+
+          const listEl = document.getElementById("alertList");
+          if (!listEl) return;
+          listEl.innerHTML = summary.map(item => {
+            return `
+              <div class="alert-item">
+                <div class="alert-title">${item.title}</div>
+                <span class="alert-pill ${item.type}">${item.label}</span>
+              </div>
+            `;
+          }).join("");
+        }
+
+        function updateCapacity(metrics) {
+          const staffTotal = 30;
+          let staffOnDuty = 22;
+          if (state.branch === "North Branch") staffOnDuty = 20;
+          if (state.branch === "West Branch") staffOnDuty = 19;
+
+          const staffPct = staffOnDuty / staffTotal;
+          const utilization = Math.min(0.95, Math.max(0.35, metrics.totalOrders / 120));
+          const sla = metrics.completed ? metrics.onTimeRate : 0.9;
+
+          setText("staffDutyVal", `${staffOnDuty}/${staffTotal} (${Math.round(staffPct * 100)}%)`);
+          setText("utilVal", Math.round(utilization * 100) + "%");
+          setText("slaVal", formatPercent(sla));
+          setText("avgResponse", Math.round(metrics.avgResponse) + " min");
+
+          const staffBar = document.getElementById("staffDutyBar");
+          const utilBar = document.getElementById("utilBar");
+          const slaBar = document.getElementById("slaBar");
+          if (staffBar) staffBar.style.width = Math.round(staffPct * 100) + "%";
+          if (utilBar) utilBar.style.width = Math.round(utilization * 100) + "%";
+          if (slaBar) slaBar.style.width = Math.round(sla * 100) + "%";
+
+          const rangeText = getRangeLabel(state.range, state.dateStart, state.dateEnd).label;
+          setText("capacityRange", state.branch === "all" ? rangeText : (rangeText + " - " + state.branch));
+        }
+
+        function buildPieData(list) {
+          const agg = servicesCatalog.map(s => ({ id:s.id, name:s.name, revenue:0, orders:0 }));
+          const map = new Map(agg.map(a => [a.id, a]));
+          list.forEach((o) => {
+            const item = map.get(o.serviceId);
+            if (!item) return;
+            item.orders += 1;
+            if (o.status === "Completed") item.revenue += o.revenue;
+          });
+          return agg;
+        }
+
+        const pie = { mode:"revenue", scope:"top5", slices:[], hovered:null, data:[] };
+
+        function getPieDisplayData() {
+          const metricKey = pie.mode === "revenue" ? "revenue" : "orders";
+          const data = pie.data.slice();
+          const filtered = data.filter(item => item[metricKey] > 0);
+          const base = filtered.length ? filtered : data;
+
+          if (pie.scope === "all") {
+            return base;
+          }
+
+          const sorted = base.sort((a, b) => b[metricKey] - a[metricKey]);
+          const top = sorted.slice(0, 5);
+          const rest = sorted.slice(5);
+
+          if (rest.length) {
+            const other = rest.reduce((acc, item) => {
+              acc.revenue += item.revenue;
+              acc.orders += item.orders;
+              return acc;
+            }, { id:"other", name:"Other", revenue:0, orders:0 });
+
+            if (other[metricKey] > 0) top.push(other);
+          }
+
+          return top;
+        }
+
+        function drawPie() {
+          const canvas = document.getElementById("pieChart");
+          if (!canvas) return;
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+
+          const displayData = getPieDisplayData();
+          const values = displayData.map(s => pie.mode === "revenue" ? s.revenue : s.orders);
+          const total = values.reduce((a,b)=>a+b,0) || 1;
+
+          const cx = canvas.width / 2;
+          const cy = canvas.height / 2;
+          const r = Math.min(canvas.width, canvas.height) * 0.33;
+
+          let ang = -Math.PI / 2;
+          pie.slices = [];
+
+          displayData.forEach((s, idx) => {
+            const v = values[idx];
+            const sweep = (v / total) * Math.PI * 2;
+            const start = ang;
+            const end = ang + sweep;
+
+            const isHover = pie.hovered === s.id;
+            const rr = r + (isHover ? 8 : 0);
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, rr, start, end);
+            ctx.closePath();
+            ctx.fillStyle = palette[idx % palette.length];
+            ctx.fill();
+
+            pie.slices.push({ id:s.id, start, end, service:s });
+            ang = end;
+          });
+
+          const title = pie.mode === "revenue" ? "Revenue by Service" : "Orders by Service";
+          setText("pieTitle", title);
+
+          const totalLabel = pie.mode === "revenue"
+            ? "Total revenue: " + formatCurrency(values.reduce((a,b)=>a+b,0))
+            : "Total orders: " + formatNumber(values.reduce((a,b)=>a+b,0));
+          setText("pieTotal", totalLabel);
+        }
+
+        function hitTestPie(mx, my) {
+          const canvas = document.getElementById("pieChart");
+          if (!canvas) return null;
+          const rect = canvas.getBoundingClientRect();
+
+          const x = mx - rect.left;
+          const y = my - rect.top;
+
+          const cx = canvas.width / 2;
+          const cy = canvas.height / 2;
+
+          const dx = x * (canvas.width / rect.width) - cx;
+          const dy = y * (canvas.height / rect.height) - cy;
+
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const r = Math.min(canvas.width, canvas.height) * 0.33;
+
+          if (dist > r + 14) return null;
+          let ang = Math.atan2(dy, dx);
+          if (ang < -Math.PI / 2) ang += Math.PI * 2;
+          if (ang < -Math.PI / 2) return null;
+
+          const a = ang;
+          for (const sl of pie.slices) {
+            if (a >= sl.start && a <= sl.end) return sl;
+          }
+          return null;
+        }
+
+        function setPieTooltip(sl, mx, my) {
+          const tt = document.getElementById("pieTooltip");
+          const ttName = document.getElementById("ttName");
+          const ttVal = document.getElementById("ttVal");
+          const box = document.getElementById("pieBox");
+          if (!tt || !box) return;
+
+          if (!sl) {
+            tt.style.display = "none";
+            return;
+          }
+
+          const isRevenue = pie.mode === "revenue";
+          ttName.textContent = sl.service.name;
+          ttVal.textContent = isRevenue
+            ? ("Revenue: " + formatCurrency(sl.service.revenue))
+            : ("Orders: " + formatNumber(sl.service.orders));
+
+          const boxRect = box.getBoundingClientRect();
+          tt.style.display = "block";
+          tt.style.left = (mx - boxRect.left + 10) + "px";
+          tt.style.top = (my - boxRect.top + 10) + "px";
+        }
+
+        function niceMax(value) {
+          if (value <= 10) return 10;
+          const pow = Math.pow(10, Math.floor(Math.log10(value)));
+          const step = pow;
+          return Math.ceil(value / step) * step;
+        }
+
+        function getMonthlySeries(list, mode) {
+          const months = [];
+          const base = new Date(today.getFullYear(), today.getMonth(), 1);
+          for (let i = 11; i >= 0; i--) {
+            const d = new Date(base.getFullYear(), base.getMonth() - i, 1);
+            const key = d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+            months.push({ key, label: d.toLocaleString("en-US", { month: "short" }) });
+          }
+
+          const indexMap = new Map(months.map((m, idx) => [m.key, idx]));
+          const values = new Array(months.length).fill(0);
+
+          list.forEach((o) => {
+            const key = o.orderDate.getFullYear() + "-" + String(o.orderDate.getMonth() + 1).padStart(2, "0");
+            if (!indexMap.has(key)) return;
+            const idx = indexMap.get(key);
+            if (mode === "revenue") {
+              if (o.status === "Completed") values[idx] += o.revenue;
+            } else {
+              values[idx] += 1;
+            }
+          });
+
+          return { labels: months.map(m => m.label), values };
+        }
+
+        function drawMonthlyChart(values, labels) {
+          const canvas = document.getElementById("monthlyChart");
+          if (!canvas) return;
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0,0,canvas.width,canvas.height);
+
+          const maxV = niceMax(Math.max(1, ...values));
+          const ticks = [0, maxV/4, maxV/2, (maxV*3)/4, maxV].map(v => Math.round(v));
+          setText("monthlyTicks", ticks.map(formatNumber).join(" - "));
+
+          const padL = 44, padR = 12, padT = 12, padB = 32;
+          const w = canvas.width - padL - padR;
+          const h = canvas.height - padT - padB;
+
+          ticks.forEach((lv) => {
+            const y = padT + h - (lv / maxV) * h;
+            ctx.strokeStyle = "rgba(0,0,0,0.08)";
+            ctx.beginPath();
+            ctx.moveTo(padL, y);
+            ctx.lineTo(padL + w, y);
+            ctx.stroke();
+            ctx.fillStyle = "rgba(0,0,0,0.45)";
+            ctx.font = "12px Arial";
+            ctx.fillText(String(lv), 6, y + 4);
+          });
+
+          ctx.strokeStyle = "rgba(15,140,140,0.85)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          values.forEach((v, i) => {
+            const x = padL + (i / (values.length - 1)) * w;
+            const y = padT + h - (v / maxV) * h;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+
+          values.forEach((v, i) => {
+            const x = padL + (i / (values.length - 1)) * w;
+            const y = padT + h - (v / maxV) * h;
+            ctx.fillStyle = "rgba(15,140,140,0.95)";
+            ctx.beginPath();
+            ctx.arc(x, y, 3, 0, Math.PI * 2);
+            ctx.fill();
+          });
+
+          ctx.fillStyle = "rgba(0,0,0,0.55)";
+          ctx.font = "11px Arial";
+          labels.forEach((lbl, i) => {
+            if (i % 2 !== 0) return;
+            const x = padL + (i / (labels.length - 1)) * w;
+            ctx.fillText(lbl, x - 10, padT + h + 18);
+          });
+        }
+
+        function getStatusMeta(status) {
+          switch (status) {
+            case "Accepted":
+              return { label: "Accepted", cls: "st-accepted" };
+            case "In Progress":
+              return { label: "In Progress", cls: "st-progress" };
+            case "Pending":
+              return { label: "Under Review", cls: "st-underreview" };
+            case "Awaiting Payment":
+              return { label: "Awaiting Payment", cls: "st-missed" };
+            case "Canceled":
+              return { label: "Canceled", cls: "st-cancel" };
+            case "Completed":
+              return { label: "Completed", cls: "st-complete" };
+            default:
+              return { label: status, cls: "st-pending" };
+          }
+        }
+
+        const perPage = 5;
+        let currentPage = 1;
+        let currentOrders = [];
+
+        function renderTable(list) {
+          const tbody = document.getElementById("ordersTbody");
+          if (!tbody) return;
+
+          currentOrders = list.slice();
+          const totalPages = Math.max(1, Math.ceil(currentOrders.length / perPage));
+          if (currentPage > totalPages) currentPage = 1;
+
+          const start = (currentPage - 1) * perPage;
+          const pageItems = currentOrders.slice(start, start + perPage);
+
+          if (!pageItems.length) {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-grey" style="font-weight:900;">No orders found.</td></tr>`;
+          } else {
+            tbody.innerHTML = pageItems.map((o, i) => {
+              const rowNo = start + i + 1;
+              const statusMeta = getStatusMeta(o.status);
+              const statusPill = `<span class="status-pill ${statusMeta.cls}">${statusMeta.label}</span>`;
+              const assignCell = o.assigned
+                ? `<span class="assign-name" title="${o.assignName}">${o.assignName}</span>`
+                : `<button class="assign-icn" type="button" title="Assign"><i class="fi fi-rr-user-add"></i></button>`;
+
+              const actionsCell = `
+                <div class="actions-cell">
+                  <a class="action-icon" href="orders/orders-details.html?order=${o.id}" title="View">
+                    <i class="fi fi-rr-eye"></i>
+                  </a>
+                  <button class="action-icon danger" type="button" title="Cancel">
+                    <i class="fi fi-rr-cross"></i>
+                  </button>
+                </div>
+              `;
+
+              return `
+                <tr>
+                  <td class="nowrap">#${rowNo}</td>
+                  <td>
+                    <p class="pname">${o.patientName}</p>
+                    <div class="pmeta">${o.patientMeta}</div>
+                  </td>
+                  <td>
+                    <p class="svcmeta">${o.service}</p>
+                    <div class="svcspec">${o.specialization}</div>
+                  </td>
+                  <td class="nowrap">${formatDate(o.orderDate)}</td>
+                  <td>${statusPill}</td>
+                  <td>${assignCell}</td>
+                  <td>${actionsCell}</td>
+                </tr>
+              `;
+            }).join("");
+          }
+
+          setText("pgNow", String(currentPage));
+          setText("pgTotal", String(totalPages));
+          renderPagination(totalPages);
+        }
+
+        function getPageButtons(current, total) {
+          const set = new Set([1, 2, total-1, total, current-1, current, current+1]);
+          const arr = Array.from(set).filter(n => n >= 1 && n <= total).sort((a,b) => a-b);
+          const out = [];
+          for (let i = 0; i < arr.length; i++) {
+            out.push(arr[i]);
+            if (i < arr.length - 1 && arr[i+1] - arr[i] > 1) out.push("...");
+          }
+          return out;
+        }
+
+        function renderPagination(totalPages) {
+          const wrap = document.getElementById("pagerPages");
+          if (!wrap) return;
+
+          const btns = getPageButtons(currentPage, totalPages);
+          wrap.innerHTML = btns.map((b) => {
+            if (b === "...") return `<button class="pg dots" type="button" disabled>...</button>`;
+            const active = (b === currentPage) ? "active" : "";
+            return `<button class="pg ${active}" type="button" data-page="${b}">${b}</button>`;
+          }).join("");
+
+          wrap.querySelectorAll("[data-page]").forEach(btn => {
+            btn.addEventListener("click", function () {
+              const p = parseInt(this.getAttribute("data-page"), 10);
+              if (!isNaN(p)) {
+                currentPage = p;
+                renderTable(currentOrders);
+              }
+            });
+          });
+        }
+
+        function initPieControls() {
+          const radios = document.getElementById("modeRadios");
+          if (!radios) return;
+
+          radios.querySelectorAll(".rb").forEach((el) => {
+            el.addEventListener("click", () => {
+              radios.querySelectorAll(".rb").forEach(x => x.classList.remove("active"));
+              el.classList.add("active");
+              pie.mode = el.getAttribute("data-mode");
+              pie.hovered = null;
+              drawPie();
+              setPieTooltip(null, 0, 0);
+            });
+          });
+
+          const scopeEl = document.getElementById("pieScope");
+          if (scopeEl) {
+            pie.scope = scopeEl.value;
+            scopeEl.addEventListener("change", () => {
+              pie.scope = scopeEl.value;
+              pie.hovered = null;
+              drawPie();
+              setPieTooltip(null, 0, 0);
+            });
+          }
+
+          const pieBox = document.getElementById("pieBox");
+          const canvas = document.getElementById("pieChart");
+          if (!pieBox || !canvas) return;
+
+          canvas.addEventListener("mousemove", (e) => {
+            const sl = hitTestPie(e.clientX, e.clientY);
+            const newHover = sl ? sl.id : null;
+            if (newHover !== pie.hovered) {
+              pie.hovered = newHover;
+              drawPie();
+            }
+            setPieTooltip(sl, e.clientX, e.clientY);
+          });
+
+          canvas.addEventListener("mouseleave", () => {
+            pie.hovered = null;
+            drawPie();
+            setPieTooltip(null, 0, 0);
+          });
+        }
+
+        function initMonthlyControls() {
+          const radios = document.getElementById("monthlyMode");
+          if (!radios) return;
+
+          radios.querySelectorAll(".rb").forEach((el) => {
+            el.addEventListener("click", () => {
+              radios.querySelectorAll(".rb").forEach(x => x.classList.remove("active"));
+              el.classList.add("active");
+              state.monthlyMode = el.getAttribute("data-mode");
+              renderCharts(currentOrders);
+            });
+          });
+        }
+
+        function readFiltersFromUI() {
+          const switcher = document.getElementById("branchSwitcher");
+          if (switcher) state.branch = switcher.value;
+        }
+
+        function resetFilters() {
+          state.range = "30d";
+          state.service = "all";
+          state.status = "all";
+          state.dateStart = "";
+          state.dateEnd = "";
+          state.search = "";
+          readFiltersFromUI();
+        }
+
+        function selectedBranchStatus() {
+          const switcher = document.getElementById("branchSwitcher");
+          if (!switcher) return "active";
+          const option = switcher.options[switcher.selectedIndex];
+          return option ? option.getAttribute("data-status") || "active" : "active";
+        }
+
+        function setMenuLocked(isLocked) {
+          document.querySelectorAll("[data-lock-target]").forEach((item) => {
+            let lock = item.querySelector(".lock-mark");
+            if (!lock) {
+              lock = document.createElement("span");
+              lock.className = "lock-mark";
+              lock.innerHTML = '<i class="fi fi-rr-lock"></i>';
+              item.appendChild(lock);
+            }
+            item.classList.toggle("menu-link-locked", isLocked);
+            item.setAttribute("aria-disabled", isLocked ? "true" : "false");
+          });
+        }
+
+        function applyBranchAccess() {
+          readFiltersFromUI();
+          const status = selectedBranchStatus();
+          const isLocked = status !== "active";
+          const notice = document.getElementById("branchAccessNotice");
+          const noticeTitle = document.getElementById("branchAccessTitle");
+          const dash = document.querySelector(".dash-wrap");
+          const badge = document.getElementById("branchStatusBadge");
+
+          if (badge) {
+            const label = status.charAt(0).toUpperCase() + status.slice(1);
+            badge.textContent = label;
+            badge.className = "branch-status-badge" + (status === "suspended" ? " is-suspended" : "") + (status === "banned" ? " is-banned" : "");
+          }
+          if (noticeTitle) {
+            noticeTitle.textContent = status === "banned" ? "Branch access is banned" : "Branch access is suspended";
+          }
+          if (notice) notice.classList.toggle("show", isLocked);
+          if (dash) dash.style.display = isLocked ? "none" : "grid";
+          setMenuLocked(isLocked);
+
+          return !isLocked;
+        }
+
+        function renderCharts(list) {
+          const monthlyMode = state.monthlyMode;
+          const series = getMonthlySeries(list, monthlyMode);
+          drawMonthlyChart(series.values, series.labels);
+
+          const title = monthlyMode === "revenue" ? "Revenue Trend" : "Orders Trend";
+          setText("monthlyTitle", title);
+          setText("monthlyRange", getRangeLabel(state.range, state.dateStart, state.dateEnd).label);
+        }
+
+        function renderAll() {
+          const range = getRange(state.range, state.dateStart, state.dateEnd);
+          const filtered = filterList(orders, range);
+          const sorted = filtered.sort((a,b) => b.orderDate - a.orderDate);
+
+          updateFilterChips();
+
+          const metrics = updateKpis(sorted);
+          updateAlerts(sorted, metrics);
+          updateCapacity(metrics);
+
+          pie.data = buildPieData(sorted);
+          drawPie();
+
+          renderCharts(sorted);
+
+          currentPage = 1;
+          renderTable(sorted);
+        }
+
+        function updateBranchDropdownUI() {
+          const switcher = document.getElementById("branchSwitcher");
+          const wrap = document.querySelector(".header-branch-select-wrap");
+          const trigger = document.getElementById("branchSwitcherTrigger");
+          const nameEl = document.getElementById("branchSwitcherName");
+          const statusEl = document.getElementById("branchSwitcherStatus");
+          const optionButtons = document.querySelectorAll("[data-branch-option]");
+          if (!switcher || !trigger || !nameEl || !statusEl) return;
+
+          const option = switcher.options[switcher.selectedIndex];
+          const status = option ? option.getAttribute("data-status") || "active" : "active";
+          const name = switcher.value;
+          const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
+
+          nameEl.textContent = name;
+          statusEl.textContent = statusLabel;
+          statusEl.className = "branch-choice-status " + (status === "active" ? "is-active" : "is-suspended");
+
+          optionButtons.forEach((button) => {
+            const selected = button.getAttribute("data-value") === name;
+            button.classList.toggle("is-selected", selected);
+            button.setAttribute("aria-selected", selected ? "true" : "false");
+          });
+          if (wrap) wrap.classList.remove("is-open");
+          trigger.setAttribute("aria-expanded", "false");
+        }
+
+        const branchSwitcher = document.getElementById("branchSwitcher");
+        const branchTrigger = document.getElementById("branchSwitcherTrigger");
+        const branchWrap = document.querySelector(".header-branch-select-wrap");
+        const branchOptionButtons = document.querySelectorAll("[data-branch-option]");
+
+        if (branchTrigger && branchWrap) {
+          branchTrigger.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const isOpen = branchWrap.classList.toggle("is-open");
+            branchTrigger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+          });
+        }
+
+        branchOptionButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (!branchSwitcher) return;
+            branchSwitcher.value = button.getAttribute("data-value") || branchSwitcher.value;
+            updateBranchDropdownUI();
+            branchSwitcher.dispatchEvent(new Event("change", { bubbles:true }));
+          });
+        });
+
+        document.addEventListener("click", (event) => {
+          if (!branchWrap || branchWrap.contains(event.target)) return;
+          branchWrap.classList.remove("is-open");
+          if (branchTrigger) branchTrigger.setAttribute("aria-expanded", "false");
+        });
+
+        if (branchSwitcher) {
+          branchSwitcher.addEventListener("change", () => {
+            updateBranchDropdownUI();
+            resetFilters();
+            if (applyBranchAccess()) renderAll();
+          });
+        }
+
+        // init
+        readFiltersFromUI();
+        updateBranchDropdownUI();
+        initPieControls();
+        initMonthlyControls();
+        if (applyBranchAccess()) renderAll();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

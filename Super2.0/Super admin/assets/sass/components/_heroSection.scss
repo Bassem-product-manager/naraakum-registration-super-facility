@@ -1,0 +1,100 @@
+.hero-section {
+  background: url(../images/hero-bg.svg) bottom right no-repeat;
+  background-size: contain;
+  position: relative;
+
+  .container {
+    position: relative;
+    min-height: 44rem;
+    z-index: 4;
+    @media screen and (max-width: 768px) {
+      min-height: 34rem;
+    }
+  }
+  .intro {
+    width: 49.125rem;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $value-32;
+    padding-top: 5.7rem;
+    @media screen and (min-width: 1024px) and (max-width: 1366px) {
+      padding: 2rem;
+      padding-top: 7rem;
+    }
+    @media screen and (max-width: 1023px) {
+      text-align: center;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+    @media screen and (max-width: 768px) {
+      padding-top: 2rem;
+    }
+    img {
+      width: 9.563rem;
+      height: auto;
+    }
+    h1 {
+      font-size: 3.75rem;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 4.5rem; /* 120% */
+      @media screen and (max-width: 576px) {
+        font-size: 3.5rem;
+        line-height: 4.2rem; /* 120% */
+      }
+      span {
+        color: $secondary-500;
+      }
+    }
+    .btn {
+      width: 8rem !important;
+    }
+  }
+
+  .phone-mockup {
+    position: absolute;
+    right: -12rem;
+    bottom: 0;
+    img {
+      width: 51.813rem;
+      height: auto;
+      @media screen and (min-width: 1024px) and (max-width: 1366px) {
+        width: 50rem !important;
+      }
+    }
+
+    @media screen and (max-width: 1023px) {
+      display: none !important;
+    }
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 7.43725rem;
+    height: 22.2505rem;
+    background: url(../images/hero-pattern-left.svg) no-repeat;
+    z-index: 1;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 18.746rem;
+    height: 30.1325rem;
+    background: url(../images/hero-pattern-right.svg) no-repeat;
+    z-index: 1;
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+}

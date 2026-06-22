@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Service Business Hours</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; --nk-border:#e6eaef; }
+
+      /* Services cards */
+      .svc-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px; }
+      .svc-card{
+        border:1px solid var(--nk-border); border-radius:14px; background:#fff; padding:14px;
+        cursor:pointer; transition:all .15s ease; min-height:86px;
+        display:flex; align-items:center; justify-content:space-between; gap:12px;
+      }
+      .svc-card:hover{ background:rgba(15,140,140,.04); border-color:rgba(15,140,140,.25); }
+      .svc-card.active{ background:rgba(15,140,140,.06); border-color:rgba(15,140,140,.45); }
+      .svc-title{ margin:0; font-weight:900; font-size:14px; line-height:1.2; }
+      .svc-sub{ margin-top:6px; font-size:12px; color:#6b7280; font-weight:700; }
+      .svc-icon{
+        width:44px;height:44px;border-radius:14px;border:1px solid rgba(15,140,140,.2);
+        background:rgba(15,140,140,.08); display:grid; place-items:center; flex:0 0 44px;
+        color:var(--nk-green);
+      }
+      .svc-icon svg{ width:20px;height:20px; display:block; }
+
+      /* ✅ Doctor Card - Premium UI/UX Design */
+      .doctor-card {
+        margin-bottom:18px; background:#fff; border-radius:16px; overflow:hidden;
+        border:1px solid var(--nk-border); box-shadow:0 2px 8px rgba(15,140,140,.08);
+        transition:all .22s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .doctor-card:hover {
+        border-color:rgba(15,140,140,.35); box-shadow:0 8px 24px rgba(15,140,140,.14);
+        transform:translateY(-2px);
+      }
+
+      .doctor-card-wrapper {
+        display:flex; align-items:center; gap:12px; padding:12px;
+        background:linear-gradient(135deg, rgba(15,140,140,.03) 0%, rgba(15,140,140,.01) 100%);
+      }
+
+      /* Avatar Section */
+      .doctor-avatar {
+        flex:0 0 auto; width:44px; height:44px; border-radius:50%;
+        border:1.6px solid var(--nk-green); display:flex; align-items:center; justify-content:center;
+        background:linear-gradient(135deg, rgba(15,140,140,.12) 0%, rgba(15,140,140,.06) 100%);
+        overflow:hidden; box-shadow:inset 0 1px 4px rgba(15,140,140,.08);
+      }
+      .doctor-avatar img { width:100%; height:100%; object-fit:cover; }
+
+      /* Info Section */
+      .doctor-info { flex:1; display:flex; flex-direction:column; gap:4px; }
+      .doctor-name {
+        font-size:14px; font-weight:900; color:#101828; letter-spacing:-.2px;
+        line-height:1.25;
+      }
+      .doctor-specialty {
+        font-size:12px; font-weight:700; color:#6b7280;
+        text-transform:capitalize; letter-spacing:-.1px;
+      }
+      .doctor-branch {
+        display:flex; align-items:center; gap:6px; font-size:12px;
+        color:#6b7280; font-weight:600; margin-top:2px;
+      }
+
+      /* Status Badge */
+      .doctor-status { flex:0 0 auto; }
+      .status-badge {
+        display:inline-flex; align-items:center; justify-content:center;
+        padding:5px 10px; border-radius:999px; font-size:11px; font-weight:900;
+        letter-spacing:.3px; text-transform:uppercase; white-space:nowrap;
+        border:1.2px solid; transition:all .12s ease;
+      }
+      .status-badge.active {
+        background:rgba(34,197,94,.12); border-color:rgba(34,197,94,.35);
+        color:#16a34a; box-shadow:0 2px 6px rgba(34,197,94,.12);
+      }
+      .status-badge.inactive {
+        background:rgba(107,114,128,.12); border-color:rgba(107,114,128,.35);
+        color:#4b5563;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .doctor-card-wrapper { flex-wrap:wrap; gap:12px; padding:12px; }
+        .doctor-info { flex-basis:100%; }
+        .doctor-status { flex-basis:100%; justify-self:start; }
+        .doctor-avatar { width:40px; height:40px; }
+      }
+
+      /* Panel */
+      .hours-panel{ margin-top:16px; border:1px solid var(--nk-border); border-radius:14px; background:#fff; overflow:hidden; }
+      .hours-head{
+        padding:14px 16px; border-bottom:1px solid var(--nk-border);
+        display:flex; align-items:center; justify-content:space-between; gap:12px;
+        background:rgba(15,140,140,.03);
+      }
+      .hours-head b{ font-size:14px; font-weight:900; }
+      .hours-body{ padding:16px; }
+      .date-row{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+
+      /* Day cards (popup-like) */
+      .bh-box {
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .bh-box-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--nk-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: rgba(0, 0, 0, 0.015);
+      }
+      .bh-box-head .ttl {
+        font-weight: 900;
+        font-size: 13px;
+      }
+
+      .day-card{ border-top:1px solid rgba(230,234,239,.7); background:#fff; }
+      .day-head{
+        padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+      }
+      .day-name{
+        display:flex; align-items:center; gap:10px; font-weight:900; font-size:13px; color:#101828; white-space:nowrap;
+      }
+      .pill-open,.pill-closed{
+        display:inline-flex; align-items:center; justify-content:center; padding:6px 10px; border-radius:999px;
+        font-size:12px; font-weight:900; border:1px solid var(--nk-border); white-space:nowrap;
+      }
+      .pill-open{ background:rgba(34,197,94,.12); border-color:rgba(34,197,94,.25); color:#16a34a; }
+      .pill-closed{ background:rgba(148,163,184,.16); border-color:rgba(148,163,184,.25); color:#475569; }
+
+      /* Toggle */
+      .nk-toggle{
+        width:42px;height:24px;border-radius:999px;border:1px solid rgba(0,0,0,.14);
+        background:rgba(0,0,0,.08); position:relative; cursor:pointer; flex:0 0 auto;
+      }
+      .nk-toggle::after{
+        content:""; position:absolute; top:50%; left:3px; transform:translateY(-50%);
+        width:18px; height:18px; border-radius:999px; background:#fff; box-shadow:0 4px 10px rgba(0,0,0,.12);
+        transition:all .18s ease;
+      }
+      .nk-toggle.on{ background:rgba(15,140,140,.22); border-color:rgba(15,140,140,.35); }
+      .nk-toggle.on::after{ left:calc(100% - 21px); background:var(--nk-green); }
+
+      /* ✅ Intervals EXACT like popup (time-input + to-label + trash) */
+      .intervals{ padding:12px 14px; display:grid; gap:10px; }
+      .interval{
+        display:grid; grid-template-columns:1fr auto 1fr auto;
+        gap:10px; align-items:center; padding:10px; border-radius:12px;
+        border:1px solid rgba(0,0,0,.08); background:#fff;
+      }
+      .time-input{
+        height:38px; border-radius:12px; border:1px solid rgba(0,0,0,.12);
+        padding:0 12px; font-size:14px; background:#fff;
+      }
+      .time-input:focus{
+        outline:none; border-color:rgba(15,140,140,.55);
+        box-shadow:0 0 0 .2rem rgba(15,140,140,.12);
+      }
+      .to-label{ font-size:12px; font-weight:900; color:rgba(0,0,0,.5); white-space:nowrap; }
+
+      .trash{
+        width:38px;height:38px;border-radius:12px;border:1px solid rgba(220,53,69,.25);
+        background:rgba(220,53,69,.06); cursor:pointer; display:grid; place-items:center;
+      }
+      .trash:hover{ background:rgba(220,53,69,.10); border-color:rgba(220,53,69,.35); }
+
+      .add-interval{
+        padding:12px 14px; border-top:1px solid rgba(230,234,239,.7);
+        font-size:13px; font-weight:900; color:var(--nk-green);
+        cursor:pointer; user-select:none; background:rgba(15,140,140,.03);
+      }
+      .add-interval:hover{ background:rgba(15,140,140,.06); }
+
+      .day-card[data-open="0"] .intervals{ opacity:.45; }
+      .day-card[data-open="0"] .add-interval{ opacity:.45; pointer-events:none; }
+
+      /* ✅ Exceptions (Holidays) */
+      .ex-box { margin-top: 16px; border:1px solid var(--nk-border); border-radius:14px; overflow:hidden; background:#fff; }
+      .ex-head {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--nk-border);
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        background: rgba(0,0,0,.015);
+      }
+      .ex-head .ttl { font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.3px; color: rgba(0,0,0,.55); }
+      .add-date {
+        font-size: 13px;
+        font-weight: 900;
+        color: var(--nk-green);
+        cursor: pointer;
+        user-select: none;
+        white-space: nowrap;
+      }
+      .add-date:hover { text-decoration: underline; }
+
+      .ex-body { padding: 12px 14px; }
+      .ex-form {
+        display:grid;
+        grid-template-columns: 1.2fr 1fr auto;
+        gap: 10px;
+        align-items:center;
+        margin-bottom: 12px;
+      }
+      .ex-item {
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid rgba(0,0,0,.08);
+        background:#fff;
+        margin-bottom: 10px;
+      }
+      .ex-title { margin:0; font-size:13px; font-weight:900; color:#101828; }
+      .ex-sub { margin:4px 0 0; font-size:12px; color: rgba(0,0,0,.55); font-weight:700; }
+
+      .btn-mini {
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,0,0,.12);
+        background:#fff;
+        font-weight:900;
+        padding: 0 14px;
+        white-space: nowrap;
+      }
+      .btn-mini:hover {
+        background: rgba(15,140,140,.06);
+        border-color: rgba(15,140,140,.25);
+      }
+
+      .muted-note{ font-size:12px; color:#6b7280; font-weight:700; margin-top:10px; }
+
+      @media (max-width: 992px){
+        .svc-grid{ grid-template-columns:1fr; }
+        .date-row{ grid-template-columns:1fr; }
+        .ex-form{ grid-template-columns: 1fr; }
+      }
+      @media (max-width: 768px){
+        .interval{ grid-template-columns:1fr; }
+        .to-label{ display:none; }
+        .trash{ width:100%; }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Business Hours</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Business Hours</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Doctor Info Card - Premium Design -->
+          <div class="doctor-card">
+            <div class="doctor-card-wrapper">
+              <div class="doctor-avatar">
+                <a id="doctorProfileLink" href="#" aria-label="View doctor profile" tabindex="0">
+                  <img id="doctorAvatarImg" src="../assets/images/avatar.svg" alt="Doctor Avatar" />
+                </a>
+              </div>
+              <div class="doctor-info">
+                <div class="doctor-name" id="doctorName">Dr. Sarah Johnson</div>
+                <div class="doctor-specialty" id="doctorSpecialty">Cardiologist</div>
+                <div class="doctor-branch">
+                  <span id="doctorBranch">Downtown Medical Center - Branch A</span>
+                </div>
+              </div>
+              <div class="doctor-status">
+                <span class="status-badge active" id="doctorStatus">Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Services -->
+          <div class="svc-grid" id="svcGrid">
+            <div class="svc-card active" data-svc="Online Consultation" role="button" tabindex="0" aria-pressed="true">
+              <div><p class="svc-title">Online Consultation</p></div>
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 4h16v12H7l-3 3V4z"></path>
+                  <path d="M8 8h8M8 11h5"></path>
+                </svg>
+              </div>
+            </div>
+
+            <div class="svc-card" data-svc="Home Visit" role="button" tabindex="0" aria-pressed="false">
+              <div><p class="svc-title">Home Visit</p><div class="svc-sub">Home Visit</div></div>
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 10.5 12 3l9 7.5V21H3V10.5z"></path>
+                  <path d="M9 21v-7h6v7"></path>
+                </svg>
+              </div>
+            </div>
+
+            <div class="svc-card" data-svc="Clinic Visit" role="button" tabindex="0" aria-pressed="false">
+              <div><p class="svc-title">Clinic Visit</p><div class="svc-sub">Clinic Visit</div></div>
+              <div class="svc-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 2h12v20H6z"></path>
+                  <path d="M9 6h6M9 10h6M9 14h6"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Hours -->
+          <div class="hours-panel" id="hoursPanel">
+            <div class="hours-head">
+              <b id="hoursTitle">Online Consultation Business Hours</b>
+              <span class="fsize-12 text-grey" style="font-weight:900;">Business Hours</span>
+            </div>
+
+            <div class="hours-body">
+              <div class="date-row">
+                <div>
+                  <label class="fsize-12 text-grey">Strat Date</label>
+                  <input id="startDate" type="text" class="form-control form-control-40" value="1/22/2026" />
+                </div>
+                <div>
+                  <label class="fsize-12 text-grey">End Date</label>
+                  <input id="endDate" type="text" class="form-control form-control-40" value="1/22/2026" />
+                </div>
+              </div>
+
+              <div class="bh-box">
+                <div class="bh-box-head">
+                  <div class="ttl">Business Hours</div>
+                </div>
+
+                <div id="daysList"></div>
+              </div>
+
+              <!-- ✅ Holidays / Exceptions at the end -->
+              <div class="ex-box">
+                <div class="ex-head">
+                  <div class="ttl">EXCEPTIONS</div>
+                  <span class="add-date" id="btnAddException">+ Add Date</span>
+                </div>
+                <div class="ex-body">
+                  <div class="ex-form" id="exForm" style="display:none;">
+                    <input id="exName" class="form-control form-control-40" placeholder="Holiday / Exception name" />
+                    <input id="exDate" class="form-control form-control-40" type="date" />
+                    <button id="btnSaveException" type="button" class="btn-mini">Add</button>
+                  </div>
+                  <div id="exceptionsList"></div>
+                </div>
+              </div>
+
+              <div class="muted-note">
+                Same time selection UI as the popup + exceptions list at the end.
+              </div>
+              <!-- Page actions: Save / Cancel -->
+              <div class="page-actions" style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;padding-top:6px;">
+                <button id="btnCancelPage" type="button" class="btn btn-outline">Cancel</button>
+                <button id="btnSavePage" type="button" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const KEY = "naraakum_service_hours_v4";
+        const SERVICES = ["Online Consultation", "Home Visit", "Clinic Visit"];
+        const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+        // ✅ Doctor Data by Service - Dynamic Updates
+        const DOCTOR_DATA = {
+          "Online Consultation": {
+            name: "Dr. Sarah Johnson",
+            specialty: "Cardiologist",
+            branch: "Downtown Medical Center - Branch A",
+            status: "active",
+            avatar: "../assets/images/avatar.svg",
+            email: "sarah.johnson@example.com",
+            profileQuery: "Dr Sarah Johnson"
+          },
+          "Home Visit": {
+            name: "Dr. Ahmed Hassan",
+            specialty: "General Practitioner",
+            branch: "North Zone Clinic - Branch B",
+            status: "active",
+            avatar: "../assets/images/avatar-male.svg",
+            email: "ahmed.hassan@example.com",
+            profileQuery: "Dr Ahmed Hassan"
+          },
+          "Clinic Visit": {
+            name: "Dr. Maria Garcia",
+            specialty: "Orthopedist",
+            branch: "Central Hospital - Branch C",
+            status: "active",
+            avatar: "../assets/images/avatar-female.svg",
+            email: "maria.garcia@example.com",
+            profileQuery: "Dr Maria Garcia"
+          }
+        };
+
+        // FIXED doctor for this tab (calendar configured for a single doctor)
+        const FIXED_DOCTOR = DOCTOR_DATA["Online Consultation"] || Object.values(DOCTOR_DATA)[0];
+
+        const els = {
+          grid: document.getElementById("svcGrid"),
+          title: document.getElementById("hoursTitle"),
+          start: document.getElementById("startDate"),
+          end: document.getElementById("endDate"),
+          list: document.getElementById("daysList"),
+
+          // Doctor Card Elements
+          doctorName: document.getElementById("doctorName"),
+          doctorSpecialty: document.getElementById("doctorSpecialty"),
+          doctorBranch: document.getElementById("doctorBranch"),
+          doctorStatus: document.getElementById("doctorStatus"),
+
+          btnAddException: document.getElementById("btnAddException"),
+          exForm: document.getElementById("exForm"),
+          exName: document.getElementById("exName"),
+          exDate: document.getElementById("exDate"),
+          btnSaveException: document.getElementById("btnSaveException"),
+          exceptionsList: document.getElementById("exceptionsList")
+        };
+
+        function esc(s) {
+          return (s || "").toString()
+            .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+            .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+        }
+
+        // ✅ Update Doctor Card with Smooth Animation
+        function updateDoctorCard(serviceName) {
+          const doctor = DOCTOR_DATA[serviceName];
+          if (!doctor) return;
+
+          // Add fade effect
+          els.doctorName.parentElement.style.opacity = "0.6";
+          setTimeout(() => {
+            els.doctorName.textContent = doctor.name;
+            els.doctorSpecialty.textContent = doctor.specialty;
+            els.doctorBranch.textContent = doctor.branch;
+            els.doctorStatus.textContent = doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1);
+            els.doctorStatus.className = `status-badge ${doctor.status}`;
+
+            // Avatar and profile link
+            const avatarImg = document.getElementById('doctorAvatarImg');
+            const profileLink = document.getElementById('doctorProfileLink');
+            if (avatarImg && doctor.avatar) avatarImg.src = doctor.avatar;
+            if (profileLink) profileLink.href = `../staff/staff-list.html?doctor=${encodeURIComponent(doctor.profileQuery || doctor.name)}`;
+            els.doctorName.parentElement.style.opacity = "1";
+          }, 150);
+        }
+
+        function defaultState() {
+          const init = { active: "Online Consultation", data: {} };
+          SERVICES.forEach((svc) => {
+            init.data[svc] = {
+              startDate: "1/22/2026",
+              endDate: "1/22/2026",
+              days: {},
+              exceptions: []
+            };
+            DAYS.forEach((d) => init.data[svc].days[d] = { open: false, intervals: [] });
+          });
+
+          // Example as you wrote (Monday OPEN with 2 intervals)
+          init.data["Online Consultation"].days["Monday"].open = true;
+          init.data["Online Consultation"].days["Monday"].intervals = [
+            { from: "08:00", to: "12:00" },
+            { from: "13:00", to: "17:00" }
+          ];
+          init.data["Online Consultation"].days["Tuesday"].open = true;
+          init.data["Online Consultation"].days["Wednesday"].open = true;
+
+          return init;
+        }
+
+          // Update doctor card with FIXED_DOCTOR (used for this calendar tab)
+          function updateDoctorCardFixed() {
+            const doctor = FIXED_DOCTOR;
+            if (!doctor) return;
+            els.doctorName.parentElement.style.opacity = "0.6";
+            setTimeout(() => {
+              els.doctorName.textContent = doctor.name;
+              els.doctorSpecialty.textContent = doctor.specialty;
+              els.doctorBranch.textContent = doctor.branch;
+              els.doctorStatus.textContent = doctor.status.charAt(0).toUpperCase() + doctor.status.slice(1);
+              els.doctorStatus.className = `status-badge ${doctor.status}`;
+              const avatarImg = document.getElementById('doctorAvatarImg');
+              const profileLink = document.getElementById('doctorProfileLink');
+              if (avatarImg && doctor.avatar) avatarImg.src = doctor.avatar;
+              if (profileLink) profileLink.href = `../staff/staff-list.html?doctor=${encodeURIComponent(doctor.profileQuery || doctor.name)}`;
+              els.doctorName.parentElement.style.opacity = "1";
+            }, 120);
+          }
+
+        function loadState() {
+          try {
+            const raw = localStorage.getItem(KEY);
+            if (raw) return JSON.parse(raw);
+          } catch (e) {}
+          return defaultState();
+        }
+
+        function saveState(st) {
+          localStorage.setItem(KEY, JSON.stringify(st));
+        }
+
+        function setActiveCard(active) {
+          document.querySelectorAll(".svc-card").forEach((c) => {
+            c.classList.toggle("active", c.getAttribute("data-svc") === active);
+          });
+        }
+
+        function intervalRowHTML(day, idx, itv) {
+          const from = itv.from || "08:00";
+          const to = itv.to || "12:00";
+          return `
+            <div class="interval" data-day="${esc(day)}" data-idx="${idx}">
+              <input class="time-input" type="time" value="${esc(from)}" />
+              <span class="to-label">to</span>
+              <input class="time-input" type="time" value="${esc(to)}" />
+              <button class="trash" type="button" data-action="delInterval" title="Delete">🗑</button>
+            </div>
+          `;
+        }
+
+        function dayCardHTML(day, dayData) {
+          const isOpen = !!dayData.open;
+          const pill = isOpen ? `<span class="pill-open">OPEN</span>` : `<span class="pill-closed">CLOSED</span>`;
+          const intervals = (dayData.intervals || []).map((itv, idx) => intervalRowHTML(day, idx, itv)).join("");
+
+          return `
+            <div class="day-card" data-day="${esc(day)}" data-open="${isOpen ? "1" : "0"}">
+              <div class="day-head">
+                <div class="day-name"><span>${esc(day)}</span>${pill}</div>
+                <div class="nk-toggle ${isOpen ? "on" : ""}" role="button" tabindex="0" data-action="toggleDay"></div>
+              </div>
+
+              <div class="intervals">${intervals}</div>
+              <div class="add-interval" data-action="addInterval">+ Add Interval</div>
+            </div>
+          `;
+        }
+
+        function renderExceptions(st) {
+          const svc = st.active;
+          const ex = Array.isArray(st.data[svc].exceptions) ? st.data[svc].exceptions : [];
+          els.exceptionsList.innerHTML = ex.map((x, i) => `
+            <div class="exception-item ex-item" data-idx="${i}">
+              <div>
+                <p class="ex-title">${esc(x.name || "Exception")}</p>
+                <p class="ex-sub">${esc(x.date || "")} • All day</p>
+              </div>
+              <button class="trash" type="button" data-action="delException" title="Delete" style="width:40px;">🗑</button>
+            </div>
+          `).join("");
+
+          if (!ex.length) {
+            els.exceptionsList.innerHTML = `<div class="fsize-12 text-grey" style="padding:8px 2px;">No exceptions added.</div>`;
+          }
+        }
+
+        function render() {
+          const st = loadState();
+          const svc = st.active;
+
+          setActiveCard(svc);
+          els.title.textContent = svc + " Business Hours";
+          els.start.value = st.data[svc].startDate;
+          els.end.value = st.data[svc].endDate;
+
+          els.list.innerHTML = DAYS.map((d) => dayCardHTML(d, st.data[svc].days[d])).join("");
+          renderExceptions(st);
+        }
+
+        function updateDates() {
+          const st = loadState();
+          st.data[st.active].startDate = els.start.value || "1/22/2026";
+          st.data[st.active].endDate = els.end.value || "1/22/2026";
+          saveState(st);
+        }
+
+        function toggleDay(day) {
+          const st = loadState();
+          const svc = st.active;
+          const d = st.data[svc].days[day];
+          d.open = !d.open;
+
+          // If opening with no intervals, seed 2 default intervals (common popup flow)
+          if (d.open && (!d.intervals || !d.intervals.length)) {
+            d.intervals = [
+              { from: "08:00", to: "12:00" },
+              { from: "13:00", to: "17:00" },
+            ];
+          }
+
+          saveState(st);
+          render();
+        }
+
+        function addInterval(day) {
+          const st = loadState();
+          const svc = st.active;
+          const d = st.data[svc].days[day];
+          if (!d.open) return;
+
+          d.intervals = d.intervals || [];
+          d.intervals.push({ from: "09:00", to: "13:00" });
+          saveState(st);
+          render();
+        }
+
+        function deleteInterval(day, idx) {
+          const st = loadState();
+          const svc = st.active;
+          const d = st.data[svc].days[day];
+          if (!d || !Array.isArray(d.intervals)) return;
+          d.intervals.splice(idx, 1);
+          saveState(st);
+          render();
+        }
+
+        function updateIntervalFromUI(intervalEl) {
+          const day = intervalEl.getAttribute("data-day");
+          const idx = parseInt(intervalEl.getAttribute("data-idx"), 10);
+
+          const inputs = intervalEl.querySelectorAll('input[type="time"]');
+          const from = inputs[0]?.value || "08:00";
+          const to = inputs[1]?.value || "12:00";
+
+          const st = loadState();
+          const svc = st.active;
+          const d = st.data[svc].days[day];
+          if (!d || !d.intervals || !d.intervals[idx]) return;
+
+          d.intervals[idx] = { from, to };
+          saveState(st);
+        }
+
+        function toggleExceptionForm() {
+          els.exForm.style.display = (els.exForm.style.display === "none" ? "grid" : "none");
+        }
+
+        function addException() {
+          const name = (els.exName.value || "").trim() || "Holiday";
+          const date = (els.exDate.value || "").trim();
+          if (!date) return;
+
+          const st = loadState();
+          const svc = st.active;
+          st.data[svc].exceptions = st.data[svc].exceptions || [];
+          st.data[svc].exceptions.push({ name, date });
+
+          saveState(st);
+
+          els.exName.value = "";
+          els.exDate.value = "";
+          els.exForm.style.display = "none";
+          render();
+        }
+
+        function deleteException(idx) {
+          const st = loadState();
+          const svc = st.active;
+          const ex = st.data[svc].exceptions || [];
+          ex.splice(idx, 1);
+          st.data[svc].exceptions = ex;
+          saveState(st);
+          render();
+        }
+
+        // Switch service
+        els.grid.addEventListener("click", (e) => {
+          const card = e.target.closest(".svc-card");
+          if (!card) return;
+
+          const svc = card.getAttribute("data-svc");
+          const st = loadState();
+          st.active = svc;
+          saveState(st);
+          render();
+        });
+
+        // Keyboard accessibility for service cards (Enter / Space)
+        els.grid.addEventListener('keydown', (e) => {
+          const key = e.key;
+          if (key !== 'Enter' && key !== ' ') return;
+          const card = e.target.closest('.svc-card');
+          if (!card) return;
+          e.preventDefault();
+          card.click();
+        });
+
+        // Dates
+        els.start.addEventListener("change", updateDates);
+        els.end.addEventListener("change", updateDates);
+
+        // Day actions + exception delete
+        document.addEventListener("click", (e) => {
+          const actionEl = e.target.closest("[data-action]");
+          if (!actionEl) return;
+
+          const action = actionEl.getAttribute("data-action");
+
+          if (action === "toggleDay") {
+            const dayCard = e.target.closest(".day-card");
+            if (!dayCard) return;
+            return toggleDay(dayCard.getAttribute("data-day"));
+          }
+
+          if (action === "addInterval") {
+            const dayCard = e.target.closest(".day-card");
+            if (!dayCard) return;
+            return addInterval(dayCard.getAttribute("data-day"));
+          }
+
+          if (action === "delInterval") {
+            const intervalEl = e.target.closest(".interval");
+            if (!intervalEl) return;
+            const d = intervalEl.getAttribute("data-day");
+            const idx = parseInt(intervalEl.getAttribute("data-idx"), 10);
+            return deleteInterval(d, idx);
+          }
+
+          if (action === "delException") {
+            const exItem = e.target.closest(".exception-item");
+            if (!exItem) return;
+            const idx = parseInt(exItem.getAttribute("data-idx"), 10);
+            return deleteException(idx);
+          }
+        });
+
+        // Update interval when time inputs change
+        document.addEventListener("change", (e) => {
+          const intervalEl = e.target.closest(".interval");
+          if (!intervalEl) return;
+          updateIntervalFromUI(intervalEl);
+        });
+
+        // Exceptions
+        els.btnAddException.addEventListener("click", toggleExceptionForm);
+        els.btnSaveException.addEventListener("click", addException);
+
+        // Keyboard toggle support
+        document.addEventListener("keydown", (e) => {
+          if (e.key !== "Enter" && e.key !== " ") return;
+          const tg = e.target.closest('[data-action="toggleDay"]');
+          if (!tg) return;
+          e.preventDefault();
+          const dayCard = tg.closest(".day-card");
+          if (!dayCard) return;
+          toggleDay(dayCard.getAttribute("data-day"));
+        });
+
+        // Wire Save / Cancel buttons to navigate back to staff calendar
+        // Keep handlers inside the page IIFE so they can access loadState/saveState/render
+        (function attachSaveCancel() {
+          const btnSavePage = document.getElementById('btnSavePage');
+          const btnCancelPage = document.getElementById('btnCancelPage');
+
+          if (btnSavePage) btnSavePage.addEventListener('click', () => {
+            try {
+              const st = loadState();
+              saveState(st);
+            } catch (e) { console.warn('save failed', e); }
+            window.location.href = '../calendar/staff-calendar.html';
+          });
+
+          if (btnCancelPage) btnCancelPage.addEventListener('click', () => {
+            try { render(); } catch (e) { /* ignore */ }
+            window.location.href = '../calendar/staff-calendar.html';
+          });
+        })();
+
+        render();
+        // Ensure doctor card stays fixed for this tab
+        updateDoctorCardFixed();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

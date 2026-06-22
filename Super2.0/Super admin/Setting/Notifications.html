@@ -1,0 +1,675 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Notification Settings</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-primary: #0f8c8c;
+        --nk-primary-soft: rgba(15, 140, 140, 0.08);
+        --nk-border: #e4eaef;
+        --nk-muted: #667085;
+        --nk-text: #101828;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .notif-settings-page {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nk-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .intro-card,
+      .toolbar-card,
+      .rules-card {
+        padding: 12px;
+      }
+
+      .intro-title {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .intro-text {
+        margin: 6px 0 0;
+        color: var(--nk-muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .no-global-badge {
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.32);
+        background: var(--nk-primary-soft);
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .module-tabs {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .module-tab {
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid #d7e0e7;
+        background: #fff;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .module-tab.active {
+        border-color: var(--nk-primary);
+        background: var(--nk-primary-soft);
+        color: #0b6f6f;
+      }
+
+      .toolbar-card {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .toolbar-title {
+        color: #344054;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .toolbar-actions {
+        margin-left: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nk-btn {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nk-btn-solid {
+        color: #fff;
+        border-color: var(--nk-primary);
+        background: var(--nk-primary);
+      }
+
+      .nk-btn-solid:hover {
+        color: #fff;
+        border-color: #0b6f6f;
+        background: #0b6f6f;
+        text-decoration: none;
+      }
+
+      .nk-btn-outline {
+        color: #0b6f6f;
+        border-color: rgba(15, 140, 140, 0.32);
+        background: #fff;
+      }
+
+      .nk-btn-outline:hover {
+        background: var(--nk-primary-soft);
+      }
+
+      .status-note {
+        width: 100%;
+        display: none;
+        padding: 8px 10px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .status-note.show {
+        display: block;
+      }
+
+      .status-success {
+        border: 1px solid #abefc6;
+        background: #ecfdf3;
+        color: #067647;
+      }
+
+      .status-info {
+        border: 1px solid #b2ddff;
+        background: #eff8ff;
+        color: #175cd3;
+      }
+
+      .rules-head h4 {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .rules-head p {
+        margin: 3px 0 0;
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .rules-wrap {
+        margin-top: 10px;
+        overflow-x: auto;
+      }
+
+      .rules-table {
+        width: 100%;
+        min-width: 1150px;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .rules-table thead th {
+        text-align: left;
+        border-bottom: 1px solid var(--nk-border);
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+        padding: 10px 8px;
+      }
+
+      .rules-table tbody td {
+        border-bottom: 1px solid #edf2f6;
+        padding: 10px 8px;
+        vertical-align: top;
+      }
+
+      .rules-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .rules-table tbody tr.is-selected {
+        background: #f7fcfc;
+      }
+
+      .event-name {
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .event-key {
+        margin-top: 4px;
+        color: #98a2b3;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .event-desc {
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1.45;
+      }
+
+      .input-inline {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .field-sm {
+        height: 32px;
+        border-radius: 8px;
+        border: 1px solid #d7e0e7;
+        background: #fff;
+        color: var(--nk-text);
+        font-size: 12px;
+        font-weight: 700;
+        padding: 0 8px;
+      }
+
+      .field-sm[type="number"] {
+        width: 88px;
+      }
+
+      .field-sm:disabled {
+        background: #f2f4f7;
+        color: #98a2b3;
+      }
+
+      .switch {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--nk-primary);
+        cursor: pointer;
+      }
+
+      .mini-btn {
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.06);
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 800;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mini-btn:hover {
+        color: #0b6f6f;
+        text-decoration: none;
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-primary);
+        font-size: 11px;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      @media (max-width: 992px) {
+        .toolbar-actions {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .toolbar-actions .nk-btn {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Notification Settings</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Super Admin</b><p class="fsize-12 text-grey">Admin / System Dashboard</p></div></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Notifications</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content notif-settings-page">
+          <section class="nk-card intro-card">
+            <h3 class="intro-title">Per-Module Notification Rules</h3>
+            <div id="moduleTabs" class="module-tabs" aria-label="Notification module tabs"></div>
+          </section>
+
+          <section class="nk-card toolbar-card">
+            <div class="toolbar-title">Enable or disable each alert and tune trigger/repeat windows by module.</div>
+            <div class="toolbar-actions">
+              <a id="btnOpenCustomize" class="nk-btn nk-btn-solid" href="./customize-notifications.html">Customize Notifications</a>
+              <button id="btnResetModule" type="button" class="nk-btn nk-btn-outline">Reset Active Module</button>
+            </div>
+            <div id="rulesStatusNote" class="status-note"></div>
+          </section>
+
+          <section class="nk-card rules-card">
+            <div class="rules-head">
+              <h4 id="rulesModuleTitle">Providers Rules</h4>
+              <p>Switch modules from tabs above. Each row is independent and saved automatically.</p>
+            </div>
+
+            <div class="rules-wrap">
+              <table class="rules-table" aria-label="Per module notification rules">
+                <thead>
+                  <tr>
+                    <th>Alert Name</th>
+                    <th>Enable</th>
+                    <th>Trigger Value</th>
+                    <th>Repeat Value</th>
+                    <th>What this means</th>
+                    <th>Action Hint</th>
+                    <th>Customize</th>
+                  </tr>
+                </thead>
+                <tbody id="moduleRulesBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/notification-rules.js"></script>
+    <script>
+      (function () {
+        var timeEl = document.getElementById("ksaTime");
+        if (!timeEl) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            timeEl.textContent = fmt.format(new Date());
+          } catch (err) {
+            timeEl.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var EVENT_META = window.NK_NOTIFICATION_EVENT_META || {};
+        var MODULES = window.NK_NOTIFICATION_MODULES || ["Providers", "Orders", "Staff", "Integrations"];
+        var MODULE_EVENT_MAP = window.NK_NOTIFICATION_MODULE_EVENT_MAP || {};
+        var DEFAULT_RULES = window.NK_NOTIFICATION_DEFAULT_RULES || { modules: {} };
+        var clone = window.nkCloneNotificationRules || function (v) { return JSON.parse(JSON.stringify(v)); };
+        var normalizeRules = window.nkNormalizeRulesStore || function (v) { return v; };
+        var saveRules = window.nkSaveRulesToStorage || function (v) { return v; };
+        var loadRules = window.nkLoadRulesFromStorage || function () { return clone(DEFAULT_RULES); };
+
+        var els = {
+          tabs: document.getElementById("moduleTabs"),
+          body: document.getElementById("moduleRulesBody"),
+          moduleTitle: document.getElementById("rulesModuleTitle"),
+          customizeBtn: document.getElementById("btnOpenCustomize"),
+          resetBtn: document.getElementById("btnResetModule"),
+          status: document.getElementById("rulesStatusNote")
+        };
+
+        if (!els.tabs || !els.body) return;
+
+        var query = new URLSearchParams(window.location.search || "");
+        var queryModule = query.get("module");
+        var queryEvent = query.get("event");
+
+        var state = {
+          rules: normalizeRules(loadRules()),
+          activeModule: MODULES.indexOf(queryModule) !== -1 ? queryModule : MODULES[0],
+          selectedEvent: ""
+        };
+
+        function esc(value) {
+          return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function moduleEvents(moduleKey) {
+          return Array.isArray(MODULE_EVENT_MAP[moduleKey]) ? MODULE_EVENT_MAP[moduleKey] : [];
+        }
+
+        function ensureRule(moduleKey, eventKey) {
+          if (!state.rules.modules) state.rules.modules = {};
+          if (!state.rules.modules[moduleKey]) state.rules.modules[moduleKey] = {};
+          if (!state.rules.modules[moduleKey][eventKey]) {
+            var fallback = DEFAULT_RULES.modules && DEFAULT_RULES.modules[moduleKey] && DEFAULT_RULES.modules[moduleKey][eventKey];
+            state.rules.modules[moduleKey][eventKey] = fallback ? clone(fallback) : {
+              enabled: false,
+              leadValue: 0,
+              leadUnit: "minutes",
+              repeatEveryValue: 0,
+              repeatEveryUnit: "minutes"
+            };
+          }
+          return state.rules.modules[moduleKey][eventKey];
+        }
+
+        function safeNumber(value) {
+          var n = Number(value);
+          return Number.isFinite(n) && n >= 0 ? n : 0;
+        }
+
+        function updateQuery() {
+          var params = new URLSearchParams();
+          params.set("module", state.activeModule);
+          if (state.selectedEvent) params.set("event", state.selectedEvent);
+          var nextUrl = window.location.pathname + "?" + params.toString();
+          window.history.replaceState({}, "", nextUrl);
+        }
+
+        function showStatus(text, className) {
+          if (!els.status) return;
+          els.status.className = "status-note show " + className;
+          els.status.textContent = text;
+        }
+
+        function saveStateNote(message) {
+          state.rules = saveRules(state.rules);
+          showStatus(message || "Rules saved.", "status-success");
+        }
+
+        function unitOptions(selected) {
+          return ["minutes", "hours", "days"].map(function (unit) {
+            return '<option value="' + esc(unit) + '" ' + (unit === selected ? "selected" : "") + '>' + esc(unit) + '</option>';
+          }).join("");
+        }
+
+        function renderTabs() {
+          els.tabs.innerHTML = MODULES.map(function (moduleKey) {
+            var activeClass = moduleKey === state.activeModule ? "active" : "";
+            return '<button type="button" class="module-tab ' + activeClass + '" data-module="' + esc(moduleKey) + '">' + esc(moduleKey) + '</button>';
+          }).join("");
+        }
+
+        function renderCustomizeHref() {
+          if (!els.customizeBtn) return;
+          var href = "./customize-notifications.html?module=" + encodeURIComponent(state.activeModule);
+          if (state.selectedEvent) href += "&event=" + encodeURIComponent(state.selectedEvent);
+          els.customizeBtn.setAttribute("href", href);
+        }
+
+        function renderRows() {
+          var events = moduleEvents(state.activeModule);
+          if (!events.length) {
+            els.body.innerHTML = '<tr><td colspan="7" class="text-center text-grey">No events configured for this module.</td></tr>';
+            return;
+          }
+
+          if (!state.selectedEvent || events.indexOf(state.selectedEvent) === -1) {
+            if (queryEvent && events.indexOf(queryEvent) !== -1) {
+              state.selectedEvent = queryEvent;
+              queryEvent = "";
+            } else {
+              state.selectedEvent = events[0];
+            }
+          }
+
+          els.body.innerHTML = events.map(function (eventKey) {
+            var meta = EVENT_META[eventKey] || {};
+            var rule = ensureRule(state.activeModule, eventKey);
+            var disabled = rule.enabled ? "" : "disabled";
+            var selectedClass = eventKey === state.selectedEvent ? "is-selected" : "";
+
+            return [
+              '<tr class="' + selectedClass + '" data-event-row="' + esc(eventKey) + '">',
+              '<td><div class="event-name">' + esc(meta.label || eventKey) + '</div><div class="event-key">' + esc(eventKey) + '</div></td>',
+              '<td><input class="switch js-rule-input" type="checkbox" data-event="' + esc(eventKey) + '" data-field="enabled" ' + (rule.enabled ? "checked" : "") + ' /></td>',
+              '<td><div class="input-inline"><input class="field-sm js-rule-input" type="number" min="0" data-event="' + esc(eventKey) + '" data-field="leadValue" value="' + esc(rule.leadValue) + '" ' + disabled + ' /><select class="field-sm js-rule-input" data-event="' + esc(eventKey) + '" data-field="leadUnit" ' + disabled + '>' + unitOptions(rule.leadUnit) + '</select></div></td>',
+              '<td><div class="input-inline"><input class="field-sm js-rule-input" type="number" min="0" data-event="' + esc(eventKey) + '" data-field="repeatEveryValue" value="' + esc(rule.repeatEveryValue) + '" ' + disabled + ' /><select class="field-sm js-rule-input" data-event="' + esc(eventKey) + '" data-field="repeatEveryUnit" ' + disabled + '>' + unitOptions(rule.repeatEveryUnit) + '</select></div></td>',
+              '<td><div class="event-desc">' + esc(meta.meaning || "-") + '</div></td>',
+              '<td><div class="event-desc">' + esc(meta.actionHint || "-") + '</div></td>',
+              '<td><a class="mini-btn" href="./customize-notifications.html?module=' + encodeURIComponent(state.activeModule) + '&event=' + encodeURIComponent(eventKey) + '">Customize</a></td>',
+              '</tr>'
+            ].join("");
+          }).join("");
+
+          if (els.moduleTitle) {
+            els.moduleTitle.textContent = state.activeModule + " Rules";
+          }
+
+          renderCustomizeHref();
+          updateQuery();
+        }
+
+        function updateRule(eventKey, field, value) {
+          var rule = ensureRule(state.activeModule, eventKey);
+          if (!rule) return;
+
+          if (field === "enabled") {
+            rule.enabled = Boolean(value);
+          } else if (field === "leadValue" || field === "repeatEveryValue") {
+            rule[field] = safeNumber(value);
+          } else if (field === "leadUnit" || field === "repeatEveryUnit") {
+            rule[field] = String(value || "minutes");
+          }
+
+          saveStateNote("Saved " + (EVENT_META[eventKey] && EVENT_META[eventKey].label ? EVENT_META[eventKey].label : eventKey) + " rule.");
+          renderRows();
+        }
+
+        els.tabs.addEventListener("click", function (event) {
+          var tab = event.target.closest(".module-tab");
+          if (!tab) return;
+          var moduleKey = tab.getAttribute("data-module");
+          if (!moduleKey || MODULES.indexOf(moduleKey) === -1) return;
+
+          state.activeModule = moduleKey;
+          state.selectedEvent = "";
+          renderTabs();
+          renderRows();
+          showStatus(moduleKey + " tab opened.", "status-info");
+        });
+
+        els.body.addEventListener("click", function (event) {
+          if (event.target.closest("a")) return;
+          var row = event.target.closest("tr[data-event-row]");
+          if (row) {
+            var eventKey = row.getAttribute("data-event-row");
+            if (eventKey) {
+              state.selectedEvent = eventKey;
+              renderRows();
+            }
+          }
+        });
+
+        els.body.addEventListener("change", function (event) {
+          var input = event.target.closest(".js-rule-input");
+          if (!input) return;
+
+          var eventKey2 = input.getAttribute("data-event");
+          var field = input.getAttribute("data-field");
+          if (!eventKey2 || !field) return;
+
+          var value = field === "enabled" ? input.checked : input.value;
+          updateRule(eventKey2, field, value);
+        });
+
+        if (els.resetBtn) {
+          els.resetBtn.addEventListener("click", function () {
+            var defaultsModule = DEFAULT_RULES.modules && DEFAULT_RULES.modules[state.activeModule];
+            if (!defaultsModule) return;
+
+            state.rules.modules[state.activeModule] = clone(defaultsModule);
+            saveStateNote(state.activeModule + " rules reset to defaults.");
+            state.selectedEvent = "";
+            renderRows();
+          });
+        }
+
+        renderTabs();
+        renderRows();
+      })();
+    </script>
+  </body>
+</html>
+

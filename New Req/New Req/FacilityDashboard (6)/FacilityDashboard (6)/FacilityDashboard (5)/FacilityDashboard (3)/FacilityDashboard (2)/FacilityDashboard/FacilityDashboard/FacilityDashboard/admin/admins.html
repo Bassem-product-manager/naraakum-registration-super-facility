@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Admins</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Page-only refinements (spacing + permissions UI + edit icon color) -->
+    <style>
+      /* tighter rows */
+      #adminsTable tbody td {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      /* table layout */
+      #adminsTable {
+        table-layout: fixed;
+      }
+      #adminsTable th,
+      #adminsTable td {
+        vertical-align: middle;
+      }
+
+      /* column widths */
+      #adminsTable th.col-no,
+      #adminsTable td.col-no {
+        width: 70px;
+        white-space: nowrap;
+      }
+      #adminsTable th.col-name,
+      #adminsTable td.col-name {
+        width: 280px;
+      }
+      #adminsTable th.col-role,
+      #adminsTable td.col-role {
+        width: 160px;
+        white-space: nowrap;
+      }
+      #adminsTable th.col-email,
+      #adminsTable td.col-email {
+        width: 260px;
+        white-space: nowrap;
+      }
+      #adminsTable th.col-actions,
+      #adminsTable td.col-actions {
+        width: 120px;
+        white-space: nowrap;
+        text-align: right;
+      }
+
+      /* permissions pills */
+      .perm-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+      .perm-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        font-size: 12px;
+        line-height: 1;
+        color: #4b5563;
+        white-space: nowrap;
+      }
+      .perm-pill strong {
+        font-weight: 600;
+        color: #111827;
+      }
+
+      .perm-toggle {
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        font: inherit;
+        color: var(--nk-green, #0f8c8c);
+        white-space: nowrap;
+      }
+      .perm-toggle:hover {
+        text-decoration: underline;
+      }
+
+      /* name cell */
+      .admin-name-cell .staff-cell {
+        gap: 10px;
+      }
+      .admin-name-cell .staff-info .name {
+        margin: 0;
+      }
+
+      /* Edit icon: Naraakum green + icon-only button */
+      .nk-edit-icon {
+        color: var(--nk-green, #0f8c8c) !important;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .btn-edit-dd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        width: 40px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      /* responsive */
+      @media (max-width: 991px) {
+        #adminsTable {
+          table-layout: auto;
+        }
+        #adminsTable th.col-actions,
+        #adminsTable td.col-actions {
+          text-align: left;
+        }
+        .btn-edit-dd {
+          width: auto;
+          padding-left: 12px;
+          padding-right: 12px;
+        }
+      }
+    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/payment-method.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Payment Method</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Admins</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Admin</li>
+              <li class="breadcrumb-item active" aria-current="page">Admins</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Search + Add New Admin -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="adminsSearchInput" type="text" class="form-control form-control-32" placeholder="Search by" />
+                  <button id="btnAdminsSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnAdminsReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions d-flex gap-2">
+                  <a href="AddAdmin.html" class="btn btn-primary btn-icon btn-40">
+                    <i class="fi fi-rr-plus-small"></i>
+                    <span>Add New Admin</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Admins table -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="adminsTable">
+                  <thead>
+                    <tr>
+                      <th class="col-no">No.</th>
+                      <th class="col-name">Name</th>
+                      <th class="col-role">Role</th>
+                      <th>Permissions</th>
+                      <th class="col-email">Email</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="adminsTbody">
+                    <tr
+                      data-no="1"
+                      data-name="admin user"
+                      data-role="admin"
+                      data-email="admin@example.com"
+                      data-perms="ViewAny:User|View:User|Create:User|Update:User|Delete:User|Restore:User|ForceDelete:User|ViewAny:Role|View:Role|Create:Role|Update:Role|Delete:Role|ViewAny:Permission|View:Permission|Create:Permission|Update:Permission|Delete:Permission|ViewAny:Order|View:Order|Create:Order|Update:Order|Delete:Order|Refund:Order|ViewAny:Service|View:Service|Create:Service|Update:Service|Delete:Service|ViewAny:Staff|View:Staff|Create:Staff|Update:Staff|Delete:Staff"
+                    >
+                      <td class="col-no">1</td>
+
+                      <td class="col-name admin-name-cell">
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="admin" /></div>
+                          <div class="staff-info">
+                            <p class="name">Admin User</p>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td class="col-role"><span class="job-title">Admin</span></td>
+
+                      <td><div class="perm-wrap" data-perm-wrap="1"></div></td>
+
+                      <td class="col-email"><span class="fsize-14">admin@example.com</span></td>
+
+                      <td class="col-actions">
+                        <div class="dropdown">
+                          <button class="btn btn-primary-revers btn-32 dropdown-toggle btn-edit-dd" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">
+                            <i class="fi fi-rr-edit nk-edit-icon"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="EditAdmin.html?id=1&name=admin%20user&email=admin%40example.com&role=Admin">Edit Admin</a></li>
+                            <li><a class="dropdown-item" href="roles-permissions.html?role=admin">Manage Permissions</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item text-red" href="#" data-action="delete" data-id="1">Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr
+                      data-no="6"
+                      data-name="bassem"
+                      data-role="accountat"
+                      data-email="bassem@example.com"
+                      data-perms="ViewAny:Order|View:Order|Update:Order|Create:Order|Delete:Order|ViewAny:Invoice|View:Invoice|Create:Invoice|Export:Invoice|Refund:Order|ViewAny:Transaction|View:Transaction|ViewAny:Patient|View:Patient|Update:Patient|ViewAny:Service|View:Service|ViewAny:Staff|View:Staff"
+                    >
+                      <td class="col-no">6</td>
+
+                      <td class="col-name admin-name-cell">
+                        <div class="staff-cell">
+                          <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="admin" /></div>
+                          <div class="staff-info">
+                            <p class="name">bassem</p>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td class="col-role"><span class="job-title">accountat</span></td>
+
+                      <td><div class="perm-wrap" data-perm-wrap="6"></div></td>
+
+                      <td class="col-email"><span class="fsize-14">bassem@example.com</span></td>
+
+                      <td class="col-actions">
+                        <div class="dropdown">
+                          <button class="btn btn-primary-revers btn-32 dropdown-toggle btn-edit-dd" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">
+                            <i class="fi fi-rr-edit nk-edit-icon"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="EditAdmin.html?id=6&name=bassem&email=bassem%40example.com&role=accountat">Edit Admin</a></li>
+                            <li><a class="dropdown-item" href="roles-permissions.html?role=accountat">Manage Permissions</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item text-red" href="#" data-action="delete" data-id="6">Delete</a></li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="adminsRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="adminsPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="adminsFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="adminsPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="adminsCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="adminsNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="adminsLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("adminsTbody");
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        const searchInput = document.getElementById("adminsSearchInput");
+        const btnSearch = document.getElementById("btnAdminsSearch");
+        const btnReset = document.getElementById("btnAdminsReset");
+
+        const rowsSelect = document.getElementById("adminsRowsPerPage");
+        const indicator = document.getElementById("adminsPageIndicator");
+        const currentBadge = document.getElementById("adminsCurrentPageBadge");
+
+        const btnFirst = document.getElementById("adminsFirstPage");
+        const btnPrev = document.getElementById("adminsPrevPage");
+        const btnNext = document.getElementById("adminsNextPage");
+        const btnLast = document.getElementById("adminsLastPage");
+
+        let currentPage = 1;
+        let filtered = [...allRows];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function rowsPerPageVal() {
+          const v = rowsSelect ? rowsSelect.value : "10";
+          if (v === "all") return Infinity;
+          const n = parseInt(v, 10);
+          return Number.isFinite(n) ? n : 10;
+        }
+
+        function rowText(tr) {
+          const perms = (tr.getAttribute("data-perms") || "").replaceAll("|", " ");
+          return norm([tr.getAttribute("data-no"), tr.getAttribute("data-name"), tr.getAttribute("data-role"), tr.getAttribute("data-email"), perms].join(" "));
+        }
+
+        function applySearch() {
+          const q = norm(searchInput ? searchInput.value : "");
+          filtered = allRows.filter((tr) => (!q ? true : rowText(tr).includes(q)));
+          currentPage = 1;
+          render();
+        }
+
+        function updatePager(totalPages) {
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          const safeCurrent = Math.min(Math.max(currentPage, 1), safeTotal);
+
+          if (indicator) indicator.textContent = "Page " + safeCurrent + " of " + safeTotal;
+          if (currentBadge) currentBadge.textContent = safeCurrent;
+
+          const disable = (btn, state) => btn && (btn.disabled = !!state);
+          disable(btnFirst, safeCurrent <= 1);
+          disable(btnPrev, safeCurrent <= 1);
+          disable(btnNext, safeCurrent >= safeTotal);
+          disable(btnLast, safeCurrent >= safeTotal);
+        }
+
+        function setRowVisible(tr, show) {
+          tr.style.display = show ? "" : "none";
+        }
+
+        function render() {
+          allRows.forEach((tr) => setRowVisible(tr, false));
+
+          const perPage = rowsPerPageVal();
+          const total = filtered.length;
+
+          const totalPages = perPage === Infinity ? 1 : Math.ceil(total / perPage) || 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? total : start + perPage;
+
+          filtered.slice(start, end).forEach((tr) => setRowVisible(tr, true));
+          updatePager(totalPages);
+        }
+
+        // ---- Permissions UI (pills + show more/less) ----
+        function makePermPill(text) {
+          const parts = (text || "").split(":");
+          const action = parts[0] || text;
+          const subject = parts[1] || "";
+          const safeAction = action.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+          const safeSubject = subject.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+          if (!subject) return '<span class="perm-pill">' + safeAction + "</span>";
+          return '<span class="perm-pill"><strong>' + safeAction + ":</strong> " + safeSubject + "</span>";
+        }
+
+        function renderPermsForRow(tr) {
+          const rowNo = tr.getAttribute("data-no");
+          const wrap = tr.querySelector('[data-perm-wrap="' + rowNo + '"]');
+          if (!wrap) return;
+
+          const permsRaw = tr.getAttribute("data-perms") || "";
+          const perms = permsRaw.split("|").map((x) => x.trim()).filter(Boolean);
+
+          const visibleCount = 3;
+          const head = perms.slice(0, visibleCount);
+          const tail = perms.slice(visibleCount);
+
+          wrap.innerHTML = "";
+
+          // head pills
+          const headWrap = document.createElement("div");
+          headWrap.className = "perm-wrap";
+          head.forEach((p) => headWrap.insertAdjacentHTML("beforeend", makePermPill(p)));
+          wrap.appendChild(headWrap);
+
+          if (tail.length) {
+            const moreWrap = document.createElement("div");
+            moreWrap.className = "perm-wrap";
+            moreWrap.style.display = "none";
+            moreWrap.style.marginTop = "8px";
+            tail.forEach((p) => moreWrap.insertAdjacentHTML("beforeend", makePermPill(p)));
+            wrap.appendChild(moreWrap);
+
+            const toggle = document.createElement("button");
+            toggle.type = "button";
+            toggle.className = "perm-toggle";
+            toggle.setAttribute("data-open", "0");
+            toggle.textContent = "Show " + tail.length + " more";
+
+            toggle.addEventListener("click", function () {
+              const open = toggle.getAttribute("data-open") === "1";
+              moreWrap.style.display = open ? "none" : "flex";
+              toggle.setAttribute("data-open", open ? "0" : "1");
+              toggle.textContent = open ? "Show " + tail.length + " more" : "Show less";
+            });
+
+            wrap.appendChild(toggle);
+          }
+        }
+
+        allRows.forEach(renderPermsForRow);
+
+        // Search events
+        if (btnSearch) btnSearch.addEventListener("click", applySearch);
+        if (searchInput) {
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") applySearch();
+          });
+        }
+        if (btnReset) {
+          btnReset.addEventListener("click", function () {
+            if (searchInput) searchInput.value = "";
+            applySearch();
+          });
+        }
+
+        // Pagination events
+        if (rowsSelect) rowsSelect.addEventListener("change", render);
+        if (btnFirst) btnFirst.addEventListener("click", () => ((currentPage = 1), render()));
+        if (btnPrev) btnPrev.addEventListener("click", () => ((currentPage = Math.max(1, currentPage - 1)), render()));
+        if (btnNext) btnNext.addEventListener("click", () => ((currentPage = currentPage + 1), render()));
+        if (btnLast) {
+          btnLast.addEventListener("click", function () {
+            const perPage = rowsPerPageVal();
+            const totalPages = perPage === Infinity ? 1 : Math.ceil(filtered.length / perPage) || 1;
+            currentPage = totalPages;
+            render();
+          });
+        }
+
+        // delete placeholder
+        document.addEventListener("click", function (e) {
+          const del = e.target.closest('[data-action="delete"]');
+          if (!del) return;
+          e.preventDefault();
+          // TODO: connect to backend
+        });
+
+        // init
+        applySearch();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

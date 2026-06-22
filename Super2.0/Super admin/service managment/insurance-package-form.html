@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Package</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .nk-card {
+        background: #fff;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .nk-card-title {
+        margin: 0 0 6px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .nk-help {
+        margin: 0 0 12px;
+        color: #667085;
+        font-weight: 800;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+
+      .nk-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .nk-grid-1 {
+        grid-template-columns: 1fr;
+      }
+
+      .nk-field label {
+        display: block;
+        font-weight: 900;
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+      }
+
+      .nk-required {
+        color: #b42318;
+      }
+
+      .nk-divider {
+        height: 1px;
+        background: #eef1f4;
+        margin: 12px 0;
+      }
+
+      .nk-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+        flex-wrap: wrap;
+      }
+
+      .inline-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      @media (max-width: 992px) {
+        .nk-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-services">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2 id="formPageTitle">Add Package</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../template.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="insurance-packages.html">Insurance Packages</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="formBreadcrumbCurrent">Add</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="nk-card">
+            <h3 class="nk-card-title" id="formCardTitle">Add Package</h3>
+            <p class="nk-help">Package templates define quantity and validity only. Pricing is managed in Insurance Coverage / Rate Sheet.</p>
+
+            <div id="insurancePackageFormAlert" class="alert d-none mb-3" role="alert"></div>
+
+            <form id="insurancePackageForm" novalidate>
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Package Name (Arabic)</label>
+                  <input id="pkgNameAr" type="text" class="form-control form-control-40" placeholder="Arabic package name" />
+                </div>
+
+                <div class="nk-field">
+                  <label>Package Name (English)</label>
+                  <input id="pkgNameEn" type="text" class="form-control form-control-40" placeholder="English package name" />
+                </div>
+              </div>
+
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Package Code (Optional)</label>
+                  <input id="pkgCode" type="text" class="form-control form-control-40" placeholder="e.g., HD-M01-13" />
+                </div>
+
+                <div class="nk-field">
+                  <label>Service <span class="nk-required">*</span></label>
+                  <select id="pkgMainService" class="form-control form-control-40">
+                    <option value="">Select service</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="nk-field">
+                  <label>Authorization Required</label>
+                  <div class="inline-status">
+                    <label class="switch m-0">
+                      <input id="pkgAuthRequired" type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="fsize-12 semiBold text-grey" id="pkgAuthRequiredStateText">Not Required</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Unit Type <span class="nk-required">*</span></label>
+                  <select id="pkgUnitType" class="form-control form-control-40">
+                    <option value="">Select unit type</option>
+                    <option value="Sessions">Sessions</option>
+                    <option value="Visits">Visits</option>
+                    <option value="Hours">Hours</option>
+                    <option value="Days">Days</option>
+                  </select>
+                </div>
+
+                <div class="nk-field">
+                  <label>Units Count <span class="nk-required">*</span></label>
+                  <input id="pkgUnitsCount" type="number" min="1" step="1" class="form-control form-control-40" placeholder="e.g., 12" />
+                </div>
+              </div>
+
+              <div class="nk-grid">
+                <div class="nk-field">
+                  <label>Validity Type <span class="nk-required">*</span></label>
+                  <select id="pkgValidityType" class="form-control form-control-40">
+                    <option value="Days">Days</option>
+                    <option value="Months">Months</option>
+                  </select>
+                </div>
+
+                <div class="nk-field">
+                  <label>Validity Value <span class="nk-required">*</span></label>
+                  <input id="pkgValidityValue" type="number" min="1" step="1" class="form-control form-control-40" placeholder="e.g., 30" />
+                </div>
+              </div>
+
+              <div class="nk-divider"></div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="nk-field">
+                  <label>Max Per Day (Optional)</label>
+                  <input id="pkgMaxPerDay" type="number" min="0" step="1" class="form-control form-control-40" placeholder="e.g., 1" />
+                </div>
+              </div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="nk-field">
+                  <label>Description (Optional)</label>
+                  <textarea
+                    id="pkgDescription"
+                    class="form-control"
+                    style="min-height: 120px; resize: vertical"
+                    placeholder="Write package notes..."
+                  ></textarea>
+                </div>
+              </div>
+
+              <div class="nk-grid nk-grid-1">
+                <div class="nk-field">
+                  <label>Active</label>
+                  <div class="inline-status">
+                    <label class="switch m-0">
+                      <input id="pkgIsActive" type="checkbox" checked />
+                      <span class="slider"></span>
+                    </label>
+                    <span class="fsize-12 semiBold text-grey" id="pkgActiveStateText">Active</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="nk-actions">
+                <a href="insurance-packages.html" class="btn btn-primary-revers btn-40">Cancel</a>
+                <button id="btnSavePackage" type="submit" class="btn btn-primary btn-40">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-package-store.js"></script>
+    <script src="../assets/js/insurance-package-form.js"></script>
+  </body>
+</html>

@@ -1,0 +1,290 @@
+.table-sub-head {
+  background-color: $primary-100;
+  td {
+    padding-top: $value-4;
+    padding-bottom: $value-4;
+    text-align: center !important ;
+  }
+  th {
+    padding-top: $value-4;
+    padding-bottom: $value-4;
+    text-align: center !important ;
+  }
+}
+
+/*/*/
+
+.tabel-item-name {
+  display: flex;
+  flex-direction: column;
+
+  a {
+    // font-size: $value-16 !important;
+    font-size: 1.1rem !important;
+    font-weight: 700;
+    text-decoration: underline;
+  }
+  h4 {
+    font-size: 1.1rem !important;
+    font-weight: 700;
+  }
+  p {
+    color: $text-body;
+    display: block;
+    margin-top: -0.2rem;
+  }
+}
+
+/*/*/
+
+.striped {
+  tr {
+    td {
+      transition: background-color 0.2s ease;
+    }
+  }
+  tr:nth-child(odd) {
+    td {
+      background-color: #fafafa !important;
+    }
+
+    &:hover {
+      td {
+        background-color: $primary-50 !important;
+        .dropdown-toggle {
+          background-color: #fff;
+        }
+      }
+    }
+  }
+
+  tr:nth-child(even) {
+    td {
+      background-color: #f8f8f8;
+      // background-color: #f1f1f1;
+    }
+
+    &:hover {
+      td {
+        background-color: $primary-50 !important;
+        .dropdown-toggle {
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
+
+/*/*/
+
+/*/*/
+.dt-container {
+  .dt-length,
+  .dt-search {
+    padding-bottom: 0.5rem;
+  }
+
+  .dt-info,
+  .dt-paging {
+    padding-top: 0.5rem;
+  }
+}
+/*/*/
+.hide-dt-space {
+  .mt-2 {
+    margin-top: 0px !important;
+  }
+}
+.hide-dt-search {
+  .dt-container {
+    .dt-search {
+      display: none;
+    }
+  }
+}
+.hide-dt-length {
+  .dt-container {
+    .dt-length {
+      display: none;
+    }
+  }
+}
+
+.hide-dt-info {
+  .dt-info {
+    display: none;
+  }
+}
+.hide-dt-paging {
+  .dt-paging {
+    display: none;
+  }
+}
+/*/*/
+
+/*/*/
+
+.table-dark-bar {
+  margin: 0px !important;
+
+  thead {
+    tr {
+      th {
+        background-color: $primary-500 !important;
+        color: #fff;
+
+        border-color: rgb(255, 255, 255, 0.2) !important;
+        text-align: center !important;
+        font-size: 0.9rem !important;
+        font-weight: 600;
+        &:first-of-type {
+          border-top-#{$right}-radius: $value-8;
+        }
+        &:last-of-type {
+          border-top-#{$left}-radius: $value-8;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.2s ease;
+      td {
+        text-align: center !important;
+        vertical-align: middle;
+        border-bottom: 1px solid #ddd;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #333;
+
+        .dropdown-toggle {
+          transition: background-color 0.2s ease;
+        }
+      }
+
+      &:hover {
+        background-color: $secondary-50;
+        .dropdown-toggle {
+          background-color: #fff !important;
+        }
+      }
+
+      &:last-of-type {
+        td {
+          border-bottom: 1px solid #ddd !important;
+        }
+      }
+    }
+  }
+}
+
+/*/*/
+.text-start {
+  text-align: start !important;
+  .tabel-item-name {
+    text-align: start !important;
+  }
+}
+
+/*/*/
+.dt-paging {
+  .pagination {
+    .page-item {
+      .page-link {
+        padding: 0.1rem $value-8 !important;
+        color: $text-body;
+        box-shadow: none !important;
+      }
+    }
+  }
+  .active {
+    .page-link {
+      background-color: $primary-500 !important;
+      border-color: $primary-500 !important;
+      color: #fff !important;
+    }
+  }
+}
+
+/*/*/
+.dt-info {
+  color: $text-body;
+  font-size: $value-16;
+}
+
+/*/*/
+
+// .tabel-responsive {
+//   @media screen and (max-width: 767px) {
+//     overflow-x: auto;
+//     table {
+//       min-width: 60rem !important;
+//       background-color: antiquewhite;
+//     }
+//   }
+// }
+
+.dt-column-order {
+  &::after {
+    margin-top: 2px !important;
+  }
+}
+
+.dt-scroll-body {
+  height: 500px !important;
+  max-height: 500px;
+}
+
+/*/*/
+.text-startt {
+  text-align: start !important;
+  background-color: antiquewhite !important;
+}
+
+/*/*/
+
+.table-bordered {
+  border-right: 10px soild #ddd !important;
+}
+
+/*/*/
+
+.selected-row {
+  td {
+    color: $primary-500 !important;
+  }
+}
+
+/*/*/
+
+/*/*/
+
+.table-text-start {
+  thead {
+    tr {
+      th {
+        text-align: start !important;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        text-align: start !important;
+      }
+    }
+  }
+}
+
+/*/*/
+
+.tabel-img {
+  img {
+    width: $value-48;
+    height: $value-48;
+    object-fit: cover;
+    border-radius: $value-4;
+    border: 1px solid #ddd;
+  }
+}

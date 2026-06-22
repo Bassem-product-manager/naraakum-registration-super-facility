@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Complaint Details</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root{--accent:#0f8c8c;--muted:#6b7280;--border:#e6eaef;--text:#101828;}
+      .details-wrap{display:grid;gap:14px;}
+      .detail-card{border:1px solid var(--border);border-radius:12px;background:#fff;box-shadow:0 4px 14px rgba(16,24,40,.03);overflow:hidden;}
+      .detail-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+      .detail-title{margin:0;font-size:18px;font-weight:900;color:var(--text);}
+      .detail-sub{margin-top:5px;font-size:12px;font-weight:800;color:var(--muted);}
+      .detail-body{padding:18px;}
+      .summary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;}
+      .summary-box{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;}
+      .summary-label{font-size:12px;font-weight:900;color:var(--muted);}
+      .summary-value{margin-top:7px;font-size:14px;font-weight:900;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+      .content-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:14px;align-items:start;}
+      .section-title{margin:0 0 10px;font-size:14px;font-weight:900;color:var(--text);}
+      .details-text{border:1px solid var(--border);border-radius:12px;background:#fff;padding:14px;min-height:160px;font-size:14px;line-height:1.7;color:#273449;white-space:pre-wrap;}
+      .pill{display:inline-flex;align-items:center;justify-content:center;min-width:88px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900;border:1px solid transparent;}
+      .pill-progress{background:rgba(0,122,255,.08);border-color:rgba(0,122,255,.16);color:#007aff;}
+      .pill-closed{background:rgba(0,180,98,.08);border-color:rgba(0,180,98,.18);color:#00b462;}
+      .timeline{display:grid;gap:10px;}
+      .timeline-item{border:1px solid var(--border);border-radius:12px;padding:12px;background:#fff;}
+      .timeline-item b{display:block;font-size:13px;color:var(--text);}
+      .timeline-item span{display:block;margin-top:4px;font-size:12px;font-weight:800;color:var(--muted);}
+      .attachment-list{display:grid;gap:10px;}
+      .attachment-item{border:1px solid var(--border);border-radius:12px;padding:11px 12px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+      .attachment-name{font-size:13px;font-weight:900;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .attachment-meta{font-size:12px;font-weight:800;color:var(--muted);white-space:nowrap;}
+      .empty-state{border:1px solid var(--border);border-radius:12px;background:#fff;padding:34px 16px;text-align:center;color:var(--muted);font-weight:900;}
+      .side-menu-logo .hospital-logo-big{width:64px;height:64px;border-radius:16px;border:1px solid rgba(15,140,140,.18);background:#fff;padding:6px;object-fit:contain;display:block;margin:8px auto 10px;}
+      .facility-line{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+      .facility-mini-logo{width:22px;height:22px;border-radius:8px;border:1px solid rgba(15,140,140,.18);background:#fff;padding:3px;object-fit:contain;flex:0 0 22px;}
+      .facility-name{font-weight:900;line-height:1;margin:0;}
+      .ksa-clock{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:12px;font-weight:900;font-size:12px;color:#101828;white-space:nowrap;}
+      .ksa-clock .tz{color:var(--accent);font-weight:900;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);}
+      @media(max-width:900px){.summary-grid,.content-grid{grid-template-columns:1fr;}}
+    </style>
+  </head>
+  <body>
+    <div class="preloader"></div>
+    <div id="full-container">
+      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+        <ul class="side-menu-list" style="flex:1;display:flex;flex-direction:column">
+          <li><a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a></li>
+          <li id="menu-orders">
+            <a class="menu-list-item"><span>Order Management</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Orders List</span></a>
+              <a href="../orders/facility-insurance-requests.html"><i class="fi fi-rr-angle-small-right"></i><span>Insurance Queue</span></a>
+              <a href="../payments/transaction-orders.html"><i class="fi fi-rr-angle-small-right"></i><span>Transaction Orders</span></a>
+            </div>
+          </li>
+          <li id="menu-staff">
+            <a class="menu-list-item"><span>Staff Management</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff List</span></a>
+              <a href="../staff/ratings.html"><i class="fi fi-rr-angle-small-right"></i><span>Ratings</span></a>
+              <a href="../staff/performance.html"><i class="fi fi-rr-angle-small-right"></i><span>Performance</span></a>
+              <a href="../staff/provider-add.html" class="add-provider-link"><span class="plus-icon">+</span><span>Add Provider</span></a>
+            </div>
+          </li>
+          <li id="menu-services">
+            <a class="menu-list-item"><span>Services &amp; Packages</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../services/services-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Main Services</span></a>
+              <a href="../services/services.html"><i class="fi fi-rr-angle-small-right"></i><span>Services</span></a>
+              <a href="../services/facility-packages.html"><i class="fi fi-rr-angle-small-right"></i><span>Packages</span></a>
+              <a href="../services/custom-price.html"><i class="fi fi-rr-angle-small-right"></i><span>Custom Price</span></a>
+              <a href="../services/coupons.html"><i class="fi fi-rr-angle-small-right"></i><span>Coupons</span></a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link"><span class="plus-icon">+</span><span>Add Service</span></a>
+            </div>
+          </li>
+          <li id="menu-calendar">
+            <a class="menu-list-item"><span>Calendar</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html"><i class="fi fi-rr-angle-small-right"></i><span>Branch Calendar</span></a>
+              <a href="../calendar/staff-calendar.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff Calendar</span></a>
+            </div>
+          </li>
+          <li id="menu-patients">
+            <a class="menu-list-item"><span>Patients</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Patients List</span></a>
+              <a href="../patients/patient-ratings.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Ratings</span></a>
+              <a href="../patients/patient-monitoring.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Monitoring</span></a>
+            </div>
+          </li>
+          <li id="menu-messages">
+            <a class="menu-list-item"><span>Messages</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../messages/messages.html"><i class="fi fi-rr-angle-small-right"></i><span>All Messages</span></a>
+              <a href="../messages/messages-staff.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff Messages</span></a>
+              <a href="../messages/messages-patients.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Messages</span></a>
+              <a href="../messages/messages-system.html"><i class="fi fi-rr-angle-small-right"></i><span>System Messages</span></a>
+            </div>
+          </li>
+          <li><a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a></li>
+          <li id="menu-payments">
+            <a class="menu-list-item"><span>Payments</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html"><i class="fi fi-rr-angle-small-right"></i><span>Transaction Orders</span></a>
+              <a href="../payments/deposits.html"><i class="fi fi-rr-angle-small-right"></i><span>Deposits</span></a>
+              <a href="../payments/tax-invoices.html"><i class="fi fi-rr-angle-small-right"></i><span>Tax Invoices</span></a>
+            </div>
+          </li>
+          <li id="menu-settings">
+            <a class="menu-list-item"><span>Facility Settings</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html"><i class="fi fi-rr-angle-small-right"></i><span>Facility Information</span></a>
+              <a href="../settings/branches.html"><i class="fi fi-rr-angle-small-right"></i><span>Branches</span></a>
+              <a href="../settings/facility-insurance.html"><i class="fi fi-rr-angle-small-right"></i><span>Insurance</span></a>
+            </div>
+          </li>
+          <li id="menu-admin">
+            <a class="menu-list-item"><span>Admin</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../admin/admins.html"><i class="fi fi-rr-angle-small-right"></i><span>Admins</span></a>
+              <a href="../admin/roles-permissions.html"><i class="fi fi-rr-angle-small-right"></i><span>Roles &amp; Permissions</span></a>
+            </div>
+          </li>
+          <li id="menu-more" class="active">
+            <a class="menu-list-item"><span>More</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list" style="display:block;">
+              <a href="../more/terms.html"><i class="fi fi-rr-angle-small-right"></i><span>Terms and Conditions</span></a>
+              <a href="../more/complaints-suggestions.html"><i class="fi fi-rr-angle-small-right"></i><span>Complaints &amp; Suggestions</span></a>
+              <a href="../more/submitted-complaints.html" class="active"><i class="fi fi-rr-angle-small-right"></i><span>Submitted Complaints</span></a>
+            </div>
+          </li>
+          <li style="margin-top:auto"><a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a></li>
+        </ul>
+      </aside>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Complaint Details</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+            </div>
+          </div>
+        </header>
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="submitted-complaints.html">Submitted Complaints</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Details</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div id="detailsRoot" class="details-wrap"></div>
+        </div>
+      </main>
+    </div>
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function(){
+        const storageKey = "naraakumComplaints";
+        const root = document.getElementById("detailsRoot");
+        function seed(){
+          return [
+            {id:"CMP-2026-000003",reqType:"Service Quality",priority:"High",details:"نقص 4545",status:"In Progress",submittedAt:"2026-06-10T09:24:00.000Z",handledBy:"Platform Admin",attachments:[]},
+            {id:"CMP-2026-000002",reqType:"Staff Behavior",priority:"Normal",details:"-",status:"Closed",submittedAt:"2026-06-09T11:15:00.000Z",handledBy:"Platform Admin",attachments:[]},
+            {id:"CMP-2026-000001",reqType:"Service Quality",priority:"Normal",details:"Patient reported a billing discrepancy that was resolved after review.",status:"Closed",submittedAt:"2026-06-08T14:45:00.000Z",handledBy:"Unassigned",attachments:[]}
+          ];
+        }
+        function load(){
+          try{
+            const raw = localStorage.getItem(storageKey);
+            if(!raw){ const seeded = seed(); localStorage.setItem(storageKey, JSON.stringify(seeded)); return seeded; }
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : seed();
+          }catch(e){ return seed(); }
+        }
+        function fmtDate(value){
+          const d = new Date(value);
+          if(isNaN(d)) return "-";
+          return d.toLocaleString("en-US",{month:"short",day:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"});
+        }
+        function humanSize(bytes){
+          const n = Number(bytes || 0);
+          if(n < 1024) return n + " B";
+          if(n < 1024 * 1024) return Math.round(n / 1024) + " KB";
+          return Math.round(n / 1024 / 1024) + " MB";
+        }
+        function esc(value){
+          return String(value == null ? "" : value).replace(/[&<>"']/g,function(ch){
+            return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+          });
+        }
+        function statusClass(status){ return String(status).toLowerCase() === "closed" ? "pill-closed" : "pill-progress"; }
+        function render(){
+          const id = new URLSearchParams(window.location.search).get("id");
+          const item = load().find(function(x){ return x.id === id; });
+          if(!item){
+            root.innerHTML = '<div class="empty-state">Complaint not found.<div style="margin-top:14px;"><a class="btn btn-primary" href="submitted-complaints.html">Back to list</a></div></div>';
+            return;
+          }
+          const attachments = item.attachments || [];
+          const attachmentHtml = attachments.length ? attachments.map(function(file){
+            return '<div class="attachment-item"><div style="min-width:0;"><div class="attachment-name">' + esc(file.name) + '</div><div class="attachment-meta">' + esc(file.type || "file") + '</div></div><div class="attachment-meta">' + humanSize(file.size) + '</div></div>';
+          }).join("") : '<div class="attachment-item"><div class="attachment-meta">No attachments</div></div>';
+          root.innerHTML =
+            '<section class="detail-card">' +
+              '<div class="detail-head"><div><p class="detail-title">' + esc(item.id) + '</p><div class="detail-sub">' + esc(item.reqType) + ' complaint details</div></div><div><a class="btn btn-primary-revers btn-40" href="submitted-complaints.html">Back to list</a></div></div>' +
+              '<div class="detail-body"><div class="summary-grid">' +
+                '<div class="summary-box"><div class="summary-label">Status</div><div class="summary-value"><span class="pill ' + statusClass(item.status) + '">' + esc(item.status) + '</span></div></div>' +
+                '<div class="summary-box"><div class="summary-label">Priority</div><div class="summary-value">' + esc(item.priority) + '</div></div>' +
+                '<div class="summary-box"><div class="summary-label">Submitted</div><div class="summary-value">' + fmtDate(item.submittedAt) + '</div></div>' +
+                '<div class="summary-box"><div class="summary-label">Handled By</div><div class="summary-value">' + esc(item.handledBy || "Unassigned") + '</div></div>' +
+              '</div></div>' +
+            '</section>' +
+            '<section class="content-grid">' +
+              '<div class="detail-card"><div class="detail-body"><h3 class="section-title">Complaint Details</h3><div class="details-text">' + esc(item.details || "-") + '</div></div></div>' +
+              '<div class="details-wrap">' +
+                '<div class="detail-card"><div class="detail-body"><h3 class="section-title">Attachments</h3><div class="attachment-list">' + attachmentHtml + '</div></div></div>' +
+                '<div class="detail-card"><div class="detail-body"><h3 class="section-title">Timeline</h3><div class="timeline">' +
+                  '<div class="timeline-item"><b>Submitted</b><span>' + fmtDate(item.submittedAt) + '</span></div>' +
+                  '<div class="timeline-item"><b>' + esc(item.status) + '</b><span>' + esc(item.handledBy || "Unassigned") + '</span></div>' +
+                '</div></div></div>' +
+              '</div>' +
+            '</section>';
+        }
+        render();
+      })();
+    </script>
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+        function tick(){
+          try{ el.textContent = new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Riyadh",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(new Date()); }
+          catch(e){ el.textContent = new Date().toLocaleTimeString("en-US",{hour12:true}); }
+        }
+        tick(); setInterval(tick,1000);
+      })();
+    </script>
+  </body>
+</html>

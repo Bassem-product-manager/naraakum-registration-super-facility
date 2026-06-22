@@ -1,0 +1,589 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Notifications</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-primary: #0f8c8c;
+        --nk-primary-soft: rgba(15, 140, 140, 0.08);
+        --nk-border: #e4eaef;
+        --nk-muted: #667085;
+        --nk-text: #101828;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .notifications-page {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nk-card {
+        background: #fff;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+      }
+
+      .intro-card {
+        padding: 14px 16px;
+      }
+
+      .intro-card h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 900;
+        color: var(--nk-text);
+      }
+
+      .intro-card p {
+        margin: 6px 0 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--nk-muted);
+      }
+
+      .filters-card {
+        padding: 12px;
+      }
+
+      .filters-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .control-input,
+      .control-select {
+        height: 38px;
+        border: 1px solid #d6dee4;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 700;
+        padding: 0 12px;
+      }
+
+      .control-input {
+        flex: 1 1 320px;
+      }
+
+      .control-select {
+        width: 180px;
+      }
+
+      .control-input:focus,
+      .control-select:focus {
+        outline: none;
+        border-color: var(--nk-primary);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.12);
+      }
+
+      .actions {
+        margin-left: auto;
+        display: flex;
+        gap: 8px;
+      }
+
+      .nk-btn {
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        padding: 0 14px;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nk-btn-outline {
+        color: #0b6f6f;
+        border-color: rgba(15, 140, 140, 0.3);
+        background: #fff;
+      }
+
+      .nk-btn-outline:hover:not(:disabled) {
+        background: var(--nk-primary-soft);
+      }
+
+      .nk-btn-solid {
+        color: #fff;
+        border-color: var(--nk-primary);
+        background: var(--nk-primary);
+      }
+
+      .nk-btn-solid:hover:not(:disabled) {
+        border-color: #0b6f6f;
+        background: #0b6f6f;
+      }
+
+      .nk-btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .summary-item {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .summary-label {
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      .summary-value {
+        color: var(--nk-text);
+        font-size: 22px;
+        line-height: 1;
+        font-weight: 900;
+        margin: 0;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.45fr 1fr;
+        gap: 14px;
+      }
+
+      .list-card,
+      .details-card {
+        min-height: 560px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .card-head {
+        border-bottom: 1px solid var(--nk-border);
+        padding: 12px;
+      }
+
+      .card-head h4 {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 900;
+        color: var(--nk-text);
+      }
+
+      .card-head p {
+        margin: 3px 0 0;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--nk-muted);
+      }
+
+      .list-scroll {
+        padding: 10px;
+        max-height: 560px;
+        overflow-y: auto;
+      }
+
+      .notif-item {
+        width: 100%;
+        text-align: left;
+        border: 1px solid #dce4ea;
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+
+      .notif-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .notif-item:hover,
+      .notif-item.is-selected {
+        border-color: rgba(15, 140, 140, 0.45);
+        background: #f7fcfc;
+      }
+
+      .notif-item.is-unread {
+        background: #f2fcfc;
+      }
+
+      .notif-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .sev {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 74px;
+        height: 24px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 11px;
+        font-weight: 900;
+      }
+
+      .sev-info {
+        color: #0b6f6f;
+        border-color: rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.1);
+      }
+
+      .sev-warning {
+        color: #b54708;
+        border-color: #fecd89;
+        background: #fffaeb;
+      }
+
+      .sev-critical {
+        color: #b42318;
+        border-color: #fecdca;
+        background: #fef3f2;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--nk-primary);
+      }
+
+      .notif-title {
+        margin: 8px 0 0;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 900;
+        line-height: 1.4;
+      }
+
+      .notif-preview {
+        margin: 4px 0 0;
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .notif-meta {
+        margin-top: 6px;
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .details-card {
+        padding: 12px;
+      }
+
+      .details-empty,
+      .empty-list {
+        border: 1px dashed #d0d8df;
+        border-radius: 12px;
+        background: #fff;
+        color: var(--nk-muted);
+        font-size: 13px;
+        font-weight: 700;
+        text-align: center;
+        padding: 24px;
+      }
+
+      .details-title {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 18px;
+        line-height: 1.4;
+        font-weight: 900;
+      }
+
+      .details-message {
+        margin: 10px 0 0;
+        color: #344054;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.6;
+      }
+
+      .details-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .field {
+        border: 1px solid #e4eaef;
+        border-radius: 10px;
+        padding: 9px 10px;
+        background: #fff;
+      }
+
+      .field .label {
+        display: block;
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .field .value {
+        display: block;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 800;
+        margin-top: 3px;
+      }
+
+      .explain {
+        margin-top: 12px;
+        border: 1px solid #d9e5ea;
+        border-radius: 10px;
+        background: #f8fcfd;
+        padding: 9px 10px;
+      }
+
+      .explain p {
+        margin: 0;
+        font-size: 12px;
+        font-weight: 800;
+        color: #344054;
+        line-height: 1.45;
+      }
+
+      .explain p + p {
+        margin-top: 6px;
+      }
+
+      .details-actions {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .inline-link {
+        height: 38px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.06);
+        color: #0b6f6f;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .inline-link:hover {
+        color: #0b6f6f;
+        text-decoration: none;
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-primary);
+        font-size: 11px;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      @media (max-width: 1200px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .list-card,
+        .details-card {
+          min-height: auto;
+        }
+
+        .list-scroll {
+          max-height: 440px;
+        }
+      }
+
+      @media (max-width: 992px) {
+        .actions {
+          margin-left: 0;
+          width: 100%;
+        }
+
+        .actions .nk-btn {
+          flex: 1;
+        }
+
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Notifications</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Super Admin</b><p class="fsize-12 text-grey">Admin / System Dashboard</p></div></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Notifications</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content notifications-page">
+          <section class="nk-card intro-card">
+            <h3>Notifications Center</h3>
+            <p>One inbox for Providers, Orders, Staff, and Integrations with module-based rules.</p>
+          </section>
+
+          <section class="nk-card filters-card">
+            <div class="filters-row">
+              <input id="notifSearchInput" class="control-input" type="text" placeholder="Search by title, entity, or reference id" />
+              <select id="scopeFilter" class="control-select" aria-label="Filter by module">
+                <option value="All">All modules</option>
+                <option value="Providers">Providers</option>
+                <option value="Orders">Orders</option>
+                <option value="Staff">Staff</option>
+                <option value="Integrations">Integrations</option>
+              </select>
+              <select id="statusFilter" class="control-select" aria-label="Filter by status">
+                <option value="All">All statuses</option>
+                <option value="Unread">Unread</option>
+                <option value="Read">Read</option>
+                <option value="Resolved">Resolved</option>
+              </select>
+              <div class="actions">
+                <button id="btnMarkAllRead" type="button" class="nk-btn nk-btn-outline">Mark all as read</button>
+                <button id="btnExportNotifications" type="button" class="nk-btn nk-btn-outline">Export</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="summary-grid" aria-label="Notifications summary">
+            <article class="nk-card summary-item">
+              <p class="summary-label">Total alerts</p>
+              <p class="summary-value" id="summaryTotal">0</p>
+            </article>
+            <article class="nk-card summary-item">
+              <p class="summary-label">Unread</p>
+              <p class="summary-value" id="summaryUnread">0</p>
+            </article>
+            <article class="nk-card summary-item">
+              <p class="summary-label">Critical</p>
+              <p class="summary-value" id="summaryCritical">0</p>
+            </article>
+            <article class="nk-card summary-item">
+              <p class="summary-label">Due soon (30 days)</p>
+              <p class="summary-value" id="summaryDueSoon">0</p>
+            </article>
+          </section>
+
+          <section class="layout">
+            <article class="nk-card list-card">
+              <div class="card-head">
+                <h4>Alert list</h4>
+                <p>Open any alert to see business explanation and action.</p>
+              </div>
+              <div id="notificationsList" class="list-scroll"></div>
+            </article>
+
+            <aside id="notificationDetails" class="nk-card details-card"></aside>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/notification-rules.js"></script>
+    <script src="../assets/js/setting-notifications-nav.js"></script>
+  </body>
+</html>
+

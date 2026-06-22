@@ -1,0 +1,138 @@
+.custom-card {
+  display: flex;
+  gap: $value-20;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: $value-12;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  height: 100%;
+  .card-body {
+    padding: 0px $value-12;
+  }
+}
+
+/*==========================================img-block-view========================================*/
+.img-block-view {
+  .card-header {
+    height: 14rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+/*==========================================img-circle-view========================================*/
+.img-circle-view {
+  .card-header {
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 8rem;
+      height: 8rem;
+      border-radius: 100%;
+      border: 0.4rem solid #fff;
+      object-fit: cover;
+      background-color: #fff;
+    }
+  }
+}
+
+/*==========================================repeat colors========================================*/
+$colors: red, orange, yellow, green, blue, purple;
+
+@for $i from 1 through length($colors) {
+  .cards-group .col:nth-child(#{length($colors)}n + #{$i}) {
+    .img-circle-view {
+      .card-header {
+        background: lighten(nth($colors, $i), 20%);
+      }
+    }
+  }
+}
+
+/*/*/
+
+.text-block {
+  border-top: 1px solid #eee;
+  padding: $value-12;
+  text-align: justify;
+}
+
+/*/*/
+
+.student-info {
+  .card-body {
+    & > h2 {
+      font-weight: $semiBold;
+      padding-bottom: $value-4;
+    }
+  }
+  .text-block {
+    height: 6rem;
+    overflow: hidden;
+    @media screen and (max-width: 576px) {
+      height: auto;
+      overflow: 0;
+    }
+  }
+}
+
+.text-nowarp {
+  text-overflow: ellipsis;
+  text-wrap: nowrap;
+  display: block;
+  overflow: hidden;
+}
+
+/*/*/
+
+.information-card {
+  position: relative;
+  .status-tag {
+    margin: 1rem;
+  }
+}
+
+/*/*/
+
+.card-options-list {
+  position: absolute;
+  top: 0;
+  #{$left}: 0;
+  margin: 1rem;
+  z-index: 10;
+
+  .options-btn {
+    background-color: #fff;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    i {
+      padding-top: 0.5rem !important;
+
+      display: block;
+    }
+  }
+}
+
+/*/*/
+
+.card-status {
+  position: absolute;
+  top: 0;
+  #{$left}: 0;
+  margin: 1rem 0.7rem;
+  display: flex;
+  gap: 0.4rem;
+  .status-tag {
+    position: relative;
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}

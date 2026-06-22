@@ -1,0 +1,174 @@
+.video-cover {
+  object-fit: contain;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+video::-webkit-media-controls {
+  display: none;
+}
+
+/* Could Use thise as well for Individual Controls */
+video::-webkit-media-controls-play-button {
+  display: none;
+}
+
+video::-webkit-media-controls-volume-slider {
+  display: none;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: none;
+}
+
+video::-webkit-media-controls-timeline {
+  display: none;
+}
+
+video::-webkit-media-controls-current-time-display {
+  display: none;
+}
+/*/*/
+
+/*======Images=====*/
+
+img {
+  border: none;
+}
+img[src=""] {
+  display: none;
+}
+
+a {
+  text-decoration: none;
+  transition: all 0.3s ease;
+  color: inherit;
+  cursor: pointer;
+  &:hover {
+    color: $primary-500;
+  }
+}
+
+/*/*/
+
+.highcharts-credits {
+  display: none !important;
+}
+
+/*/*/
+
+/*circel waves*/
+
+.grrenBg {
+  background-color: $primary-500 !important;
+}
+
+.waves_container {
+  height: 3.75rem;
+  width: 3.75rem;
+  display: block;
+  position: relative;
+
+  text-align: center;
+
+  border-radius: 6.25rem;
+
+  z-index: 1;
+}
+
+.waves_container .ripple {
+  position: absolute;
+  width: 10rem;
+  height: 10rem;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  margin: -5rem 0 0 -5rem;
+  border-radius: 6.25rem;
+
+  -webkit-animation: ripple 2.6s infinite;
+  animation: ripple 2.6s infinite;
+}
+
+@-webkit-keyframes ripple {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+@keyframes ripple {
+  0% {
+    opacity: 1;
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+
+.waves_container .ripple:nth-child(2) {
+  animation-delay: 0.3s;
+  -webkit-animation-delay: 0.3s;
+}
+
+.waves_container .ripple:nth-child(3) {
+  animation-delay: 0.8s;
+  -webkit-animation-delay: 0.8s;
+}
+/***************************************/
+/*/ errorr in butoon when foucs*/
+.waves-ripple {
+  background-color: aqua;
+  width: 10rem !important;
+  height: 10rem !important;
+  display: none !important;
+}
+
+.custom-tooltip {
+  font-size: 0.9rem !important;
+  font-family: inherit !important;
+}
+
+/*/*/
+
+.url-input {
+  display: none;
+}
+
+/*/*/
+
+/*price items list*/
+
+.priceItemsList {
+  display: flex;
+  flex-direction: column;
+  gap: $value-4;
+
+  .priceItem {
+    display: flex;
+    justify-content: space-between;
+    p {
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .icon-saudi_riyal {
+      font-size: $fsize-20;
+      color: #666;
+    }
+  }
+}

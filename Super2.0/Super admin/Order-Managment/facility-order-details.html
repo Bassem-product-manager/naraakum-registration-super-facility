@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content="0; url=order-details-facility.html" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        var target = "order-details-facility.html" + (window.location.search || "") + (window.location.hash || "");
+        window.location.replace(target);
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Redirecting to <a id="targetLink" href="order-details-facility.html">Order Details</a>...</p>
+    <script>
+      (function () {
+        var link = document.getElementById("targetLink");
+        if (!link) return;
+        link.href = "order-details-facility.html" + (window.location.search || "") + (window.location.hash || "");
+      })();
+    </script>
+  </body>
+</html>

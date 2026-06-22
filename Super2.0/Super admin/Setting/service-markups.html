@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | provider payouts</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+        --nk-text: #101828;
+        --nk-muted: #667085;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .preloader {
+        display: none !important;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .payout-table-card,
+      .payout-no-results {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .payout-table-card {
+        padding: 12px;
+      }
+
+      .payout-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 13px;
+      }
+
+      .payout-table thead th {
+        padding: 10px 12px;
+        background: #0f8c8c;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+        border-right: 1px solid rgba(255, 255, 255, 0.22);
+      }
+
+      .payout-table thead th:first-child {
+        border-top-left-radius: 8px;
+      }
+
+      .payout-table thead th:last-child {
+        border-top-right-radius: 8px;
+        border-right: 0;
+      }
+
+      .payout-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+        color: #101828;
+        font-weight: 700;
+        vertical-align: middle;
+      }
+
+      .payout-table tbody tr:hover td {
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      .payout-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .entity-name {
+        display: block;
+        color: #101828;
+        font-weight: 1000;
+        line-height: 1.2;
+      }
+
+      .entity-code,
+      .payment-muted {
+        display: block;
+        margin-top: 2px;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .payment-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 76px;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 1000;
+        border: 1px solid transparent;
+      }
+
+      .payment-pill.stc {
+        color: #7a2e0e;
+        background: rgba(247, 144, 9, 0.12);
+        border-color: rgba(247, 144, 9, 0.28);
+      }
+
+      .payment-pill.bank {
+        color: #175cd3;
+        background: rgba(21, 94, 239, 0.1);
+        border-color: rgba(21, 94, 239, 0.22);
+      }
+
+      .payment-value {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .payment-empty {
+        color: #98a2b3;
+        font-weight: 900;
+      }
+
+      .payout-no-results {
+        padding: 34px 18px;
+        text-align: center;
+      }
+
+      .payout-no-results .empty-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #667085;
+        margin-bottom: 12px;
+      }
+
+      .payout-no-results h5 {
+        margin: 0 0 8px;
+        color: #101828;
+        font-weight: 1000;
+      }
+
+      .payout-no-results p {
+        margin: 0;
+        color: #667085;
+      }
+
+      .form-control.form-control-32 {
+        width: 100%;
+        border-radius: 10px;
+        border-color: rgba(16, 24, 40, 0.18);
+      }
+
+      .form-control.form-control-32:focus,
+      .form-control:focus {
+        border-color: var(--nk-green);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+
+      .payout-filter-modal label {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .payout-search-group {
+        width: min(420px, 100%);
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>provider payouts</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">provider payouts</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group search-box-group--md payout-search-group">
+                  <input id="payoutSearch" type="text" class="form-control form-control-32" placeholder="Search by provider or payout destination" />
+                  <button id="btnPayoutSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button id="btnPayoutReset" type="button" class="btn btn-primary-revers btn-32" title="Reset">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#payoutFilterModal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="payoutTableWrap" class="payout-table-card mt-16">
+            <div class="table-responsive">
+              <table class="payout-table" id="payoutsTable">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 64px">#</th>
+                    <th>Provider Name</th>
+                    <th>Payment Type</th>
+                    <th>Payment Number / Bank Account</th>
+                  </tr>
+                </thead>
+                <tbody id="payoutsTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="payoutNoResults" class="payout-no-results mt-16 d-none">
+            <div class="empty-icon"><i class="fi fi-rr-search"></i></div>
+            <h5>No Matching provider payouts</h5>
+            <p>Change the search text or reset the filters.</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade payout-filter-modal" id="payoutFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter provider payouts</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label for="payoutTypeFilter" class="mb-6 d-block">Payment Type</label>
+                <select id="payoutTypeFilter" class="form-control form-control-32">
+                  <option value="">All Payment Types</option>
+                  <option value="stc">Mobile Wallet</option>
+                  <option value="bank">Bank</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btnPayoutFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Close</button>
+            <button id="btnPayoutApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        const payouts = [
+          { id: "PO-001", providerName: "BMC Hospital", providerCode: "FC-00001", paymentType: "stc", saudiMobile: "+966 50 111 2200", bankAccountNumber: "" },
+          { id: "PO-002", providerName: "Al Noor Medical Center", providerCode: "FC-00002", paymentType: "bank", saudiMobile: "", bankAccountNumber: "SA0380000000608010167519" },
+          { id: "PO-003", providerName: "Safa Pharmacy", providerCode: "PH-00003", paymentType: "stc", saudiMobile: "+966 55 302 4411", bankAccountNumber: "" },
+          { id: "PO-004", providerName: "Future Care Hospital", providerCode: "FC-00004", paymentType: "bank", saudiMobile: "", bankAccountNumber: "SA4420000001234567891234" },
+          { id: "PO-005", providerName: "Dr. Mariam Al-Harbi", providerCode: "DR-00005", paymentType: "bank", saudiMobile: "", bankAccountNumber: "SA5510000012345678901234" },
+          { id: "PO-006", providerName: "Jeddah Care Pharmacy", providerCode: "PH-00006", paymentType: "stc", saudiMobile: "+966 56 908 2281", bankAccountNumber: "" }
+        ];
+
+        const state = {
+          search: "",
+          paymentType: ""
+        };
+
+        function byId(id) {
+          return document.getElementById(id);
+        }
+
+        function norm(value) {
+          return String(value == null ? "" : value).trim().toLowerCase();
+        }
+
+        function esc(value) {
+          return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function paymentLabel(type) {
+          return type === "stc" ? "Mobile Wallet" : "Bank";
+        }
+
+        function paymentPill(type) {
+          return '<span class="payment-pill ' + esc(type) + '">' + esc(paymentLabel(type)) + "</span>";
+        }
+
+        function paymentValue(value) {
+          if (!value) return '<span class="payment-empty">-</span>';
+          return '<span class="payment-value">' + esc(value) + "</span>";
+        }
+
+        function payoutDestination(row) {
+          return row.paymentType === "stc" ? row.saudiMobile : row.bankAccountNumber;
+        }
+
+        function filteredPayouts() {
+          const q = norm(state.search);
+          const type = norm(state.paymentType);
+
+          return payouts.filter((row) => {
+            if (type && norm(row.paymentType) !== type) return false;
+            if (!q) return true;
+            return [row.providerName, row.providerCode, paymentLabel(row.paymentType), row.saudiMobile, row.bankAccountNumber]
+              .join(" ")
+              .toLowerCase()
+              .includes(q);
+          });
+        }
+
+        function renderTable() {
+          const rows = filteredPayouts();
+          const body = byId("payoutsTbody");
+          const noResults = byId("payoutNoResults");
+
+          if (!rows.length) {
+            body.innerHTML = "";
+            noResults.classList.remove("d-none");
+            return;
+          }
+
+          noResults.classList.add("d-none");
+          body.innerHTML = rows
+            .map((row, index) => {
+              return (
+                "<tr>" +
+                '<td class="text-center">' + (index + 1) + "</td>" +
+                "<td>" +
+                '<span class="entity-name">' + esc(row.providerName) + "</span>" +
+                '<span class="entity-code">' + esc(row.providerCode) + "</span>" +
+                "</td>" +
+                "<td>" + paymentPill(row.paymentType) + "</td>" +
+                "<td>" + paymentValue(payoutDestination(row)) + "</td>" +
+                "</tr>"
+              );
+            })
+            .join("");
+        }
+
+        function applyFilters() {
+          state.search = byId("payoutSearch").value;
+          state.paymentType = byId("payoutTypeFilter").value;
+          renderTable();
+        }
+
+        function resetFilters() {
+          byId("payoutSearch").value = "";
+          byId("payoutTypeFilter").value = "";
+          applyFilters();
+        }
+
+        function initClock() {
+          const el = byId("ksaTime");
+          if (!el) return;
+          function tick() {
+            try {
+              const fmt = new Intl.DateTimeFormat("en-US", {
+                timeZone: "Asia/Riyadh",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+              });
+              el.textContent = fmt.format(new Date());
+            } catch (e) {
+              el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+            }
+          }
+          tick();
+          setInterval(tick, 1000);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          byId("btnPayoutSearch").addEventListener("click", applyFilters);
+          byId("btnPayoutReset").addEventListener("click", resetFilters);
+          byId("btnPayoutApplyFilter").addEventListener("click", function () {
+            applyFilters();
+            const modalEl = byId("payoutFilterModal");
+            const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+            modal.hide();
+          });
+          byId("btnPayoutFilterReset").addEventListener("click", resetFilters);
+          byId("payoutSearch").addEventListener("input", applyFilters);
+          initClock();
+          renderTable();
+        });
+      })();
+    </script>
+  </body>
+</html>

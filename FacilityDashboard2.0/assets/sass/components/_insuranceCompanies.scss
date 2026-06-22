@@ -1,0 +1,56 @@
+.custom-checkbox-box input {
+  display: none;
+}
+
+.custom-checkbox-box label {
+  position: relative;
+  border: 0.1rem solid #dbdbdb;
+}
+
+.check-sq-icon {
+  position: absolute;
+  top: 0;
+  #{$left}: 0;
+  width: $value-20;
+  height: $value-20;
+  border: 0.1rem solid #dbdbdb;
+  margin: 0.5rem;
+  border-radius: $value-4;
+  display: block;
+  background-color: #fff;
+}
+
+.custom-checkbox-box input[type="checkbox"]:checked + label {
+  border: 0.1rem solid $primary-500;
+  background-color: #fff;
+  color: $primary-600;
+}
+
+.custom-checkbox-box input[type="checkbox"]:checked + label .check-sq-icon {
+  background: url(../images/chcekBox.svg);
+  background-size: contain;
+  border: 0.1rem solid $primary-500;
+}
+
+/*////////////////////////////////////////*/
+
+.insurance-company-view {
+  label {
+    width: 100%;
+    height: 7.26306rem;
+    border-radius: $value-8;
+    cursor: pointer;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  img {
+    max-height: 100%;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+}

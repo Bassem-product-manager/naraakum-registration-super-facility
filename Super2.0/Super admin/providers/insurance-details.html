@@ -1,0 +1,2907 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Insurance Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root{
+        --nk-green:#0f8c8c;
+        --nk-border:#e6eaef;
+
+        --nk-text:#101828;
+        --nk-muted:#667085;
+        --nk-soft:#f7f9fc;
+      }
+
+      /* Facility/SuperAdmin line under logo */
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-size:14px;
+        font-weight:900;
+        letter-spacing:.3px;
+        color:#0b6f6f;
+        text-shadow:0 1px 0 rgba(255,255,255,.5);
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      .commercial-banner{
+        border:1px solid rgba(247,144,9,.28);
+        background:rgba(247,144,9,.08);
+        border-radius:14px;
+        padding:10px 12px;
+        margin-bottom:12px;
+      }
+      .commercial-banner.is-ready{
+        border-color:rgba(18,183,106,.28);
+        background:rgba(18,183,106,.08);
+      }
+      .commercial-steps{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        flex-wrap:wrap;
+        justify-content:center;
+      }
+      .commercial-step{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        padding:6px 10px;
+        border-radius:999px;
+        border:1px solid rgba(16,24,40,.14);
+        background:#fff;
+        color:#344054;
+        font-size:12px;
+        font-weight:900;
+        text-decoration:none;
+      }
+      .commercial-step .num{
+        width:20px;
+        height:20px;
+        border-radius:999px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        border:1px solid rgba(16,24,40,.18);
+        background:#fff;
+        font-size:11px;
+        font-weight:1000;
+        line-height:1;
+        text-align:center;
+      }
+      .commercial-step.is-done{
+        color:#067647;
+        border-color:rgba(18,183,106,.30);
+        background:rgba(18,183,106,.10);
+      }
+      .commercial-step.is-done .num{
+        border-color:rgba(18,183,106,.35);
+        background:#12B76A;
+        color:#fff;
+      }
+      .commercial-step.step-link{
+        cursor:pointer;
+      }
+      .commercial-step.step-link:hover{
+        background:rgba(15,140,140,.08);
+        border-color:rgba(15,140,140,.30);
+        color:#0f8c8c;
+      }
+
+      /* ===== Fallback menu behavior ===== */
+      .side-menu.is-open{ transform: translateX(0); }
+      .side-menu-list li.is-open > .sub-list{ display:block; }
+      .side-menu-list li > .sub-list{ display:none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down{ transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active{
+        background: rgba(15,140,140,.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      /* ===== Page specific ===== */
+      .details-shell{
+        display:grid;
+        grid-template-columns: 1fr 360px;
+        gap:16px;
+        align-items:start;
+      }
+      @media (max-width: 1200px){
+        .details-shell{ grid-template-columns: 1fr 340px; }
+      }
+      @media (max-width: 992px){
+        .details-shell{ grid-template-columns: 1fr; }
+      }
+
+      /* Summary Card */
+      .facility-summary{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:14px;
+      }
+      @media (max-width: 992px){
+        .facility-summary{ flex-direction:column; }
+      }
+
+      .sum-left{
+        display:flex;
+        align-items:flex-start;
+        gap:12px;
+        min-width: 0;
+      }
+      .sum-avatar{
+        width:46px;height:46px;border-radius:14px;
+        border:1px solid rgba(15,140,140,.18);
+        background:rgba(15,140,140,.06);
+        display:flex;align-items:center;justify-content:center;
+        flex:0 0 46px;
+        color:var(--nk-green);
+        font-size:20px;
+      }
+      .sum-titles{ min-width:0; }
+      .sum-title{
+        font-size:16px;
+        font-weight:1000;
+        color:var(--nk-text);
+        line-height:1.2;
+        margin:0 0 4px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .sum-sub{
+        display:flex;
+        flex-wrap:wrap;
+        gap:10px;
+        align-items:center;
+        color:var(--nk-muted);
+        font-weight:800;
+        font-size:12px;
+      }
+      .sum-sub .k{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:4px 10px;
+        border-radius:999px;
+        border:1px solid rgba(16,24,40,.10);
+        background:rgba(16,24,40,.02);
+      }
+      .sum-branch-alert{
+        position:relative;
+        transition:.2s ease;
+      }
+      .sum-branch-alert .sum-bell{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        width:18px;
+        height:18px;
+        border-radius:999px;
+        background:rgba(15,140,140,.08);
+        color:var(--nk-green);
+      }
+      .sum-branch-alert .sum-bell-dot{
+        width:8px;
+        height:8px;
+        border-radius:999px;
+        background:#F04438;
+        box-shadow:0 0 0 2px #fff;
+        display:none;
+      }
+      .sum-branch-alert.is-live{
+        border-color:rgba(18,183,106,.30);
+        background:rgba(18,183,106,.10);
+        color:#067647;
+      }
+      .sum-branch-alert.is-live .sum-bell{
+        background:rgba(18,183,106,.16);
+        color:#067647;
+        animation: bellPulse 1.3s ease-in-out infinite;
+      }
+      .sum-branch-alert.is-live .sum-bell-dot{
+        display:inline-block;
+        background:#12B76A;
+      }
+      @keyframes bellPulse{
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.08); }
+      }
+      .sum-right{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        flex-wrap:wrap;
+        justify-content:flex-end;
+      }
+
+      /* Badges */
+      .pm-badge{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:28px;
+        padding:0 12px;
+        border-radius:999px;
+        font-weight:1000;
+        font-size:12px;
+        border:1px solid transparent;
+        white-space:nowrap;
+        letter-spacing:.2px;
+      }
+      .pm-badge.active{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .pm-badge.needs-info{
+        color:#B54708;
+        background:rgba(247,144,9,.10);
+        border-color:rgba(247,144,9,.22);
+      }
+      .pm-badge.rejected{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+      .pm-badge.inactive{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+
+      /* License dot */
+      .license-dot{
+        width:12px;height:12px;border-radius:999px;display:inline-block;vertical-align:middle;
+        box-shadow:0 0 0 3px rgba(16,24,40,.03);
+      }
+      .lic-valid{ background:#12B76A; }
+      .lic-expired{ background:#F04438; }
+      .lic-soon{ background:#F04438; }
+      .lic-na{ background:#F04438; }
+
+      /* Tab Bar */
+      .nk-tabs{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        overflow:hidden;
+      }
+      .nk-tabs-header{
+        display:flex;
+        gap:6px;
+        padding:10px;
+        border-bottom:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        flex-wrap:wrap;
+      }
+      .tab-btn{
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        color:var(--nk-text);
+        font-weight:1000;
+        font-size:12px;
+        height:34px;
+        padding:0 12px;
+        border-radius:12px;
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        cursor:pointer;
+        transition:.15s ease;
+        user-select:none;
+      }
+      .tab-btn i{ color:var(--nk-green); }
+      .tab-btn:hover{ background:rgba(15,140,140,.06); }
+      .tab-btn.is-active{
+        background:rgba(15,140,140,.10);
+        border-color:rgba(15,140,140,.28);
+        color:var(--nk-green);
+      }
+      .tab-btn.is-disabled{
+        opacity:.5;
+        cursor:not-allowed;
+        pointer-events:none;
+      }
+      .nk-tab-panel{
+        display:none;
+        padding:14px;
+      }
+      .nk-tab-panel.is-active{ display:block; }
+
+      /* Cards inside panels */
+      .nk-card{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+      }
+      .nk-card + .nk-card{ margin-top:12px; }
+
+      .nk-card-title{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:10px;
+      }
+      .nk-card-title h4{
+        margin:0;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .nk-muted{ color:var(--nk-muted); font-weight:800; font-size:12px; }
+
+      /* Overview grid */
+      .ov-grid{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:12px;
+      }
+      @media (max-width: 992px){
+        .ov-grid{ grid-template-columns: 1fr; }
+      }
+      .ov-item{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:12px;
+      }
+      .ov-item .l{ font-size:11px; font-weight:1000; color:var(--nk-muted); }
+      .ov-item .v{ font-size:13px; font-weight:1000; color:var(--nk-text); margin-top:4px; }
+
+      /* Documents list */
+      .doc-row{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:12px;
+        padding:10px 12px;
+        border:1px solid rgba(16,24,40,.08);
+        border-radius:14px;
+        background:#fff;
+      }
+      .doc-row + .doc-row{ margin-top:10px; }
+
+      .doc-left{
+        display:flex;
+        align-items:center;
+        gap:10px;
+        min-width:0;
+      }
+      .doc-ic{
+        width:36px;height:36px;border-radius:12px;
+        background:rgba(15,140,140,.06);
+        border:1px solid rgba(15,140,140,.18);
+        display:flex;align-items:center;justify-content:center;
+        color:var(--nk-green);
+        flex:0 0 36px;
+      }
+      .doc-meta{ min-width:0; }
+      .doc-name{
+        font-weight:1000;
+        color:var(--nk-text);
+        font-size:13px;
+        margin:0;
+        white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      }
+      .doc-sub{
+        display:flex;gap:8px;flex-wrap:wrap;align-items:center;
+        margin-top:4px;
+        color:var(--nk-muted);
+        font-weight:900;
+        font-size:11px;
+      }
+      .chip{
+        display:inline-flex;align-items:center;gap:6px;
+        height:22px;padding:0 10px;border-radius:999px;
+        border:1px solid rgba(16,24,40,.10);
+        background:rgba(16,24,40,.02);
+        font-size:11px;font-weight:1000;
+        color:var(--nk-text);
+        white-space:nowrap;
+      }
+      .chip.crit{
+        color:#B42318;
+        border-color:rgba(240,68,56,.25);
+        background:rgba(240,68,56,.08);
+      }
+
+      .doc-actions{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        flex-wrap:nowrap;
+        justify-content:flex-end;
+      }
+      .btn-mini{
+        display:inline-flex;
+        align-items:center;
+        gap:7px;
+        height:40px;
+        padding:0 14px;
+        border-radius:12px;
+        border:1px solid rgba(16,24,40,.12);
+        background:#fff;
+        color:var(--nk-text);
+        font-weight:1000;
+        font-size:13px;
+        cursor:pointer;
+        text-decoration:none;
+        white-space:nowrap;
+      }
+      .btn-mini:hover{ background:rgba(16,24,40,.02); }
+      .btn-mini.view{
+        border-color:rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green);
+      }
+      .btn-view-attachment{
+        border-color:rgba(15,140,140,.28)!important;
+        background:rgba(15,140,140,.10)!important;
+        color:#0b6f6f!important;
+      }
+      .btn-view-attachment:hover{
+        background:rgba(15,140,140,.16)!important;
+        border-color:rgba(15,140,140,.40)!important;
+      }
+      .btn-mini.view:hover{ background:rgba(15,140,140,.10); }
+      .btn-mini.danger{
+        border-color:rgba(240,68,56,.25);
+        background:rgba(240,68,56,.06);
+        color:#B42318;
+      }
+      .btn-mini.warning{
+        border-color:rgba(247,144,9,.28);
+        background:rgba(247,144,9,.08);
+        color:#B54708;
+      }
+      .btn-mini.icon{
+        width:40px;
+        min-width:40px;
+        padding:0;
+        justify-content:center;
+        gap:0;
+      }
+      .btn-mini.icon span{ display:none; }
+      .btn-mini.approve{
+        border-color:rgba(18,183,106,.25);
+        background:rgba(18,183,106,.08);
+        color:#067647;
+      }
+      @media (max-width: 1200px){
+        .doc-row{
+          align-items:flex-start;
+        }
+        .doc-actions{
+          flex-wrap:wrap;
+          justify-content:flex-start;
+        }
+      }
+
+      /* Status pill for docs */
+      .doc-status{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height:24px;
+        padding:0 10px;
+        border-radius:999px;
+        font-weight:1000;
+        font-size:11px;
+        border:1px solid transparent;
+        white-space:nowrap;
+      }
+      .doc-status.approved{
+        color:#067647;
+        background:rgba(18,183,106,.10);
+        border-color:rgba(18,183,106,.22);
+      }
+      .doc-status.rejected{
+        color:#B42318;
+        background:rgba(240,68,56,.10);
+        border-color:rgba(240,68,56,.22);
+      }
+      .doc-status.missing{
+        color:#344054;
+        background:rgba(16,24,40,.04);
+        border-color:rgba(16,24,40,.12);
+      }
+
+      /* Tables */
+      .nk-table{
+        width:100%;
+        border-collapse:separate;
+        border-spacing:0;
+        font-size:13px;
+      }
+      .nk-table thead th{
+        font-weight:1000;
+        color:#344054;
+        font-size:12px;
+        white-space:nowrap;
+        background:#fff;
+        border-bottom:1px solid rgba(16,24,40,.10);
+        padding:12px 12px;
+        vertical-align:middle;
+      }
+      .nk-table tbody td{
+        padding:12px 12px;
+        vertical-align:middle;
+        border-bottom:1px solid rgba(16,24,40,.08);
+        color:#101828;
+        font-weight:800;
+      }
+      .nk-table tbody tr:hover td{ background:rgba(15,140,140,.04); }
+      .nk-table tbody tr:last-child td{ border-bottom:0; }
+      .nk-table .text-center{text-align:center;}
+      .nk-table .text-right{text-align:right;}
+
+      /* Decision panel */
+      .decision-panel{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:14px;
+        padding:14px;
+        position:sticky;
+        top:14px;
+      }
+      @media (max-width: 992px){
+        .decision-panel{ position:relative; top:auto; }
+      }
+      .dp-title{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:8px;
+      }
+      .dp-title h4{
+        margin:0;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .dp-hint{
+        color:var(--nk-muted);
+        font-weight:800;
+        font-size:12px;
+        margin:0 0 10px;
+      }
+
+      .dp-actions{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap:10px;
+        margin-top:10px;
+      }
+      .dp-actions .btn{ height:40px; border-radius:12px; font-weight:1000; white-space:nowrap; }
+      .dp-actions .btn i{ margin-right:8px; }
+      .dp-actions .btn-suspend{
+        border-color:rgba(247,144,9,.35);
+        background:rgba(247,144,9,.10);
+        color:#B54708;
+      }
+      .dp-actions .btn-suspend:hover{
+        border-color:rgba(247,144,9,.48);
+        background:rgba(247,144,9,.16);
+        color:#9A3412;
+      }
+      .dp-actions .btn-ban{
+        border-color:rgba(240,68,56,.35);
+        background:rgba(240,68,56,.10);
+        color:#B42318;
+      }
+      .dp-actions .btn-ban:hover{
+        border-color:rgba(240,68,56,.50);
+        background:rgba(240,68,56,.16);
+        color:#912018;
+      }
+
+      .dp-actions .btn-wide{ grid-column: 1 / -1; }
+
+      .branch-requests{
+        display:flex;
+        flex-direction:column;
+        gap:8px;
+      }
+      .branch-req-item{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        padding:10px 12px;
+        border:1px solid rgba(16,24,40,.10);
+        border-radius:12px;
+        background:rgba(16,24,40,.01);
+      }
+      .branch-req-text{
+        min-width:0;
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+      }
+      .branch-req-title{
+        margin:0;
+        color:#101828;
+        font-size:12px;
+        font-weight:1000;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .branch-req-meta{
+        margin:0;
+        color:#667085;
+        font-size:11px;
+        font-weight:900;
+      }
+      .branch-req-close{
+        width:24px;
+        height:24px;
+        border-radius:999px;
+        border:1px solid rgba(16,24,40,.14);
+        background:#fff;
+        color:#667085;
+        font-size:12px;
+        font-weight:1000;
+        line-height:1;
+      }
+      .branch-req-close:hover{
+        background:rgba(240,68,56,.08);
+        border-color:rgba(240,68,56,.28);
+        color:#B42318;
+      }
+      .branch-row.is-selected td{
+        background:rgba(15,140,140,.08);
+      }
+
+      .mini-metrics{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap:10px;
+        margin:10px 0 0;
+      }
+      .metric{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:10px;
+      }
+      .metric .l{ font-size:11px; font-weight:1000; color:var(--nk-muted); }
+      .metric .v{ margin-top:4px; font-size:13px; font-weight:1000; color:var(--nk-text); }
+
+      /* Audit timeline */
+      .timeline{
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+      .tl-item{
+        display:flex;
+        gap:10px;
+        align-items:flex-start;
+      }
+      .tl-dot{
+        width:10px;height:10px;border-radius:999px;
+        background:rgba(15,140,140,.35);
+        box-shadow:0 0 0 4px rgba(15,140,140,.08);
+        margin-top:4px;
+        flex:0 0 10px;
+      }
+      .tl-body{
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:10px 12px;
+        flex:1;
+      }
+      .tl-top{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        flex-wrap:wrap;
+      }
+      .tl-title{
+        font-weight:1000;
+        color:var(--nk-text);
+        font-size:12px;
+        margin:0;
+      }
+      .tl-time{
+        font-size:11px;
+        font-weight:900;
+        color:var(--nk-muted);
+      }
+      .tl-note{
+        margin:6px 0 0;
+        font-size:12px;
+        font-weight:800;
+        color:var(--nk-text);
+      }
+
+      /* Not found */
+      .notfound{
+        border:1px dashed rgba(16,24,40,.18);
+        background:rgba(16,24,40,.01);
+        border-radius:14px;
+        padding:14px;
+      }
+      .notfound h3{
+        margin:0 0 6px;
+        font-size:14px;
+        font-weight:1000;
+        color:var(--nk-text);
+      }
+      .notfound p{
+        margin:0 0 10px;
+        font-size:12px;
+        font-weight:900;
+        color:var(--nk-muted);
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE (SUPER ADMIN) ===================== -->
+      <div id="sidebar-slot" data-base="../"></div>
+      <!-- ===================== /ASIDE ===================== -->
+
+      <main class="main-page">
+        <!-- ===================== TOP HEADER (SAME NAVBAR) ===================== -->
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+        <!-- ===================== /TOP HEADER ===================== -->
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="../providers/insurances.html">Insurance</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="commercial-banner d-none" id="commercialSetupBanner">
+            <div class="commercial-steps">
+              <span class="commercial-step" id="approvalStepChip">
+                <span class="num">1</span><span>Approval</span>
+              </span>
+              <a href="#" class="commercial-step step-link" id="btnGoInsurancePlans">
+                <span class="num">2</span><span id="plansStepLabel">Step 2: Configure Packages</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- ===== Summary ===== -->
+          <div class="facility-summary" id="facilitySummary">
+            <div class="sum-left">
+              <div class="sum-avatar"><i class="fi fi-rr-shield-check"></i></div>
+              <div class="sum-titles">
+                <p class="sum-title" id="sumFacilityName">-</p>
+                <div class="sum-sub">
+                  <span class="k" id="sumFacilityCode"><i class="fi fi-rr-id-badge"></i><span>-</span></span>
+                  <span class="k" id="sumCity"><i class="fi fi-rr-marker"></i><span>-</span></span>
+                  <span class="k" id="sumSubmitted"><i class="fi fi-rr-calendar"></i><span>Submitted: -</span></span>
+                  <span class="k" id="sumUpdated"><i class="fi fi-rr-time-forward"></i><span>Updated: -</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="sum-right">
+              <span class="pm-badge active" id="sumStatusBadge">Active</span>
+            </div>
+          </div>
+
+          <div class="details-shell mt-16" id="detailsShell">
+            <!-- Left: Tabs -->
+            <div class="nk-tabs" id="tabsBox">
+              <div class="nk-tabs-header">
+                <button class="tab-btn is-active" data-tab="tab-overview" type="button">
+                  <i class="fi fi-rr-info"></i><span>Overview</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-docs" type="button">
+                  <i class="fi fi-rr-document"></i><span>Documents</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-licenses" type="button">
+                  <i class="fi fi-rr-file-signature"></i><span>Licenses</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-details" type="button">
+                  <i class="fi fi-rr-edit"></i><span>Details</span>
+                </button>
+                <button class="tab-btn" data-tab="tab-plans" id="tabPlansBtn" type="button">
+                  <i class="fi fi-rr-layers"></i><span>Packages</span>
+                </button>
+                <button class="tab-btn d-none" data-tab="tab-branches" type="button">
+                  <i class="fi fi-rr-building"></i><span>Branches</span>
+                </button>
+              </div>
+
+              <!-- Overview -->
+              <div class="nk-tab-panel is-active" id="tab-overview">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Insurance Information</h4>
+                    <span class="nk-muted" id="ovType">-</span>
+                  </div>
+
+                  <div class="ov-grid" id="overviewGrid">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Quick Summary</h4>
+                    <span class="nk-muted">Auto calculated</span>
+                  </div>
+
+                  <div class="mini-metrics">
+                    <div class="metric">
+                      <div class="l">Documents Completion</div>
+                      <div class="v" id="mDocsCompletion">-</div>
+                    </div>
+                    <div class="metric">
+                      <div class="l">Documents Health</div>
+                      <div class="v" id="mCriticalDocs">-</div>
+                    </div>
+                    <div class="metric">
+                      <div class="l">License Remaining</div>
+                      <div class="v" id="mLicenseRemaining">-</div>
+                    </div>
+                    <div class="metric">
+                      <div class="l">Queue Age</div>
+                      <div class="v" id="mQueueAge">-</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Contact</h4>
+                    <span class="nk-muted">Primary</span>
+                  </div>
+                  <div class="ov-grid" id="contactGrid"></div>
+                </div>
+              </div>
+
+              <!-- Details -->
+              <div class="nk-tab-panel" id="tab-details">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Insurance Entity & Responsible Details</h4>
+                    <span class="nk-muted">Editable company profile details</span>
+                  </div>
+
+                    <div class="ov-grid">
+                      <div class="ov-item">
+                        <div class="l">Entity Name</div>
+                        <input id="detEntityName" type="text" class="form-control" placeholder="Insurance company name" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Payer License Number</div>
+                        <input id="detPayerLicenseNo" type="text" class="form-control" placeholder="Payer license number" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Country</div>
+                        <input id="detCountry" type="text" class="form-control" placeholder="Country" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">City</div>
+                        <input id="detCity" type="text" class="form-control" placeholder="City" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">District</div>
+                        <input id="detDistrict" type="text" class="form-control" placeholder="District" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Street Name</div>
+                        <input id="detStreet" type="text" class="form-control" placeholder="Street name" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Building Number</div>
+                        <input id="detBuildingNo" type="text" class="form-control" placeholder="Building number" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Postal Code</div>
+                        <input id="detPostalCode" type="text" class="form-control" placeholder="Postal code" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Responsible Person Name</div>
+                        <input id="detResponsibleName" type="text" class="form-control" placeholder="Responsible full name" />
+                      </div>
+                      <div class="ov-item">
+                        <div class="l">Responsible Mobile Number</div>
+                        <input id="detResponsiblePhone" type="text" class="form-control" placeholder="+966 5xxxxxxxx" />
+                      </div>
+                      <div class="ov-item" style="grid-column:1 / -1;">
+                        <div class="l">Responsible Email</div>
+                        <input id="detResponsibleEmail" type="email" class="form-control" placeholder="name@email.com" />
+                      </div>
+                    </div>
+
+                  <div class="d-flex align-items-center gap-2 mt-12">
+                    <button class="btn btn-primary btn-40" id="btnSaveDetailsTab" type="button">
+                      <i class="fi fi-rr-disk"></i><span>Save Details</span>
+                    </button>
+                    <span class="nk-muted" id="detailsSaveHint">Make edits then save.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Packages -->
+              <div class="nk-tab-panel" id="tab-plans">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Packages</h4>
+                  </div>
+
+                  <div class="d-flex align-items-center gap-2 mb-12 flex-wrap">
+                    <select id="companyPackageSelect" class="form-control form-control-40" style="max-width: 360px;">
+                      <option value="">Select package</option>
+                    </select>
+                    <button class="btn btn-primary btn-40" id="btnAddCompanyPackage" type="button">
+                      <i class="fi fi-rr-plus"></i><span>Add Package</span>
+                    </button>
+                    <span class="nk-muted" id="companyPackagesCountHint">Packages: 0</span>
+                  </div>
+
+                  <div id="insuranceCompanyPackagesRoot"></div>
+
+                  <div class="d-flex align-items-center gap-2 mt-12">
+                    <button class="btn btn-primary btn-40" id="btnSavePlansTab" type="button">
+                      <i class="fi fi-rr-disk"></i><span>Save Packages</span>
+                    </button>
+                    <span class="nk-muted" id="plansSaveHint">Package changes are local for this environment.</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Documents -->
+              <div class="nk-tab-panel" id="tab-docs">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Submitted Documents</h4>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="nk-muted" id="docsHint">-</span>
+                      <button class="btn-mini" id="btnAddDocument" type="button">
+                        <i class="fi fi-rr-plus"></i><span>Add Document</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="docsList">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Licenses -->
+              <div class="nk-tab-panel" id="tab-licenses">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Payer License</h4>
+                    <span class="nk-muted" id="licMainHint">-</span>
+                  </div>
+
+                  <div class="ov-grid" id="licenseMainGrid"></div>
+
+                  <div class="d-flex gap-2 mt-12 flex-wrap">
+                    <button class="btn btn-primary-revers btn-40 btn-view-attachment" id="btnViewMainLicense" type="button">
+                      <i class="fi fi-rr-eye"></i><span>View Attachment</span>
+                    </button>
+                    <button class="btn btn-primary btn-40" id="btnReplaceMainLicense" type="button">
+                      <i class="fi fi-rr-upload"></i><span>Re-upload</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="nk-card d-none" id="branchLicensesCard">
+                  <div class="nk-card-title">
+                    <h4>Branch Licenses</h4>
+                    <span class="nk-muted">Per branch</span>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="nk-table" id="branchLicensesTable">
+                      <thead>
+                        <tr>
+                          <th>Branch</th>
+                          <th>City</th>
+                          <th class="text-center">Status</th>
+                          <th>Expiry</th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="branchLicensesTbody">
+                        <!-- filled by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Branches -->
+              <div class="nk-tab-panel d-none" id="tab-branches">
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Branch Notifications</h4>
+                    <span class="nk-muted">Notification only</span>
+                  </div>
+                  <div class="branch-requests" id="branchRequestsList">
+                    <!-- filled by JS -->
+                  </div>
+                </div>
+
+                <div class="nk-card">
+                  <div class="nk-card-title">
+                    <h4>Branches</h4>
+                    <span class="nk-muted" id="branchesHint">-</span>
+                  </div>
+
+                  <div class="table-responsive">
+                    <table class="nk-table" id="branchesTable">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Branch Name</th>
+                          <th>City</th>
+                          <th class="text-center">Docs</th>
+                          <th class="text-center">License</th>
+                          <th class="text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="branchesTbody">
+                        <!-- filled by JS -->
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Not found -->
+              <div class="nk-tab-panel" id="tab-notfound">
+                <div class="notfound">
+                  <h3>Insurance company not found</h3>
+                  <p>We could not find an insurance company with this code. Please go back to the insurance companies list.</p>
+                  <a href="../providers/insurances.html" class="btn btn-primary btn-40">
+                    <i class="fi fi-rr-arrow-left"></i><span>Back to Insurance</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right: Decision Panel -->
+            <aside class="decision-panel" id="decisionPanel">
+              <div class="dp-title">
+                <h4>Decision Panel</h4>
+                <span class="pm-badge active" id="dpStatus">Active</span>
+              </div>
+
+              <div class="nk-card" style="padding:10px;">
+                <div class="nk-muted">Decision Target</div>
+                <div style="font-size:14px;font-weight:1000;color:#101828;" id="dpTargetName">Insurance Company</div>
+                <div class="nk-muted" id="dpTargetMeta">Default target</div>
+              </div>
+
+              <p class="dp-hint" id="dpHint" style="margin-top:10px;">Review target and apply decision.</p>
+
+              <div class="dp-actions">
+                <button class="btn btn-primary" id="btnApprove" type="button">
+                  <i class="fi fi-rr-badge-check"></i>Approve
+                </button>
+                <button class="btn btn-secondary" id="btnReject" type="button">
+                  <i class="fi fi-rr-cross-circle"></i>Reject
+                </button>
+                <button class="btn btn-primary-revers btn-suspend" id="btnSuspend" type="button">
+                  <i class="fi fi-rr-ban"></i>Suspend
+                </button>
+                <button class="btn btn-primary-revers btn-ban" id="btnBan" type="button">
+                  <i class="fi fi-rr-ban"></i>Ban
+                </button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===================== MODALS ===================== -->
+    <!-- Document Viewer -->
+    <div class="modal fade" id="docViewerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="docViewerTitle">Document</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="nk-card" style="padding:12px;">
+              <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div>
+                  <div class="nk-muted">Preview (mock)</div>
+                  <div style="font-weight:1000;" id="docViewerMeta">-</div>
+                </div>
+                <a href="#" class="btn btn-primary-revers btn-40" id="docDownloadLink">
+                  <i class="fi fi-rr-download"></i><span>Download</span>
+                </a>
+              </div>
+              <div style="margin-top:12px; border:1px dashed rgba(16,24,40,.18); border-radius:14px; padding:14px; background:rgba(16,24,40,.01);">
+                <div style="font-weight:1000; color:#101828;">This is a placeholder preview area.</div>
+                <div class="nk-muted" style="margin-top:6px;">
+                  Connect real PDF/image preview here later. Right now we just show meta information.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Branch Details -->
+    <div class="modal fade" id="branchModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="branchModalTitle">Branch</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="nk-card" style="padding:12px;">
+              <div class="ov-grid" id="branchModalGrid"></div>
+            </div>
+
+            <div class="nk-card" style="padding:12px;">
+              <div class="nk-card-title">
+                <h4 style="margin:0;">Branch Documents</h4>
+                <span class="nk-muted">Mock list</span>
+              </div>
+              <div id="branchDocsList"></div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/insurance-service-catalog.js"></script>
+    <script src="../assets/js/insurance-package-store.js"></script>
+
+    <script>
+      // ===== KSA Clock (Asia/Riyadh) =====
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      // ===== Side menu fallback (like your page) =====
+      (function(){
+        if (window.__NK_FD_MENU_INIT__) return;
+        window.__NK_FD_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function(){ aside.classList.toggle("is-open"); });
+
+        list.querySelectorAll("li").forEach(function(li){
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function(){ li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      // ===== Tooltips init =====
+      (function(){
+        if (!window.bootstrap) return;
+        const els = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        els.forEach(el => new bootstrap.Tooltip(el));
+      })();
+
+      // ===== Insurance Details Logic (Mock) =====
+      (function(){
+        // ------------------------
+        // Helpers
+        // ------------------------
+        function qs(sel, root=document){ return root.querySelector(sel); }
+        function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+        function esc(s){ return (s ?? "").toString(); }
+
+        function getParam(name){
+          const u = new URL(window.location.href);
+          return u.searchParams.get(name) || "";
+        }
+
+        function pad2(n){ return n < 10 ? ("0"+n) : (""+n); }
+        function niceDate(iso){
+          if (!iso) return "-";
+          const parts = iso.split("-");
+          if (parts.length !== 3) return iso;
+          return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+        function todayISO(){
+          const d = new Date();
+          return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+        }
+        function addDaysISO(baseIso, days){
+          const base = new Date((baseIso || todayISO()) + "T00:00:00");
+          if (Number.isNaN(base.getTime())) return todayISO();
+          base.setDate(base.getDate() + days);
+          return `${base.getFullYear()}-${pad2(base.getMonth()+1)}-${pad2(base.getDate())}`;
+        }
+        function daysBetween(aIso, bIso){
+          try{
+            const a = new Date(aIso+"T00:00:00");
+            const b = new Date(bIso+"T00:00:00");
+            return Math.round((b - a) / (1000*60*60*24));
+          }catch(e){ return 0; }
+        }
+        function statusLabel(st){
+          if (st === "active") return "Active";
+          if (st === "approved") return "Approved";
+          if (st === "pending" || st === "under-review" || st === "new") return "Under Review";
+          if (st === "needs-info") return "Needs Info";
+          if (st === "rejected") return "Rejected";
+          if (st === "inactive") return "Inactive";
+          if (st === "banned") return "Banned";
+          if (st === "deleted") return "Deleted";
+          return st || "-";
+        }
+
+        function statusClass(st){
+          if (st === "active") return "active";
+          if (st === "approved") return "active";
+          if (st === "pending" || st === "under-review" || st === "new") return "needs-info";
+          if (st === "needs-info") return "needs-info";
+          if (st === "rejected") return "rejected";
+          if (st === "inactive") return "inactive";
+          if (st === "banned") return "rejected";
+          if (st === "deleted") return "rejected";
+          return "active";
+        }
+
+        function docStatusLabel(st){
+          if (st === "pending") return "Pending";
+          if (st === "approved") return "Approved";
+          if (st === "rejected") return "Rejected";
+          if (st === "missing") return "Missing";
+          return st || "-";
+        }
+
+        function licenseDotClass(state){
+          if (state === "valid") return "lic-valid";
+          if (state === "soon") return "lic-expired";
+          if (state === "expired") return "lic-expired";
+          return "lic-na";
+        }
+
+        function formatPhone(p){
+          return (p || "-").toString();
+        }
+        function formatCode(raw){
+          return (raw || "-").toString().toUpperCase();
+        }
+
+        function statusFromContract(contract){
+          const v = String(contract || "").toLowerCase();
+          if (v === "active") return "active";
+          if (v === "pending") return "pending";
+          if (v === "expired") return "inactive";
+          return "";
+        }
+
+        function calcDocsCompletion(docs){
+          const required = docs.filter(x => x.required);
+          if (!required.length) return { pct: 0, approved: 0, total: 0 };
+          const approved = required.filter(x => x.status === "approved").length;
+          const pct = Math.round((approved / required.length) * 100);
+          return { pct, approved, total: required.length };
+        }
+
+        function criticalGate(docs){
+          const critical = docs.filter(x => x.critical);
+          const missingOrBad = critical.filter(x => x.status === "missing" || x.status === "rejected");
+          return { total: critical.length, bad: missingOrBad.length, badList: missingOrBad };
+        }
+
+        function licenseState(expiryIso){
+          if (!expiryIso) return { state:"na", days:null };
+          const t = todayISO();
+          const diff = daysBetween(t, expiryIso); // expiry - today
+          if (diff < 0) return { state:"expired", days: diff };
+          if (diff <= 45) return { state:"soon", days: diff };
+          return { state:"valid", days: diff };
+        }
+
+        // ------------------------
+        // Mock Data
+        // ------------------------
+        const INSURANCES = {
+          "IN-00001": {
+            code:"IN-00001",
+            name:"BMC Insurance Co.",
+            type:"Insurance Company",
+            city:"Riyadh",
+            country:"Saudi Arabia",
+            district:"Al Muruj",
+            street:"King Fahd Rd",
+            buildingNo:"12",
+            postalCode:"12345",
+            address:"King Fahd Rd, Al Muruj, Riyadh, Saudi Arabia",
+            phone:"+966 50 010 1111",
+            email:"onboarding@bmcinsurance.sa",
+            entityName:"BMC Insurance Co.",
+            payerLicenseNo:"PL-548210",
+            responsibleName:"Ahmed Mohammed",
+            responsiblePhone:"+966 5xxxxxxxx",
+            responsibleEmail:"ahmed@bmcinsurance.sa",
+            submittedAt:"2026-01-20",
+            updatedAt:"2026-02-06",
+            status:"active",
+            license:{
+              number:"PL-548210",
+              issuer:"Council of Cooperative Health Insurance",
+              expiry:"2027-12-30",
+              attachmentName:"Payer_License_Proof_BMC.pdf"
+            },
+            documents:[
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-01-20", fileName:"CR_BMC_Insurance.pdf" },
+              { id:"doc_bank_iban", name:"Bank Account Letter (IBAN)", required:true, critical:false, status:"approved", uploadedAt:"2026-01-20", fileName:"IBAN_BMC_Insurance.pdf" },
+              { id:"doc_payer_license_proof", name:"Payer License Proof", required:true, critical:true, status:"approved", uploadedAt:"2026-01-20", fileName:"Payer_License_Proof_BMC.pdf" },
+              { id:"doc_responsible_id", name:"Owner ID", required:true, critical:true, status:"approved", uploadedAt:"2026-01-20", fileName:"Owner_ID_BMC.pdf" }
+            ],
+            branches:[],
+            branchRequests:[]
+          },
+          "IN-00002": {
+            code:"IN-00002",
+            name:"Al Noor Insurance",
+            type:"Insurance Company",
+            city:"Jeddah",
+            country:"Saudi Arabia",
+            district:"Al Zahra",
+            street:"Prince Sultan Rd",
+            buildingNo:"41",
+            postalCode:"23456",
+            address:"Prince Sultan Rd, Al Zahra, Jeddah, Saudi Arabia",
+            phone:"+966 50 010 2222",
+            email:"admin@alnoorinsurance.sa",
+            entityName:"Al Noor Insurance",
+            payerLicenseNo:"PL-661092",
+            responsibleName:"Khalid Salem",
+            responsiblePhone:"+966 5xxxxxxxx",
+            responsibleEmail:"khalid@alnoorinsurance.sa",
+            submittedAt:"2026-02-01",
+            updatedAt:"2026-02-08",
+            status:"new",
+            license:{
+              number:"PL-661092",
+              issuer:"Council of Cooperative Health Insurance",
+              expiry:"2026-08-15",
+              attachmentName:"Payer_License_Proof_AlNoor.pdf"
+            },
+            documents:[
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-02-01", fileName:"CR_AlNoor_Insurance.pdf" },
+              { id:"doc_bank_iban", name:"Bank Account Letter (IBAN)", required:true, critical:false, status:"pending", uploadedAt:"2026-02-01", fileName:"IBAN_AlNoor_Insurance.pdf" },
+              { id:"doc_payer_license_proof", name:"Payer License Proof", required:true, critical:true, status:"approved", uploadedAt:"2026-02-01", fileName:"Payer_License_Proof_AlNoor.pdf" },
+              { id:"doc_responsible_id", name:"Owner ID", required:true, critical:true, status:"pending", uploadedAt:"2026-02-01", fileName:"Owner_ID_AlNoor.pdf" }
+            ],
+            branches:[],
+            branchRequests:[]
+          },
+          "IN-00003": {
+            code:"IN-00003",
+            name:"Green Shield Takaful",
+            type:"Insurance Company",
+            city:"Dammam",
+            country:"Saudi Arabia",
+            district:"Al Faisaliyah",
+            street:"King Saud St",
+            buildingNo:"8",
+            postalCode:"32211",
+            address:"King Saud St, Al Faisaliyah, Dammam, Saudi Arabia",
+            phone:"+966 50 010 3333",
+            email:"care@greenshield.sa",
+            entityName:"Green Shield Takaful",
+            payerLicenseNo:"PL-300774",
+            responsibleName:"Noura Hassan",
+            responsiblePhone:"+966 5xxxxxxxx",
+            responsibleEmail:"noura@greenshield.sa",
+            submittedAt:"2025-11-15",
+            updatedAt:"2026-01-05",
+            status:"needs-info",
+            license:{
+              number:"PL-300774",
+              issuer:"Council of Cooperative Health Insurance",
+              expiry:"2025-12-01",
+              attachmentName:"Payer_License_Proof_GreenShield.pdf"
+            },
+            documents:[
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"missing", uploadedAt:"", fileName:"" },
+              { id:"doc_bank_iban", name:"Bank Account Letter (IBAN)", required:true, critical:false, status:"approved", uploadedAt:"2025-11-16", fileName:"IBAN_GreenShield.pdf" },
+              { id:"doc_payer_license_proof", name:"Payer License Proof", required:true, critical:true, status:"rejected", uploadedAt:"2025-11-15", fileName:"Payer_License_Proof_GreenShield.pdf", rejectionReason:"Uploaded copy is not clear." },
+              { id:"doc_responsible_id", name:"Owner ID", required:true, critical:true, status:"approved", uploadedAt:"2025-11-15", fileName:"Owner_ID_GreenShield.pdf" }
+            ],
+            branches:[],
+            branchRequests:[]
+          },
+          "IN-00004": {
+            code:"IN-00004",
+            name:"Future Care Insurance",
+            type:"Insurance Company",
+            city:"Riyadh",
+            country:"Saudi Arabia",
+            district:"Al Olaya",
+            street:"Olaya St",
+            buildingNo:"90",
+            postalCode:"11564",
+            address:"Olaya St, Al Olaya, Riyadh, Saudi Arabia",
+            phone:"+966 50 010 4444",
+            email:"ops@futurecareinsurance.sa",
+            entityName:"Future Care Insurance",
+            payerLicenseNo:"PL-990118",
+            responsibleName:"Sara Ibrahim",
+            responsiblePhone:"+966 5xxxxxxxx",
+            responsibleEmail:"sara@futurecareinsurance.sa",
+            submittedAt:"2026-01-10",
+            updatedAt:"2026-01-22",
+            status:"inactive",
+            license:{
+              number:"PL-990118",
+              issuer:"Council of Cooperative Health Insurance",
+              expiry:"2027-03-20",
+              attachmentName:"Payer_License_Proof_FutureCare.pdf"
+            },
+            documents:[
+              { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true, status:"approved", uploadedAt:"2026-01-10", fileName:"CR_FutureCare_Insurance.pdf" },
+              { id:"doc_bank_iban", name:"Bank Account Letter (IBAN)", required:true, critical:false, status:"approved", uploadedAt:"2026-01-10", fileName:"IBAN_FutureCare_Insurance.pdf" },
+              { id:"doc_payer_license_proof", name:"Payer License Proof", required:true, critical:true, status:"approved", uploadedAt:"2026-01-10", fileName:"Payer_License_Proof_FutureCare.pdf" },
+              { id:"doc_responsible_id", name:"Owner ID", required:true, critical:true, status:"approved", uploadedAt:"2026-01-10", fileName:"Owner_ID_FutureCare.pdf" }
+            ],
+            branches:[],
+            branchRequests:[]
+          }
+        };
+
+        function loadLocalInsuranceEntities(){
+          try{
+            const raw = localStorage.getItem("nk_insurance_entities_v1");
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : [];
+          }catch(err){
+            return [];
+          }
+        }
+
+        function mapLocalEntity(entity){
+          const code = (entity?.code || "").toString().toUpperCase();
+          if (!code) return null;
+          const status = (entity?.status || "pending").toString().toLowerCase();
+          const docs = Array.isArray(entity?.documents) ? entity.documents : [];
+          const license = entity?.license || {};
+
+          return {
+            code: code,
+            name: entity?.name || entity?.entityName || "Insurance Company",
+            type: "Insurance Company",
+            city: entity?.city || "",
+            country: entity?.country || "Saudi Arabia",
+            district: entity?.district || "",
+            street: entity?.street || "",
+            buildingNo: entity?.buildingNo || "",
+            postalCode: entity?.postalCode || "",
+            address: [
+              entity?.street || "",
+              entity?.district || "",
+              entity?.city || "",
+              entity?.country || ""
+            ].filter(Boolean).join(", "),
+            phone: entity?.phone || entity?.responsiblePhone || "",
+            email: entity?.email || entity?.responsibleEmail || "",
+            entityName: entity?.entityName || entity?.name || "",
+            payerLicenseNo: entity?.payerLicenseNo || license?.number || "",
+            responsibleName: entity?.responsibleName || "",
+            responsiblePhone: entity?.responsiblePhone || "",
+            responsibleEmail: entity?.responsibleEmail || "",
+            submittedAt: entity?.submittedAt || todayISO(),
+            updatedAt: entity?.updatedAt || entity?.submittedAt || todayISO(),
+            status: status === "active" ? "active" : (status === "inactive" ? "inactive" : "pending"),
+            license: {
+              number: license?.number || entity?.payerLicenseNo || "",
+              issuer: license?.issuer || "Council of Cooperative Health Insurance",
+              expiry: license?.expiry || addDaysISO(todayISO(), 365),
+              attachmentName: license?.attachmentName || "Payer_License_Proof.pdf"
+            },
+            documents: docs.map(function(doc){
+              return {
+                id: doc?.id || "",
+                name: doc?.name || "Document",
+                required: !!doc?.required,
+                critical: !!doc?.critical,
+                status: (doc?.status || "pending").toString().toLowerCase(),
+                uploadedAt: doc?.uploadedAt || todayISO(),
+                fileName: doc?.fileName || "document.pdf"
+              };
+            }),
+            branches: [],
+            branchRequests: []
+          };
+        }
+
+        loadLocalInsuranceEntities().forEach(function(entity){
+          const mapped = mapLocalEntity(entity);
+          if (!mapped || !mapped.code) return;
+          INSURANCES[mapped.code] = mapped;
+        });
+
+        // ------------------------
+        // Elements
+        // ------------------------
+        const sumName = qs("#sumFacilityName");
+        const sumCode = qs("#sumFacilityCode span");
+        const sumCity = qs("#sumCity span");
+        const sumSubmitted = qs("#sumSubmitted span");
+        const sumUpdated = qs("#sumUpdated span");
+        const sumStatusBadge = qs("#sumStatusBadge");
+
+        const ovType = qs("#ovType");
+        const overviewGrid = qs("#overviewGrid");
+        const contactGrid = qs("#contactGrid");
+        const detEntityName = qs("#detEntityName");
+        const detPayerLicenseNo = qs("#detPayerLicenseNo");
+        const detCountry = qs("#detCountry");
+        const detCity = qs("#detCity");
+        const detDistrict = qs("#detDistrict");
+        const detStreet = qs("#detStreet");
+        const detBuildingNo = qs("#detBuildingNo");
+        const detPostalCode = qs("#detPostalCode");
+        const detResponsibleName = qs("#detResponsibleName");
+        const detResponsiblePhone = qs("#detResponsiblePhone");
+        const detResponsibleEmail = qs("#detResponsibleEmail");
+        const btnSaveDetailsTab = qs("#btnSaveDetailsTab");
+        const detailsSaveHint = qs("#detailsSaveHint");
+
+        const mDocsCompletion = qs("#mDocsCompletion");
+        const mCriticalDocs = qs("#mCriticalDocs");
+        const mLicenseRemaining = qs("#mLicenseRemaining");
+        const mQueueAge = qs("#mQueueAge");
+
+        const docsList = qs("#docsList");
+        const docsHint = qs("#docsHint");
+        const btnAddDocument = qs("#btnAddDocument");
+
+        const licMainHint = qs("#licMainHint");
+        const licenseMainGrid = qs("#licenseMainGrid");
+        const btnViewMainLicense = qs("#btnViewMainLicense");
+        const btnReplaceMainLicense = qs("#btnReplaceMainLicense");
+
+        const branchLicensesTbody = qs("#branchLicensesTbody");
+        const branchesTbody = qs("#branchesTbody");
+        const branchesHint = qs("#branchesHint");
+        const branchRequestsList = qs("#branchRequestsList");
+        const notifCount = qs("#notifCount");
+
+        const dpStatus = qs("#dpStatus");
+        const dpHint = qs("#dpHint");
+        const dpTargetName = qs("#dpTargetName");
+        const dpTargetMeta = qs("#dpTargetMeta");
+
+        const btnApprove = qs("#btnApprove");
+        const btnReject = qs("#btnReject");
+        const btnSuspend = qs("#btnSuspend");
+        const btnBan = qs("#btnBan");
+
+        // Modals
+        const docViewerModalEl = qs("#docViewerModal");
+        const branchModalEl = qs("#branchModal");
+
+        const docViewerTitle = qs("#docViewerTitle");
+        const docViewerMeta = qs("#docViewerMeta");
+        const docDownloadLink = qs("#docDownloadLink");
+
+        const branchModalTitle = qs("#branchModalTitle");
+        const branchModalGrid = qs("#branchModalGrid");
+        const branchDocsList = qs("#branchDocsList");
+
+        // Tabs
+        const tabButtons = qsa(".tab-btn");
+        const panels = qsa(".nk-tab-panel");
+        const tabPlansBtn = qs("#tabPlansBtn");
+        const commercialSetupBanner = qs("#commercialSetupBanner");
+        const approvalStepChip = qs("#approvalStepChip");
+        const plansStepLabel = qs("#plansStepLabel");
+
+        function plansEnabledByStatus(st){
+          const v = (st || "").toString().toLowerCase();
+          return v === "active" || v === "approved";
+        }
+
+        function showPanel(id){
+          if (id === "tab-plans" && !plansEnabledByStatus(facility?.status)){
+            alert("Packages are available after insurance approval.");
+            return;
+          }
+          panels.forEach(p => p.classList.remove("is-active"));
+          tabButtons.forEach(b => b.classList.remove("is-active"));
+
+          const panel = qs("#"+id);
+          if (panel) panel.classList.add("is-active");
+
+          const btn = tabButtons.find(x => x.getAttribute("data-tab") === id);
+          if (btn) btn.classList.add("is-active");
+        }
+
+        tabButtons.forEach(btn => {
+          btn.addEventListener("click", () => showPanel(btn.getAttribute("data-tab")));
+        });
+
+        // State
+        const codeParam = (getParam("code") || "").toUpperCase();
+        const codeFallback = (sessionStorage.getItem("lastInsuranceCode") || "").toUpperCase();
+        const code = codeParam || codeFallback;
+        const facility = INSURANCES[code];
+        let selectedBranchId = null;
+        let branchRequests = [];
+
+        function hasSavedCompanyPackages(){
+          if (!code) return false;
+          try{
+            const key = "nk_insurance_company_packages_v1";
+            const raw = localStorage.getItem(key);
+            const parsed = raw ? JSON.parse(raw) : {};
+            const codeKey = (code || "").toUpperCase();
+            const localItems = Array.isArray(parsed && parsed[codeKey]) ? parsed[codeKey] : [];
+            const localCodes = localItems.map(function(item){
+              if (typeof item === "string") return item.trim().toUpperCase();
+              return String(item && item.code || "").trim().toUpperCase();
+            }).filter(Boolean);
+            if (localCodes.length) return true;
+
+            const rulesRaw = localStorage.getItem("nk_insurance_rate_rules");
+            const rules = rulesRaw ? JSON.parse(rulesRaw) : [];
+            if (!Array.isArray(rules)) return false;
+            return rules.some(function(rule){
+              const ruleCode = String(rule && rule.insuranceCompanyCode || "").trim().toUpperCase();
+              const targetType = String(rule && rule.targetType || "").trim().toLowerCase();
+              const targetCode = String(rule && rule.targetCode || "").trim();
+              return ruleCode === codeKey && targetType === "package" && !!targetCode;
+            });
+          }catch(err){
+            return false;
+          }
+        }
+
+        function renderCommercialPlanFlow(){
+          if (!commercialSetupBanner) return;
+          const st = (facility.status || "").toString().toLowerCase();
+          const approvalDone = st === "approved" || st === "active" || st === "inactive" || st === "banned";
+          const plansDone = hasSavedCompanyPackages();
+
+          commercialSetupBanner.classList.toggle("d-none", !approvalDone && !plansDone);
+          commercialSetupBanner.classList.toggle("is-ready", approvalDone && plansDone);
+          if (approvalStepChip) approvalStepChip.classList.toggle("is-done", approvalDone);
+          if (plansStepLabel) plansStepLabel.textContent = plansDone ? "Step 2: Packages Configured" : "Step 2: Configure Packages";
+          const step2 = qs("#btnGoInsurancePlans");
+          if (step2) step2.classList.toggle("is-done", plansDone);
+        }
+
+        // If not found
+        if (!facility){
+          // Hide decision panel and summary actions
+          qs("#decisionPanel")?.classList.add("d-none");
+          qs("#facilitySummary")?.classList.add("d-none");
+          showPanel("tab-notfound");
+          return;
+        }
+
+        try{
+          const lastCode = (sessionStorage.getItem("lastInsuranceCode") || "").toUpperCase();
+          const lastContract = sessionStorage.getItem("lastInsuranceContract") || "";
+          const syncFlag = sessionStorage.getItem("lastInsuranceStatusSync") || "";
+          if (syncFlag === "1" && lastCode && lastCode === code){
+            const mapped = statusFromContract(lastContract);
+            if (mapped) facility.status = mapped;
+          }
+          sessionStorage.removeItem("lastInsuranceStatusSync");
+        }catch(e){}
+
+        try{
+          if (facility.code) sessionStorage.setItem("lastInsuranceCode", facility.code.toUpperCase());
+        }catch(e){}
+        qs("#btnGoInsurancePlans")?.addEventListener("click", function(e){
+          e.preventDefault();
+          showPanel("tab-plans");
+        });
+
+        function normalizeFacilityData(f){
+          const mapInsuranceDoc = {
+            "Commercial Registration (CR)": "Commercial Registration (CR)",
+            "CR": "Commercial Registration (CR)",
+            "Bank Account Letter (IBAN)": "Bank Account Letter (IBAN)",
+            "Bank Account Letter": "Bank Account Letter (IBAN)",
+            "Bank IBAN Letter": "Bank Account Letter (IBAN)",
+            "Payer License Proof": "Payer License Proof",
+            "Payer License": "Payer License Proof",
+            "Owner ID": "Owner ID",
+            "Authorized Signatory / Responsible ID": "Owner ID",
+            "Responsible ID": "Owner ID",
+            "Owner / Owners ID": "Owner ID"
+          };
+
+          const defaults = [
+            { id:"doc_cr", name:"Commercial Registration (CR)", required:true, critical:true },
+            { id:"doc_bank_iban", name:"Bank Account Letter (IBAN)", required:true, critical:false },
+            { id:"doc_payer_license_proof", name:"Payer License Proof", required:true, critical:true },
+            { id:"doc_responsible_id", name:"Owner ID", required:true, critical:true }
+          ];
+
+          const currentDocs = (f.documents || []).map(d => ({...d}));
+          const normalizedDocs = defaults.map(def => {
+            const matched = currentDocs.find(d => mapInsuranceDoc[d.name] === def.name) || null;
+            return {
+              id: def.id,
+              name: def.name,
+              required: def.required,
+              critical: def.critical,
+              status: matched?.status || "approved",
+              uploadedAt: matched?.uploadedAt || f.submittedAt || todayISO(),
+              fileName: matched?.fileName || (def.name.replace(/[^a-zA-Z0-9]+/g, "_") + ".pdf")
+            };
+          });
+
+          f.documents = normalizedDocs;
+          f.branches = [];
+          f.branchRequests = [];
+          if (typeof f.entityName !== "string") f.entityName = f.name || "";
+          if (typeof f.payerLicenseNo !== "string") f.payerLicenseNo = f.license?.number || "";
+          if (typeof f.country !== "string") f.country = "";
+          if (typeof f.city !== "string") f.city = "";
+          if (typeof f.district !== "string") f.district = "";
+          if (typeof f.street !== "string") f.street = "";
+          if (typeof f.buildingNo !== "string") f.buildingNo = "";
+          if (typeof f.postalCode !== "string") f.postalCode = "";
+          if (typeof f.responsibleName !== "string") f.responsibleName = "";
+          if (typeof f.responsiblePhone !== "string") f.responsiblePhone = "";
+          if (typeof f.responsibleEmail !== "string") f.responsibleEmail = "";
+        }
+
+        normalizeFacilityData(facility);
+        branchRequests = (facility.branchRequests || []).map(x => ({...x}));
+
+        // ------------------------
+        // Render functions
+        // ------------------------
+        function renderSummary(){
+          sumName.textContent = facility.name || "-";
+          sumCode.textContent = formatCode(facility.code);
+          sumCity.textContent = facility.city || "-";
+          sumSubmitted.textContent = "Submitted: " + niceDate(facility.submittedAt);
+          sumUpdated.textContent = "Updated: " + niceDate(facility.updatedAt);
+
+          const stCls = statusClass(facility.status);
+          sumStatusBadge.className = "pm-badge " + stCls;
+          sumStatusBadge.textContent = statusLabel(facility.status);
+
+          dpStatus.className = "pm-badge " + stCls;
+          dpStatus.textContent = statusLabel(facility.status);
+          const summaryEl = qs("#facilitySummary");
+          if (summaryEl) summaryEl.dataset.insuranceStatus = (facility.status || "").toString().toLowerCase();
+          if (tabPlansBtn){
+            const enabled = plansEnabledByStatus(facility.status);
+            tabPlansBtn.classList.toggle("is-disabled", !enabled);
+            tabPlansBtn.title = enabled ? "Packages" : "Available after approval";
+          }
+          renderCommercialPlanFlow();
+        }
+
+        function addOV(label, value){
+          const div = document.createElement("div");
+          div.className = "ov-item";
+          div.innerHTML = `<div class="l">${esc(label)}</div><div class="v">${esc(value || "-")}</div>`;
+          return div;
+        }
+
+        function renderOverview(){
+          ovType.textContent = facility.type ? ("Type: " + facility.type) : "-";
+          overviewGrid.innerHTML = "";
+
+          overviewGrid.appendChild(addOV("Insurance Code", facility.code));
+          overviewGrid.appendChild(addOV("Entity Name", facility.entityName || facility.name));
+          overviewGrid.appendChild(addOV("Payer License Number", facility.payerLicenseNo));
+          overviewGrid.appendChild(addOV("Country", facility.country));
+          overviewGrid.appendChild(addOV("City", facility.city));
+          overviewGrid.appendChild(addOV("District", facility.district));
+          overviewGrid.appendChild(addOV("Street Name", facility.street));
+          overviewGrid.appendChild(addOV("Building Number", facility.buildingNo));
+          overviewGrid.appendChild(addOV("Postal Code", facility.postalCode));
+
+          contactGrid.innerHTML = "";
+          contactGrid.appendChild(addOV("Main Phone", formatPhone(facility.phone)));
+          contactGrid.appendChild(addOV("Main Email", facility.email));
+          contactGrid.appendChild(addOV("Responsible Person", facility.responsibleName));
+          contactGrid.appendChild(addOV("Responsible Mobile", facility.responsiblePhone));
+          contactGrid.appendChild(addOV("Responsible Email", facility.responsibleEmail));
+
+          // Metrics
+          const dc = calcDocsCompletion(facility.documents || []);
+          const cg = criticalGate(facility.documents || []);
+          const ls = licenseState(facility.license?.expiry);
+
+          mDocsCompletion.textContent = `${dc.pct}% (${dc.approved}/${dc.total} required)`;
+          mCriticalDocs.textContent = (cg.bad === 0) ? `OK (${cg.total} critical)` : `Issues (${cg.bad}/${cg.total})`;
+
+          if (ls.state === "expired") mLicenseRemaining.textContent = `Expired (${ls.days} days)`;
+          else if (ls.state === "soon") mLicenseRemaining.textContent = `Expiring in ${ls.days} days`;
+          else if (ls.state === "valid") mLicenseRemaining.textContent = `${ls.days} days`;
+          else mLicenseRemaining.textContent = "-";
+
+          // Queue age from submitted to today
+          const qa = facility.submittedAt ? Math.max(0, daysBetween(facility.submittedAt, todayISO())) : 0;
+          mQueueAge.textContent = `${qa} day${qa===1?"":"s"}`;
+        }
+
+        function renderDetailsTab(){
+          if (detEntityName) detEntityName.value = facility.entityName || facility.name || "";
+          if (detPayerLicenseNo) detPayerLicenseNo.value = facility.payerLicenseNo || "";
+          if (detCountry) detCountry.value = facility.country || "";
+          if (detCity) detCity.value = facility.city || "";
+          if (detDistrict) detDistrict.value = facility.district || "";
+          if (detStreet) detStreet.value = facility.street || "";
+          if (detBuildingNo) detBuildingNo.value = facility.buildingNo || "";
+          if (detPostalCode) detPostalCode.value = facility.postalCode || "";
+          if (detResponsibleName) detResponsibleName.value = facility.responsibleName || "";
+          if (detResponsiblePhone) detResponsiblePhone.value = facility.responsiblePhone || "";
+          if (detResponsibleEmail) detResponsibleEmail.value = facility.responsibleEmail || "";
+        }
+
+        function renderDocs(){
+          const docs = facility.documents || [];
+          const dc = calcDocsCompletion(docs);
+
+          docsHint.textContent = `Required completion: ${dc.pct}% (${dc.approved}/${dc.total})`;
+
+          docsList.innerHTML = "";
+
+          docs.forEach(doc => {
+            const row = document.createElement("div");
+            row.className = "doc-row";
+            const isApproved = doc.status === "approved";
+            const canReview = (doc.status === "pending" || doc.status === "needs-info");
+
+            const chips = [];
+            if (isApproved) chips.push(`<span class="doc-status approved">Approved</span>`);
+            if (doc.uploadedAt) chips.push(`<span class="chip"><i class="fi fi-rr-calendar"></i> ${niceDate(doc.uploadedAt)}</span>`);
+            if (doc.fileName) chips.push(`<span class="chip"><i class="fi fi-rr-clip"></i> ${esc(doc.fileName)}</span>`);
+
+            const viewBtnDisabled = (doc.status === "missing" || !doc.fileName) ? "disabled" : "";
+
+            row.innerHTML = `
+              <div class="doc-left">
+                <div class="doc-ic"><i class="fi fi-rr-document"></i></div>
+                <div class="doc-meta">
+                  <p class="doc-name" title="${esc(doc.name)}">${esc(doc.name)}</p>
+                  <div class="doc-sub">${chips.join("")}</div>
+                </div>
+              </div>
+              <div class="doc-actions">
+                <button class="btn-mini view" type="button" data-doc-view="${esc(doc.id)}" ${viewBtnDisabled}>
+                  <i class="fi fi-rr-eye"></i><span>View</span>
+                </button>
+                <button class="btn-mini warning" type="button" data-doc-reupload="${esc(doc.id)}">
+                  <i class="fi fi-rr-upload"></i><span>Re-upload</span>
+                </button>
+                ${canReview ? `<button class="btn-mini approve icon" type="button" data-doc-approve="${esc(doc.id)}" title="Approve">
+                  <i class="fi fi-rr-check"></i>
+                </button>` : ""}
+                ${canReview ? `<button class="btn-mini danger icon" type="button" data-doc-reject="${esc(doc.id)}" title="Reject">
+                  <i class="fi fi-rr-cross-small"></i>
+                </button>` : ""}
+              </div>
+            `;
+
+            docsList.appendChild(row);
+          });
+
+          // Doc buttons
+          qsa('[data-doc-view]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-view");
+              openDocViewer(id);
+            });
+          });
+
+          qsa('[data-doc-reupload]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-reupload");
+              reuploadDocument(id);
+            });
+          });
+
+          qsa('[data-doc-approve]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-approve");
+              approveDocument(id);
+            });
+          });
+
+          qsa('[data-doc-reject]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-doc-reject");
+              markDocRejected(id);
+            });
+          });
+        }
+
+        function renderLicenses(){
+          const lic = facility.license || {};
+          const ls = licenseState(lic.expiry);
+          const stateTxt =
+            ls.state === "valid" ? "Valid"
+            : ls.state === "soon" ? "Expiring Soon"
+            : ls.state === "expired" ? "Expired"
+            : "N/A";
+
+          licMainHint.textContent = `Status: ${stateTxt} - Expiry: ${niceDate(lic.expiry)}`;
+          licenseMainGrid.innerHTML = "";
+
+          licenseMainGrid.appendChild(addOV("License Number", lic.number));
+          licenseMainGrid.appendChild(addOV("Issuer", lic.issuer));
+          licenseMainGrid.appendChild(addOV("Expiry", niceDate(lic.expiry)));
+          licenseMainGrid.appendChild(addOV("Attachment", lic.attachmentName || "-"));
+
+          // Branch licenses table
+          branchLicensesTbody.innerHTML = "";
+          const branches = facility.branches || [];
+          if (!branches.length){
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="5" class="nk-muted" style="padding:14px;">No branches found.</td>`;
+            branchLicensesTbody.appendChild(tr);
+            return;
+          }
+
+          branches.forEach(br => {
+            const st = licenseState(br.licenseExpiry);
+            const label =
+              st.state === "valid" ? "Valid"
+              : st.state === "soon" ? "Expiring Soon"
+              : st.state === "expired" ? "Expired"
+              : "N/A";
+
+            const dotCls = licenseDotClass(st.state);
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${esc(br.name)}</td>
+              <td>${esc(br.city)}</td>
+              <td class="text-center">
+                <span class="license-dot ${dotCls}" title="${esc(label)}"></span>
+              </td>
+              <td>${niceDate(br.licenseExpiry)}</td>
+              <td class="text-right">
+                <button type="button" class="btn-mini view" data-branch-details="${esc(br.id)}">
+                  <i class="fi fi-rr-eye"></i><span>Details</span>
+                </button>
+              </td>
+            `;
+            branchLicensesTbody.appendChild(tr);
+          });
+
+          qsa('[data-branch-details]', branchLicensesTbody).forEach(btn => {
+            btn.addEventListener("click", () => openBranchModal(btn.getAttribute("data-branch-details")));
+          });
+        }
+
+        function renderBranches(){
+          const branches = facility.branches || [];
+          branchesHint.textContent = branches.length ? `${branches.length} branch(es)` : "No branches";
+          branchesTbody.innerHTML = "";
+
+          if (!branches.length){
+            const tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="6" class="nk-muted" style="padding:14px;">No branches found.</td>`;
+            branchesTbody.appendChild(tr);
+            selectedBranchId = null;
+            return;
+          }
+
+          if (selectedBranchId && !branches.find(x => x.id === selectedBranchId)){
+            selectedBranchId = null;
+          }
+
+          branches.forEach((br, idx) => {
+            const st = licenseState(br.licenseExpiry);
+            const dotCls = licenseDotClass(st.state);
+
+            const tr = document.createElement("tr");
+            tr.className = "branch-row" + (selectedBranchId === br.id ? " is-selected" : "");
+            tr.innerHTML = `
+              <td>${idx+1}</td>
+              <td>${esc(br.name)}</td>
+              <td>${esc(br.city)}</td>
+              <td class="text-center">${esc(br.docs?.completion ?? "-")}%</td>
+              <td class="text-center"><span class="license-dot ${dotCls}"></span></td>
+              <td class="text-right">
+                <div class="d-inline-flex flex-wrap gap-1 justify-content-end">
+                  <button type="button" class="btn-mini view" data-branch-review="${esc(br.id)}">
+                    <i class="fi fi-rr-check"></i><span>Review</span>
+                  </button>
+                  <button type="button" class="btn-mini" data-branch-details="${esc(br.id)}">
+                    <i class="fi fi-rr-eye"></i><span>Details</span>
+                  </button>
+                </div>
+              </td>
+            `;
+            branchesTbody.appendChild(tr);
+          });
+
+          qsa('[data-branch-review]', branchesTbody).forEach(btn => {
+            btn.addEventListener("click", () => {
+              const branchId = btn.getAttribute("data-branch-review");
+              selectedBranchId = (selectedBranchId === branchId) ? null : branchId;
+              updateDecisionTargetUI();
+              syncDecisionActions();
+              renderBranches();
+            });
+          });
+
+          qsa('[data-branch-details]', branchesTbody).forEach(btn => {
+            btn.addEventListener("click", () => openBranchModal(btn.getAttribute("data-branch-details")));
+          });
+        }
+
+        function touchUpdated(){
+          facility.updatedAt = todayISO();
+          sumUpdated.textContent = "Updated: " + niceDate(facility.updatedAt);
+        }
+
+        function getSelectedBranch(){
+          return (facility.branches || []).find(b => b.id === selectedBranchId) || null;
+        }
+
+        function getDecisionTarget(){
+          const branch = getSelectedBranch();
+          if (branch) return { kind: "branch", entity: branch };
+          return { kind: "facility", entity: facility };
+        }
+
+        function updateDecisionTargetUI(){
+          const target = getDecisionTarget();
+          const cls = statusClass(target.entity.status);
+
+          if (target.kind === "branch"){
+            dpTargetName.textContent = target.entity.name || "Branch";
+            dpTargetMeta.textContent = `Branch ID: ${target.entity.id}`;
+            dpHint.textContent = "Selected branch for review.";
+          }else{
+            dpTargetName.textContent = facility.name || "Insurance Company";
+            dpTargetMeta.textContent = `Insurance Code: ${formatCode(facility.code)}`;
+            dpHint.textContent = "Insurance review mode.";
+          }
+
+          dpStatus.className = "pm-badge " + cls;
+          dpStatus.textContent = statusLabel(target.entity.status);
+        }
+
+        function syncDecisionActions(){
+          const target = getDecisionTarget();
+          const st = target.entity.status;
+          const reviewState = (st === "new" || st === "pending" || st === "under-review" || st === "needs-info" || st === "rejected");
+          const approvedState = (st === "active" || st === "approved" || st === "inactive" || st === "banned");
+          const deletedState = (st === "deleted");
+
+          btnApprove.innerHTML = `<i class="fi fi-rr-badge-check"></i>Approve`;
+          btnReject.innerHTML = `<i class="fi fi-rr-cross-circle"></i>Reject`;
+          btnBan.innerHTML = `<i class="fi fi-rr-ban"></i>Ban`;
+
+          btnApprove.classList.toggle("d-none", !reviewState || deletedState);
+          btnReject.classList.toggle("d-none", !reviewState || deletedState);
+          btnSuspend.classList.toggle("d-none", !approvedState || deletedState);
+          btnBan.classList.toggle("d-none", !approvedState || deletedState);
+        }
+
+        function renderBranchRequests(){
+          if (!branchRequestsList) return;
+          branchRequestsList.innerHTML = "";
+
+          if (!branchRequests.length){
+            const empty = document.createElement("div");
+            empty.className = "nk-muted";
+            empty.textContent = "No new branch notifications.";
+            branchRequestsList.appendChild(empty);
+          }else{
+            branchRequests.forEach(req => {
+              const branch = (facility.branches || []).find(b => b.id === req.branchId);
+              const row = document.createElement("div");
+              row.className = "branch-req-item";
+              row.innerHTML = `
+                <div class="branch-req-text">
+                  <p class="branch-req-title">${esc(branch?.name || req.branchId)}</p>
+                  <p class="branch-req-meta">${esc(req.title || "Branch notification")}</p>
+                </div>
+                <button type="button" class="branch-req-close" data-dismiss-request="${esc(req.id)}" aria-label="Dismiss notification">X</button>
+              `;
+              branchRequestsList.appendChild(row);
+            });
+          }
+
+          qsa('[data-dismiss-request]', branchRequestsList).forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-dismiss-request");
+              branchRequests = branchRequests.filter(x => x.id !== id);
+              if (notifCount) notifCount.textContent = String(branchRequests.length);
+              renderBranchRequests();
+            });
+          });
+
+          if (notifCount) notifCount.textContent = String(branchRequests.length);
+        }
+
+        function openDocViewer(docId){
+          const doc = (facility.documents || []).find(d => d.id === docId);
+          if (!doc) return;
+
+          docViewerTitle.textContent = doc.name || "Document";
+          docViewerMeta.textContent = `Status: ${docStatusLabel(doc.status)} | Uploaded: ${doc.uploadedAt ? niceDate(doc.uploadedAt) : "-"} | File: ${doc.fileName || "-"}`;
+          docDownloadLink.setAttribute("href", "#");
+
+          if (window.bootstrap){
+            const m = new bootstrap.Modal(docViewerModalEl);
+            m.show();
+          }
+        }
+
+        function reuploadDocument(docId){
+          const doc = (facility.documents || []).find(d => d.id === docId);
+          if (!doc) return;
+          const fileName = prompt("Re-upload file name:", doc.fileName || "Document.pdf");
+          if (fileName === null) return;
+
+          doc.status = "pending";
+          doc.fileName = (fileName || "").trim() || "Document.pdf";
+          doc.uploadedAt = todayISO();
+          delete doc.rejectionReason;
+          touchUpdated();
+          renderAll();
+        }
+
+        function approveDocument(docId){
+          const doc = (facility.documents || []).find(d => d.id === docId);
+          if (!doc) return;
+          doc.status = "approved";
+          delete doc.rejectionReason;
+          if (!doc.uploadedAt) doc.uploadedAt = todayISO();
+          touchUpdated();
+          renderAll();
+        }
+
+        function markDocRejected(docId){
+          const doc = (facility.documents || []).find(d => d.id === docId);
+          if (!doc) return;
+          doc.status = "rejected";
+          delete doc.rejectionReason;
+          touchUpdated();
+          renderAll();
+        }
+
+        btnApprove?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          if (target.kind === "facility" && !hasSavedCompanyPackages()){
+            target.entity.status = "approved";
+            touchUpdated();
+            renderAll();
+            showPanel("tab-plans");
+            alert("Approval completed. You must configure and save Packages (Step 2) before insurance becomes Active.");
+            return;
+          }
+          target.entity.status = "active";
+          if (target.kind === "branch"){
+            branchRequests = branchRequests.filter(r => r.branchId !== target.entity.id);
+          }
+          touchUpdated();
+          renderAll();
+        });
+
+        btnReject?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          const reason = prompt("Rejection reason:", "Rejected by reviewer.");
+          if (reason === null) return;
+          target.entity.status = "rejected";
+          target.entity.rejectionReason = (reason || "").trim() || "Rejected by reviewer.";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnSuspend?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "inactive";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnBan?.addEventListener("click", () => {
+          const target = getDecisionTarget();
+          target.entity.status = "banned";
+          touchUpdated();
+          renderAll();
+        });
+
+        btnViewMainLicense?.addEventListener("click", () => {
+          docViewerTitle.textContent = "Payer License";
+          docViewerMeta.textContent = `License No: ${facility.license?.number || "-"} | Expiry: ${niceDate(facility.license?.expiry)} | File: ${facility.license?.attachmentName || "-"}`;
+          docDownloadLink.setAttribute("href", "#");
+          if (window.bootstrap){
+            const m = new bootstrap.Modal(docViewerModalEl);
+            m.show();
+          }
+        });
+
+        btnReplaceMainLicense?.addEventListener("click", () => {
+          const fileName = prompt("New payer license file name:", facility.license?.attachmentName || "Payer_License_Updated.pdf");
+          if (fileName === null) return;
+          facility.license.attachmentName = (fileName || "").trim() || "Payer_License_Updated.pdf";
+          facility.license.expiry = addDaysISO(todayISO(), 365);
+          touchUpdated();
+          renderAll();
+        });
+
+        btnSaveDetailsTab?.addEventListener("click", () => {
+          facility.entityName = (detEntityName?.value || "").trim();
+          facility.name = facility.entityName || facility.name;
+          facility.payerLicenseNo = (detPayerLicenseNo?.value || "").trim();
+          facility.country = (detCountry?.value || "").trim();
+          facility.city = (detCity?.value || "").trim();
+          facility.district = (detDistrict?.value || "").trim();
+          facility.street = (detStreet?.value || "").trim();
+          facility.buildingNo = (detBuildingNo?.value || "").trim();
+          facility.postalCode = (detPostalCode?.value || "").trim();
+          facility.responsibleName = (detResponsibleName?.value || "").trim();
+          facility.responsiblePhone = (detResponsiblePhone?.value || "").trim();
+          facility.responsibleEmail = (detResponsibleEmail?.value || "").trim();
+          if (facility.license){
+            facility.license.number = facility.payerLicenseNo || facility.license.number;
+          }
+
+          const savedAt = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+          touchUpdated();
+          renderAll();
+          if (detailsSaveHint) detailsSaveHint.textContent = `Saved at ${savedAt}`;
+        });
+
+        btnAddDocument?.addEventListener("click", () => {
+          const name = prompt("Document name:", "Additional Document");
+          if (name === null) return;
+          const clean = (name || "").trim();
+          if (!clean){
+            alert("Please enter document name.");
+            return;
+          }
+          const id = "doc_custom_" + Date.now();
+          facility.documents.push({
+            id,
+            name: clean,
+            required: false,
+            critical: false,
+            status: "pending",
+            uploadedAt: todayISO(),
+            fileName: clean.replace(/[^a-zA-Z0-9]+/g, "_") + ".pdf"
+          });
+          touchUpdated();
+          renderAll();
+        });
+
+        function openBranchModal(branchId){
+          const br = (facility.branches || []).find(b => b.id === branchId);
+          if (!br) return;
+
+          branchModalTitle.textContent = br.name || "Branch";
+
+          branchModalGrid.innerHTML = "";
+          branchModalGrid.appendChild(addOV("Branch ID", br.id));
+          branchModalGrid.appendChild(addOV("City", br.city));
+          branchModalGrid.appendChild(addOV("Address", br.address));
+          branchModalGrid.appendChild(addOV("License Expiry", niceDate(br.licenseExpiry)));
+
+          const st = licenseState(br.licenseExpiry);
+          const licDotCls = (st.state === "valid") ? "lic-valid" : "lic-expired";
+          const licStatusRow = document.createElement("div");
+          licStatusRow.className = "ov-item";
+          licStatusRow.innerHTML = `<div class="l">License Status</div><div class="v"><span class="license-dot ${licDotCls}"></span></div>`;
+          branchModalGrid.appendChild(licStatusRow);
+          branchModalGrid.appendChild(addOV("Docs Completion", (br.docs?.completion ?? "-") + "%"));
+
+          branchDocsList.innerHTML = "";
+          (br.documents || []).forEach(d => {
+            const row = document.createElement("div");
+            row.className = "doc-row";
+            row.style.marginTop = "10px";
+            row.innerHTML = `
+              <div class="doc-left">
+                <div class="doc-ic"><i class="fi fi-rr-document"></i></div>
+                <div class="doc-meta">
+                  <p class="doc-name">${esc(d.name)}</p>
+                  <div class="doc-sub">
+                    <span class="doc-status ${esc(d.status)}">${docStatusLabel(d.status)}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="doc-actions">
+                <button class="btn-mini view" type="button" disabled>
+                  <i class="fi fi-rr-eye"></i><span>View</span>
+                </button>
+              </div>
+            `;
+            branchDocsList.appendChild(row);
+          });
+
+          if (window.bootstrap){
+            const m = new bootstrap.Modal(branchModalEl);
+            m.show();
+          }
+        }
+
+        // ------------------------
+        // Render all
+        // ------------------------
+        function renderAll(){
+          renderSummary();
+          renderOverview();
+          renderDetailsTab();
+          renderDocs();
+          renderLicenses();
+          renderBranches();
+          renderBranchRequests();
+          updateDecisionTargetUI();
+          syncDecisionActions();
+
+          // Re-init tooltips
+          if (window.bootstrap){
+            qsa('[data-bs-toggle="tooltip"]').forEach(el => {
+              // avoid duplicates by disposing if exists
+              try{
+                const inst = bootstrap.Tooltip.getInstance(el);
+                if (inst) inst.dispose();
+              }catch(e){}
+              new bootstrap.Tooltip(el);
+            });
+          }
+        }
+
+        // Initial render
+        renderAll();
+
+        // Default tab: Overview
+        showPanel("tab-overview");
+
+        window.addEventListener("nk:insurance-packages-saved", function(ev){
+          const savedCode = (ev && ev.detail && ev.detail.code ? String(ev.detail.code) : "").toUpperCase();
+          if (!savedCode || savedCode !== (facility.code || "").toUpperCase()) return;
+          if ((facility.status || "").toLowerCase() === "approved" && hasSavedCompanyPackages()){
+            facility.status = "active";
+            touchUpdated();
+          }
+          renderAll();
+        });
+      })();
+    </script>
+
+    <script>
+      (function(){
+        const summary = document.getElementById("facilitySummary");
+        if (!summary || summary.classList.contains("d-none")) return;
+
+        const root = document.getElementById("insuranceCompanyPackagesRoot");
+        const saveBtn = document.getElementById("btnSavePlansTab");
+        const saveHint = document.getElementById("plansSaveHint");
+        const packageSelect = document.getElementById("companyPackageSelect");
+        const addBtn = document.getElementById("btnAddCompanyPackage");
+        const countHint = document.getElementById("companyPackagesCountHint");
+        if (!root || !saveBtn || !packageSelect || !addBtn || !countHint) return;
+
+        const params = new URLSearchParams(window.location.search);
+        const codeParam = (params.get("code") || "").toUpperCase();
+        const codeFallback = (sessionStorage.getItem("lastInsuranceCode") || "").toUpperCase();
+        const code = codeParam || codeFallback;
+        if (!code) return;
+
+        const COMPANY_PACKAGES_KEY = "nk_insurance_company_packages_v1";
+        const RATE_RULES_KEY = "nk_insurance_rate_rules";
+        const PKG_PRIMARY_KEY = "nk_insurance_packages";
+        const PKG_FALLBACK_KEY = "nk_insurance_package_templates_v1";
+        let allPackages = [];
+        let selectedCodes = [];
+
+        function norm(v){
+          return String(v == null ? "" : v).trim();
+        }
+        function upper(v){
+          return norm(v).toUpperCase();
+        }
+        function esc(v){
+          return String(v == null ? "" : v)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+        function readJson(key){
+          try{
+            const raw = localStorage.getItem(key);
+            if (!raw) return null;
+            return JSON.parse(raw);
+          }catch(err){
+            return null;
+          }
+        }
+        function writeJson(key, value){
+          localStorage.setItem(key, JSON.stringify(value));
+        }
+        function uniqueCodes(list){
+          const seen = {};
+          const out = [];
+          (Array.isArray(list) ? list : []).forEach(function(item){
+            const c = upper(item);
+            if (!c || seen[c]) return;
+            seen[c] = true;
+            out.push(c);
+          });
+          return out;
+        }
+        function normalizePackage(item, index){
+          const src = item || {};
+          const codeValue = upper(src.code || src.id || ("PKG-" + String(index + 1)));
+          const name = norm(src.name || src.nameEn || src.nameAr || codeValue);
+          return {
+            code: codeValue,
+            name: name,
+            mainService: norm(src.mainService),
+            unitType: norm(src.unitType || src.unit),
+            unitsCount: norm(src.unitsCount),
+            validityType: norm(src.validityType),
+            validityValue: norm(src.validityValue),
+            isActive: Object.prototype.hasOwnProperty.call(src, "isActive") ? !!src.isActive : true
+          };
+        }
+        function getAllPackages(){
+          if (window.NKInsurancePackageStore && typeof window.NKInsurancePackageStore.getAll === "function"){
+            return window.NKInsurancePackageStore.getAll().map(normalizePackage).filter(function(item){
+              return !!item.code;
+            });
+          }
+
+          const primary = readJson(PKG_PRIMARY_KEY);
+          if (Array.isArray(primary) && primary.length){
+            return primary.map(normalizePackage).filter(function(item){ return !!item.code; });
+          }
+
+          const fallback = readJson(PKG_FALLBACK_KEY);
+          if (Array.isArray(fallback) && fallback.length){
+            return fallback.map(normalizePackage).filter(function(item){ return !!item.code; });
+          }
+
+          return [];
+        }
+        function getRateRulePackageCodes(){
+          const rules = readJson(RATE_RULES_KEY);
+          if (!Array.isArray(rules)) return [];
+          return uniqueCodes(
+            rules
+              .filter(function(rule){
+                return upper(rule && rule.insuranceCompanyCode) === code &&
+                  norm(rule && rule.targetType).toLowerCase() === "package";
+              })
+              .map(function(rule){
+                return upper(rule && rule.targetCode);
+              })
+          );
+        }
+        function getLegacyRateSheetPackageCodes(){
+          const raw = readJson("nk_insurance_rate_sheet");
+          if (!raw) return [];
+
+          const out = [];
+          const pushIfMatch = function(entry, keyHint){
+            const insuranceCode = upper(
+              entry && (
+                entry.insuranceCompanyCode ||
+                entry.insuranceCode ||
+                entry.companyCode ||
+                entry.payerCode
+              )
+            );
+            const type = norm(entry && (entry.targetType || entry.itemType || entry.type)).toLowerCase();
+            const itemCode = upper(entry && (entry.targetCode || entry.itemCode || entry.code));
+
+            if (insuranceCode === code && type === "package" && itemCode) {
+              out.push(itemCode);
+              return;
+            }
+
+            const keyValue = norm(keyHint);
+            if (!keyValue) return;
+            const keyUpper = keyValue.toUpperCase();
+            if (keyUpper.indexOf(code) === -1 || keyUpper.indexOf("PACKAGE") === -1) return;
+
+            const parts = keyValue
+              .split(/[\|\:\;\,\#\/\\]+|__+/)
+              .map(function(part){ return norm(part); })
+              .filter(Boolean);
+            if (!parts.length) return;
+            const last = upper(parts[parts.length - 1]);
+            if (last) out.push(last);
+          };
+
+          if (Array.isArray(raw)) {
+            raw.forEach(function(entry){
+              pushIfMatch(entry, "");
+            });
+            return uniqueCodes(out);
+          }
+
+          if (typeof raw === "object") {
+            Object.keys(raw).forEach(function(key){
+              pushIfMatch(raw[key], key);
+            });
+            return uniqueCodes(out);
+          }
+
+          return [];
+        }
+        function getSavedCodes(){
+          const map = readJson(COMPANY_PACKAGES_KEY) || {};
+          const entries = Array.isArray(map[code]) ? map[code] : [];
+          const localCodes = uniqueCodes(entries.map(function(entry){
+            return typeof entry === "string" ? entry : (entry && entry.code);
+          }));
+          if (localCodes.length) return localCodes;
+
+          const rulesCodes = getRateRulePackageCodes();
+          if (rulesCodes.length) return rulesCodes;
+
+          const legacyCodes = getLegacyRateSheetPackageCodes();
+          if (legacyCodes.length) return legacyCodes;
+
+          return uniqueCodes(allPackages.map(function(item){
+            return item && item.code;
+          }));
+        }
+        function getPackageByCode(codeValue){
+          const key = upper(codeValue);
+          return allPackages.find(function(item){ return upper(item.code) === key; }) || null;
+        }
+        function validityText(pkg){
+          if (!pkg) return "-";
+          const value = norm(pkg.validityValue);
+          const type = norm(pkg.validityType);
+          if (!value) return "-";
+          return type ? (value + " " + type) : value;
+        }
+        function unitsText(pkg){
+          if (!pkg) return "-";
+          const unit = norm(pkg.unitType);
+          const count = norm(pkg.unitsCount);
+          if (!unit && !count) return "-";
+          if (!count) return unit;
+          if (!unit) return count;
+          return unit + " / " + count;
+        }
+        function updateAddButtonState(){
+          addBtn.disabled = !packageSelect.value || packageSelect.disabled;
+        }
+        function updateCountHint(){
+          countHint.textContent = "Packages: " + selectedCodes.length;
+        }
+        function renderSelect(){
+          const options = allPackages
+            .filter(function(item){ return item.isActive; })
+            .filter(function(item){ return selectedCodes.indexOf(upper(item.code)) === -1; });
+
+          let html = '<option value="">Select package</option>';
+          html += options.map(function(item){
+            const label = item.name + " (" + item.code + ")";
+            return '<option value="' + esc(item.code) + '">' + esc(label) + "</option>";
+          }).join("");
+          packageSelect.innerHTML = html;
+          updateAddButtonState();
+        }
+        function renderTable(){
+          if (!selectedCodes.length){
+            root.innerHTML = "<div class='nk-muted'>No packages linked to this insurance yet.</div>";
+            return;
+          }
+
+          const rows = selectedCodes.map(function(codeValue, idx){
+            const pkg = getPackageByCode(codeValue);
+            const name = pkg ? pkg.name : codeValue;
+            const mainService = pkg ? (pkg.mainService || "-") : "-";
+            const units = unitsText(pkg);
+            const validity = validityText(pkg);
+            return (
+              "<tr>" +
+                "<td>" + (idx + 1) + "</td>" +
+                "<td>" + esc(name) + "</td>" +
+                "<td><span class='chip'>" + esc(codeValue) + "</span></td>" +
+                "<td>" + esc(mainService) + "</td>" +
+                "<td>" + esc(units) + "</td>" +
+                "<td>" + esc(validity) + "</td>" +
+                "<td class='text-right'>" +
+                  "<button type='button' class='btn-mini danger btn-remove-company-package' data-code='" + esc(codeValue) + "'>" +
+                    "<i class='fi fi-rr-trash'></i><span>Remove</span>" +
+                  "</button>" +
+                "</td>" +
+              "</tr>"
+            );
+          }).join("");
+
+          root.innerHTML =
+            "<div class='table-responsive'>" +
+              "<table class='nk-table'>" +
+                "<thead>" +
+                  "<tr>" +
+                    "<th>#</th>" +
+                    "<th>Package Name</th>" +
+                    "<th>Code</th>" +
+                    "<th>Main Service</th>" +
+                    "<th>Unit / Count</th>" +
+                    "<th>Validity</th>" +
+                    "<th class='text-right'>Actions</th>" +
+                  "</tr>" +
+                "</thead>" +
+                "<tbody>" + rows + "</tbody>" +
+              "</table>" +
+            "</div>";
+        }
+        function persistSelection(showSavedHint){
+          const map = readJson(COMPANY_PACKAGES_KEY) || {};
+          const existing = Array.isArray(map[code]) ? map[code] : [];
+          const linkedAtByCode = {};
+          existing.forEach(function(entry){
+            const c = upper(typeof entry === "string" ? entry : (entry && entry.code));
+            if (!c) return;
+            linkedAtByCode[c] = norm(entry && entry.linkedAt) || new Date().toISOString();
+          });
+          map[code] = selectedCodes.map(function(c){
+            return {
+              code: c,
+              linkedAt: linkedAtByCode[c] || new Date().toISOString()
+            };
+          });
+          writeJson(COMPANY_PACKAGES_KEY, map);
+          if (!showSavedHint) return;
+          const t = new Date().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+          if (saveHint) saveHint.textContent = "Packages saved at " + t;
+          try{
+            window.dispatchEvent(new CustomEvent("nk:insurance-packages-saved", {
+              detail: { code: code.toUpperCase() }
+            }));
+          }catch(err){}
+        }
+        function rerender(){
+          updateCountHint();
+          renderSelect();
+          renderTable();
+        }
+
+        function canOpenPlansNow(){
+          const st = (summary.dataset.insuranceStatus || "").toLowerCase();
+          return st === "active" || st === "approved";
+        }
+
+        function refreshPlansAccess(){
+          if (canOpenPlansNow()){
+            packageSelect.disabled = false;
+            saveBtn.disabled = false;
+            rerender();
+            return;
+          }
+          packageSelect.disabled = true;
+          addBtn.disabled = true;
+          saveBtn.disabled = true;
+          countHint.textContent = "Packages: 0";
+          root.innerHTML = "<div class='nk-muted'>Packages step is available after insurance approval.</div>";
+        }
+
+        allPackages = getAllPackages();
+        selectedCodes = getSavedCodes();
+
+        packageSelect.addEventListener("change", updateAddButtonState);
+        addBtn.addEventListener("click", function(){
+          const codeValue = upper(packageSelect.value);
+          if (!codeValue) return;
+          if (selectedCodes.indexOf(codeValue) !== -1) return;
+          selectedCodes.push(codeValue);
+          rerender();
+        });
+        root.addEventListener("click", function(event){
+          const btn = event.target.closest(".btn-remove-company-package");
+          if (!btn) return;
+          const codeValue = upper(btn.getAttribute("data-code"));
+          selectedCodes = selectedCodes.filter(function(item){ return upper(item) !== codeValue; });
+          rerender();
+        });
+        saveBtn.addEventListener("click", function(){
+          persistSelection(true);
+        });
+
+        refreshPlansAccess();
+        window.addEventListener("click", refreshPlansAccess);
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+

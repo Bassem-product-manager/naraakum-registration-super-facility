@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Submitted Complaints</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root{--accent:#0f8c8c;--muted:#6b7280;--border:#e6eaef;--text:#101828;}
+      .complaints-wrap{display:grid;gap:14px;}
+      .toolbar-card,.table-card{border:1px solid var(--border);border-radius:12px;background:#fff;box-shadow:0 4px 14px rgba(16,24,40,.03);}
+      .toolbar-card{padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+      .toolbar-title{margin:0;font-size:18px;font-weight:900;color:var(--text);}
+      .toolbar-sub{margin-top:5px;font-size:12px;font-weight:700;color:var(--muted);}
+      .toolbar-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+      .complaint-search{width:300px;max-width:100%;height:40px;border:1px solid var(--border);border-radius:10px;padding:0 12px;font-weight:800;}
+      .filter-bar--compact-search .search-box-group{display:flex;align-items:center;gap:8px;}
+      .filter-bar--compact-search .search-box-group .form-control{flex:1 1 auto;min-width:260px;height:40px;border-radius:12px;}
+      .filter-bar--compact-search .search-box-group .btn-32{width:40px;height:40px;padding:0;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;}
+      .search-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+      .table-card{overflow:hidden;}
+      .complaints-table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed;background:#fff;}
+      .complaints-table th{background:rgba(15,140,140,.95);color:#fff;font-size:12px;font-weight:900;padding:11px 12px;text-align:left;white-space:nowrap;}
+      .complaints-table td{padding:12px;border-bottom:1px solid rgba(16,24,40,.07);font-size:13px;color:var(--text);vertical-align:middle;}
+      .complaints-table tr{cursor:pointer;}
+      .complaints-table tr:hover td{background:rgba(15,140,140,.035);}
+      .complaints-table th:nth-child(1),.complaints-table td:nth-child(1){width:17%;}
+      .complaints-table th:nth-child(2),.complaints-table td:nth-child(2){width:19%;}
+      .complaints-table th:nth-child(3),.complaints-table td:nth-child(3){width:12%;}
+      .complaints-table th:nth-child(4),.complaints-table td:nth-child(4){width:14%;}
+      .complaints-table th:nth-child(5),.complaints-table td:nth-child(5){width:15%;}
+      .complaints-table th:nth-child(6),.complaints-table td:nth-child(6){width:14%;}
+      .complaints-table th:nth-child(7),.complaints-table td:nth-child(7){width:9%;text-align:center;}
+      .cell-main{font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .cell-sub{margin-top:4px;font-size:12px;font-weight:700;color:#8aa0c7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .pill{display:inline-flex;align-items:center;justify-content:center;min-width:88px;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900;border:1px solid transparent;}
+      .pill-progress{background:rgba(0,122,255,.08);border-color:rgba(0,122,255,.16);color:#007aff;}
+      .pill-closed{background:rgba(0,180,98,.08);border-color:rgba(0,180,98,.18);color:#00b462;}
+      .priority{font-size:12px;font-weight:900;border-radius:999px;padding:6px 10px;background:#f8fafc;border:1px solid var(--border);display:inline-flex;min-width:74px;justify-content:center;}
+      .priority-high,.priority-urgent{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.18);color:#dc2626;}
+      .view-link{width:34px;height:34px;border:0;background:rgba(15,140,140,.08);color:var(--accent);font-size:16px;font-weight:900;border-radius:10px;padding:0;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;}
+      .view-link:hover{background:rgba(15,140,140,.14);}
+      .empty-state{padding:36px 16px;text-align:center;color:var(--muted);font-weight:800;}
+      .side-menu-logo .hospital-logo-big{width:64px;height:64px;border-radius:16px;border:1px solid rgba(15,140,140,.18);background:#fff;padding:6px;object-fit:contain;display:block;margin:8px auto 10px;}
+      .facility-line{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+      .facility-mini-logo{width:22px;height:22px;border-radius:8px;border:1px solid rgba(15,140,140,.18);background:#fff;padding:3px;object-fit:contain;flex:0 0 22px;}
+      .facility-name{font-weight:900;line-height:1;margin:0;}
+      .ksa-clock{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:12px;font-weight:900;font-size:12px;color:#101828;white-space:nowrap;}
+      .ksa-clock .tz{color:var(--accent);font-weight:900;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);}
+      @media(max-width:900px){.table-card{overflow-x:auto;}.complaints-table{min-width:920px;}.toolbar-actions{width:100%;}.complaint-search{width:100%;}.filter-bar--compact-search .search-box-group .form-control{min-width:0;}}
+    </style>
+  </head>
+  <body>
+    <div class="preloader"></div>
+    <div id="full-container">
+      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+        <ul class="side-menu-list" style="flex:1;display:flex;flex-direction:column">
+          <li><a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a></li>
+          <li id="menu-orders">
+            <a class="menu-list-item"><span>Order Management</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Orders List</span></a>
+              <a href="../orders/facility-insurance-requests.html"><i class="fi fi-rr-angle-small-right"></i><span>Insurance Queue</span></a>
+              <a href="../payments/transaction-orders.html"><i class="fi fi-rr-angle-small-right"></i><span>Transaction Orders</span></a>
+            </div>
+          </li>
+          <li id="menu-staff">
+            <a class="menu-list-item"><span>Staff Management</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff List</span></a>
+              <a href="../staff/ratings.html"><i class="fi fi-rr-angle-small-right"></i><span>Ratings</span></a>
+              <a href="../staff/performance.html"><i class="fi fi-rr-angle-small-right"></i><span>Performance</span></a>
+              <a href="../staff/provider-add.html" class="add-provider-link"><span class="plus-icon">+</span><span>Add Provider</span></a>
+            </div>
+          </li>
+          <li id="menu-services">
+            <a class="menu-list-item"><span>Services &amp; Packages</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../services/services-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Main Services</span></a>
+              <a href="../services/services.html"><i class="fi fi-rr-angle-small-right"></i><span>Services</span></a>
+              <a href="../services/facility-packages.html"><i class="fi fi-rr-angle-small-right"></i><span>Packages</span></a>
+              <a href="../services/custom-price.html"><i class="fi fi-rr-angle-small-right"></i><span>Custom Price</span></a>
+              <a href="../services/coupons.html"><i class="fi fi-rr-angle-small-right"></i><span>Coupons</span></a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link"><span class="plus-icon">+</span><span>Add Service</span></a>
+            </div>
+          </li>
+          <li id="menu-calendar">
+            <a class="menu-list-item"><span>Calendar</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html"><i class="fi fi-rr-angle-small-right"></i><span>Branch Calendar</span></a>
+              <a href="../calendar/staff-calendar.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff Calendar</span></a>
+            </div>
+          </li>
+          <li id="menu-patients">
+            <a class="menu-list-item"><span>Patients</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html"><i class="fi fi-rr-angle-small-right"></i><span>Patients List</span></a>
+              <a href="../patients/patient-ratings.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Ratings</span></a>
+              <a href="../patients/patient-monitoring.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Monitoring</span></a>
+            </div>
+          </li>
+          <li id="menu-messages">
+            <a class="menu-list-item"><span>Messages</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../messages/messages.html"><i class="fi fi-rr-angle-small-right"></i><span>All Messages</span></a>
+              <a href="../messages/messages-staff.html"><i class="fi fi-rr-angle-small-right"></i><span>Staff Messages</span></a>
+              <a href="../messages/messages-patients.html"><i class="fi fi-rr-angle-small-right"></i><span>Patient Messages</span></a>
+              <a href="../messages/messages-system.html"><i class="fi fi-rr-angle-small-right"></i><span>System Messages</span></a>
+            </div>
+          </li>
+          <li><a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a></li>
+          <li id="menu-payments">
+            <a class="menu-list-item"><span>Payments</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html"><i class="fi fi-rr-angle-small-right"></i><span>Transaction Orders</span></a>
+              <a href="../payments/deposits.html"><i class="fi fi-rr-angle-small-right"></i><span>Deposits</span></a>
+              <a href="../payments/tax-invoices.html"><i class="fi fi-rr-angle-small-right"></i><span>Tax Invoices</span></a>
+            </div>
+          </li>
+          <li id="menu-settings">
+            <a class="menu-list-item"><span>Facility Settings</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html"><i class="fi fi-rr-angle-small-right"></i><span>Facility Information</span></a>
+              <a href="../settings/branches.html"><i class="fi fi-rr-angle-small-right"></i><span>Branches</span></a>
+              <a href="../settings/facility-insurance.html"><i class="fi fi-rr-angle-small-right"></i><span>Insurance</span></a>
+            </div>
+          </li>
+          <li id="menu-admin">
+            <a class="menu-list-item"><span>Admin</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list">
+              <a href="../admin/admins.html"><i class="fi fi-rr-angle-small-right"></i><span>Admins</span></a>
+              <a href="../admin/roles-permissions.html"><i class="fi fi-rr-angle-small-right"></i><span>Roles &amp; Permissions</span></a>
+            </div>
+          </li>
+          <li id="menu-more" class="active">
+            <a class="menu-list-item"><span>More</span><i class="fi fi-rr-caret-down"></i></a>
+            <div class="sub-list" style="display:block;">
+              <a href="../more/terms.html"><i class="fi fi-rr-angle-small-right"></i><span>Terms and Conditions</span></a>
+              <a href="../more/complaints-suggestions.html"><i class="fi fi-rr-angle-small-right"></i><span>Complaints &amp; Suggestions</span></a>
+              <a href="../more/submitted-complaints.html" class="active"><i class="fi fi-rr-angle-small-right"></i><span>Submitted Complaints</span></a>
+            </div>
+          </li>
+          <li style="margin-top:auto"><a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a></li>
+        </ul>
+      </aside>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Submitted Complaints</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+            </div>
+          </div>
+        </header>
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="complaints-suggestions.html">More</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Submitted Complaints</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div class="complaints-wrap">
+            <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+              <div class="row g-3 align-items-center">
+                <div class="col-12 col-lg">
+                  <div class="search-box-group w-100 search-box-group--md">
+                    <input id="complaintSearch" type="text" class="form-control form-control-32" placeholder="Search by complaint ID / type / handler" />
+                    <button id="btnComplaintSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                      <i class="fi fi-rr-search"></i>
+                    </button>
+                    <button id="btnComplaintReset" type="button" class="btn btn-primary-revers btn-32" title="Reset">
+                      <i class="fi fi-rr-rotate-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-auto">
+                  <div class="search-actions">
+                    <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#complaints-filter-modal" type="button">
+                      <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                    </button>
+                    <a href="complaints-suggestions.html" class="btn btn-primary btn-icon btn-40">
+                      <i class="fi fi-rr-plus-small"></i><span>New Complaint</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <section class="table-card">
+              <table class="complaints-table" aria-label="Submitted complaints table">
+                <thead>
+                  <tr>
+                    <th>Complaint ID</th>
+                    <th>Type</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Submitted</th>
+                    <th>Handled By</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="complaintsBody"></tbody>
+              </table>
+              <div id="emptyState" class="empty-state" hidden>No complaints found.</div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="complaints-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Complaints</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="cfStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>In Progress</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Priority</label>
+                <select id="cfPriority" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Urgent</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Handled By</label>
+                <select id="cfHandledBy" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>Platform Admin</option>
+                  <option>Unassigned</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Type</label>
+                <select id="cfType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>Service Quality</option>
+                  <option>Staff Behavior</option>
+                  <option>Scheduling / Delay</option>
+                  <option>Billing / Payments</option>
+                  <option>Technical Issue</option>
+                  <option>App Feature Suggestion</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Date From</label>
+                <input id="cfDateFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Date To</label>
+                <input id="cfDateTo" type="date" class="form-control form-control-32" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnComplaintFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnComplaintApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function(){
+        const storageKey = "naraakumComplaints";
+        const body = document.getElementById("complaintsBody");
+        const empty = document.getElementById("emptyState");
+        const search = document.getElementById("complaintSearch");
+        const btnSearch = document.getElementById("btnComplaintSearch");
+        const btnReset = document.getElementById("btnComplaintReset");
+        const filterFields = {
+          status: document.getElementById("cfStatus"),
+          priority: document.getElementById("cfPriority"),
+          handledBy: document.getElementById("cfHandledBy"),
+          type: document.getElementById("cfType"),
+          dateFrom: document.getElementById("cfDateFrom"),
+          dateTo: document.getElementById("cfDateTo")
+        };
+        const btnApplyFilter = document.getElementById("btnComplaintApplyFilter");
+        const btnFilterReset = document.getElementById("btnComplaintFilterReset");
+
+        function seed(){
+          return [
+            {id:"CMP-2026-000003",reqType:"Service Quality",priority:"High",details:"نقص 4545",status:"In Progress",submittedAt:"2026-06-10T09:24:00.000Z",handledBy:"Platform Admin",attachments:[]},
+            {id:"CMP-2026-000002",reqType:"Staff Behavior",priority:"Normal",details:"-",status:"Closed",submittedAt:"2026-06-09T11:15:00.000Z",handledBy:"Platform Admin",attachments:[]},
+            {id:"CMP-2026-000001",reqType:"Service Quality",priority:"Normal",details:"Patient reported a billing discrepancy that was resolved after review.",status:"Closed",submittedAt:"2026-06-08T14:45:00.000Z",handledBy:"Unassigned",attachments:[]}
+          ];
+        }
+        function load(){
+          try{
+            const raw = localStorage.getItem(storageKey);
+            if(!raw){ const seeded = seed(); localStorage.setItem(storageKey, JSON.stringify(seeded)); return seeded; }
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : seed();
+          }catch(e){ return seed(); }
+        }
+        function fmtDate(value){
+          const d = new Date(value);
+          if(isNaN(d)) return "-";
+          return d.toLocaleDateString("en-US",{month:"short",day:"2-digit",year:"numeric"});
+        }
+        function statusClass(status){ return String(status).toLowerCase() === "closed" ? "pill-closed" : "pill-progress"; }
+        function openDetails(id){ window.location.href = "complaint-details.html?id=" + encodeURIComponent(id); }
+        function sameText(a,b){ return String(a || "").toLowerCase() === String(b || "").toLowerCase(); }
+        function inDateRange(value){
+          const d = new Date(value);
+          if(isNaN(d)) return true;
+          const fromValue = filterFields.dateFrom.value;
+          const toValue = filterFields.dateTo.value;
+          if(fromValue){
+            const from = new Date(fromValue + "T00:00:00");
+            if(d < from) return false;
+          }
+          if(toValue){
+            const to = new Date(toValue + "T23:59:59");
+            if(d > to) return false;
+          }
+          return true;
+        }
+        function matchesAdvancedFilters(item){
+          if(filterFields.status.value && !sameText(item.status, filterFields.status.value)) return false;
+          if(filterFields.priority.value && !sameText(item.priority, filterFields.priority.value)) return false;
+          if(filterFields.handledBy.value && !sameText(item.handledBy, filterFields.handledBy.value)) return false;
+          if(filterFields.type.value && !sameText(item.reqType, filterFields.type.value)) return false;
+          return inDateRange(item.submittedAt);
+        }
+        function render(){
+          const q = (search.value || "").trim().toLowerCase();
+          const items = load();
+          const filtered = items.filter(function(item){
+            const hay = [item.id,item.reqType,item.priority,item.status,item.handledBy,item.details].join(" ").toLowerCase();
+            return (!q || hay.includes(q)) && matchesAdvancedFilters(item);
+          });
+          body.innerHTML = "";
+          filtered.forEach(function(item){
+            const tr = document.createElement("tr");
+            tr.innerHTML =
+              '<td><div class="cell-main">' + item.id + '</div><div class="cell-sub">' + (item.attachments || []).length + ' attachment(s)</div></td>' +
+              '<td><div class="cell-main">' + item.reqType + '</div><div class="cell-sub">' + (item.details || "-") + '</div></td>' +
+              '<td><span class="priority priority-' + String(item.priority).toLowerCase() + '">' + item.priority + '</span></td>' +
+              '<td><span class="pill ' + statusClass(item.status) + '">' + item.status + '</span></td>' +
+              '<td><div class="cell-main">' + fmtDate(item.submittedAt) + '</div></td>' +
+              '<td><div class="cell-main">' + (item.handledBy || "Unassigned") + '</div><div class="cell-sub">Handled by</div></td>' +
+              '<td><button type="button" class="view-link" title="View details" aria-label="View details"><i class="fi fi-rr-eye"></i></button></td>';
+            tr.addEventListener("click", function(){ openDetails(item.id); });
+            tr.querySelector("button").addEventListener("click", function(e){ e.stopPropagation(); openDetails(item.id); });
+            body.appendChild(tr);
+          });
+          empty.hidden = filtered.length !== 0;
+        }
+        function resetAll(){
+          search.value = "";
+          Object.keys(filterFields).forEach(function(key){ filterFields[key].value = ""; });
+          render();
+        }
+        if(btnSearch) btnSearch.addEventListener("click", render);
+        search.addEventListener("input", render);
+        search.addEventListener("keydown", function(e){ if(e.key === "Enter") render(); });
+        if(btnReset) btnReset.addEventListener("click", resetAll);
+        if(btnApplyFilter) btnApplyFilter.addEventListener("click", render);
+        if(btnFilterReset) btnFilterReset.addEventListener("click", resetAll);
+        render();
+      })();
+    </script>
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+        function tick(){
+          try{ el.textContent = new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Riyadh",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(new Date()); }
+          catch(e){ el.textContent = new Date().toLocaleTimeString("en-US",{hour12:true}); }
+        }
+        tick(); setInterval(tick,1000);
+      })();
+    </script>
+  </body>
+</html>

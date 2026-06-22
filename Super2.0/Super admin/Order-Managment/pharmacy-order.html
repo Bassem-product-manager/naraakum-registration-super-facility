@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Pharmacy Orders</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green:#0f8c8c; }
+
+    /* Hide duplicated order-code shown inside patient name */
+    .patient-cell .patient-info .name .staff-code { display: none !important; }
+
+    /* ===== Table alignment ===== */
+    .orders-table th, .orders-table td { vertical-align: middle; }
+    .orders-table .col-code { white-space: nowrap; }
+    .orders-table .invoice-cell{
+      text-align:center;
+      white-space: nowrap;
+    }
+    .orders-table .status-cell{
+      text-align:center;
+      white-space:nowrap;
+    }
+    .order-status-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:108px;
+      height:28px;
+      padding:0 12px;
+      border-radius:999px;
+      border:1px solid transparent;
+      font-size:12px;
+      font-weight:900;
+      letter-spacing:.2px;
+      white-space:nowrap;
+    }
+    .order-status-badge.pending{
+      color:#b54708;
+      background:rgba(247,144,9,.10);
+      border-color:rgba(247,144,9,.24);
+    }
+    .order-status-badge.in-progress{
+      color:#155eef;
+      background:rgba(41,112,255,.10);
+      border-color:rgba(41,112,255,.24);
+    }
+    .order-status-badge.completed{
+      color:#067647;
+      background:rgba(18,183,106,.10);
+      border-color:rgba(18,183,106,.24);
+    }
+    .order-status-badge.cancelled{
+      color:#b42318;
+      background:rgba(240,68,56,.10);
+      border-color:rgba(240,68,56,.24);
+    }
+    .order-status-badge.failed{
+      color:#912018;
+      background:rgba(240,68,56,.16);
+      border-color:rgba(240,68,56,.30);
+    }
+
+    /* ===== KSA Clock ===== */
+    .ksa-clock{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:34px;
+      padding:0 10px;
+      border:1px solid rgba(16,24,40,.10);
+      background:#fff;
+      border-radius:12px;
+      font-weight:900;
+      font-size:12px;
+      color:#101828;
+      white-space:nowrap;
+    }
+    .ksa-clock .tz{
+      color:var(--nk-green);
+      font-weight:900;
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(15,140,140,.22);
+      background:rgba(15,140,140,.06);
+    }
+
+    /* ==== Sidebar logo area (BMC) ==== */
+    .facility-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:6px;
+    }
+    .facility-mini-logo{
+      width:22px;
+      height:22px;
+      border-radius:8px;
+      border:1px solid rgba(15,140,140,.18);
+      background:#fff;
+      padding:3px;
+      object-fit:contain;
+      flex:0 0 22px;
+    }
+    .facility-name{
+      font-weight:900;
+      line-height:1;
+      margin:0;
+    }
+  
+    /* ===== Invoices (3 icons) ===== */
+    .orders-table .invoice-actions{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .orders-table .inv-icon{
+      position:relative;
+      width:34px;
+      height:34px;
+      border-radius:10px;
+      border:1px solid rgba(16,24,40,.12);
+      background:#fff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      cursor:pointer;
+      user-select:none;
+    }
+    .orders-table .inv-icon i{
+      color:var(--nk-green);
+      font-size:16px;
+      line-height:1;
+    }
+    .orders-table .inv-icon:hover{
+      border-color: rgba(15,140,140,.35);
+      box-shadow: 0 6px 14px rgba(16,24,40,.08);
+      background: rgba(15,140,140,.04);
+    }
+    .orders-table .inv-icon:focus-visible{
+      outline:3px solid rgba(15,140,140,.25);
+      outline-offset:2px;
+    }
+
+    /* Custom tooltip (hover) */
+    .orders-table .inv-icon[data-tip]::after{
+      content: attr(data-tip);
+      position:absolute;
+      bottom: calc(100% + 10px);
+      left:50%;
+      transform: translateX(-50%);
+      background:#101828;
+      color:#fff;
+      font-weight:800;
+      font-size:11px;
+      padding:6px 8px;
+      border-radius:10px;
+      white-space:nowrap;
+      opacity:0;
+      pointer-events:none;
+      transition: .15s ease;
+      box-shadow: 0 10px 18px rgba(16,24,40,.18);
+      z-index:5;
+    }
+    .orders-table .inv-icon[data-tip]::before{
+      content:"";
+      position:absolute;
+      bottom: calc(100% + 4px);
+      left:50%;
+      transform: translateX(-50%);
+      border:7px solid transparent;
+      border-top-color:#101828;
+      opacity:0;
+      pointer-events:none;
+      transition: .15s ease;
+      z-index:5;
+    }
+    .orders-table .inv-icon:hover::after,
+    .orders-table .inv-icon:hover::before,
+    .orders-table .inv-icon:focus-visible::after,
+    .orders-table .inv-icon:focus-visible::before{
+      opacity:1;
+    }
+
+</style>
+    <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+    </style>  </head>
+
+<body data-menu="menu-orders">
+  <div class="preloader"></div>
+
+  <div id="full-container">
+    <!-- Side Menu -->
+    <div id="sidebar-slot" data-base="../"></div>
+
+    <main class="main-page">
+                              <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Order Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+      <div class="page-root">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+            <li class="breadcrumb-item active" aria-current="page">Pharmacy Orders</li>
+          </ol>
+        </nav>
+      </div>
+
+      <div class="page-content">
+        <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-lg">
+              <div class="search-box-group w-100 search-box-group--md">
+                <input id="ordersSearchInput" type="text" class="form-control form-control-32" placeholder="Search by Order No / Patient / Pharmacy / Code / Medication / Rx Type / City / Status" />
+                <button id="btnOrdersSearch" type="button" class="btn btn-primary btn-32" title="Search"><i class="fi fi-rr-search"></i></button>
+                <button id="btnOrdersReset" type="button" class="btn btn-primary-revers btn-32"><i class="fi fi-rr-rotate-right"></i></button>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-auto">
+              <div class="search-actions">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#orders-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+                <a href="../Order-Managment/pharmacy-order.html" class="btn btn-primary btn-icon btn-40"><i class="fi fi-rr-plus-small"></i><span>New Order</span></a>
+                <button id="btnOrdersExport" type="button" class="btn btn-primary-revers btn-icon btn-40"><i class="fi fi-rr-download"></i><span>Export</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tabel-box-item mt-24 orders-table-wrap">
+          <div class="box-body p-12">
+            <div class="table-responsive">
+              <table class="staff-table naraakum-table table-tight orders-table" id="ordersTable">
+                <thead>
+                  <tr>
+                    <th class="col-check"><div class="head-check"><input type="checkbox" id="checkAllVisibleOrders" title="Select visible rows" /></div></th>
+                    <th class="col-seq">#</th>
+                    <th class="col-code">Order No</th>
+                    <th>Pharmacy</th>
+                    <th>Patient Name</th>
+                    <th>Medication</th>
+                    <th class="text-center">Items</th>
+                    <th>Fulfillment</th>
+                    <th>City</th>
+                    <th>Order Date</th>
+                    <th>Scheduled Date</th>
+                    <th>Price</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Preview</th>
+                  </tr>
+                </thead>
+
+                <tbody id="ordersTbody">
+                  <tr data-order="br03-or-00011" data-org="12" data-order-display="12-03-000011" data-patient="john doe" data-medication="amoxicillin 500 mg capsules" data-rx-type="new" data-items="2" data-fulfillment="pickup" data-pharmacy-name="BMC Community Pharmacy" data-pharmacy-code="PH-00001" data-pharmacy-city="riyadh" data-orderdate="2026-02-03" data-status="pending">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">1</span></td>
+                    <td class="col-code"><span class="staff-code order-code">12-03-000011</span></td>
+                    <td><div class="service-name">BMC Community Pharmacy</div><div class="service-main">PH-00001</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">12-03-000011</span>John Doe</p>
+                          <div class="meta">Male, 45</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Amoxicillin 500 mg Capsules</div><div class="service-main">New Rx</div></td>
+                    <td class="text-center">2</td>
+                    <td>Pickup</td>
+                    <td>Riyadh</td>
+                    <td><div class="date-top">Feb 03, 2026</div><div class="date-sub">10:15 AM</div></td>
+                    <td><div class="date-top">Feb 03, 2026</div><div class="date-sub">11:30 AM</div></td>
+                    <td class="price-cell"><span class="bold">88.50</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00012" data-org="122" data-order-display="122-03-000012" data-patient="jane roe" data-medication="metformin 850 mg tablets" data-rx-type="refill" data-items="1" data-fulfillment="delivery" data-pharmacy-name="Al Noor Pharmacy" data-pharmacy-code="PH-00002" data-pharmacy-city="jeddah" data-orderdate="2026-02-03" data-status="in-progress">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">2</span></td>
+                    <td class="col-code"><span class="staff-code order-code">122-03-000012</span></td>
+                    <td><div class="service-name">Al Noor Pharmacy</div><div class="service-main">PH-00002</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">122-03-000012</span>Jane Roe</p>
+                          <div class="meta">Female, 32</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Metformin 850 mg Tablets</div><div class="service-main">Refill Rx</div></td>
+                    <td class="text-center">1</td>
+                    <td>Delivery</td>
+                    <td>Jeddah</td>
+                    <td><div class="date-top">Feb 03, 2026</div><div class="date-sub">11:05 AM</div></td>
+                    <td><div class="date-top">Feb 04, 2026</div><div class="date-sub">09:30 AM</div></td>
+                    <td class="price-cell"><span class="bold">54.00</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00013" data-org="4" data-order-display="4-03-000013" data-patient="mike lee" data-medication="insulin glargine pen" data-rx-type="controlled" data-items="3" data-fulfillment="urgent delivery" data-pharmacy-name="Green Valley Pharmacy" data-pharmacy-code="PH-00003" data-pharmacy-city="dammam" data-orderdate="2026-02-02" data-status="completed">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">3</span></td>
+                    <td class="col-code"><span class="staff-code order-code">4-03-000013</span></td>
+                    <td><div class="service-name">Green Valley Pharmacy</div><div class="service-main">PH-00003</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">4-03-000013</span>Mike Lee</p>
+                          <div class="meta">Male, 28</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Insulin Glargine Pen</div><div class="service-main">Controlled Rx</div></td>
+                    <td class="text-center">3</td>
+                    <td>Urgent Delivery</td>
+                    <td>Dammam</td>
+                    <td><div class="date-top">Feb 02, 2026</div><div class="date-sub">03:20 PM</div></td>
+                    <td><div class="date-top">Feb 02, 2026</div><div class="date-sub">05:00 PM</div></td>
+                    <td class="price-cell"><span class="bold">289.00</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00014" data-org="98" data-order-display="98-03-000014" data-patient="aisha karim" data-medication="ibuprofen 400 mg tablets" data-rx-type="new" data-items="1" data-fulfillment="pickup" data-pharmacy-name="Future Care Pharmacy" data-pharmacy-code="PH-00004" data-pharmacy-city="riyadh" data-orderdate="2026-02-01" data-status="pending">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">4</span></td>
+                    <td class="col-code"><span class="staff-code order-code">98-03-000014</span></td>
+                    <td><div class="service-name">Future Care Pharmacy</div><div class="service-main">PH-00004</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">98-03-000014</span>Aisha Karim</p>
+                          <div class="meta">Female, 37</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Ibuprofen 400 mg Tablets</div><div class="service-main">New Rx</div></td>
+                    <td class="text-center">1</td>
+                    <td>Pickup</td>
+                    <td>Riyadh</td>
+                    <td><div class="date-top">Feb 01, 2026</div><div class="date-sub">08:50 AM</div></td>
+                    <td><div class="date-top">Feb 01, 2026</div><div class="date-sub">10:15 AM</div></td>
+                    <td class="price-cell"><span class="bold">21.75</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00015" data-org="12" data-order-display="12-03-000015" data-patient="omar saad" data-medication="vitamin d3 50000 iu" data-rx-type="refill" data-items="1" data-fulfillment="delivery" data-pharmacy-name="BMC Community Pharmacy" data-pharmacy-code="PH-00001" data-pharmacy-city="riyadh" data-orderdate="2026-01-31" data-status="cancelled">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">5</span></td>
+                    <td class="col-code"><span class="staff-code order-code">12-03-000015</span></td>
+                    <td><div class="service-name">BMC Community Pharmacy</div><div class="service-main">PH-00001</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">12-03-000015</span>Omar Saad</p>
+                          <div class="meta">Male, 51</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Vitamin D3 50000 IU</div><div class="service-main">Refill Rx</div></td>
+                    <td class="text-center">1</td>
+                    <td>Delivery</td>
+                    <td>Riyadh</td>
+                    <td><div class="date-top">Jan 31, 2026</div><div class="date-sub">01:05 PM</div></td>
+                    <td><div class="date-top">Feb 01, 2026</div><div class="date-sub">09:00 AM</div></td>
+                    <td class="price-cell"><span class="bold">34.20</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr data-order="br03-or-00016" data-org="122" data-order-display="122-03-000016" data-patient="lina adel" data-medication="azithromycin 500 mg tablets" data-rx-type="new" data-items="2" data-fulfillment="pickup" data-pharmacy-name="Al Noor Pharmacy" data-pharmacy-code="PH-00002" data-pharmacy-city="jeddah" data-orderdate="2026-01-31" data-status="in-progress">
+                    <td class="col-check"><input class="row-check" type="checkbox" /></td>
+                    <td class="col-seq"><span class="row-seq">6</span></td>
+                    <td class="col-code"><span class="staff-code order-code">122-03-000016</span></td>
+                    <td><div class="service-name">Al Noor Pharmacy</div><div class="service-main">PH-00002</div></td>
+                    <td>
+                      <div class="patient-cell">
+                        <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                        <div class="patient-info">
+                          <p class="name"><span class="staff-code me-6">122-03-000016</span>Lina Adel</p>
+                          <div class="meta">Female, 29</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td><div class="service-name">Azithromycin 500 mg Tablets</div><div class="service-main">New Rx</div></td>
+                    <td class="text-center">2</td>
+                    <td>Pickup</td>
+                    <td>Jeddah</td>
+                    <td><div class="date-top">Jan 31, 2026</div><div class="date-sub">02:40 PM</div></td>
+                    <td><div class="date-top">Jan 31, 2026</div><div class="date-sub">05:10 PM</div></td>
+                    <td class="price-cell"><span class="bold">76.00</span> SR</td>
+                    <td class="invoice-cell">
+                      <div class="invoice-actions">
+                        <a class="inv-icon" href="#" data-invoice="naraakum" data-tip="Naraakum Invoice" aria-label="Naraakum Invoice"><i class="fi fi-rr-receipt"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="provider" data-tip="Provider Invoice" aria-label="Provider Invoice"><i class="fi fi-rr-building"></i></a>
+                        <a class="inv-icon" href="#" data-invoice="customer" data-tip="Customer Invoice" aria-label="Customer Invoice"><i class="fi fi-rr-user"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="table-footer">
+                <div class="rows-select">
+                  <select id="ordersRowsPerPage">
+                    <option value="1">1</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="all">All</option>
+                  </select>
+                  <span class="fsize-12 text-grey">Rows per page</span>
+                </div>
+
+                <div class="page-indicator" id="ordersPageIndicator">Page 1 of 1</div>
+
+                <div class="pager">
+                  <button class="pg-btn" id="ordersFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                  <button class="pg-btn" id="ordersPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                  <span class="pg-current" id="ordersCurrentPageBadge">1</span>
+                  <button class="pg-btn" id="ordersNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                  <button class="pg-btn" id="ordersLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modal fade" id="orders-filter-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Filter Pharmacy Orders</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Rx Type</label>
+              <select id="ofRxType" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>New</option>
+                <option>Refill</option>
+                <option>Controlled</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Fulfillment</label>
+              <select id="ofFulfillment" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Pickup</option>
+                <option>Delivery</option>
+                <option>Urgent Delivery</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Pharmacy</label>
+              <select id="ofPharmacy" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>BMC Community Pharmacy</option>
+                <option>Al Noor Pharmacy</option>
+                <option>Green Valley Pharmacy</option>
+                <option>Future Care Pharmacy</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">City</label>
+              <select id="ofPharmacyCity" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Riyadh</option>
+                <option>Jeddah</option>
+                <option>Dammam</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Status</label>
+              <select id="ofStatus" class="form-control form-control-32">
+                <option value="">All</option>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="failed">Failed</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date From</label>
+              <input id="ofDateFrom" type="date" class="form-control form-control-32" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date To</label>
+              <input id="ofDateTo" type="date" class="form-control form-control-32" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-between">
+          <button id="btnOrdersFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnOrdersApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (ONCE only) -->
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+
+  <script>
+    /* KSA Clock (12h) */
+    (function(){
+      const el = document.getElementById("ksaTime");
+      if(!el) return;
+      function tick(){
+        try{
+          const fmt = new Intl.DateTimeFormat("en-US",{
+            timeZone:"Asia/Riyadh",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:true
+          });
+          el.textContent = fmt.format(new Date());
+        }catch(e){
+          el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+        }
+      }
+      tick(); setInterval(tick, 1000);
+    })();
+
+    /* Order No format: [Org Code]-[2 digits]-[6 digits]
+       Example: 12-03-000001 , 122-03-000002 */
+    function formatOrderNoFromRow(tr){
+      const orgRaw = (tr && tr.getAttribute("data-org") ? tr.getAttribute("data-org") : "").toString().trim();
+      const org = (orgRaw.replace(/\D/g,"") || "").trim();
+
+      const dataOrder = (tr && tr.getAttribute("data-order") ? tr.getAttribute("data-order") : "").toString();
+      const s = dataOrder.toLowerCase();
+      const m = s.match(/br(\d{1,2})-or-(\d{1,6})/);
+
+      if(!m){
+        // fallback: just show whatever is in data-order
+        return (dataOrder || "").toUpperCase();
+      }
+
+      const br = String(parseInt(m[1],10)).padStart(2,"0");
+      const num = String(parseInt(m[2],10)).padStart(6,"0");
+
+      // if org isn't provided yet, keep it empty to avoid wrong codes
+      if(!org) return `${br}-${num}`;
+      return `${org}-${br}-${num}`;
+    }
+
+    /* Orders table logic */
+    (function () {
+      const table = document.getElementById("ordersTable");
+      if (!table) return;
+
+      const tbody = document.getElementById("ordersTbody") || table.querySelector("tbody");
+      const allRows = Array.from(tbody.querySelectorAll("tr"));
+      const defaultStatuses = ["pending", "in-progress", "completed", "pending", "cancelled", "failed"];
+
+      function normStatus(v) {
+        return (v || "").toString().trim().toLowerCase();
+      }
+
+      function statusLabel(status) {
+        if (status === "in-progress") return "In Progress";
+        if (status === "completed") return "Completed";
+        if (status === "cancelled") return "Cancelled";
+        if (status === "failed") return "Failed";
+        return "Pending";
+      }
+
+      function statusClass(status) {
+        if (status === "in-progress") return "in-progress";
+        if (status === "completed") return "completed";
+        if (status === "cancelled") return "cancelled";
+        if (status === "failed") return "failed";
+        return "pending";
+      }
+
+      function renderStatusBadge(status) {
+        const safe = statusClass(normStatus(status));
+        return `<span class="order-status-badge ${safe}">${statusLabel(safe)}</span>`;
+      }
+
+      function ensureStatusCell(tr) {
+        const raw = normStatus(tr.getAttribute("data-status"));
+        const current = statusClass(raw);
+        tr.setAttribute("data-status", current);
+
+        let statusTd = tr.querySelector(".status-cell");
+        if (!statusTd) {
+          statusTd = document.createElement("td");
+          statusTd.className = "status-cell text-center";
+          const invoiceTd = tr.querySelector(".invoice-cell");
+          if (invoiceTd) tr.insertBefore(statusTd, invoiceTd);
+          else tr.appendChild(statusTd);
+        }
+        statusTd.innerHTML = renderStatusBadge(current);
+      }
+
+      // apply formatting
+      allRows.forEach((tr, idx)=>{
+        if (!normStatus(tr.getAttribute("data-status"))) {
+          tr.setAttribute("data-status", defaultStatuses[idx % defaultStatuses.length]);
+        }
+        ensureStatusCell(tr);
+
+        const formatted = formatOrderNoFromRow(tr);
+        tr.setAttribute("data-order-display", formatted);
+        const codeEl = tr.querySelector(".order-code");
+        if(codeEl) codeEl.textContent = formatted;
+
+        // also update the hidden order code next to patient name (even if hidden by CSS)
+        tr.querySelectorAll(".patient-cell .staff-code").forEach(el=>{
+          el.textContent = formatted;
+        });
+
+        const previewHref = `order-details-pharmacy.html?order=${encodeURIComponent(formatted)}&providerType=pharmacy&from=pharmacy-orders`;
+
+        // replace old invoice icons with a single order preview action
+        const previewTd = tr.querySelector(".invoice-cell");
+        if (previewTd) {
+          previewTd.innerHTML = `<div class="actions-cell"><a class="action-icon" href="${previewHref}" title="Preview"><i class="fi fi-rr-eye"></i></a></div>`;
+        }
+
+      });
+
+
+      const searchInput = document.getElementById("ordersSearchInput");
+      const btnSearch = document.getElementById("btnOrdersSearch");
+      const btnReset = document.getElementById("btnOrdersReset");
+
+      const rowsSelect = document.getElementById("ordersRowsPerPage");
+      const indicator = document.getElementById("ordersPageIndicator");
+      const currentBadge = document.getElementById("ordersCurrentPageBadge");
+      const btnFirst = document.getElementById("ordersFirstPage");
+      const btnPrev = document.getElementById("ordersPrevPage");
+      const btnNext = document.getElementById("ordersNextPage");
+      const btnLast = document.getElementById("ordersLastPage");
+
+      const checkAllVisible = document.getElementById("checkAllVisibleOrders");
+
+      const ofRxType = document.getElementById("ofRxType");
+      const ofFulfillment = document.getElementById("ofFulfillment");
+      const ofPharmacy = document.getElementById("ofPharmacy");
+      const ofPharmacyCity = document.getElementById("ofPharmacyCity");
+      const ofStatus = document.getElementById("ofStatus");
+      const ofDateFrom = document.getElementById("ofDateFrom");
+      const ofDateTo = document.getElementById("ofDateTo");
+      const btnApplyFilter = document.getElementById("btnOrdersApplyFilter");
+      const btnFilterReset = document.getElementById("btnOrdersFilterReset");
+
+      const btnExport = document.getElementById("btnOrdersExport");
+
+      let currentPage = 1;
+      let filteredRows = [...allRows];
+
+      function norm(v) { return (v || "").toString().trim().toLowerCase(); }
+
+      function getRowData(tr) {
+        return {
+          order: norm(tr.querySelector(".order-code")?.textContent || tr.getAttribute("data-order")),
+          patient: norm(tr.getAttribute("data-patient")),
+          medication: norm(tr.getAttribute("data-medication")),
+          rxType: norm(tr.getAttribute("data-rx-type")),
+          items: norm(tr.getAttribute("data-items")),
+          fulfillment: norm(tr.getAttribute("data-fulfillment")),
+          pharmacyName: norm(tr.getAttribute("data-pharmacy-name")),
+          pharmacyCode: norm(tr.getAttribute("data-pharmacy-code")),
+          pharmacyCity: norm(tr.getAttribute("data-pharmacy-city")),
+          status: norm(tr.getAttribute("data-status")),
+          orderdate: norm(tr.getAttribute("data-orderdate"))
+        };
+      }
+
+      function matchesSearch(tr) {
+        const q = norm(searchInput.value);
+        if (!q) return true;
+        const d = getRowData(tr);
+        return d.order.includes(q) || d.patient.includes(q) || d.pharmacyName.includes(q) || d.pharmacyCode.includes(q) || d.pharmacyCity.includes(q) || d.medication.includes(q) || d.rxType.includes(q) || d.status.includes(q);
+      }
+
+      function matchesFilters(tr) {
+        const d = getRowData(tr);
+        const rx = norm(ofRxType.value);
+        const f = norm(ofFulfillment.value);
+        const p = norm(ofPharmacy.value);
+        const c = norm(ofPharmacyCity.value);
+        const st = norm(ofStatus?.value);
+        const from = norm(ofDateFrom.value);
+        const to = norm(ofDateTo.value);
+
+        if (rx && d.rxType !== rx) return false;
+        if (f && d.fulfillment !== f) return false;
+        if (p && d.pharmacyName !== p) return false;
+        if (c && d.pharmacyCity !== c) return false;
+        if (st && d.status !== st) return false;
+
+        if (from && d.orderdate && d.orderdate < from) return false;
+        if (to && d.orderdate && d.orderdate > to) return false;
+
+        return true;
+      }
+
+      function perPageVal() {
+        const v = rowsSelect.value;
+        return v === "all" ? filteredRows.length : parseInt(v, 10);
+      }
+
+      function totalPages() {
+        const p = perPageVal();
+        if (p <= 0) return 1;
+        return Math.max(1, Math.ceil(filteredRows.length / p));
+      }
+
+      function getVisibleRows() {
+        return filteredRows.filter((tr) => !tr.classList.contains("d-none"));
+      }
+
+      function render() {
+        allRows.forEach((tr) => tr.classList.add("d-none"));
+
+        const p = perPageVal();
+        const pages = totalPages();
+
+        if (currentPage > pages) currentPage = pages;
+        if (currentPage < 1) currentPage = 1;
+
+        if (rowsSelect.value === "all") {
+          filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+        } else {
+          const start = (currentPage - 1) * p;
+          const end = start + p;
+          filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+        }
+
+        indicator.textContent = `Page ${currentPage} of ${pages}`;
+        currentBadge.textContent = String(currentPage);
+
+        const disableNav = rowsSelect.value === "all" || pages === 1;
+        btnFirst.disabled = disableNav || currentPage === 1;
+        btnPrev.disabled = disableNav || currentPage === 1;
+        btnNext.disabled = disableNav || currentPage === pages;
+        btnLast.disabled = disableNav || currentPage === pages;
+
+        const vis = getVisibleRows();
+        if (!vis.length) {
+          if (checkAllVisible) checkAllVisible.checked = false;
+        } else {
+          const allChecked = vis.every((tr) => tr.querySelector(".row-check")?.checked);
+          if (checkAllVisible) checkAllVisible.checked = allChecked;
+        }
+      }
+
+      function applyAll() {
+        filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+        currentPage = 1;
+        if (checkAllVisible) checkAllVisible.checked = false;
+        render();
+      }
+
+      btnSearch.addEventListener("click", applyAll);
+      searchInput.addEventListener("input", applyAll);
+
+      btnReset.addEventListener("click", () => {
+        searchInput.value = "";
+        ofRxType.value = "";
+        ofFulfillment.value = "";
+        ofPharmacy.value = "";
+        ofPharmacyCity.value = "";
+        if (ofStatus) ofStatus.value = "";
+        ofDateFrom.value = "";
+        ofDateTo.value = "";
+        applyAll();
+      });
+
+      btnApplyFilter.addEventListener("click", () => {
+        applyAll();
+        const el = document.getElementById("orders-filter-modal");
+        if (el && window.bootstrap) bootstrap.Modal.getOrCreateInstance(el).hide();
+      });
+
+      btnFilterReset.addEventListener("click", () => {
+        ofRxType.value = "";
+        ofFulfillment.value = "";
+        ofPharmacy.value = "";
+        ofPharmacyCity.value = "";
+        if (ofStatus) ofStatus.value = "";
+        ofDateFrom.value = "";
+        ofDateTo.value = "";
+        applyAll();
+      });
+
+      rowsSelect.addEventListener("change", () => {
+        currentPage = 1;
+        if (checkAllVisible) checkAllVisible.checked = false;
+        render();
+      });
+
+      btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+      btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+      btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+      btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+      checkAllVisible.addEventListener("change", () => {
+        const vis = getVisibleRows();
+        vis.forEach((tr) => {
+          const cb = tr.querySelector(".row-check");
+          if (cb) cb.checked = checkAllVisible.checked;
+        });
+      });
+
+      tbody.addEventListener("change", (e) => {
+        const t = e.target;
+        if (!(t instanceof HTMLInputElement)) return;
+        if (!t.classList.contains("row-check")) return;
+        render();
+      });
+
+      function csvEscape(v) {
+        const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+        if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+        return s;
+      }
+
+      btnExport.addEventListener("click", () => {
+        const selected = allRows.filter((tr) => tr.querySelector(".row-check")?.checked);
+        if (!selected.length) { alert("Please select at least one order to export."); return; }
+
+        const headers = ["Order No","Patient Name","Gender","Age","Medication","Rx Type","Items","Fulfillment","Pharmacy","Pharmacy Code","City","Order Date","Scheduled Date","Price","Status"];
+        const lines = [];
+        lines.push(headers.map(csvEscape).join(","));
+
+        selected.forEach((tr) => {
+          const d = getRowData(tr);
+          const orderNo = (tr.querySelector(".order-code")?.textContent || d.order || "").trim().toUpperCase();
+          const patientName = (tr.querySelector(".patient-info .name")?.textContent || "").replace(orderNo, "").trim();
+          const meta = (tr.querySelector(".patient-info .meta")?.textContent || "").trim();
+          const parts = meta.split(",").map((x) => (x || "").trim());
+          const gender = parts[0] || "";
+          const age = parts[1] || "";
+
+          const medication = (tr.getAttribute("data-medication") || "").trim();
+          const rxType = (tr.getAttribute("data-rx-type") || "").trim();
+          const items = (tr.getAttribute("data-items") || "").trim();
+          const fulfillment = (tr.getAttribute("data-fulfillment") || "").trim();
+          const pharmacyName = (tr.getAttribute("data-pharmacy-name") || "").trim();
+          const pharmacyCode = (tr.getAttribute("data-pharmacy-code") || "").trim().toUpperCase();
+          const city = (tr.getAttribute("data-pharmacy-city") || "").trim();
+
+          const orderDate = (tr.querySelectorAll(".date-top")[0]?.textContent || "").trim();
+          const orderTime = (tr.querySelectorAll(".date-sub")[0]?.textContent || "").trim();
+          const scheduledDate = (tr.querySelectorAll(".date-top")[1]?.textContent || "").trim();
+          const scheduledTime = (tr.querySelectorAll(".date-sub")[1]?.textContent || "").trim();
+
+          const price = (tr.querySelector(".price-cell")?.textContent || "").replace(/\s+/g, " ").trim();
+          const status = statusLabel(d.status);
+
+          const row = [
+            orderNo, patientName, gender, age, medication, rxType, items, fulfillment,
+            pharmacyName, pharmacyCode, city ? (city.charAt(0).toUpperCase() + city.slice(1)) : "",
+            `${orderDate} ${orderTime}`.trim(), `${scheduledDate} ${scheduledTime}`.trim(),
+            price, status
+          ];
+          lines.push(row.map(csvEscape).join(","));
+        });
+
+        const csvContent = "\ufeff" + lines.join("\n");
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "pharmacy-orders-export.csv";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      applyAll();
+    })();
+  </script>
+</body>
+</html>
+
+
+
+

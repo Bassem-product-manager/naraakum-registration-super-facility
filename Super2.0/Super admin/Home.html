@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Home</title>
+    <meta name="description" content="Naraakum Super Admin Dashboard" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-green-dark: #0b6f6f;
+        --nk-surface: #ffffff;
+        --nk-border: #e6edf1;
+        --nk-text: #111827;
+        --nk-muted: #667085;
+        --nk-bg-soft: #f7fbfb;
+        --nk-accent-1: #0f8c8c;
+        --nk-accent-2: #12b2b2;
+      }
+
+      body {
+        background: radial-gradient(1200px 400px at 15% -10%, rgba(15, 140, 140, 0.08), transparent 60%),
+          radial-gradient(1000px 380px at 100% -10%, rgba(18, 178, 178, 0.07), transparent 55%),
+          #f7f9fb;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+      }
+
+      .page-content {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        padding-bottom: 28px;
+      }
+
+      .nk-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 16px;
+        background: var(--nk-surface);
+        box-shadow: 0 10px 22px rgba(16, 24, 40, 0.04);
+      }
+
+      .home-toolbar {
+        padding: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .home-title h3 {
+        margin: 0;
+        font-size: 19px;
+        line-height: 1.2;
+        color: var(--nk-text);
+        font-weight: 900;
+      }
+
+      .home-title p {
+        margin: 6px 0 0;
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .home-toolbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .range-chips {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid var(--nk-border);
+        border-radius: 999px;
+        background: #fff;
+        padding: 4px;
+      }
+
+      .range-chip {
+        border: 0;
+        background: transparent;
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 800;
+        border-radius: 999px;
+        padding: 6px 10px;
+      }
+
+      .range-chip.is-active {
+        background: rgba(15, 140, 140, 0.13);
+        color: var(--nk-green-dark);
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .kpi-card {
+        padding: 14px;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfefe 100%);
+      }
+
+      .kpi-card .k {
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .kpi-card .v {
+        margin-top: 8px;
+        font-size: 23px;
+        font-weight: 900;
+        color: var(--nk-text);
+        line-height: 1.15;
+      }
+
+      .kpi-card .s {
+        margin-top: 6px;
+        color: #7a8899;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .home-grid-2 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .module-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        border-bottom: 1px solid var(--nk-border);
+        padding: 14px 16px;
+      }
+
+      .module-title {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .module-subtitle {
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .module-body {
+        padding: 14px 16px 16px;
+      }
+
+      .chart-shell {
+        position: relative;
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        background: var(--nk-bg-soft);
+        padding: 8px;
+      }
+
+      .chart-shell svg {
+        width: 100%;
+        height: 240px;
+        display: block;
+      }
+
+      .trend-tooltip {
+        position: absolute;
+        z-index: 5;
+        min-width: 180px;
+        max-width: 230px;
+        background: rgba(15, 23, 42, 0.94);
+        color: #fff;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 8px 10px;
+        font-size: 11px;
+        line-height: 1.45;
+        pointer-events: none;
+        box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
+      }
+
+      .trend-tooltip[hidden] {
+        display: none;
+      }
+
+      .trend-hit {
+        cursor: pointer;
+      }
+
+      .trend-tooltip b {
+        font-size: 12px;
+        letter-spacing: 0.2px;
+      }
+
+      .trend-insights {
+        margin-top: 10px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .trend-insight {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        padding: 9px 10px;
+        background: #fff;
+      }
+
+      .trend-insight .k {
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .trend-insight .v {
+        margin-top: 4px;
+        color: var(--nk-text);
+        font-size: 14px;
+        font-weight: 900;
+      }
+
+      .trend-mini-wrap {
+        margin-top: 10px;
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .trend-mini-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .trend-mini-table th {
+        font-size: 11px;
+        font-weight: 800;
+        color: var(--nk-muted);
+        background: #f8fbfc;
+        padding: 8px;
+        border-bottom: 1px solid var(--nk-border);
+      }
+
+      .trend-mini-table td {
+        font-size: 11px;
+        font-weight: 700;
+        color: #344054;
+        padding: 8px;
+        border-bottom: 1px solid #eef2f5;
+      }
+
+      .trend-mini-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .mix-summary {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .mix-geo-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .mix-geo-chart-wrap {
+        position: relative;
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+        overflow: hidden;
+      }
+
+      .mix-geo-chart-wrap::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 44%, rgba(15, 140, 140, 0.07), transparent 62%);
+        pointer-events: none;
+      }
+
+      .mix-geo-chart {
+        position: relative;
+        width: min(100%, 280px);
+        margin: 0 auto;
+        z-index: 1;
+      }
+
+      .mix-geo-chart svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .mix-geo-segment {
+        cursor: pointer;
+        transform-origin: 130px 130px;
+        transition: transform 0.22s ease, filter 0.22s ease, opacity 0.22s ease;
+        animation: mixGeoSliceIn 0.55s ease-out both;
+        animation-delay: var(--slice-delay, 0ms);
+        opacity: var(--base-opacity, 1);
+      }
+
+      .mix-geo-segment:hover {
+        transform: scale(1.028);
+        filter: brightness(1.08) saturate(1.12);
+      }
+
+      .mix-geo-segment:focus {
+        outline: none;
+        transform: scale(1.03);
+        filter: brightness(1.1) saturate(1.14);
+      }
+
+      #mixGeoSvg.is-focused .mix-geo-segment {
+        opacity: 0.2 !important;
+      }
+
+      #mixGeoSvg.is-focused .mix-geo-segment.is-related {
+        opacity: 0.5 !important;
+      }
+
+      #mixGeoSvg.is-focused .mix-geo-segment.is-active {
+        opacity: 1 !important;
+        transform: scale(1.04);
+        filter: brightness(1.1) saturate(1.14);
+      }
+
+      .mix-geo-center {
+        --mix-center-scale: 1;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(var(--mix-center-scale));
+        width: 78px;
+        height: 78px;
+        border-radius: 50%;
+        border: 1px solid #dbe7ee;
+        background: radial-gradient(circle at 40% 28%, #ffffff, #f5fafc 85%);
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.09);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        pointer-events: none;
+        transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+      }
+
+      .mix-geo-center.is-focus {
+        --mix-center-scale: 1.045;
+        border-color: #b8d8df;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.13);
+      }
+
+      .mix-geo-center .t {
+        color: var(--nk-muted);
+        font-size: 10px;
+        font-weight: 800;
+        line-height: 1.1;
+      }
+
+      .mix-geo-center .n {
+        color: var(--nk-text);
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1;
+        letter-spacing: -0.2px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .mix-geo-center .n.is-wide {
+        font-size: 18px;
+      }
+
+      .mix-geo-center .n.is-small {
+        font-size: 15px;
+      }
+
+      .mix-geo-center .s {
+        color: #344054;
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+        margin-top: 2px;
+      }
+
+      .mix-geo-tooltip {
+        position: absolute;
+        z-index: 5;
+        min-width: 175px;
+        max-width: 230px;
+        background: rgba(15, 23, 42, 0.95);
+        color: #fff;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 8px 10px;
+        font-size: 11px;
+        line-height: 1.4;
+        pointer-events: none;
+        box-shadow: 0 8px 20px rgba(2, 6, 23, 0.3);
+      }
+
+      .mix-geo-tooltip[hidden] {
+        display: none;
+      }
+
+      .mix-geo-ring-tags {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .mix-geo-ring-tags span {
+        border: 1px solid var(--nk-border);
+        border-radius: 999px;
+        background: #f8fbfc;
+        color: var(--nk-muted);
+        font-size: 10px;
+        font-weight: 800;
+        padding: 4px 8px;
+        transition: border-color 0.2s ease, transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+      }
+
+      .mix-geo-ring-tags span:hover {
+        border-color: #bcdbe2;
+        background: #f2f9fb;
+        color: #3f4a5a;
+        transform: translateY(-1px);
+      }
+
+      .mix-geo-ring-tags span.is-active {
+        border-color: #9ac9d2;
+        background: #ebf7fa;
+        color: #0b6f6f;
+      }
+
+      .mix-geo-ring-tags span:focus-visible {
+        outline: 2px solid rgba(15, 140, 140, 0.35);
+        outline-offset: 2px;
+      }
+
+      .mix-geo-legend {
+        display: grid;
+        gap: 8px;
+      }
+
+      .mix-geo-item {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        padding: 9px 10px;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      }
+
+      .mix-geo-item:hover,
+      .mix-geo-item.is-active {
+        transform: translateY(-1px);
+        border-color: #bfdbe1;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      }
+
+      .mix-geo-item.is-muted {
+        opacity: 0.52;
+      }
+
+      .mix-geo-item:focus-visible {
+        outline: 2px solid rgba(15, 140, 140, 0.35);
+        outline-offset: 2px;
+      }
+
+      .mix-geo-item-top {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--nk-text);
+        font-size: 12px;
+        font-weight: 900;
+        margin-bottom: 6px;
+      }
+
+      .mix-geo-item-metrics {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .mix-geo-item-metrics span {
+        border: 1px solid #e8eef3;
+        border-radius: 999px;
+        padding: 3px 7px;
+        color: #4e596a;
+        font-size: 10px;
+        font-weight: 800;
+        background: #f9fbfd;
+      }
+
+      @keyframes mixGeoSliceIn {
+        from {
+          opacity: 0;
+          transform: scale(0.86);
+        }
+
+        to {
+          opacity: var(--base-opacity, 1);
+          transform: scale(1);
+        }
+      }
+
+      .mix-summary-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        padding: 9px 10px;
+      }
+
+      .mix-summary-card .k {
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .mix-summary-card .v {
+        margin-top: 3px;
+        color: var(--nk-text);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .mix-summary-card .sub {
+        margin-top: 3px;
+        color: var(--nk-muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .mix-provider-grid {
+        display: grid;
+        gap: 8px;
+      }
+
+      .mix-provider-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+        transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .mix-provider-card:hover {
+        transform: translateY(-1px);
+        border-color: #bfdbe1;
+        box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+      }
+
+      .mix-provider-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+      }
+
+      .mix-provider-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 900;
+      }
+
+      .mix-provider-meta {
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .mix-provider-numbers {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        color: #344054;
+        font-size: 11px;
+        font-weight: 800;
+        margin-bottom: 8px;
+      }
+
+      .mix-progress-label {
+        display: flex;
+        justify-content: space-between;
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .mix-progress {
+        width: 100%;
+        height: 8px;
+        background: #ecf1f6;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 7px;
+      }
+
+      .mix-progress:hover {
+        background: #e4ecf3;
+      }
+
+      .mix-progress > span {
+        display: block;
+        height: 100%;
+      }
+
+      .mix-facility {
+        background: #0f8c8c;
+      }
+
+      .mix-pharmacy {
+        background: #2fb5b5;
+      }
+
+      .mix-individual {
+        background: #7acfcf;
+      }
+
+      .mix-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .mini-table-wrap {
+        overflow-x: auto;
+      }
+
+      .mini-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .mini-table th {
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 900;
+        border-bottom: 1px solid var(--nk-border);
+        padding: 10px 8px;
+        white-space: nowrap;
+      }
+
+      .mini-table td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #f2f5f7;
+        font-size: 12px;
+        color: var(--nk-text);
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+
+      .mini-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .watch-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .watch-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        padding: 10px;
+        background: #fff;
+      }
+
+      .watch-card .w-k {
+        color: var(--nk-muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .watch-card .w-v {
+        margin-top: 4px;
+        color: var(--nk-text);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 90px;
+        padding: 6px 11px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 800;
+        border: 1px solid transparent;
+      }
+
+      .st-completed {
+        background: #dff7ee;
+        color: #0b7d54;
+        border-color: #b3e8d2;
+      }
+
+      .st-notyet {
+        background: #eef2f7;
+        color: #4e596a;
+        border-color: #d6deea;
+      }
+
+      .st-refunded {
+        background: #ffe9e8;
+        color: #b32318;
+        border-color: #ffb9b4;
+      }
+
+      .st-canceled {
+        background: #fff1e4;
+        color: #b45309;
+        border-color: #ffddb7;
+      }
+
+      .widget-empty,
+      .widget-unavailable {
+        border: 1px dashed #d0dae2;
+        border-radius: 12px;
+        padding: 16px 12px;
+        color: var(--nk-muted);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .widget-unavailable {
+        background: #fff7f7;
+        border-color: #f1d6d6;
+        color: #9a4a4a;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(8px);
+        animation: homeReveal 0.45s ease-out forwards;
+        animation-delay: var(--delay, 0ms);
+      }
+
+      @keyframes homeReveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .side-menu.is-open {
+        transform: translateX(0);
+      }
+
+      .side-menu-list li.is-open > .sub-list {
+        display: block;
+      }
+
+      .side-menu-list li > .sub-list {
+        display: none;
+      }
+
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, 0.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      @media (min-width: 768px) {
+        .kpi-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 992px) {
+        .kpi-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1400px) {
+        .kpi-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .home-grid-2 {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .mix-geo-grid {
+          grid-template-columns: minmax(240px, 290px) 1fr;
+          align-items: start;
+        }
+      }
+
+      @media (max-width: 991px) {
+        .home-toolbar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .home-toolbar-actions {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .watch-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .trend-insights {
+          grid-template-columns: 1fr;
+        }
+
+        .mix-summary {
+          grid-template-columns: 1fr;
+        }
+
+        .mix-provider-numbers {
+          grid-template-columns: 1fr;
+        }
+
+        .range-chips {
+          flex-wrap: wrap;
+          border-radius: 12px;
+        }
+
+        .home-toolbar-actions {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-home">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base=""></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Home</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item text-grey fsize-13">No notifications available.</li>
+                <div class="dropdown-divider"></div>
+                <li><a href="Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="assets/images/ar.jpg" alt="AR" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="admin/admins.html">Edit Profile</a></li>
+                <li><a class="dropdown-item fsize-14" href="auth/switch-account.html">Switch Account</a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="Home.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <section class="home-toolbar nk-card reveal" style="--delay: 20ms">
+            <div class="home-title">
+              <h3>Executive Operations Dashboard</h3>
+              <p id="homeLastUpdated">Last updated: --</p>
+            </div>
+
+            <div class="home-toolbar-actions">
+              <div class="range-chips" id="rangeChips">
+                <button type="button" class="range-chip" data-range="7">7D</button>
+                <button type="button" class="range-chip is-active" data-range="30">30D</button>
+                <button type="button" class="range-chip" data-range="90">90D</button>
+                <button type="button" class="range-chip" data-range="all">All</button>
+              </div>
+              <button type="button" class="btn btn-primary btn-32" id="btnRefreshHome">
+                <i class="fi fi-rr-refresh"></i>
+                <span>Refresh</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="kpi-grid reveal" style="--delay: 60ms">
+            <article class="kpi-card">
+              <div class="k">Gross Revenue</div>
+              <div class="v" id="kpiGrossRevenue">0.00 SAR</div>
+              <div class="s">Excluding canceled transactions</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Net Collected</div>
+              <div class="v" id="kpiNetCollected">0.00 SAR</div>
+              <div class="s">Total deposit paid</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Outstanding Deposits</div>
+              <div class="v" id="kpiOutstanding">0.00 SAR</div>
+              <div class="s">Remaining payable deposits</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Refunded Amount</div>
+              <div class="v" id="kpiRefunded">0.00 SAR</div>
+              <div class="s">Released and pending refunds</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Active Orders</div>
+              <div class="v" id="kpiActiveOrders">0</div>
+              <div class="s">Pending + ongoing</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Completion Rate</div>
+              <div class="v" id="kpiCompletionRate">0%</div>
+              <div class="s" id="kpiCompletionMeta">0 completed / 0 total</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Entities Due</div>
+              <div class="v" id="kpiEntitiesDue">0</div>
+              <div class="s">Providers requiring payout</div>
+            </article>
+            <article class="kpi-card">
+              <div class="k">Insurance Outstanding</div>
+              <div class="v" id="kpiInsuranceOutstanding">0.00 SAR</div>
+              <div class="s" id="kpiInsuranceMeta">0 outstanding claims</div>
+            </article>
+          </section>
+
+          <section class="home-grid-2 reveal" style="--delay: 100ms">
+            <article class="nk-card">
+              <div class="module-head">
+                <h4 class="module-title">Financial Trend</h4>
+                <span class="module-subtitle" id="financialTrendLabel">Daily gross vs collected</span>
+              </div>
+              <div class="module-body" id="financialTrendHost"></div>
+            </article>
+
+            <article class="nk-card">
+              <div class="module-head">
+                <h4 class="module-title">Order Mix by Provider Type</h4>
+                <span class="module-subtitle">By count, gross, collected, and outstanding</span>
+              </div>
+              <div class="module-body" id="orderMixHost"></div>
+            </article>
+          </section>
+
+          <section class="home-grid-2 reveal" style="--delay: 140ms">
+            <article class="nk-card">
+              <div class="module-head">
+                <h4 class="module-title">Top Providers (Payable Pressure)</h4>
+                <a class="module-subtitle" href="payment/entity-ledger.html">Open full ledger</a>
+              </div>
+              <div class="module-body mini-table-wrap" id="topProvidersHost">
+                <table class="mini-table">
+                  <thead>
+                    <tr>
+                      <th>Provider</th>
+                      <th>Type</th>
+                      <th>Payable Now</th>
+                      <th>Paid Out</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="topProvidersTbody"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="nk-card">
+              <div class="module-head">
+                <h4 class="module-title">Returns Watchlist</h4>
+                <a class="module-subtitle" href="Order-Managment/returns-list.html">Open returns pages</a>
+              </div>
+              <div class="module-body" id="returnsWatchHost"></div>
+            </article>
+          </section>
+
+          <section class="nk-card reveal" style="--delay: 180ms">
+            <div class="module-head">
+              <h4 class="module-title">Recent Transactions</h4>
+              <a class="module-subtitle" href="payment/transaction-orders.html">View all transactions</a>
+            </div>
+            <div class="module-body mini-table-wrap" id="recentTransactionsHost">
+              <table class="mini-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Transaction</th>
+                    <th>Patient</th>
+                    <th>Provider</th>
+                    <th>Order Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="recentTransactionsTbody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/adminSideMenu.js"></script>
+    <script src="assets/js/provider-commission-store.js"></script>
+    <script src="assets/js/payment-data.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/order-details-data.js"></script>
+    <script src="assets/js/service-returns-data.js"></script>
+    <script src="assets/js/pharmacy-returns-data.js"></script>
+    <script src="assets/js/home-dashboard.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        if (window.__NK_SUPER_HOME_MENU_INIT__) return;
+        window.__NK_SUPER_HOME_MENU_INIT__ = true;
+
+        var aside = document.querySelector(".side-menu");
+        var btn = document.getElementById("open-menu-btn");
+        var list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        function applyBodyActiveMenu() {
+          var activeId = document.body.getAttribute("data-menu");
+          if (!activeId) return;
+          var activeEl = document.getElementById(activeId);
+          if (!activeEl) return;
+          activeEl.classList.add("is-active");
+          var parentLi = activeEl.closest("li");
+          if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+        }
+
+        if (window.jQuery && window.jQuery.fn) {
+          applyBodyActiveMenu();
+          return;
+        }
+
+        btn.addEventListener("click", function () {
+          aside.classList.toggle("is-open");
+        });
+
+        list.querySelectorAll("li").forEach(function (li) {
+          var sub = li.querySelector(":scope > .sub-list");
+          var trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () {
+            li.classList.toggle("is-open");
+          });
+        });
+
+        applyBodyActiveMenu();
+      })();
+    </script>
+  </body>
+</html>

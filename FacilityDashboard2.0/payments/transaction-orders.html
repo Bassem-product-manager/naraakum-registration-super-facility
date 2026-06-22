@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Transactions</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE (FULL) ===================== -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Transactions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 � 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Payments</li>
+              <li class="breadcrumb-item active" aria-current="page">Transactions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top operations bar (same as previous: Staff List style) -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input
+                    id="txSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by transaction # / customer / order #"
+                  />
+                  <button id="btnTxSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+
+                  <button
+                    id="btnTxReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#filter-modal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+
+                  <button id="btnTxExport" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                    <i class="fi fi-rr-download"></i>
+                    <span>Export</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Transactions table (no inline styles; updated like previous table) -->
+          <div class="tabel-box-item mt-24 orders-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight tx-table" id="txTable">
+                  <thead>
+                    <tr>
+                      <th class="col-check">
+                        <div class="head-check">
+                          <input type="checkbox" id="checkAllVisibleTx" title="Select visible rows" />
+                        </div>
+                      </th>
+
+                      <th class="col-seq"># <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th class="col-code">Transaction <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th class="col-code">Order No <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th>Customer <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th>Service <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th>Order Date <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th>Scheduled Date <span class="sort-icon">&#9650;&#9660;</span></th>
+
+                      <th>Price</th>
+
+                      <th>VAT (15%)</th>
+                      <th>Status</th>
+
+                      <th class="text-center">Invoices</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="txTbody">
+                    <!-- Demo row 1 -->
+                    <tr
+                      data-tx="tr-00001"
+                      data-order="01-000001"
+                      data-customer="john doe"
+                      data-nationality="saudi"
+                      data-service="consultation"
+                      data-main="cardiology"
+                      data-status="paid"
+                      data-orderdate="2026-01-16"
+                      data-scheduleddate="2026-01-20"
+                      data-servicedate="2026-01-20"
+                      data-price="401.35"
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+
+                      <td class="col-seq"><span class="row-seq">1</span></td>
+
+                      <td class="col-code"><span class="staff-code tx-code">TR-00001</span></td>
+
+                      <td class="col-code"><span class="semiBold order-code">01-000001</span></td>
+
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="customer" /></div>
+                          <div class="patient-info">
+                            <p class="name">
+                              John Doe
+                            </p>
+                            <div class="meta">Nationality: Saudi</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="service-name">Consultation</div>
+                        <div class="service-main">Cardiology</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 16, 2026</div>
+                        <div class="date-sub">10:15 AM</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 20, 2026</div>
+                        <div class="date-sub">01:30 AM</div>
+                      </td>
+
+                      <td class="price-cell"><span class="bold">401.35</span> SR</td>
+
+                      <td class="vat-cell"><span class="bold">0.00</span> SR</td>
+<td><span class="status-pill st-complete">Completed</span></td>
+
+                      <td class="text-center">
+                        <a class="action-icon" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i></a>
+                      </td>
+                    </tr>
+
+                    <!-- Demo row 2 -->
+                    <tr
+                      data-tx="tr-00002"
+                      data-order="01-000002"
+                      data-customer="jane roe"
+                      data-nationality="egyptian"
+                      data-service="x-ray scan"
+                      data-main="radiology"
+                      data-status="paid"
+                      data-orderdate="2026-01-16"
+                      data-scheduleddate="2026-01-20"
+                      data-servicedate="2026-01-20"
+                      data-price="115.00"
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+
+                      <td class="col-seq"><span class="row-seq">2</span></td>
+
+                      <td class="col-code"><span class="staff-code tx-code">TR-00002</span></td>
+
+                      <td class="col-code"><span class="semiBold order-code">01-000002</span></td>
+
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="customer" /></div>
+                          <div class="patient-info">
+                            <p class="name">
+                              Jane Roe
+                            </p>
+                            <div class="meta">Nationality: Egyptian</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="service-name">X-Ray Scan</div>
+                        <div class="service-main">Radiology</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 16, 2026</div>
+                        <div class="date-sub">11:05 AM</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 20, 2026</div>
+                        <div class="date-sub">09:00 AM</div>
+                      </td>
+
+                      <td class="price-cell"><span class="bold">115.00</span> SR</td>
+
+                      <td class="vat-cell"><span class="bold">0.00</span> SR</td>
+
+                      <td><span class="status-pill st-pending">Not Yet</span></td>
+
+                      <td class="text-center">
+                        <a class="action-icon" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i></a>
+                      </td>
+                    </tr>
+
+                    <!-- Demo row 3 -->
+                    <tr
+                      data-tx="tr-00003"
+                      data-order="01-000003"
+                      data-customer="mike lee"
+                      data-nationality="indian"
+                      data-service="physio session"
+                      data-main="physiotherapy"
+                      data-status="refunded"
+                      data-orderdate="2026-01-15"
+                      data-scheduleddate="2026-01-22"
+                      data-servicedate="2026-01-22"
+                      data-price="345.00"
+                    >
+                      <td class="col-check"><input class="row-check" type="checkbox" /></td>
+
+                      <td class="col-seq"><span class="row-seq">3</span></td>
+
+                      <td class="col-code"><span class="staff-code tx-code">TR-00003</span></td>
+
+                      <td class="col-code"><span class="semiBold order-code">01-000003</span></td>
+
+                      <td>
+                        <div class="patient-cell">
+                          <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="customer" /></div>
+                          <div class="patient-info">
+                            <p class="name">
+                              Mike Lee
+                            </p>
+                            <div class="meta">Nationality: Indian</div>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <div class="service-name">Physio Session</div>
+                        <div class="service-main">Physiotherapy</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 15, 2026</div>
+                        <div class="date-sub">03:20 AM</div>
+                      </td>
+
+                      <td>
+                        <div class="date-top">Jan 22, 2026</div>
+                        <div class="date-sub">05:05 AM</div>
+                      </td>
+
+                      <td class="price-cell"><span class="bold">345.00</span> SR</td>
+
+                      <td class="vat-cell"><span class="bold">0.00</span> SR</td>
+<td><span class="status-pill st-cancel">Refunded</span></td>
+
+                      <td class="text-center">
+                        <a class="action-icon" href="#" title="Invoice"><i class="fi fi-rr-receipt"></i></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer: ids updated like previous page (no inline styles) -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="txRowsPerPage">
+                      <option value="1">1</option>
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="txPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="txFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="txPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="txCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="txNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="txLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- /box-body -->
+          </div>
+          <!-- /orders-table-wrap -->
+        </div>
+        <!-- /page-content -->
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Transactions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="fMainService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>Cardiology</option>
+                  <option>Radiology</option>
+                  <option>Nursing</option>
+                  <option>Physiotherapy</option>
+                  <option>Laboratory</option>
+                  <option>General</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Service</label>
+                <select id="fService" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option>Consultation</option>
+                  <option>X-Ray Scan</option>
+                  <option>Annual Checkup</option>
+                  <option>Blood Test</option>
+                  <option>ECG Analysis</option>
+                  <option>Physio Session</option>
+                  <option>Nursing Visit</option>
+                  <option>Home Care</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="fStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="paid">Completed</option>
+                  <option value="refunded">Refunded</option>
+                </select>
+              </div>
+<div class="col-md-6">
+                <label class="fsize-12 text-grey">Date From</label>
+                <input id="fDateFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Date To</label>
+                <input id="fDateTo" type="date" class="form-control form-control-32" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <!-- kept for project consistency -->
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script>
+      (function () {
+        const table = document.getElementById("txTable");
+        if (!table) return;
+
+        const tbody = document.getElementById("txTbody") || table.querySelector("tbody");
+        const allRows = Array.from(tbody.querySelectorAll("tr"));
+
+        // Search
+        const searchInput = document.getElementById("txSearchInput");
+        const btnSearch = document.getElementById("btnTxSearch");
+        const btnReset = document.getElementById("btnTxReset");
+
+        // Pagination (updated ids)
+        const rowsSelect = document.getElementById("txRowsPerPage");
+        const indicator = document.getElementById("txPageIndicator");
+        const currentBadge = document.getElementById("txCurrentPageBadge");
+        const btnFirst = document.getElementById("txFirstPage");
+        const btnPrev = document.getElementById("txPrevPage");
+        const btnNext = document.getElementById("txNextPage");
+        const btnLast = document.getElementById("txLastPage");
+
+        // Select visible (updated id)
+        const checkAllVisible = document.getElementById("checkAllVisibleTx");
+
+        // Filter
+        const fMainService = document.getElementById("fMainService");
+        const fService = document.getElementById("fService");
+        const fStatus = document.getElementById("fStatus");
+        const fDateFrom = document.getElementById("fDateFrom");
+        const fDateTo = document.getElementById("fDateTo");
+        const btnApplyFilter = document.getElementById("btnApplyFilter");
+        const btnFilterReset = document.getElementById("btnFilterReset");
+
+        // Export
+        const btnExport = document.getElementById("btnTxExport");
+
+        let currentPage = 1;
+        let filteredRows = [...allRows];
+
+        function norm(s) {
+          return (s || "").toString().trim().toLowerCase();
+        }
+
+        function toNumber(v) {
+          const n = parseFloat((v || "").toString().replace(/[^0-9.]/g, ""));
+          return Number.isFinite(n) ? n : 0;
+        }
+
+        function getRowData(tr) {
+          return {
+            tx: norm(tr.getAttribute("data-tx")),
+            order: norm(tr.getAttribute("data-order")),
+            customer: norm(tr.getAttribute("data-customer")),
+            nationality: norm(tr.getAttribute("data-nationality")),
+            service: norm(tr.getAttribute("data-service")),
+            main: norm(tr.getAttribute("data-main")),
+            status: norm(tr.getAttribute("data-status")), // paid / refunded
+            orderdate: norm(tr.getAttribute("data-orderdate")), // YYYY-MM-DD
+            scheduleddate: norm(tr.getAttribute("data-scheduleddate")), // YYYY-MM-DD
+            price: toNumber(tr.getAttribute("data-price")),
+          };
+        }
+
+        function calcVat(price, nationality) {
+          if (norm(nationality) === "saudi") return 0;
+          return +(price * 0.15).toFixed(2);
+        }
+
+        function writeVatCells() {
+          allRows.forEach((tr) => {
+            const d = getRowData(tr);
+            const vat = calcVat(d.price, d.nationality);
+            const cell = tr.querySelector(".vat-cell");
+            if (cell) cell.innerHTML = `<span class="bold">${vat.toFixed(2)}</span> SR`;
+          });
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.tx.includes(q) || d.customer.includes(q) || d.order.includes(q);
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+
+          const ms = norm(fMainService.value);
+          const s = norm(fService.value);
+          const st = norm(fStatus.value);
+          const from = norm(fDateFrom.value);
+          const to = norm(fDateTo.value);
+
+          if (ms && d.main !== ms) return false;
+          if (s && d.service !== s) return false;
+          if (st && d.status !== st) return false;
+          if (from && d.scheduleddate && d.scheduleddate < from) return false;
+          if (to && d.scheduleddate && d.scheduleddate > to) return false;
+
+          return true;
+        }
+
+        function perPageVal() {
+          const v = rowsSelect.value;
+          return v === "all" ? filteredRows.length : parseInt(v, 10);
+        }
+
+        function totalPages() {
+          const p = perPageVal();
+          if (p <= 0) return 1;
+          return Math.max(1, Math.ceil(filteredRows.length / p));
+        }
+
+        function getVisibleRows() {
+          return filteredRows.filter((tr) => !tr.classList.contains("d-none"));
+        }
+
+        function render() {
+          // hide all first (no inline style)
+          allRows.forEach((tr) => tr.classList.add("d-none"));
+
+          const p = perPageVal();
+          const pages = totalPages();
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect.value === "all") {
+            filteredRows.forEach((tr) => tr.classList.remove("d-none"));
+          } else {
+            const start = (currentPage - 1) * p;
+            const end = start + p;
+            filteredRows.slice(start, end).forEach((tr) => tr.classList.remove("d-none"));
+          }
+
+          indicator.textContent = `Page ${currentPage} of ${pages}`;
+          currentBadge.textContent = String(currentPage);
+
+          const disableNav = rowsSelect.value === "all" || pages === 1;
+          btnFirst.disabled = disableNav || currentPage === 1;
+          btnPrev.disabled = disableNav || currentPage === 1;
+          btnNext.disabled = disableNav || currentPage === pages;
+          btnLast.disabled = disableNav || currentPage === pages;
+
+          const vis = getVisibleRows();
+          if (!vis.length) {
+            if (checkAllVisible) checkAllVisible.checked = false;
+          } else {
+            const allChecked = vis.every((tr) => tr.querySelector(".row-check")?.checked);
+            if (checkAllVisible) checkAllVisible.checked = allChecked;
+          }
+        }
+
+        function applyAll() {
+          filteredRows = allRows.filter((tr) => matchesSearch(tr) && matchesFilters(tr));
+          currentPage = 1;
+          if (checkAllVisible) checkAllVisible.checked = false;
+          render();
+        }
+
+        // Events: Search
+        btnSearch.addEventListener("click", applyAll);
+        searchInput.addEventListener("input", applyAll);
+
+        // Reset: clears search + filters
+        btnReset.addEventListener("click", () => {
+          searchInput.value = "";
+          fMainService.value = "";
+          fService.value = "";
+          fStatus.value = "";
+          fDateFrom.value = "";
+          fDateTo.value = "";
+          applyAll();
+        });
+
+        // Filter modal
+        btnApplyFilter.addEventListener("click", () => {
+          applyAll();
+          const el = document.getElementById("filter-modal");
+          if (el && window.bootstrap) {
+            const m = bootstrap.Modal.getInstance(el) || new bootstrap.Modal(el);
+            m.hide();
+          }
+        });
+
+        btnFilterReset.addEventListener("click", () => {
+          fMainService.value = "";
+          fService.value = "";
+          fStatus.value = "";
+          fDateFrom.value = "";
+          fDateTo.value = "";
+          applyAll();
+        });
+
+        // Pagination
+        rowsSelect.addEventListener("change", () => {
+          currentPage = 1;
+          if (checkAllVisible) checkAllVisible.checked = false;
+          render();
+        });
+
+        btnFirst.addEventListener("click", () => {
+          currentPage = 1;
+          render();
+        });
+        btnPrev.addEventListener("click", () => {
+          currentPage = Math.max(1, currentPage - 1);
+          render();
+        });
+        btnNext.addEventListener("click", () => {
+          currentPage = Math.min(totalPages(), currentPage + 1);
+          render();
+        });
+        btnLast.addEventListener("click", () => {
+          currentPage = totalPages();
+          render();
+        });
+
+        // Select visible rows
+        checkAllVisible.addEventListener("change", () => {
+          const vis = getVisibleRows();
+          vis.forEach((tr) => {
+            const cb = tr.querySelector(".row-check");
+            if (cb) cb.checked = checkAllVisible.checked;
+          });
+        });
+
+        tbody.addEventListener("change", (e) => {
+          const t = e.target;
+          if (!(t instanceof HTMLInputElement)) return;
+          if (!t.classList.contains("row-check")) return;
+          render();
+        });
+
+        // Export selected to Excel (CSV)
+        function csvEscape(v) {
+          const s = (v ?? "").toString().replace(/\\r?\\n/g, " ").trim();
+          if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+          return s;
+        }
+
+        btnExport.addEventListener("click", () => {
+          const selected = allRows.filter((tr) => tr.querySelector(".row-check")?.checked);
+          if (!selected.length) {
+            alert("Please select at least one transaction to export.");
+            return;
+          }
+
+          const headers = [
+            "Transaction No",
+            "Order No",
+            "Customer",
+            "Nationality",
+            "Service",
+            "Main Service",
+            "Order Date",
+            "Scheduled Date",
+            "Price",
+            "VAT (15%)",
+"Status",
+          ];
+
+          const lines = [];
+          lines.push(headers.map(csvEscape).join(","));
+
+          selected.forEach((tr) => {
+            const d = getRowData(tr);
+
+            const txNo = (tr.querySelector(".tx-code")?.textContent || "").trim();
+            const orderNo = (tr.querySelector(".order-code")?.textContent || d.order || "").trim().toUpperCase();
+
+            const customerName = (tr.querySelector(".patient-info .name")?.textContent || "").trim();
+
+            const meta = (tr.querySelector(".patient-info .meta")?.textContent || "").trim();
+            const nationality = meta.replace(/^Nationality:\\s*/i, "").trim();
+
+            const service = (tr.querySelector(".service-name")?.textContent || "").trim();
+            const mainService = (tr.querySelector(".service-main")?.textContent || "").trim();
+
+            const orderTop = (tr.querySelectorAll(".date-top")[0]?.textContent || "").trim();
+            const orderSub = (tr.querySelectorAll(".date-sub")[0]?.textContent || "").trim();
+            const orderDate = `${orderTop} ${orderSub}`.trim();
+
+            const schedTop = (tr.querySelectorAll(".date-top")[1]?.textContent || "").trim();
+            const schedSub = (tr.querySelectorAll(".date-sub")[1]?.textContent || "").trim();
+            const scheduledDate = `${schedTop} ${schedSub}`.trim();
+
+            const priceText = (tr.querySelector(".price-cell")?.textContent || "").replace(/\\s+/g, " ").trim();
+            const vat = calcVat(d.price, d.nationality).toFixed(2);
+            const statusText = d.status === "paid" ? "Completed" : "Refunded";
+
+            const row = [
+              txNo,
+              orderNo,
+              customerName,
+              nationality,
+              service,
+              mainService,
+              orderDate,
+              scheduledDate,
+              priceText,
+              `${vat} SR`,
+              statusText,
+            ];
+
+            lines.push(row.map(csvEscape).join(","));
+          });
+
+          const csvContent = "\\ufeff" + lines.join("\\n");
+          const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "transactions-export.csv";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+        });
+
+        // init
+        writeVatCells();
+        applyAll();
+      })();
+    </script>
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

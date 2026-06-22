@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Packages</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page packages-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Packages</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 â€¢ 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Services &amp; Packages</li>
+              <li class="breadcrumb-item active" aria-current="page">Packages</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+
+          <!-- Top operations bar -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="packagesSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by package name / code / main service"
+                  />
+                  <button id="btnPackagesSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnPackagesReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#packages-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <button id="btnExportPackages" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Packages table -->
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight services-table" id="packagesTable">
+                  <thead>
+                    <tr>
+                      <th class="col-check">
+                        <div class="head-check">
+                          <input type="checkbox" id="checkAllVisiblePackages" title="Select visible rows" />
+                        </div>
+                      </th>
+                      <th class="col-seq">#</th>
+                      <th>Package</th>
+                      <th>Package Code</th>
+                      <th>Unit</th>
+                      <th>Validity</th>
+                      <th>Enabled</th>
+                      <th>Price (CASH)</th>
+                      <th>Availability</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="packagesTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="packagesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="packagesPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="packagesFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="packagesPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="packagesCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="packagesNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="packagesLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="packages-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Packages</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="pfMainService" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Unit Type</label>
+                <select id="pfUnitType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="sessions">Sessions</option>
+                  <option value="visits">Visits</option>
+                  <option value="hours">Hours</option>
+                  <option value="days">Days</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Enabled</label>
+                <select id="pfEnabled" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Price Status</label>
+                <select id="pfPriceStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="has_price">Has Price</option>
+                  <option value="missing_price">Missing Price</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnPackagesFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <button id="btnPackagesApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Price Modal -->
+    <div class="modal fade" id="editPackagePriceModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Package Price</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="mb-2">
+              <div class="fsize-12 text-grey">Package</div>
+              <div class="semiBold" id="pkgPriceName">-</div>
+              <div class="fsize-12 text-grey" id="pkgPriceCode">-</div>
+            </div>
+
+            <label class="fsize-12 text-grey">Cash Price (SR)</label>
+            <div class="d-flex align-items-center gap-2">
+              <input
+                id="pkgPriceInput"
+                type="number"
+                min="0"
+                step="0.01"
+                class="form-control form-control-32"
+                placeholder="e.g. 1200.00"
+              />
+              <span class="semiBold">SR</span>
+            </div>
+
+            <div class="mt-12 d-flex align-items-center gap-2">
+              <label class="switch mb-0">
+                <input id="pkgEnabledSwitch" type="checkbox" />
+                <span class="slider"></span>
+              </label>
+              <span class="fsize-12">Enabled</span>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSavePackagePrice" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Package Modal -->
+    <div class="modal fade" id="addPackageModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Package</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Package Name</label>
+                <input id="addPkgName" type="text" class="form-control form-control-32" placeholder="e.g. Physiotherapy - 24 Sessions" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Package Code</label>
+                <input id="addPkgCode" type="text" class="form-control form-control-32" placeholder="e.g. PT-S24" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <input id="addPkgMainService" type="text" class="form-control form-control-32" placeholder="e.g. Physiotherapy" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Unit Type</label>
+                <select id="addPkgUnitType" class="form-control form-control-32">
+                  <option value="Sessions" selected>Sessions</option>
+                  <option value="Visits">Visits</option>
+                  <option value="Hours">Hours</option>
+                  <option value="Days">Days</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Units Count</label>
+                <input id="addPkgUnitsCount" type="number" min="1" step="1" class="form-control form-control-32" value="1" />
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Validity Type</label>
+                <select id="addPkgValidityType" class="form-control form-control-32">
+                  <option value="Days" selected>Days</option>
+                  <option value="Month">Month</option>
+                  <option value="Months">Months</option>
+                </select>
+              </div>
+
+              <div class="col-md-3">
+                <label class="fsize-12 text-grey">Validity Value</label>
+                <input id="addPkgValidityValue" type="number" min="1" step="1" class="form-control form-control-32" value="30" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Cash Price (SR)</label>
+                <div class="d-flex align-items-center gap-2">
+                  <input id="addPkgPrice" type="number" min="0" step="0.01" class="form-control form-control-32" placeholder="e.g. 1200.00" />
+                  <span class="semiBold">SR</span>
+                </div>
+              </div>
+
+              <div class="col-md-6 d-flex align-items-end">
+                <div class="d-flex align-items-center gap-2">
+                  <label class="switch mb-0">
+                    <input id="addPkgEnabled" type="checkbox" checked />
+                    <span class="slider"></span>
+                  </label>
+                  <span class="fsize-12">Enabled</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveNewPackage" type="button" class="btn btn-primary">Add Package</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const MASTER_KEY = "nk_insurance_packages";
+        const SETTINGS_KEY = "nk_facility_package_settings";
+        const FACILITY_ID = "FD-123456";
+
+        const SEED_PACKAGES = [
+          { name: "Hemodialysis - 1 Month", code: "HD-M01-13", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 13, validityType: "Month", validityValue: 1 },
+          { name: "Hemodialysis - 3 Months", code: "HD-M03-36", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 36, validityType: "Months", validityValue: 3 },
+          { name: "Hemodialysis - 6 Months", code: "HD-M06-72", mainService: "Hemodialysis", unitType: "Sessions", unitsCount: 72, validityType: "Months", validityValue: 6 },
+          { name: "Physiotherapy - 3 Sessions", code: "PT-S03", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 3, validityType: "Days", validityValue: 30 },
+          { name: "Physiotherapy - 6 Sessions", code: "PT-S06", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 6, validityType: "Days", validityValue: 60 },
+          { name: "Physiotherapy - 12 Sessions", code: "PT-S12", mainService: "Physiotherapy", unitType: "Sessions", unitsCount: 12, validityType: "Days", validityValue: 90 },
+          { name: "Health Companion - 8 Days", code: "HC-D08", mainService: "Health Companion", unitType: "Days", unitsCount: 8, validityType: "Days", validityValue: 30 },
+          { name: "Health Companion - 12 Days", code: "HC-D12", mainService: "Health Companion", unitType: "Days", unitsCount: 12, validityType: "Days", validityValue: 45 },
+          { name: "Laboratory Tests - Sugar", code: "LAB-SUGAR", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1, validityType: "Days", validityValue: 30 },
+          { name: "Laboratory Tests - Checkup", code: "LAB-CHECK", mainService: "Laboratory Tests", unitType: "Visits", unitsCount: 1, validityType: "Days", validityValue: 30 }
+        ];
+        const tbody = document.getElementById("packagesTbody");
+        if (!tbody) return;
+
+        const searchInput = document.getElementById("packagesSearchInput");
+        const btnSearch = document.getElementById("btnPackagesSearch");
+        const btnReset = document.getElementById("btnPackagesReset");
+        const btnExport = document.getElementById("btnExportPackages");
+        const btnOpenAddPackage = document.getElementById("btnOpenAddPackage");
+
+        const rowsSelect = document.getElementById("packagesRowsPerPage");
+        const indicator = document.getElementById("packagesPageIndicator");
+        const currentBadge = document.getElementById("packagesCurrentPageBadge");
+        const btnFirst = document.getElementById("packagesFirstPage");
+        const btnPrev = document.getElementById("packagesPrevPage");
+        const btnNext = document.getElementById("packagesNextPage");
+        const btnLast = document.getElementById("packagesLastPage");
+
+        const checkAllVisible = document.getElementById("checkAllVisiblePackages");
+
+        const pfMainService = document.getElementById("pfMainService");
+        const pfUnitType = document.getElementById("pfUnitType");
+        const pfEnabled = document.getElementById("pfEnabled");
+        const pfPriceStatus = document.getElementById("pfPriceStatus");
+        const btnApplyFilter = document.getElementById("btnPackagesApplyFilter");
+        const btnFilterReset = document.getElementById("btnPackagesFilterReset");
+
+        const editModalEl = document.getElementById("editPackagePriceModal");
+        const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
+        const pkgPriceName = document.getElementById("pkgPriceName");
+        const pkgPriceCode = document.getElementById("pkgPriceCode");
+        const pkgPriceInput = document.getElementById("pkgPriceInput");
+        const pkgEnabledSwitch = document.getElementById("pkgEnabledSwitch");
+        const btnSavePackagePrice = document.getElementById("btnSavePackagePrice");
+
+        const addModalEl = document.getElementById("addPackageModal");
+        const addModal = addModalEl ? new bootstrap.Modal(addModalEl) : null;
+        const addPkgName = document.getElementById("addPkgName");
+        const addPkgCode = document.getElementById("addPkgCode");
+        const addPkgMainService = document.getElementById("addPkgMainService");
+        const addPkgUnitType = document.getElementById("addPkgUnitType");
+        const addPkgUnitsCount = document.getElementById("addPkgUnitsCount");
+        const addPkgValidityType = document.getElementById("addPkgValidityType");
+        const addPkgValidityValue = document.getElementById("addPkgValidityValue");
+        const addPkgPrice = document.getElementById("addPkgPrice");
+        const addPkgEnabled = document.getElementById("addPkgEnabled");
+        const btnSaveNewPackage = document.getElementById("btnSaveNewPackage");
+
+        let packagesMaster = [];
+        let settingsState = { facilityId: FACILITY_ID, items: {} };
+        let filteredRows = [];
+        let currentPage = 1;
+        let currentCode = "";
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function readStorage(key) {
+          try {
+            return localStorage.getItem(key);
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function writeStorage(key, value) {
+          try {
+            localStorage.setItem(key, value);
+          } catch (err) {
+            // no-op
+          }
+        }
+
+        function safeJson(json, fallback) {
+          try {
+            return JSON.parse(json);
+          } catch (err) {
+            return fallback;
+          }
+        }
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function escapeHtml(value) {
+          return (value || "").toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function toPositiveNumber(value) {
+          const num = Number(value);
+          return Number.isFinite(num) && num > 0 ? num : null;
+        }
+
+        function formatPrice(value) {
+          const num = toPositiveNumber(value);
+          return num === null ? "-" : `${num.toFixed(2)} SR`;
+        }
+
+        function formatValidity(type, value) {
+          const n = parseInt(value, 10);
+          if (!Number.isFinite(n) || n <= 0) return "-";
+          const t = (type || "Days").toString().trim();
+          const one = t.endsWith("s") ? t.slice(0, -1) : t;
+          const label = n === 1 ? one : (t.endsWith("s") ? t : `${t}s`);
+          return `${n} ${label}`;
+        }
+
+        function unitLabel(type, count) {
+          const n = parseInt(count, 10);
+          return `${type || "-"} ï¿½ ${Number.isFinite(n) ? n : "-"}`;
+        }
+
+        function codeBadge(code) {
+          return `<span class="status-pill st-accepted">${escapeHtml(code)}</span>`;
+        }
+
+        function availabilityOf(row) {
+          if (row.noProviders) return "no_providers";
+          if (!row.enabled) return "unavailable";
+          if (toPositiveNumber(row.cashPrice) === null) return "needs_price";
+          return "available";
+        }
+
+        function availabilityHtml(row) {
+          const state = availabilityOf(row);
+          if (state === "available") {
+            return '<span class="status-pill st-accepted">Available</span>';
+          }
+          if (state === "no_providers") {
+            return '<span class="status-pill st-missed">No Providers</span>';
+          }
+          if (state === "needs_price") {
+            return '<span class="status-pill st-cancel">Unavailable</span><div class="fsize-12 text-grey mt-4">Needs Price</div>';
+          }
+          return '<span class="status-pill st-cancel">Unavailable</span>';
+        }
+
+        function normalizeTemplate(entry) {
+          const name = (entry.name || entry.packageName || entry.title || "").toString().trim();
+          const code = (entry.code || entry.packageCode || entry.id || "").toString().trim().toUpperCase();
+          const mainService = (entry.mainService || entry.main_service || entry.service || "General").toString().trim();
+          const unitType = (entry.unitType || entry.unit_type || entry.unit || "Sessions").toString().trim();
+          const unitsCount = parseInt(entry.unitsCount ?? entry.units_count ?? entry.units ?? entry.count ?? 0, 10);
+          const validityType = (entry.validityType || entry.validity_type || entry.validityUnit || entry.durationType || "Days").toString().trim();
+          const validityValue = parseInt(entry.validityValue ?? entry.validity_value ?? entry.duration ?? entry.validityDays ?? 0, 10);
+          const noProviders = !!entry.noProviders;
+
+          return {
+            name,
+            code,
+            mainService,
+            unitType,
+            unitsCount: Number.isFinite(unitsCount) && unitsCount > 0 ? unitsCount : 1,
+            validityType,
+            validityValue: Number.isFinite(validityValue) && validityValue > 0 ? validityValue : 30,
+            noProviders
+          };
+        }
+        function loadMaster() {
+          const parsed = safeJson(readStorage(MASTER_KEY), null);
+          let source = Array.isArray(parsed) ? parsed : [];
+
+          if (!source.length) {
+            source = [...SEED_PACKAGES];
+            writeStorage(MASTER_KEY, JSON.stringify(source));
+          }
+
+          const normalized = source
+            .filter((x) => x && typeof x === "object")
+            .map(normalizeTemplate)
+            .filter((x) => x.name && x.code);
+
+          if (!normalized.length) {
+            writeStorage(MASTER_KEY, JSON.stringify(SEED_PACKAGES));
+            return [...SEED_PACKAGES];
+          }
+
+          writeStorage(MASTER_KEY, JSON.stringify(normalized));
+          return normalized;
+        }
+
+        function saveMaster() {
+          writeStorage(MASTER_KEY, JSON.stringify(packagesMaster));
+        }
+
+        function defaultSetting() {
+          return { enabled: false, cashPrice: null, updatedAt: nowIso() };
+        }
+
+        function normalizeSetting(item) {
+          const src = item && typeof item === "object" ? item : {};
+          return {
+            enabled: !!src.enabled,
+            cashPrice: toPositiveNumber(src.cashPrice),
+            updatedAt: (src.updatedAt || nowIso()).toString(),
+          };
+        }
+
+        function loadSettings() {
+          const parsed = safeJson(readStorage(SETTINGS_KEY), null);
+          const state = parsed && typeof parsed === "object" ? parsed : { facilityId: FACILITY_ID, items: {} };
+          if (!state.items || typeof state.items !== "object" || Array.isArray(state.items)) state.items = {};
+
+          const items = {};
+          Object.keys(state.items).forEach((code) => {
+            items[code] = normalizeSetting(state.items[code]);
+          });
+
+          packagesMaster.forEach((pkg) => {
+            if (!items[pkg.code]) items[pkg.code] = defaultSetting();
+          });
+
+          const normalizedState = { facilityId: FACILITY_ID, items };
+          writeStorage(SETTINGS_KEY, JSON.stringify(normalizedState));
+          return normalizedState;
+        }
+
+        function saveSettings() {
+          writeStorage(SETTINGS_KEY, JSON.stringify(settingsState));
+        }
+
+        function rowsData() {
+          return packagesMaster.map((pkg) => {
+            const setting = settingsState.items[pkg.code] ? normalizeSetting(settingsState.items[pkg.code]) : defaultSetting();
+            return {
+              ...pkg,
+              enabled: setting.enabled,
+              cashPrice: setting.cashPrice,
+              updatedAt: setting.updatedAt,
+            };
+          });
+        }
+
+        function matchesSearch(row) {
+          const q = norm(searchInput ? searchInput.value : "");
+          if (!q) return true;
+          return (
+            norm(row.name).includes(q) ||
+            norm(row.code).includes(q) ||
+            norm(row.mainService).includes(q)
+          );
+        }
+
+        function matchesFilters(row) {
+          const main = norm(pfMainService ? pfMainService.value : "");
+          const unit = norm(pfUnitType ? pfUnitType.value : "");
+          const en = norm(pfEnabled ? pfEnabled.value : "");
+          const price = norm(pfPriceStatus ? pfPriceStatus.value : "");
+
+          if (main && norm(row.mainService) !== main) return false;
+          if (unit && norm(row.unitType) !== unit) return false;
+          if (en === "enabled" && !row.enabled) return false;
+          if (en === "disabled" && row.enabled) return false;
+
+          const hasPrice = toPositiveNumber(row.cashPrice) !== null;
+          if (price === "has_price" && !hasPrice) return false;
+          if (price === "missing_price" && hasPrice) return false;
+
+          return true;
+        }
+
+        function renderRow(row, seq) {
+          return `
+            <tr>
+              <td class="col-check"><input class="row-check" type="checkbox" data-code="${escapeHtml(row.code)}" /></td>
+              <td class="col-seq">${seq}</td>
+              <td>
+                <div class="service-name">${escapeHtml(row.name)}</div>
+                <div class="service-main">${escapeHtml(row.mainService)}</div>
+              </td>
+              <td>${codeBadge(row.code)}</td>
+              <td>${escapeHtml(unitLabel(row.unitType, row.unitsCount))}</td>
+              <td>${escapeHtml(formatValidity(row.validityType, row.validityValue))}</td>
+              <td>
+                <label class="switch">
+                  <input class="enabled-switch" type="checkbox" data-code="${escapeHtml(row.code)}" ${row.enabled ? "checked" : ""} />
+                  <span class="slider"></span>
+                </label>
+              </td>
+              <td class="price-cell">${escapeHtml(formatPrice(row.cashPrice))}</td>
+              <td class="availability-cell">${availabilityHtml(row)}</td>
+              <td class="col-actions">
+                <div class="actions-cell">
+                  <button class="assign-btn edit-package-price-btn" type="button" data-code="${escapeHtml(row.code)}" title="Edit Price">
+                    <i class="fi fi-rr-coins"></i>
+                    Edit Price
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+
+        function selectedCodes() {
+          return Array.from(tbody.querySelectorAll(".row-check:checked")).map((cb) => cb.getAttribute("data-code") || "").filter(Boolean);
+        }
+
+        function updateHeadCheck() {
+          if (!checkAllVisible) return;
+          const vis = Array.from(tbody.querySelectorAll("tr .row-check"));
+          if (!vis.length) {
+            checkAllVisible.checked = false;
+            checkAllVisible.indeterminate = false;
+            return;
+          }
+          const checkedCount = vis.filter((cb) => cb.checked).length;
+          checkAllVisible.checked = checkedCount === vis.length;
+          checkAllVisible.indeterminate = checkedCount > 0 && checkedCount < vis.length;
+        }
+
+        function perPage() {
+          const v = parseInt(rowsSelect ? rowsSelect.value : "10", 10);
+          return Number.isFinite(v) && v > 0 ? v : 10;
+        }
+
+        function totalPages() {
+          return Math.max(1, Math.ceil(filteredRows.length / perPage()));
+        }
+
+        function render() {
+          const pages = totalPages();
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          const start = (currentPage - 1) * perPage();
+          const pageRows = filteredRows.slice(start, start + perPage());
+
+          if (!pageRows.length) {
+            tbody.innerHTML = '<tr><td colspan="10" class="text-center text-grey">No packages found.</td></tr>';
+          } else {
+            tbody.innerHTML = pageRows.map((row, i) => renderRow(row, start + i + 1)).join("");
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${pages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+
+          updateHeadCheck();
+        }
+
+        function applyAll(resetPage) {
+          filteredRows = rowsData().filter((row) => matchesSearch(row) && matchesFilters(row));
+          if (resetPage) currentPage = 1;
+          render();
+        }
+
+        function buildMainServiceFilter() {
+          if (!pfMainService) return;
+          const list = [...new Set(packagesMaster.map((x) => x.mainService).filter(Boolean))].sort();
+          const opts = ['<option value="">All</option>']
+            .concat(list.map((item) => `<option value="${escapeHtml(item.toLowerCase())}">${escapeHtml(item)}</option>`));
+          pfMainService.innerHTML = opts.join("");
+        }
+        function updateSetting(code, patch) {
+          const current = settingsState.items[code] ? normalizeSetting(settingsState.items[code]) : defaultSetting();
+          settingsState.items[code] = normalizeSetting({ ...current, ...patch, updatedAt: nowIso() });
+          saveSettings();
+          applyAll(false);
+        }
+
+        function findRowByCode(code) {
+          return rowsData().find((x) => x.code === code) || null;
+        }
+
+        function openEditPriceModal(code) {
+          const row = findRowByCode(code);
+          if (!row || !editModal) return;
+          currentCode = code;
+          if (pkgPriceName) pkgPriceName.textContent = row.name;
+          if (pkgPriceCode) pkgPriceCode.textContent = row.code;
+          if (pkgPriceInput) pkgPriceInput.value = row.cashPrice !== null ? String(row.cashPrice) : "";
+          if (pkgEnabledSwitch) pkgEnabledSwitch.checked = !!row.enabled;
+          editModal.show();
+        }
+
+        function sanitizePackageCode(value) {
+          return (value || "")
+            .toString()
+            .trim()
+            .toUpperCase()
+            .replace(/\s+/g, "-")
+            .replace(/[^A-Z0-9-]/g, "");
+        }
+
+        function resetAddPackageForm() {
+          if (addPkgName) addPkgName.value = "";
+          if (addPkgCode) addPkgCode.value = "";
+          if (addPkgMainService) addPkgMainService.value = "";
+          if (addPkgUnitType) addPkgUnitType.value = "Sessions";
+          if (addPkgUnitsCount) addPkgUnitsCount.value = "1";
+          if (addPkgValidityType) addPkgValidityType.value = "Days";
+          if (addPkgValidityValue) addPkgValidityValue.value = "30";
+          if (addPkgPrice) addPkgPrice.value = "";
+          if (addPkgEnabled) addPkgEnabled.checked = true;
+        }
+
+        function openAddPackageModal() {
+          if (!addModal) return;
+          resetAddPackageForm();
+          addModal.show();
+        }
+
+        function addPackageFromModal() {
+          const name = (addPkgName ? addPkgName.value : "").toString().trim();
+          const code = sanitizePackageCode(addPkgCode ? addPkgCode.value : "");
+          const mainService = (addPkgMainService ? addPkgMainService.value : "").toString().trim() || "General";
+          const unitType = (addPkgUnitType ? addPkgUnitType.value : "Sessions").toString().trim() || "Sessions";
+          const unitsCount = parseInt(addPkgUnitsCount ? addPkgUnitsCount.value : "1", 10);
+          const validityType = (addPkgValidityType ? addPkgValidityType.value : "Days").toString().trim() || "Days";
+          const validityValue = parseInt(addPkgValidityValue ? addPkgValidityValue.value : "30", 10);
+          const price = toPositiveNumber(addPkgPrice ? addPkgPrice.value : "");
+
+          if (!name) {
+            alert("Package name is required.");
+            if (addPkgName) addPkgName.focus();
+            return;
+          }
+
+          if (!code || code.length < 3) {
+            alert("Please enter a valid package code.");
+            if (addPkgCode) addPkgCode.focus();
+            return;
+          }
+
+          if (packagesMaster.some((pkg) => pkg.code === code)) {
+            alert("Package code already exists. Please use another code.");
+            if (addPkgCode) addPkgCode.focus();
+            return;
+          }
+
+          if (!Number.isFinite(unitsCount) || unitsCount <= 0) {
+            alert("Units count must be greater than 0.");
+            if (addPkgUnitsCount) addPkgUnitsCount.focus();
+            return;
+          }
+
+          if (!Number.isFinite(validityValue) || validityValue <= 0) {
+            alert("Validity value must be greater than 0.");
+            if (addPkgValidityValue) addPkgValidityValue.focus();
+            return;
+          }
+
+          if (price === null) {
+            alert("Cash price is required and must be greater than 0.");
+            if (addPkgPrice) addPkgPrice.focus();
+            return;
+          }
+
+          const template = normalizeTemplate({
+            name,
+            code,
+            mainService,
+            unitType,
+            unitsCount,
+            validityType,
+            validityValue,
+            noProviders: false,
+          });
+
+          packagesMaster.push(template);
+          saveMaster();
+
+          settingsState.items[template.code] = normalizeSetting({
+            enabled: addPkgEnabled ? addPkgEnabled.checked : true,
+            cashPrice: price,
+            updatedAt: nowIso(),
+          });
+          saveSettings();
+
+          buildMainServiceFilter();
+          applyAll(true);
+
+          if (addModal) addModal.hide();
+        }
+
+        function resetFilters() {
+          if (pfMainService) pfMainService.value = "";
+          if (pfUnitType) pfUnitType.value = "";
+          if (pfEnabled) pfEnabled.value = "";
+          if (pfPriceStatus) pfPriceStatus.value = "";
+        }
+
+        function csvEscape(v) {
+          const s = (v ?? "").toString().replace(/\r?\n/g, " ").trim();
+          if (/[",]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
+          return s;
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", () => applyAll(true));
+        if (searchInput) searchInput.addEventListener("input", () => applyAll(true));
+        if (btnOpenAddPackage) btnOpenAddPackage.addEventListener("click", openAddPackageModal);
+        if (btnSaveNewPackage) btnSaveNewPackage.addEventListener("click", addPackageFromModal);
+
+        if (btnReset)
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            resetFilters();
+            applyAll(true);
+          });
+
+        if (btnApplyFilter)
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll(true);
+            const modalEl = document.getElementById("packages-filter-modal");
+            if (modalEl) bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+          });
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", () => {
+            resetFilters();
+            applyAll(true);
+          });
+
+        if (rowsSelect) rowsSelect.addEventListener("change", () => { currentPage = 1; render(); });
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = totalPages(); render(); });
+
+        if (checkAllVisible)
+          checkAllVisible.addEventListener("change", () => {
+            Array.from(tbody.querySelectorAll(".row-check")).forEach((cb) => {
+              cb.checked = checkAllVisible.checked;
+            });
+            updateHeadCheck();
+          });
+
+        tbody.addEventListener("change", (e) => {
+          const t = e.target;
+          if (!(t instanceof HTMLInputElement)) return;
+
+          if (t.classList.contains("row-check")) {
+            updateHeadCheck();
+            return;
+          }
+
+          if (t.classList.contains("enabled-switch")) {
+            const code = t.getAttribute("data-code") || "";
+            if (!code) return;
+            updateSetting(code, { enabled: t.checked });
+          }
+        });
+
+        tbody.addEventListener("click", (e) => {
+          const btn = e.target.closest(".edit-package-price-btn");
+          if (!btn) return;
+          const code = btn.getAttribute("data-code") || "";
+          if (!code) return;
+          openEditPriceModal(code);
+        });
+
+        if (btnSavePackagePrice)
+          btnSavePackagePrice.addEventListener("click", () => {
+            if (!currentCode) return;
+            const raw = pkgPriceInput ? pkgPriceInput.value : "";
+            const num = raw === "" ? null : toPositiveNumber(raw);
+            updateSetting(currentCode, {
+              cashPrice: num,
+              enabled: pkgEnabledSwitch ? pkgEnabledSwitch.checked : false,
+            });
+            if (editModal) editModal.hide();
+          });
+
+        if (btnExport)
+          btnExport.addEventListener("click", () => {
+            const selected = selectedCodes();
+            const all = rowsData();
+            const exportRows = selected.length ? all.filter((x) => selected.includes(x.code)) : filteredRows;
+
+            if (!exportRows.length) {
+              alert("No packages available to export.");
+              return;
+            }
+
+            const headers = ["Package", "Package Code", "Main Service", "Unit", "Validity", "Enabled", "Cash Price", "Availability"];
+            const lines = [headers.map(csvEscape).join(",")];
+
+            exportRows.forEach((row) => {
+              const availability = availabilityOf(row);
+              const availabilityLabel = availability === "available"
+                ? "Available"
+                : availability === "no_providers"
+                  ? "No Providers"
+                  : "Unavailable";
+
+              lines.push([
+                row.name,
+                row.code,
+                row.mainService,
+                unitLabel(row.unitType, row.unitsCount),
+                formatValidity(row.validityType, row.validityValue),
+                row.enabled ? "Enabled" : "Disabled",
+                formatPrice(row.cashPrice),
+                availabilityLabel,
+              ].map(csvEscape).join(","));
+            });
+
+            const csvContent = "\ufeff" + lines.join("\n");
+            const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "facility-packages.csv";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          });
+
+        packagesMaster = loadMaster();
+        settingsState = loadSettings();
+        buildMainServiceFilter();
+        applyAll(true);
+      })();
+    </script>
+<script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+

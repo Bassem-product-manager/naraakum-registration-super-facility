@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Entity Ledger</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .entity-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .kpi-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 1200px) {
+        .kpi-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 768px) {
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .kpi {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px 12px;
+      }
+
+      .kpi .label {
+        font-size: 11px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .kpi .value {
+        margin-top: 4px;
+        font-size: 18px;
+        font-weight: 900;
+        color: #101828;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        background: #fff;
+        color: #0f8c8c;
+        border-radius: 999px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tab-btn.active {
+        background: #0f8c8c;
+        color: #fff;
+      }
+
+      .tab-panel {
+        display: none;
+      }
+
+      .tab-panel.active {
+        display: block;
+      }
+
+      .ledger-table th,
+      .ledger-table td {
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+      .ledger-table.selection-disabled .select-cell {
+        display: none;
+      }
+
+      .classification-payable {
+        color: #027a48;
+        font-weight: 900;
+      }
+
+      .classification-expected {
+        color: #b54708;
+        font-weight: 900;
+      }
+
+      .classification-excluded {
+        color: #667085;
+        font-weight: 900;
+      }
+
+      .panel-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .empty-state {
+        border: 1px dashed #d0d5dd;
+        border-radius: 14px;
+        background: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .payout-mode-group {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .payout-mode-btn {
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        background: #fff;
+        color: #0f8c8c;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        text-align: center;
+      }
+
+      .payout-mode-btn.active {
+        background: #0f8c8c;
+        color: #fff;
+      }
+
+      .payout-summary {
+        border: 1px dashed rgba(16, 24, 40, 0.14);
+        border-radius: 10px;
+        background: #f8fafc;
+        padding: 10px;
+        display: grid;
+        gap: 6px;
+      }
+
+      .payout-summary .payout-summary-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .payout-summary .payout-summary-key {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .payout-summary .payout-summary-value {
+        font-size: 12px;
+        color: #101828;
+        font-weight: 900;
+        text-align: right;
+        min-width: 110px;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .money-value {
+        font-variant-numeric: tabular-nums;
+      }
+
+      .money-input {
+        text-align: right;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .select-cell {
+        width: 48px;
+        text-align: center;
+      }
+
+      .order-select {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+      }
+
+      .validation-msg {
+        min-height: 18px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .validation-msg.error {
+        color: #b42318;
+      }
+
+      .validation-msg.ok {
+        color: #027a48;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-payments">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Entity Ledger</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">12-03-000011</span>
+                    </span>
+                    <span class="fsize-12 text-grey">12/02/2026 - 401.35 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="deposits.html">Deposits</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="ledgerCrumbEntity">Entity Ledger</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="ledgerEmptyState" class="empty-state d-none">
+            <p class="mb-12">Entity not found for this code.</p>
+            <a href="deposits.html" class="btn btn-primary btn-32">Back to Deposits</a>
+          </div>
+
+          <div id="ledgerContent" class="d-none">
+            <div class="entity-card">
+              <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                <div>
+                  <h4 class="mb-4" id="ledgerInstitutionName">-</h4>
+                  <p class="text-grey mb-0">
+                    Provider: <span class="semiBold" id="ledgerProviderCode">-</span>
+                    <span class="mx-1">|</span>
+                    Type: <span class="semiBold" id="ledgerProviderType">-</span>
+                  </p>
+                </div>
+                <a href="deposits.html" class="btn btn-primary-revers btn-32">Back to Deposits</a>
+              </div>
+
+              <div class="kpi-grid">
+                <div class="kpi"><div class="label">Total Orders</div><div class="value" id="kpiTotalOrders">0</div></div>
+                <div class="kpi"><div class="label">Completed Value</div><div class="value" id="kpiCompletedValue">0.00 SAR</div></div>
+                <div class="kpi"><div class="label">Refunds</div><div class="value" id="kpiRefundsValue">0.00 SAR</div></div>
+                <div class="kpi"><div class="label">Paid Out</div><div class="value" id="kpiPaidOut">0.00 SAR</div></div>
+                <div class="kpi"><div class="label">Payable Now</div><div class="value" id="kpiPayableNow">0.00 SAR</div></div>
+                <div class="kpi"><div class="label">Expected</div><div class="value" id="kpiExpectedValue">0.00 SAR</div></div>
+              </div>
+            </div>
+
+            <div class="row g-3 mt-8">
+              <div class="col-lg-8">
+                <div class="panel-card">
+                  <div class="tabs mb-12" role="tablist" aria-label="Entity ledger tabs">
+                    <button class="tab-btn active" type="button" data-tab="orders" aria-selected="true">Orders</button>
+                    <button class="tab-btn" type="button" data-tab="invoices" aria-selected="false">Completed Orders</button>
+                    <button class="tab-btn" type="button" data-tab="refunds" aria-selected="false">Refunds</button>
+                    <button class="tab-btn" type="button" data-tab="settlements" aria-selected="false">Settlement History</button>
+                  </div>
+
+                  <div id="panel-orders" class="tab-panel active">
+                    <div class="table-responsive">
+                      <table id="ordersTable" class="staff-table naraakum-table table-tight ledger-table selection-disabled">
+                        <thead>
+                          <tr>
+                            <th id="ordersSelectHead" class="select-cell"><input id="selectAllPayableOrders" class="order-select" type="checkbox" title="Select all payable orders" /></th>
+                            <th>Order No</th>
+                            <th>Transaction</th>
+                            <th>Patient</th>
+                            <th>Status</th>
+                            <th>Item Type</th>
+                            <th>Payment</th>
+                            <th>Order Date</th>
+                            <th>Scheduled</th>
+                            <th>Base Price</th>
+                            <th>Refund</th>
+                            <th>Settled</th>
+                            <th>Outstanding</th>
+                            <th>Classification</th>
+                            <th class="text-center">Preview</th>
+                          </tr>
+                        </thead>
+                        <tbody id="ordersBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div id="panel-invoices" class="tab-panel">
+                    <div class="table-responsive">
+                      <table class="staff-table naraakum-table table-tight ledger-table">
+                        <thead>
+                          <tr>
+                            <th>Order No</th>
+                            <th>Patient</th>
+                            <th>Status</th>
+                            <th>Base Price</th>
+                            <th class="text-center">Preview</th>
+                          </tr>
+                        </thead>
+                        <tbody id="invoiceBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div id="panel-refunds" class="tab-panel">
+                    <div class="table-responsive">
+                      <table class="staff-table naraakum-table table-tight ledger-table">
+                        <thead>
+                          <tr>
+                            <th>Order No</th>
+                            <th>Patient</th>
+                            <th>Status</th>
+                            <th>Refund Amount</th>
+                            <th>Date</th>
+                          </tr>
+                        </thead>
+                        <tbody id="refundBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div id="panel-settlements" class="tab-panel">
+                    <div class="table-responsive">
+                      <table class="staff-table naraakum-table table-tight ledger-table">
+                        <thead>
+                          <tr>
+                            <th>Settlement ID</th>
+                            <th>Date</th>
+                            <th>Mode</th>
+                            <th>Linked Orders</th>
+                            <th>Linked Amount</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Destination</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="settlementBody"></tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-4">
+                <div class="panel-card">
+                  <h6 class="semiBold mb-8">Create Payout</h6>
+
+                  <div class="mb-8">
+                    <div class="fsize-12 text-grey">Current Payable</div>
+                    <div class="semiBold money-value" id="payoutCurrentPayable">0.00 SAR</div>
+                  </div>
+
+                  <div class="mb-8">
+                    <div class="payout-mode-group mt-4">
+                      <button id="modeAll" type="button" class="payout-mode-btn active" data-mode="all">Pay All</button>
+                      <button id="modeSelected" type="button" class="payout-mode-btn" data-mode="selected">Pay By Order</button>
+                    </div>
+                  </div>
+
+                  <div class="payout-summary mb-8">
+                    <div class="payout-summary-line"><span class="payout-summary-key">Selected Orders</span><span class="payout-summary-value" id="payoutSelectedOrdersCount">0</span></div>
+                    <div class="payout-summary-line"><span class="payout-summary-key">Selected Amount</span><span class="payout-summary-value" id="payoutSelectedAmount">0.00 SAR</span></div>
+                  </div>
+
+                  <div class="mb-8">
+                    <label class="fsize-12 text-grey">Amount</label>
+                    <input id="payoutAmount" type="number" min="0" step="0.01" readonly class="form-control form-control-32 money-input" />
+                  </div>
+
+                  <div class="mb-8">
+                    <label class="fsize-12 text-grey">Method</label>
+                    <select id="payoutMethod" class="form-control form-control-32">
+                      <option value="bank" selected>Bank</option>
+                      <option value="wallet">Wallet</option>
+                    </select>
+                  </div>
+
+                  <div id="bankAccountWrap" class="mb-8">
+                    <label class="fsize-12 text-grey">Bank Account</label>
+                    <select id="payoutBankAccount" class="form-control form-control-32"></select>
+                  </div>
+
+                  <div id="walletAccountWrap" class="mb-8 d-none">
+                    <label class="fsize-12 text-grey">Wallet</label>
+                    <select id="payoutWalletAccount" class="form-control form-control-32"></select>
+                  </div>
+
+                  <div id="payoutValidationMessage" class="validation-msg mb-8"></div>
+
+                  <button id="btnCreatePayout" type="button" class="btn btn-primary w-100 mt-12">Create Payout</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="linkedOrdersModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="linkedOrdersTitle">Linked Orders</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id="linkedOrdersBody"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/payment-data.js"></script>
+    <script src="../assets/js/payment-entity-ledger.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Provider Management - Job Titles</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: .3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open {
+        transform: translateX(0);
+      }
+
+      .side-menu-list li.is-open > .sub-list {
+        display: block;
+      }
+
+      .side-menu-list li > .sub-list {
+        display: none;
+      }
+
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down {
+        transform: rotate(180deg);
+      }
+
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, .08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .job-title-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 13px;
+      }
+
+      .job-title-table thead th {
+        font-weight: 900;
+        color: #344054;
+        font-size: 12px;
+        white-space: nowrap;
+        background: #fff;
+        border-bottom: 1px solid rgba(16, 24, 40, .10);
+        padding: 12px;
+        vertical-align: middle;
+      }
+
+      .job-title-table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(16, 24, 40, .08);
+        color: #101828;
+        font-weight: 700;
+      }
+
+      .job-title-table tbody tr:hover td {
+        background: rgba(15, 140, 140, .04);
+      }
+
+      .job-title-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .job-title-table .col-seq { width: 52px; }
+      .job-title-table .col-title { min-width: 220px; }
+      .job-title-table .col-doctors { width: 150px; }
+      .job-title-table .col-license { width: 150px; }
+      .job-title-table .col-status { width: 150px; }
+      .job-title-table .col-actions {
+        width: 120px;
+        text-align: right;
+      }
+
+      .page-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .page-section-title h1 {
+        margin: 0;
+        color: #101828;
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .title-name {
+        display: block;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+        line-height: 1.2;
+      }
+
+      .title-sub {
+        display: block;
+        margin-top: 3px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #667085;
+      }
+
+      .availability-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .availability-chip,
+      .see-more-chip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .availability-chip {
+        border: 1px solid rgba(15, 140, 140, .22);
+        background: rgba(15, 140, 140, .06);
+        color: #0b6f6f;
+      }
+
+      .availability-chip.is-extra {
+        display: none;
+      }
+
+      .availability-list.is-expanded .availability-chip.is-extra {
+        display: inline-flex;
+      }
+
+      .see-more-chip {
+        border: 0;
+        background: transparent;
+        color: var(--nk-green);
+        padding: 0 4px;
+        min-height: 28px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .doctors-count {
+        display: inline-block;
+        min-width: 32px;
+        color: #101828;
+        font-size: 14px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .status-toggle {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        border: 0;
+        border-radius: 999px;
+        background: #d0d5dd;
+        padding: 0;
+        transition: background .18s ease;
+      }
+
+      .status-toggle::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, .20);
+        transition: transform .18s ease;
+      }
+
+      .status-toggle.active {
+        background: #12b76a;
+      }
+
+      .status-toggle.active::after {
+        transform: translateX(22px);
+      }
+
+      .license-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        display: inline-block;
+        vertical-align: middle;
+        box-shadow: 0 0 0 3px rgba(16, 24, 40, .03);
+      }
+
+      .lic-yes { background: #12b76a; }
+      .lic-no { background: #98a2b3; }
+
+      .pm-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nk-edit-icon {
+        color: var(--nk-green, #0f8c8c) !important;
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .edit-title-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 32px;
+        padding: 0;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, .22);
+        background: rgba(15, 140, 140, .06);
+      }
+
+      .edit-title-btn:hover {
+        background: rgba(15, 140, 140, .10);
+      }
+
+      .empty-row {
+        text-align: center;
+        color: #667085;
+        font-weight: 800;
+        padding: 28px 12px !important;
+      }
+
+      .provider-search-bar {
+        border: 1px solid rgba(16, 24, 40, .08);
+        background: #fff !important;
+        box-shadow: 0 8px 20px rgba(16, 24, 40, .04);
+      }
+
+      .provider-search-bar .row {
+        --bs-gutter-x: 12px;
+        --bs-gutter-y: 12px;
+      }
+
+      .provider-search-bar .search-box-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        min-height: 34px;
+      }
+
+      .provider-search-bar .search-box-group .form-control {
+        flex: 1 1 auto;
+        min-width: 220px;
+        height: 34px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .provider-search-bar .search-box-group .btn,
+      .provider-search-bar .col-auto .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 34px;
+        min-width: 34px;
+        padding: 0 10px;
+        border-radius: 8px;
+        line-height: 1;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .provider-search-bar .search-box-group .btn i,
+      .provider-search-bar .col-auto .btn i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        line-height: 1;
+      }
+
+      @media (max-width: 992px) {
+        .filter-bar .row {
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .provider-search-bar .row > .col,
+        .provider-search-bar .row > .col-auto {
+          width: 100%;
+        }
+
+        .provider-search-bar .col-auto {
+          justify-content: stretch;
+        }
+
+        .provider-search-bar .col-auto .btn {
+          flex: 1 1 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Job Titles</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="page-section-title">
+            <h1>Job Titles</h1>
+          </div>
+
+          <div class="filter-bar filter-bar--compact-search provider-search-bar surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input id="jobTitleSearchInput" type="text" class="form-control form-control-32" placeholder="Search by title / availability / doctors count" />
+                  <button id="btnJobTitleSearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                  <button id="btnJobTitleReset" type="button" class="btn btn-primary-revers btn-32" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reset" data-bs-custom-class="custom-tooltip">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#jobTitleFilterModal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+                <a id="btnAddTitle" class="btn btn-primary btn-icon btn-40" href="add-job-title.html">
+                  <i class="fi fi-rr-plus"></i><span>Add Title</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-16">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="naraakum-table job-title-table" id="jobTitlesTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq text-center">#</th>
+                      <th class="col-title">Job Title</th>
+                      <th class="col-doctors text-center">Doctors Count</th>
+                      <th>Availability</th>
+                      <th class="col-license text-center">License Required</th>
+                      <th class="col-status text-center">Activation</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="jobTitlesTbody">
+                    <tr data-title="General Practitioner" data-availability="online,clinic,home" data-doctors="42" data-license="yes" data-status="active">
+                      <td class="text-center seq-cell">1</td>
+                      <td>
+                        <span class="title-name">General Practitioner</span>
+                      </td>
+                      <td class="text-center"><span class="doctors-count">42</span></td>
+                      <td><div class="availability-list"><span class="availability-chip">Online</span><span class="availability-chip is-extra">Clinic Visits</span><span class="availability-chip is-extra">Home Visits</span><button type="button" class="see-more-chip" data-see-more>More</button></div></td>
+                      <td class="text-center"><span class="license-dot lic-yes" title="License required"></span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-title-btn" type="button" data-edit-title title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-title="Dermatologist" data-availability="clinic,remote" data-doctors="18" data-license="yes" data-status="active">
+                      <td class="text-center seq-cell">2</td>
+                      <td>
+                        <span class="title-name">Dermatologist</span>
+                      </td>
+                      <td class="text-center"><span class="doctors-count">18</span></td>
+                      <td><div class="availability-list"><span class="availability-chip">Clinic Visits</span><span class="availability-chip is-extra">Remote</span><button type="button" class="see-more-chip" data-see-more>More</button></div></td>
+                      <td class="text-center"><span class="license-dot lic-yes" title="License required"></span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-title-btn" type="button" data-edit-title title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-title="Home Care Nurse" data-availability="home" data-doctors="9" data-license="yes" data-status="inactive">
+                      <td class="text-center seq-cell">3</td>
+                      <td>
+                        <span class="title-name">Home Care Nurse</span>
+                      </td>
+                      <td class="text-center"><span class="doctors-count">9</span></td>
+                      <td><div class="availability-list"><span class="availability-chip">Home Visits</span></div></td>
+                      <td class="text-center"><span class="license-dot lic-yes" title="License required"></span></td>
+                      <td class="text-center"><button class="status-toggle" type="button" data-toggle-status aria-label="Inactive"></button></td>
+                      <td><div class="pm-actions"><button class="edit-title-btn" type="button" data-edit-title title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-title="Nutrition Consultant" data-availability="remote" data-doctors="12" data-license="no" data-status="active">
+                      <td class="text-center seq-cell">4</td>
+                      <td>
+                        <span class="title-name">Nutrition Consultant</span>
+                      </td>
+                      <td class="text-center"><span class="doctors-count">12</span></td>
+                      <td><div class="availability-list"><span class="availability-chip">Remote</span></div></td>
+                      <td class="text-center"><span class="license-dot lic-no" title="No license required"></span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-title-btn" type="button" data-edit-title title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="jobTitleEmptyState" class="empty-row d-none">No job titles found for current search/filter.</div>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="jobTitlesRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+                  <div class="page-indicator" id="jobTitlesPageIndicator">Page 1 of 1</div>
+                  <div class="pager">
+                    <button class="pg-btn" id="jobTitlesFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="jobTitlesPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="jobTitlesCurrentPageBadge">1</span>
+                    <button class="pg-btn" id="jobTitlesNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="jobTitlesLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="jobTitleFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Job Titles</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Availability</label>
+                <select id="jtAvailabilityFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="online">Online</option>
+                  <option value="remote">Remote</option>
+                  <option value="clinic">Clinic Visits</option>
+                  <option value="home">Home Visits</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="jtStatusFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">License Required</label>
+                <select id="jtLicenseFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnJobTitleFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnJobTitleApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="jobTitleFormModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="jobTitleFormTitle">Add Title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="jobTitleForm">
+              <input type="hidden" id="jtEditingIndex" value="" />
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Title Name</label>
+                  <input id="jtTitleName" type="text" class="form-control form-control-32" placeholder="Example: Cardiologist" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Doctors Count</label>
+                  <input id="jtDoctorsCount" type="number" min="0" class="form-control form-control-32" value="0" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Status</label>
+                  <select id="jtStatus" class="form-control form-control-32">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">License Required</label>
+                  <select id="jtLicense" class="form-control form-control-32">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Availability</label>
+                  <div class="d-flex flex-wrap gap-3 pt-2">
+                    <label class="d-flex align-items-center gap-2 fsize-14"><input class="jt-availability" type="checkbox" value="online" /> Online</label>
+                    <label class="d-flex align-items-center gap-2 fsize-14"><input class="jt-availability" type="checkbox" value="remote" /> Remote</label>
+                    <label class="d-flex align-items-center gap-2 fsize-14"><input class="jt-availability" type="checkbox" value="clinic" /> Clinic Visits</label>
+                    <label class="d-flex align-items-center gap-2 fsize-14"><input class="jt-availability" type="checkbox" value="home" /> Home Visits</label>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveJobTitle" type="submit" form="jobTitleForm" class="btn btn-primary">Save Title</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () { aside.classList.toggle("is-open"); });
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () { li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function () {
+        const tbody = document.getElementById("jobTitlesTbody");
+        if (!tbody) return;
+
+        const searchInput = document.getElementById("jobTitleSearchInput");
+        const btnSearch = document.getElementById("btnJobTitleSearch");
+        const btnReset = document.getElementById("btnJobTitleReset");
+        const availabilityFilter = document.getElementById("jtAvailabilityFilter");
+        const statusFilter = document.getElementById("jtStatusFilter");
+        const licenseFilter = document.getElementById("jtLicenseFilter");
+        const btnApplyFilter = document.getElementById("btnJobTitleApplyFilter");
+        const btnFilterReset = document.getElementById("btnJobTitleFilterReset");
+        const rowsSelect = document.getElementById("jobTitlesRowsPerPage");
+        const indicator = document.getElementById("jobTitlesPageIndicator");
+        const currentBadge = document.getElementById("jobTitlesCurrentPageBadge");
+        const emptyState = document.getElementById("jobTitleEmptyState");
+        const btnFirst = document.getElementById("jobTitlesFirstPage");
+        const btnPrev = document.getElementById("jobTitlesPrevPage");
+        const btnNext = document.getElementById("jobTitlesNextPage");
+        const btnLast = document.getElementById("jobTitlesLastPage");
+        const form = document.getElementById("jobTitleForm");
+        const formTitle = document.getElementById("jobTitleFormTitle");
+        const editingIndex = document.getElementById("jtEditingIndex");
+        const titleName = document.getElementById("jtTitleName");
+        const doctorsCount = document.getElementById("jtDoctorsCount");
+        const status = document.getElementById("jtStatus");
+        const license = document.getElementById("jtLicense");
+        const availabilityChecks = Array.from(document.querySelectorAll(".jt-availability"));
+
+        let currentPage = 1;
+        let rowsFiltered = [];
+
+        function norm(value) {
+          return (value || "").toString().trim().toLowerCase();
+        }
+
+        function rowsAll() {
+          return Array.from(tbody.querySelectorAll("tr"));
+        }
+
+        function availabilityLabel(value) {
+          if (value === "remote") return "Remote";
+          if (value === "clinic") return "Clinic Visits";
+          if (value === "home") return "Home Visits";
+          return value;
+        }
+
+        function getRowData(tr) {
+          return {
+            title: norm(tr.getAttribute("data-title")),
+            availability: norm(tr.getAttribute("data-availability")),
+            doctors: norm(tr.getAttribute("data-doctors")),
+            license: norm(tr.getAttribute("data-license")),
+            status: norm(tr.getAttribute("data-status"))
+          };
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput && searchInput.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.title.includes(q) || d.availability.includes(q) || d.doctors.includes(q) || d.license.includes(q) || d.status.includes(q);
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+          const av = norm(availabilityFilter && availabilityFilter.value);
+          const st = norm(statusFilter && statusFilter.value);
+          const lic = norm(licenseFilter && licenseFilter.value);
+          if (av && !d.availability.split(",").includes(av)) return false;
+          if (st && d.status !== st) return false;
+          if (lic && d.license !== lic) return false;
+          return true;
+        }
+
+        function perPageVal() {
+          if (!rowsSelect) return rowsFiltered.length || 1;
+          return rowsSelect.value === "all" ? rowsFiltered.length || 1 : parseInt(rowsSelect.value, 10) || 10;
+        }
+
+        function totalPages() {
+          return Math.max(1, Math.ceil(rowsFiltered.length / perPageVal()));
+        }
+
+        function render() {
+          const all = rowsAll();
+          all.forEach(function (tr) { tr.classList.add("d-none"); });
+
+          const pages = totalPages();
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            rowsFiltered.forEach(function (tr) { tr.classList.remove("d-none"); });
+          } else {
+            const start = (currentPage - 1) * perPageVal();
+            rowsFiltered.slice(start, start + perPageVal()).forEach(function (tr) { tr.classList.remove("d-none"); });
+          }
+
+          const visibleRows = all.filter(function (tr) { return !tr.classList.contains("d-none"); });
+          visibleRows.forEach(function (tr, index) {
+            const cell = tr.querySelector(".seq-cell");
+            if (cell) cell.textContent = String(index + 1);
+          });
+
+          if (emptyState) emptyState.classList.toggle("d-none", rowsFiltered.length > 0);
+          if (indicator) indicator.textContent = "Page " + currentPage + " of " + pages;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+        }
+
+        function applyAll() {
+          rowsFiltered = rowsAll().filter(function (tr) { return matchesSearch(tr) && matchesFilters(tr); });
+          currentPage = 1;
+          render();
+        }
+
+        function resetForm() {
+          if (formTitle) formTitle.textContent = "Add Title";
+          if (editingIndex) editingIndex.value = "";
+          if (titleName) titleName.value = "";
+          if (doctorsCount) doctorsCount.value = "0";
+          if (status) status.value = "active";
+          if (license) license.value = "yes";
+          availabilityChecks.forEach(function (check) { check.checked = false; });
+        }
+
+        function buildAvailability(values) {
+          return values.map(function (value, index) {
+            return '<span class="availability-chip' + (index > 0 ? " is-extra" : "") + '">' + availabilityLabel(value) + '</span>';
+          }).join("") + (values.length > 1 ? '<button type="button" class="see-more-chip" data-see-more>More</button>' : "");
+        }
+
+        function escapeHtml(value) {
+          return (value || "").toString().replace(/[&<>"']/g, function (char) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char];
+          });
+        }
+
+        function setRowValues(tr, values) {
+          const availability = values.availability.length ? values.availability : ["remote"];
+          tr.setAttribute("data-title", values.title);
+          tr.setAttribute("data-availability", availability.join(","));
+          tr.setAttribute("data-doctors", String(values.doctors));
+          tr.setAttribute("data-license", values.license);
+          tr.setAttribute("data-status", values.status);
+          tr.innerHTML = [
+            '<td class="text-center seq-cell">1</td>',
+            '<td><span class="title-name">' + escapeHtml(values.title) + '</span></td>',
+            '<td class="text-center"><span class="doctors-count">' + escapeHtml(values.doctors) + '</span></td>',
+            '<td><div class="availability-list">' + buildAvailability(availability) + '</div></td>',
+            '<td class="text-center"><span class="license-dot ' + (values.license === "yes" ? "lic-yes" : "lic-no") + '" title="' + (values.license === "yes" ? "License required" : "No license required") + '"></span></td>',
+            '<td class="text-center"><button class="status-toggle ' + (values.status === "active" ? "active" : "") + '" type="button" data-toggle-status aria-label="' + (values.status === "active" ? "Active" : "Inactive") + '"></button></td>',
+            '<td><div class="pm-actions"><button class="edit-title-btn" type="button" data-edit-title title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>'
+          ].join("");
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+        if (rowsSelect) rowsSelect.addEventListener("change", function () { currentPage = 1; render(); });
+        if (btnFirst) btnFirst.addEventListener("click", function () { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", function () { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", function () { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", function () { currentPage = totalPages(); render(); });
+
+        if (btnReset) btnReset.addEventListener("click", function () {
+          if (searchInput) searchInput.value = "";
+          if (availabilityFilter) availabilityFilter.value = "";
+          if (statusFilter) statusFilter.value = "";
+          if (licenseFilter) licenseFilter.value = "";
+          applyAll();
+        });
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", function () {
+          applyAll();
+          const modalEl = document.getElementById("jobTitleFilterModal");
+          if (modalEl && window.bootstrap) {
+            (bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)).hide();
+          }
+        });
+
+        if (btnFilterReset) btnFilterReset.addEventListener("click", function () {
+          if (availabilityFilter) availabilityFilter.value = "";
+          if (statusFilter) statusFilter.value = "";
+          if (licenseFilter) licenseFilter.value = "";
+          applyAll();
+        });
+
+        tbody.addEventListener("click", function (event) {
+          const seeMoreBtn = event.target.closest("[data-see-more]");
+          if (seeMoreBtn) {
+            const list = seeMoreBtn.closest(".availability-list");
+            if (!list) return;
+            const open = list.classList.toggle("is-expanded");
+            seeMoreBtn.textContent = open ? "Less" : "More";
+            return;
+          }
+
+          const statusBtn = event.target.closest("[data-toggle-status]");
+          if (statusBtn) {
+            const row = statusBtn.closest("tr");
+            const next = row.getAttribute("data-status") === "active" ? "inactive" : "active";
+            row.setAttribute("data-status", next);
+            statusBtn.className = "status-toggle" + (next === "active" ? " active" : "");
+            statusBtn.setAttribute("aria-label", next === "active" ? "Active" : "Inactive");
+            applyAll();
+            return;
+          }
+
+          const editBtn = event.target.closest("[data-edit-title]");
+          if (!editBtn) return;
+          const row = editBtn.closest("tr");
+          const all = rowsAll();
+          const d = getRowData(row);
+          if (formTitle) formTitle.textContent = "Edit Title";
+          if (editingIndex) editingIndex.value = String(all.indexOf(row));
+          if (titleName) titleName.value = row.getAttribute("data-title") || "";
+          if (doctorsCount) doctorsCount.value = row.getAttribute("data-doctors") || "0";
+          if (status) status.value = d.status || "active";
+          if (license) license.value = d.license || "yes";
+          const selected = d.availability.split(",");
+          availabilityChecks.forEach(function (check) { check.checked = selected.includes(check.value); });
+          const modalEl = document.getElementById("jobTitleFormModal");
+          if (modalEl && window.bootstrap) new bootstrap.Modal(modalEl).show();
+        });
+
+        if (form) form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const values = {
+            title: titleName.value.trim(),
+            doctors: Math.max(0, parseInt(doctorsCount.value, 10) || 0),
+            status: status.value,
+            license: license.value,
+            availability: availabilityChecks.filter(function (check) { return check.checked; }).map(function (check) { return check.value; })
+          };
+
+          if (!values.title) return;
+
+          const index = editingIndex.value === "" ? -1 : parseInt(editingIndex.value, 10);
+          const all = rowsAll();
+          const target = index >= 0 ? all[index] : document.createElement("tr");
+          setRowValues(target, values);
+          if (index < 0) tbody.appendChild(target);
+          applyAll();
+
+          const modalEl = document.getElementById("jobTitleFormModal");
+          if (modalEl && window.bootstrap) {
+            (bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)).hide();
+          }
+          resetForm();
+        });
+
+        applyAll();
+      })();
+    </script>
+  </body>
+</html>

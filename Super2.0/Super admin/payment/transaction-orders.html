@@ -1,0 +1,391 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Transaction Orders</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      @media (max-width: 992px) {
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .kpi-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .kpi-card .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .kpi-card .value {
+        margin-top: 8px;
+        font-size: 22px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .invoice-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .tx-table th,
+      .tx-table td {
+        vertical-align: middle;
+        white-space: nowrap;
+      }
+
+      .tx-table .date-top {
+        font-weight: 700;
+        color: #101828;
+      }
+
+      .tx-table .date-sub {
+        color: #667085;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-payments">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Transaction Orders</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">12-03-000011</span>
+                    </span>
+                    <span class="fsize-12 text-grey">12/02/2026 - 401.35 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Transaction Orders</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="label">Total Price</div>
+              <div class="value" id="txKpiTotal">0.00 SAR</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">VAT (15%)</div>
+              <div class="value" id="txKpiVat">0.00 SAR</div>
+            </div>
+            <div class="kpi-card">
+              <div class="label">Price Fees</div>
+              <div class="value" id="txKpiFees">0.00 SAR</div>
+            </div>
+          </div>
+
+          <div class="filter-bar surface-light-50 p-12 radius-8 mt-16">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="txSearchInput" type="text" class="form-control form-control-32" placeholder="Search by transaction / order / customer / provider" />
+                  <button id="btnTxSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button id="btnTxReset" type="button" class="btn btn-primary-revers btn-32" title="Reset">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#tx-filter-modal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+
+                  <button id="btnTxExport" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                    <i class="fi fi-rr-download"></i>
+                    <span>Export</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight tx-table" id="txTable">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Transaction</th>
+                      <th>Order No</th>
+                      <th>Institution Name</th>
+                      <th>Institution Code</th>
+                      <th>Customer</th>
+                      <th>Provider Code</th>
+                      <th>Item Type</th>
+                      <th>Order Date</th>
+                      <th>Scheduled Date</th>
+                      <th>Price</th>
+                      <th>VAT (15%)</th>
+                      <th>Price Fees</th>
+                      <th>Total Price</th>
+                      <th>Status</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+                  <tbody id="txTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="txRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="txPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="txFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="txPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="txCurrentPageBadge">1</span>
+                    <button class="pg-btn" id="txNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="txLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="tx-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Transactions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Provider Type</label>
+                <select id="fTxProviderType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="facility">Facility</option>
+                  <option value="pharmacy">Pharmacy</option>
+                  <option value="individual">Individual</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Order Item Type</label>
+                <select id="fTxItemType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="service">Service</option>
+                  <option value="product">Product</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="fTxStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="completed">Completed</option>
+                  <option value="not_yet">Not Yet</option>
+                  <option value="refunded">Refunded</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Payment Method</label>
+                <select id="fTxMethod" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="card">Card</option>
+                  <option value="wallet">Wallet</option>
+                  <option value="bank">Bank</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Date From</label>
+                <input id="fTxDateFrom" type="date" class="form-control form-control-32" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Date To</label>
+                <input id="fTxDateTo" type="date" class="form-control form-control-32" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnTxFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnTxApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/provider-commission-store.js"></script>
+    <script src="../assets/js/payment-data.js"></script>
+    <script src="../assets/js/payment-transactions.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

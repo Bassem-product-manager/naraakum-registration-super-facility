@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Order List 2</title>
+  <meta name="description" content="Naraakum" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+  <style>
+    :root { --nk-green:#0f8c8c; }
+
+    /* Hide duplicated order-code shown inside patient name */
+    .patient-cell .patient-info .name .staff-code { display: none !important; }
+
+    /* ===== Fix Assign / Invoice alignment ===== */
+    .orders-table th, .orders-table td { vertical-align: middle; }
+    .orders-table .col-code { white-space: nowrap; }
+    .orders-table .assign-cell,
+    .orders-table .invoice-cell,
+    .orders-table .order-type-cell{
+      text-align:center;
+      white-space: nowrap;
+    }
+    .orders-table .assign-name{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width: 92px;
+      height: 34px;
+      padding: 0 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(16,24,40,.12);
+      background: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      user-select:none;
+    }
+    .orders-table .assign-name.is-empty{
+      border-style: dashed;
+      color: rgba(16,24,40,.65);
+    }
+    .orders-table .assign-name.is-disabled{
+      border-style: dashed;
+      color: rgba(16,24,40,.45);
+      background: #f8f9fb;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    .orders-table .assign-btn,
+    .orders-table .invoice-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      height: 34px;
+      padding: 0 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(16,24,40,.12);
+      background:#fff;
+      font-weight: 800;
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+    .orders-table .assign-btn:hover,
+    .orders-table .invoice-btn:hover,
+    .orders-table .assign-name:hover{
+      border-color: rgba(15,140,140,.35);
+      box-shadow: 0 0 0 3px rgba(15,140,140,.08);
+    }
+    .orders-table .assign-btn i,
+    .orders-table .invoice-btn i{ color: var(--nk-green); }
+    .orders-table .status-pill.st-ins-approved{
+      background: rgba(15, 140, 140, .10);
+      border-color: rgba(15, 140, 140, .28);
+      color: rgba(11, 107, 120, 1);
+    }
+    .orders-table .status-pill.st-ins-pending{
+      background: rgba(255, 193, 7, .14);
+      border: 1px solid rgba(255, 193, 7, .30);
+      color: rgba(133, 92, 0, 1);
+    }
+    .orders-table .status-pill.st-ins-rejected{
+      background: rgba(253, 235, 236, 1);
+      border: 1px solid rgba(240, 171, 175, 1);
+      color: rgba(185, 28, 28, 1);
+    }
+    .orders-table .status-pill.st-ins-mixed{
+      background: rgba(14, 116, 144, .10);
+      border: 1px solid rgba(14, 116, 144, .28);
+      color: rgba(14, 116, 144, 1);
+    }
+    .orders-table .status-pill.st-order-insurance{
+      background: rgba(15, 140, 140, .10);
+      border: 1px solid rgba(15, 140, 140, .24);
+      color: rgba(11, 107, 120, 1);
+    }
+    .orders-table .status-pill.st-order-regular{
+      background: rgba(71, 84, 103, .10);
+      border: 1px solid rgba(71, 84, 103, .24);
+      color: rgba(71, 84, 103, 1);
+    }
+    .orders-table .ins-detail-main{
+      font-weight: 800;
+      color: #111827;
+      line-height: 1.25;
+      font-size: 13px;
+    }
+    .orders-table .ins-detail-sub{
+      color: #667085;
+      font-size: 12px;
+      line-height: 1.25;
+      margin-top: 2px;
+    }
+    .orders-table .action-icon.is-disabled{
+      opacity:.45;
+      pointer-events:none;
+      cursor:not-allowed;
+    }
+    .orders-table .action-icon .icon-bang{
+      font-weight: 900;
+      font-size: 15px;
+      line-height: 1;
+    }
+    .orders-table .action-icon.warn{
+      color: #a06100;
+      border-color: rgba(255, 193, 7, .36);
+      background: rgba(255, 193, 7, .10);
+    }
+    .orders-table .action-icon.success{
+      color: #0f8c8c;
+      border-color: rgba(15, 140, 140, .36);
+      background: rgba(15, 140, 140, .10);
+    }
+
+    /* ===== Status: Under Review (replacing Pending) ===== */
+    .status-pill.st-underreview{
+      background: rgba(255, 193, 7, .14);
+      border: 1px solid rgba(255, 193, 7, .30);
+      color: rgba(133, 92, 0, 1);
+      font-weight: 900;
+    }
+
+    /* ===== Assign Modal UI ===== */
+    .assign-modal .modal-content{ border-radius: 16px; overflow: hidden; }
+    .assign-modal .modal-header{ border-bottom: 1px solid rgba(0,0,0,.06); }
+    .assign-modal .modal-title{ font-weight: 900; }
+    .assign-modal .search-mini{
+      display:flex; gap:10px; align-items:center;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      background:#fff;
+    }
+    .assign-modal .search-mini input{
+      border:none; outline:none; width:100%;
+      font-size: 14px;
+    }
+    .assign-modal .doc-list{
+      margin-top: 12px;
+      display: grid;
+      gap: 10px;
+      max-height: 320px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .assign-modal .doc-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 12px;
+      background:#fff;
+      cursor:pointer;
+    }
+    .assign-modal .doc-item:hover{
+      border-color: rgba(15,140,140,.35);
+      box-shadow: 0 0 0 3px rgba(15,140,140,.08);
+    }
+    .assign-modal .doc-left{
+      display:flex; align-items:center; gap:10px;
+      min-width: 0;
+    }
+    .assign-modal .doc-avatar{
+      width: 36px; height:36px; border-radius: 12px;
+      border: 1px solid rgba(15,140,140,.18);
+      background: rgba(15,140,140,.06);
+      display:grid; place-items:center;
+      flex: 0 0 36px;
+    }
+    .assign-modal .doc-meta{ min-width:0; }
+    .assign-modal .doc-name{
+      margin:0; font-weight: 900; font-size: 14px;
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+    }
+    .assign-modal .doc-spec{
+      margin:2px 0 0; font-size: 12px; color: rgba(0,0,0,.55);
+      white-space: nowrap; overflow:hidden; text-overflow: ellipsis;
+    }
+    .assign-modal .doc-action{
+      display:inline-flex; align-items:center; gap:8px;
+      font-weight: 900; font-size: 12px;
+      color: var(--nk-green);
+      white-space: nowrap;
+    }
+
+    /* ===== KSA Clock ===== */
+    .ksa-clock{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      height:34px;
+      padding:0 10px;
+      border:1px solid rgba(16,24,40,.10);
+      background:#fff;
+      border-radius:12px;
+      font-weight:900;
+      font-size:12px;
+      color:#101828;
+      white-space:nowrap;
+    }
+    .ksa-clock .tz{
+      color:var(--nk-green);
+      font-weight:900;
+      font-size:11px;
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px solid rgba(15,140,140,.22);
+      background:rgba(15,140,140,.06);
+    }
+
+    /* ==== Sidebar logo area (BMC) ==== */
+    .facility-line{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      margin-top:6px;
+    }
+    .facility-mini-logo{
+      width:22px;
+      height:22px;
+      border-radius:8px;
+      border:1px solid rgba(15,140,140,.18);
+      background:#fff;
+      padding:3px;
+      object-fit:contain;
+      flex:0 0 22px;
+    }
+    .facility-name{
+      font-weight:900;
+      line-height:1;
+      margin:0;
+    }
+        .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+    <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+<body>
+  <div class="preloader"></div>
+
+  <div id="full-container">
+    <!-- Side Menu -->
+                      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/orders-list-2.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List 2</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+    <main class="main-page">
+                              <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Order List 2</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+	      <div class="page-root">
+	        <nav aria-label="breadcrumb">
+	          <ol class="breadcrumb">
+	            <li class="breadcrumb-item active" aria-current="page">Orders</li>
+	            <li class="breadcrumb-item active" aria-current="page">Order List 2</li>
+	          </ol>
+	        </nav>
+	      </div>
+
+      <div class="page-content">
+        <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+          <div class="row g-3 align-items-center">
+            <div class="col-12 col-lg">
+              <div class="search-box-group w-100 search-box-group--md">
+	                <input id="ordersSearchInput" type="text" class="form-control form-control-32" placeholder="Search by Order No / Patient / Assignee / Order Type / Status" />
+                <button id="btnOrdersSearch" type="button" class="btn btn-primary btn-32" title="Search"><i class="fi fi-rr-search"></i></button>
+                <button id="btnOrdersReset" type="button" class="btn btn-primary-revers btn-32"><i class="fi fi-rr-rotate-right"></i></button>
+              </div>
+            </div>
+
+	            <div class="col-12 col-lg-auto">
+	              <div class="search-actions">
+	                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#orders-filter-modal" type="button">
+	                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+	                </button>
+	                <a href="create-order.html" class="btn btn-primary btn-icon btn-40"><i class="fi fi-rr-plus-small"></i><span>New Order</span></a>
+	                <button id="btnOrdersExport" type="button" class="btn btn-primary-revers btn-icon btn-40"><i class="fi fi-rr-download"></i><span>Export</span></button>
+	              </div>
+	            </div>
+	            <div class="col-12 col-lg-auto">
+	              <select id="ordersMergeScope" class="form-control form-control-40">
+	                <option value="all" selected>All Orders</option>
+	                <option value="insurance-only">Insurance Only</option>
+	                <option value="needs-decision">Needs Decision</option>
+	              </select>
+	            </div>
+	          </div>
+	        </div>
+
+        <div class="tabel-box-item mt-24 orders-table-wrap">
+          <div class="box-body p-12">
+            <div class="table-responsive">
+	              <table class="staff-table naraakum-table table-tight orders-table" id="ordersTable">
+	                <thead>
+	                  <tr>
+	                    <th class="col-check"><div class="head-check"><input type="checkbox" id="checkAllVisibleOrders" title="Select visible rows" /></div></th>
+	                    <th class="col-seq">#</th>
+	                    <th class="col-code">Order No</th>
+	                    <th>Patient Name</th>
+	                    <th>Service</th>
+	                    <th>Order Date</th>
+	                    <th>Scheduled Date</th>
+	                    <th>Price</th>
+	                    <th>Status</th>
+	                    <th class="text-center">Order Type</th>
+	                    <th class="text-center">Assign</th>
+	                    <th class="text-center">Invoices</th>
+	                    <th class="col-actions text-center">Actions</th>
+	                  </tr>
+	                </thead>
+	
+	                <tbody id="ordersTbody">
+	                  <tr>
+	                    <td colspan="13" class="text-center text-grey">Loading orders...</td>
+	                  </tr>
+	                </tbody>
+	              </table>
+
+              <div class="table-footer">
+                <div class="rows-select">
+                  <select id="ordersRowsPerPage">
+                    <option value="1">1</option>
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="all">All</option>
+                  </select>
+                  <span class="fsize-12 text-grey">Rows per page</span>
+                </div>
+
+                <div class="page-indicator" id="ordersPageIndicator">Page 1 of 1</div>
+
+                <div class="pager">
+                  <button class="pg-btn" id="ordersFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                  <button class="pg-btn" id="ordersPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                  <span class="pg-current" id="ordersCurrentPageBadge">1</span>
+                  <button class="pg-btn" id="ordersNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                  <button class="pg-btn" id="ordersLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Filter Modal -->
+  <div class="modal fade" id="orders-filter-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Filter Orders</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Main Service</label>
+              <select id="ofMainService" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Cardiology</option>
+                <option>Radiology</option>
+                <option>General</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Service</label>
+              <select id="ofService" class="form-control form-control-32">
+                <option value="">All</option>
+                <option>Consultation</option>
+                <option>X-Ray Scan</option>
+                <option>Annual Checkup</option>
+              </select>
+            </div>
+
+		            <div class="col-md-4">
+		              <label class="fsize-12 text-grey">Status</label>
+		              <select id="ofStatus" class="form-control form-control-32">
+		                <option value="">All</option>
+		                <option>Accepted</option>
+		                <option>Under Review</option>
+	                <option>In Progress</option>
+	                <option>Insurance Waiting</option>
+	                <option>Insurance Rejected</option>
+	                <option>Cancelled</option>
+	                <option>Completed</option>
+	                <option>Missed</option>
+	              </select>
+	            </div>
+		            <div class="col-md-8">
+		              <label class="fsize-12 text-grey">Order Type</label>
+		              <select id="ofOrderType" class="form-control form-control-32">
+		                <option value="">All</option>
+		                <option value="insurance">Insurance</option>
+		                <option value="regular">Regular</option>
+		              </select>
+		            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Assignment</label>
+	              <select id="ofAssignment" class="form-control form-control-32">
+	                <option value="">All</option>
+	                <option>Dr. Walled</option>
+	                <option>Dr. Mohamed</option>
+	                <option>Dr. Sara</option>
+	                <option>Dr. Ahmed</option>
+	                <option>Dr. Mona</option>
+	                <option>Nurse Mona</option>
+	                <option>Locked</option>
+	                <option>Assign</option>
+	              </select>
+	            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date From</label>
+              <input id="ofDateFrom" type="date" class="form-control form-control-32" />
+            </div>
+
+            <div class="col-md-6">
+              <label class="fsize-12 text-grey">Date To</label>
+              <input id="ofDateTo" type="date" class="form-control form-control-32" />
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer d-flex justify-content-between">
+          <button id="btnOrdersFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button id="btnOrdersApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Modal -->
+  <div class="modal fade assign-modal" id="assignModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title">Assign Doctor</h5>
+            <p class="fsize-12 text-grey m-0">Choose one doctor to assign for this order.</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <div class="search-mini">
+            <i class="fi fi-rr-search" style="color: var(--nk-green);"></i>
+            <input id="assignSearch" type="text" placeholder="Search doctor..." />
+          </div>
+
+          <div class="doc-list" id="doctorList"></div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts (ONCE only) -->
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+    /* KSA Clock (12h) */
+    (function(){
+      const el = document.getElementById("ksaTime");
+      if(!el) return;
+      function tick(){
+        try{
+          const fmt = new Intl.DateTimeFormat("en-US",{
+            timeZone:"Asia/Riyadh",
+            hour:"2-digit",
+            minute:"2-digit",
+            second:"2-digit",
+            hour12:true
+          });
+          el.textContent = fmt.format(new Date());
+        }catch(e){
+          el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+        }
+      }
+      tick(); setInterval(tick, 1000);
+    })();
+  </script>
+  <script src="../assets/js/orders-list-2-page.js"></script>
+</body>
+</html>

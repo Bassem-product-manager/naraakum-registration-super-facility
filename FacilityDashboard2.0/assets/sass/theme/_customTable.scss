@@ -1,0 +1,17 @@
+.custom-table {
+  td,
+  th {
+    padding: 1rem;
+  }
+
+  thead {
+    tr {
+      th {
+        background-color: $primary-500;
+        color: #fff;
+        font-weight: 500;
+        border-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+}

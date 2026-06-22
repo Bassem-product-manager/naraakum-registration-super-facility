@@ -1,0 +1,288 @@
+/*/*/
+button {
+  outline: 0px;
+  border: 1px solid $border-color;
+  background-color: #fff;
+}
+
+/*========================= Buttons Sizes =========================*/
+.btn {
+  padding: 0.2rem 0.75rem 0rem 0.75rem !important;
+  border-radius: 10rem;
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.4rem;
+}
+.action-btn {
+  padding: 0.1rem 0.75rem 0rem 0.75rem !important;
+  border-radius: 0.5rem;
+  display: inline-flex;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 0.4rem;
+  text-transform: capitalize !important;
+  outline: 0px;
+  border: 0px;
+  background-color: $primary-50;
+  i {
+    color: $primary-500;
+    margin-top: 0.4rem;
+  }
+  &:hover {
+    background-color: #fff;
+  }
+}
+
+.btn-28 {
+  height: $value-28 !important;
+  font-size: $fsize-12 !important;
+}
+
+.btn-32 {
+  height: $value-32 !important;
+  font-size: $fsize-12 !important;
+}
+
+.btn-36 {
+  height: $value-36 !important;
+  font-size: $fsize-14 !important;
+  i {
+    margin-top: 0.3rem;
+  }
+}
+.btn-40 {
+  height: $value-40 !important;
+  font-size: $fsize-14 !important;
+}
+.btn-44 {
+  height: $value-44 !important;
+  font-size: $fsize-16 !important;
+}
+.btn-48 {
+  height: $value-48 !important;
+  font-size: $fsize-16 !important;
+}
+.btn-52 {
+  height: $value-52 !important;
+  font-size: $fsize-16 !important;
+}
+.btn-56 {
+  height: $value-56 !important;
+  font-size: $fsize-16 !important;
+}
+/*========================= Buttons Colors =========================*/
+
+$primary: $primary-500;
+$primary-hover: $primary-600;
+
+$secondary: $secondary-500;
+$secondary-hover: $secondary-600;
+
+$light: $secondary-50;
+$light-hover: $secondary-100;
+
+/*========================= btn-primary =========================*/
+
+.btn-primary {
+  color: #fff;
+  background-color: $primary;
+  border-color: $primary;
+}
+
+.btn-primary:hover {
+  color: #fff;
+  background-color: $primary-hover !important;
+  border-color: $primary-hover !important;
+}
+
+.btn-primary.focus,
+.btn-primary:focus {
+  box-shadow: 0 0 0 0.2rem $primary-200 !important;
+  background-color: $primary-hover !important;
+  border-color: $primary-hover !important;
+  text-align: center;
+}
+
+.btn-check:checked + .btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check) + .btn:active {
+  box-shadow: 0 0 0 0.2rem $primary-200 !important;
+  background-color: $primary-hover !important;
+  border-color: $primary-hover !important;
+}
+
+/*/*/
+
+.btn-primary-revers {
+  color: $primary-500;
+  background-color: $primary-50 !important;
+  border-color: $primary-100 !important;
+}
+
+.btn-primary-revers:hover {
+  color: $primary-500 !important;
+  background-color: $primary-100 !important;
+  border-color: $primary-100 !important;
+}
+
+.btn-primary-revers.focus,
+.btn-primary-revers:focus {
+  box-shadow: 0 0 0 0.2rem $primary-200 !important;
+  background-color: $primary-100 !important;
+  border-color: $primary-100 !important;
+}
+
+/*/*/
+
+.btn-outline-primary {
+  color: $primary;
+  background-color: #fff;
+  border-color: $primary;
+  box-shadow: none;
+  &:hover {
+    color: #fff;
+    background-color: $primary;
+    border-color: $primary;
+  }
+}
+
+/*========================= btn-secondary =========================*/
+
+.btn-secondary {
+  color: #131313;
+  background-color: $secondary;
+  border-color: $secondary;
+}
+
+.btn-secondary:hover {
+  color: #131313;
+  background-color: $secondary-hover;
+  border-color: $secondary-hover;
+}
+
+.btn-secondary.focus,
+.btn-secondary:focus {
+  box-shadow: 0 0 0 0.2rem $secondary-200;
+}
+
+.btn-outline-secondary {
+  color: $secondary;
+  background-color: #fff;
+  border-color: $secondary;
+  box-shadow: none;
+  &:hover {
+    color: #fff;
+    background-color: $secondary;
+    border-color: $secondary;
+  }
+}
+
+/*========================= btn-light =========================*/
+
+.btn-light {
+  color: $primary-500;
+  background-color: $light;
+  border-color: $light;
+}
+
+.btn-light:hover {
+  color: $primary-500;
+  background-color: $light-hover !important;
+  border-color: $light-hover !important;
+}
+
+.btn-light.focus,
+.btn-light:focus {
+  box-shadow: 0 0 0 0.2rem $light !important;
+  background-color: $light-hover !important;
+  border-color: $light-hover !important;
+}
+
+//
+
+/*/*/
+
+/*/*/
+:disabled {
+  background-color: $grey-100 !important;
+  border-color: $grey-100 !important;
+  color: $grey-900 !important;
+  cursor: not-allowed !important;
+}
+.disabled {
+  background-color: $grey-100 !important;
+  border-color: $grey-100 !important;
+  color: $grey-900 !important;
+  cursor: not-allowed !important;
+}
+
+/*/*/
+.custom-tooltip {
+  font-size: $value-12;
+}
+
+/*/*/
+
+.icon-item {
+  display: flex;
+  gap: $value-16;
+  align-items: center;
+  .fi {
+    padding-top: 0.2rem;
+    color: #747474;
+  }
+  img {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+//
+.btn-icon {
+  display: inline-flex;
+  gap: $value-8;
+  align-items: center;
+  .fi {
+    // padding-top: 0.2rem;
+  }
+  img {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+}
+
+/*/*/
+
+.help-btns-group {
+  .btn {
+    background-color: none;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    i {
+      color: rgba(0, 0, 0, 0.6);
+      padding-top: 0.5rem;
+    }
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+/*/*/
+
+.over-primary {
+  background-color: $primary-600;
+  &:hover {
+    background-color: $primary-700 !important;
+  }
+}
+
+/*/*/
+
+.form-check-input:checked {
+  background-color: $primary-500;
+  border-color: $primary-500;
+  // box-shadow: 0 0 0 0.2rem $primary-200 !important;
+}

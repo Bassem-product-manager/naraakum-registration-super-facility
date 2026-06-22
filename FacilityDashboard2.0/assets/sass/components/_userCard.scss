@@ -1,0 +1,163 @@
+.user-card {
+  background-color: #fff;
+  padding: $value-16;
+  border-radius: $value-12;
+  height: 100%;
+  display: flex;
+  gap: $value-8;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  .user-info {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      img {
+        width: 5.2rem;
+        height: 6.2rem;
+        object-fit: cover;
+        border-radius: $value-12;
+        flex-shrink: 0;
+        border: 0.1rem solid #eee;
+        &:hover {
+          opacity: 0.9;
+        }
+      }
+    }
+    div {
+      display: flex;
+      gap: $value-4;
+      flex-direction: column;
+      h2 {
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+      .rating {
+        i {
+          color: #f7871b;
+          font-size: 0.86rem;
+        }
+        b {
+          font-size: 0.9rem;
+          font-size: 500;
+        }
+        span {
+          font-size: 0.8rem;
+          color: #666;
+        }
+      }
+      .phone {
+        font-size: 0.8rem;
+        color: #666;
+      }
+      .membership {
+        font-size: 0.8rem;
+        padding: 0.2rem $value-8;
+        border-radius: $value-4;
+        font-weight: 500;
+        text-align: center;
+      }
+      .coach {
+        background-color: $secondary-500;
+      }
+      .premium {
+        background-color: #ffb743;
+      }
+      .regular {
+        background-color: #eee;
+      }
+    }
+  }
+
+  .user-counter {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1rem;
+
+    border-top: 0.1rem solid #eee;
+    span {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      b {
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin: 0px;
+        padding: 0px;
+      }
+      i {
+        font-weight: 400;
+        font-size: 0.8rem;
+        color: #666;
+        margin: 0px;
+        padding: 0px;
+      }
+    }
+  }
+
+  .sports-items {
+    display: flex;
+    gap: $value-8;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    .item {
+      display: flex;
+      align-items: center;
+      gap: $value-8;
+      user-select: none;
+      flex-shrink: 0;
+      border: 0.1rem solid #eee;
+      border-radius: 100px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.8rem !important;
+      background-color: $lightBlue-100;
+
+      span {
+        i {
+          color: $secondary-500;
+          padding-top: 0.4rem;
+        }
+      }
+    }
+  }
+}
+
+/*/*/
+.deactivated-tag {
+  position: absolute;
+  top: 0;
+  #{$right}: 0;
+  z-index: 4;
+  margin-top: 2rem;
+  background-color: #dc143c;
+  transform: rotate(-45deg);
+  font-size: 0.8rem;
+  padding: 0px 2rem;
+  margin-left: -2rem;
+  color: #fff;
+}
+
+/*/*/
+
+.album-img {
+  img {
+    width: 11rem;
+    height: 21.4rem;
+    object-fit: contain;
+
+    border-radius: $value-12;
+    border: 0.1rem solid #eee;
+  }
+}
+
+/*/*/
+
+.tag {
+  font-size: 0.8rem;
+  padding: 0.2rem $value-8;
+  border-radius: $value-4;
+  font-weight: 500;
+  text-align: center;
+}

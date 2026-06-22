@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Staff Ratings</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Global Theme -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+
+      /* ========== SEARCH BAR STYLING ========== */
+      .filter-bar {
+        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      }
+
+      .search-box-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: white;
+        padding: 0 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: all 0.3s ease;
+      }
+
+      .search-box-group:focus-within {
+        border-color: var(--nk-green, #0f8c8c);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.1);
+      }
+
+      .search-box-group input {
+        flex: 1;
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        font-size: 14px;
+        color: #333;
+        outline: none;
+      }
+
+      .search-box-group input::placeholder {
+        color: #999;
+        font-size: 13px;
+      }
+
+      .search-box-group input:focus {
+        box-shadow: none !important;
+      }
+
+      /* Search Button */
+      .search-box-group .btn-primary {
+        background: var(--nk-green, #0f8c8c);
+        border: none;
+        color: white;
+        padding: 0 !important;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .search-box-group .btn-primary:hover {
+        background: var(--nk-green-dark, #0d6d6d);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(15, 140, 140, 0.3);
+      }
+
+      .search-box-group .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .search-box-group .btn-primary i {
+        font-size: 16px;
+      }
+
+      /* Reset Button */
+      .search-box-group .btn-primary-revers {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        color: #666;
+        padding: 0 !important;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        transition: all 0.3s ease;
+        flex-shrink: 0;
+      }
+
+      .search-box-group .btn-primary-revers:hover {
+        background: #efefef;
+        border-color: #bbb;
+        color: #333;
+      }
+
+      .search-box-group .btn-primary-revers i {
+        font-size: 16px;
+      }
+
+      /* Filter Button */
+      .btn-icon.btn-40 {
+        background: white;
+        border: 1px solid #ddd;
+        color: var(--nk-green, #0f8c8c);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 12px !important;
+      }
+
+      .btn-icon.btn-40:hover {
+        background: var(--nk-green, #0f8c8c);
+        color: white;
+        border-color: var(--nk-green, #0f8c8c);
+      }
+
+      /* ========== TABLE STYLING ========== */
+      .table-responsive {
+        overflow-x: visible;
+      }
+
+      #ratingsTable {
+        width: 100%;
+        border-collapse: collapse;
+        table-layout: auto;
+      }
+
+      #ratingsTable th:nth-child(1),
+      #ratingsTable td:nth-child(1) { min-width: 130px; }
+
+      #ratingsTable th:nth-child(2),
+      #ratingsTable td:nth-child(2) { min-width: 150px; }
+
+      #ratingsTable th:nth-child(3),
+      #ratingsTable td:nth-child(3) { min-width: 130px; }
+
+      #ratingsTable th:nth-child(4),
+      #ratingsTable td:nth-child(4) { min-width: 180px; }
+
+      #ratingsTable th:nth-child(5),
+      #ratingsTable td:nth-child(5) { min-width: 140px; }
+
+      #ratingsTable th:nth-child(6),
+      #ratingsTable td:nth-child(6) { min-width: 90px; text-align: center; }
+
+      #ratingsTable th:nth-child(7),
+      #ratingsTable td:nth-child(7) { min-width: 120px; }
+
+      #ratingsTable th:nth-child(8),
+      #ratingsTable td:nth-child(8) { min-width: 180px; text-align:center; }
+
+      #ratingsTable th:nth-child(9),
+      #ratingsTable td:nth-child(9) { min-width: 80px; text-align: center; }
+
+      #ratingsTable th:nth-child(1),
+      #ratingsTable td:nth-child(1) {
+        white-space: nowrap;
+      }
+
+      #ratingsTable th:nth-child(3),
+      #ratingsTable td:nth-child(3) {
+        white-space: nowrap;
+      }
+
+      #ratingsTable th:nth-child(5),
+      #ratingsTable td:nth-child(5) {
+        white-space: nowrap;
+      }
+
+      #ratingsTable td:nth-child(7) .comment-snippet {
+        display: block;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.3;
+        max-height: 1.3em;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      #ratingsTable tbody tr {
+        height: auto;
+        min-height: 50px;
+      }
+
+      #ratingsTable td {
+        vertical-align: middle;
+        padding: 8px !important;
+        word-break: break-word;
+      }
+
+      #ratingsTable td:nth-child(2) .staff-info .name {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      /* ===== Record actions (Record link only) ===== */
+      .nk-record-actions{
+        display:flex;
+        gap:8px;
+        justify-content:center;
+        align-items:center;
+        flex-wrap: nowrap;
+      }
+      .nk-record-actions .nk-mini-link{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:6px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15,140,140,.20);
+        background: rgba(15,140,140,.06);
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 12px;
+        text-decoration:none;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+      }
+      .nk-record-actions .nk-mini-link:hover{
+        background: rgba(15,140,140,.12);
+        border-color: rgba(15,140,140,.35);
+        box-shadow: 0 2px 6px rgba(15,140,140,.12);
+      }
+      .nk-record-actions .nk-mini-link i{
+        color: var(--nk-green);
+        font-size: 14px;
+      }
+
+      /* ===== Preview button (standalone) ===== */
+      .nk-preview-btn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        height: 32px;
+        width: 32px;
+        border-radius: 10px;
+        border: 1px solid rgba(16,24,40,.12);
+        background: #fff;
+        color: var(--nk-green);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        padding: 0 !important;
+      }
+      .nk-preview-btn:hover{
+        border-color: rgba(15,140,140,.35);
+        background: rgba(15,140,140,.06);
+        box-shadow: 0 2px 6px rgba(15,140,140,.12);
+      }
+      .nk-preview-btn i{
+        color: var(--nk-green);
+        font-size: 16px;
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Staff Ratings</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item"><a href="../staff/staff-list.html">Staff Management</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Staff Ratings</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Search + Filter -->
+          <div class="filter-bar surface-light-50 p-12 radius-8 filter-bar--compact-search">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="ratingsSearchInput" type="text" class="form-control form-control-32" placeholder="Search by" />
+
+                  <button id="btnRatingsSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+
+                  <button
+                    id="btnRatingsReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="search-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#ratings-filter-modal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ratings table -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="ratingsTable">
+                  <thead>
+                    <tr>
+                      <th>Order No</th>
+                      <th>Patient Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Doctor</th>
+                      <th class="text-center">Rating</th>
+                      <th>Comment</th>
+                      <th class="text-center">Record</th>
+                      <th class="text-center">Preview</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="ratingsTbody"></tbody>
+                </table>
+
+                <!-- Footer -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="ratingsRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="ratingsPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="ratingsFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="ratingsPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="ratingsCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="ratingsNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="ratingsLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+                <!-- /Footer -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="ratings-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Ratings</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Doctor</label>
+                <select id="rfDoctor" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="Dr. Ahmed Ali">Dr. Ahmed Ali</option>
+                  <option value="Dr. Nada Samir">Dr. Nada Samir</option>
+                  <option value="Dr. Omar Hassan">Dr. Omar Hassan</option>
+                </select>
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Rating</label>
+                <select id="rfRating" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="3">3 Stars</option>
+                  <option value="2">2 Stars</option>
+                  <option value="1">1 Star</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnRatingsFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnRatingsApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Comment Modal -->
+    <div class="modal fade" id="comment-preview-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title">Comment Preview</h5>
+              <div class="fsize-12 text-grey" id="previewPatientName">—</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <p class="fsize-14" id="previewCommentText" style="margin: 0">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick(); setInterval(tick, 1000);
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("ratingsTbody");
+
+        const searchInput = document.getElementById("ratingsSearchInput");
+        const btnSearch = document.getElementById("btnRatingsSearch");
+        const btnReset = document.getElementById("btnRatingsReset");
+
+        const rfDoctor = document.getElementById("rfDoctor");
+        const rfRating = document.getElementById("rfRating");
+        const btnApplyFilter = document.getElementById("btnRatingsApplyFilter");
+        const btnFilterReset = document.getElementById("btnRatingsFilterReset");
+
+        const rowsSelect = document.getElementById("ratingsRowsPerPage");
+        const indicator = document.getElementById("ratingsPageIndicator");
+        const currentBadge = document.getElementById("ratingsCurrentPageBadge");
+        const btnFirst = document.getElementById("ratingsFirstPage");
+        const btnPrev = document.getElementById("ratingsPrevPage");
+        const btnNext = document.getElementById("ratingsNextPage");
+        const btnLast = document.getElementById("ratingsLastPage");
+
+        const previewPatientName = document.getElementById("previewPatientName");
+        const previewCommentText = document.getElementById("previewCommentText");
+
+        // Data with recordType
+        const ratings = [
+          {
+            orderNo: "03-000001",
+            patientName: "Sara Ibrahim",
+            phone: "+966 50 000 9911",
+            email: "sara.ibrahim@mail.com",
+            doctor: "Dr. Ahmed Ali",
+            rating: 5,
+            comment: "Very professional and kind.",
+            recordType: "session"
+          },
+          {
+            orderNo: "03-000002",
+            patientName: "Mohamed Said",
+            phone: "+966 50 000 4422",
+            email: "mohamed.said@mail.com",
+            doctor: "Dr. Nada Samir",
+            rating: 4,
+            comment: "Good experience overall. Waiting time was a bit longer than expected, but the staff were helpful.",
+            recordType: "visit"
+          },
+          {
+            orderNo: "03-000003",
+            patientName: "Yousef Adel",
+            phone: "+966 50 000 7733",
+            email: "yousef.adel@mail.com",
+            doctor: "Dr. Omar Hassan",
+            rating: 3,
+            comment: "The visit was okay. I hope next time the appointment starts on time. The doctor was polite.",
+            recordType: "session"
+          },
+          {
+            orderNo: "03-000004",
+            patientName: "Hala Mahmoud",
+            phone: "+966 50 000 1122",
+            email: "hala.mahmoud@mail.com",
+            doctor: "Dr. Ahmed Ali",
+            rating: 5,
+            comment: "Amazing care and clear instructions. Highly recommended!",
+            recordType: "visit"
+          },
+        ];
+
+        let currentPage = 1;
+        let filtered = [...ratings];
+
+        function norm(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function rowsPerPageVal() {
+          const v = rowsSelect ? rowsSelect.value : "10";
+          if (v === "all") return Infinity;
+          const n = parseInt(v, 10);
+          return Number.isFinite(n) ? n : 10;
+        }
+
+        function starsHTML(value) {
+          const v = Math.max(0, Math.min(5, parseInt(value, 10) || 0));
+          let html = '<div class="d-flex justify-content-center gap-1">';
+          for (let i = 1; i <= 5; i++) {
+            if (i <= v) {
+              html += '<i class="fi fi-sr-star" style="color:#F5C542;"></i>';
+            } else {
+              html += '<i class="fi fi-rr-star" style="color:#C9CED6;"></i>';
+            }
+          }
+          html += "</div>";
+          return html;
+        }
+
+        function snippet(text, max) {
+          const t = (text || "").toString().trim();
+          if (t.length <= max) return t;
+          return t.slice(0, max).trim() + "…";
+        }
+
+        function buildRecordLinks(orderNo){
+          const enc = encodeURIComponent(orderNo || "");
+          return {
+            session: "../patients/session-record.html?order=" + enc,
+            visit: "../patients/visit-record.html?order=" + enc
+          };
+        }
+
+        function applySearchAndFilter() {
+          const q = norm(searchInput ? searchInput.value : "");
+          const fDoctor = rfDoctor && rfDoctor.value ? rfDoctor.value : "";
+          const fRating = rfRating && rfRating.value ? parseInt(rfRating.value, 10) : null;
+
+          filtered = ratings.filter((r) => {
+            const key = norm([r.orderNo, r.patientName, r.phone, r.email, r.doctor, r.comment].join(" "));
+            const okSearch = !q || key.includes(q);
+            const okDoctor = !fDoctor || r.doctor === fDoctor;
+            const okRating = !fRating || r.rating === fRating;
+            return okSearch && okDoctor && okRating;
+          });
+
+          currentPage = 1;
+          render();
+        }
+
+        function updatePager(totalPages) {
+          const safeTotal = totalPages < 1 ? 1 : totalPages;
+          const safeCurrent = Math.min(Math.max(currentPage, 1), safeTotal);
+
+          if (indicator) indicator.textContent = "Page " + safeCurrent + " of " + safeTotal;
+          if (currentBadge) currentBadge.textContent = safeCurrent;
+
+          const disable = (btn, state) => btn && (btn.disabled = !!state);
+          disable(btnFirst, safeCurrent <= 1);
+          disable(btnPrev, safeCurrent <= 1);
+          disable(btnNext, safeCurrent >= safeTotal);
+          disable(btnLast, safeCurrent >= safeTotal);
+        }
+
+        function render() {
+          if (!tbody) return;
+          tbody.innerHTML = "";
+
+          const perPage = rowsPerPageVal();
+          const total = filtered.length;
+
+          const totalPages = perPage === Infinity ? 1 : Math.ceil(total / perPage) || 1;
+          if (currentPage > totalPages) currentPage = totalPages;
+
+          const start = perPage === Infinity ? 0 : (currentPage - 1) * perPage;
+          const end = perPage === Infinity ? total : start + perPage;
+
+          const visible = filtered.slice(start, end);
+
+          if (!visible.length) {
+            const tr = document.createElement("tr");
+            tr.innerHTML = '<td colspan="9" class="text-center text-grey">No data available</td>';
+            tbody.appendChild(tr);
+            updatePager(totalPages);
+            return;
+          }
+
+          visible.forEach((r) => {
+            const tr = document.createElement("tr");
+            const links = buildRecordLinks(r.orderNo);
+            const recordLink = r.recordType === "session" ? links.session : links.visit;
+            const recordIcon = r.recordType === "session" ? "fi fi-rr-document" : "fi fi-rr-file-medical-alt";
+            const recordLabel = r.recordType === "session" ? "Session Record" : "Visit Record";
+
+            tr.innerHTML =
+              '<td><span class="staff-code">' + r.orderNo + "</span></td>" +
+              "<td>" +
+              '<div class="staff-cell">' +
+              '  <div class="staff-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>' +
+              '  <div class="staff-info">' +
+              '    <p class="name">' +
+              r.patientName +
+              "</p>" +
+              "  </div>" +
+              "</div>" +
+              "</td>" +
+              "<td>" +
+              '<span class="fsize-14" style="white-space:nowrap; display:inline-block;">' + r.phone + "</span>" +
+              "</td>" +
+              '<td><span class="fsize-14">' +
+              r.email +
+              "</span></td>" +
+              '<td><span class="fsize-14">' +
+              r.doctor +
+              "</span></td>" +
+              '<td class="text-center">' +
+              starsHTML(r.rating) +
+              "</td>" +
+              '<td><span class="fsize-12 text-grey comment-snippet">' +
+              snippet(r.comment, 60) +
+              "</span></td>" +
+              '<td class="text-center">' +
+              '  <div class="nk-record-actions">' +
+              '    <a class="nk-mini-link" href="' + recordLink + '" title="' + recordLabel + '"><i class="' + recordIcon + '"></i><span>' + recordLabel + '</span></a>' +
+              '  </div>' +
+              '</td>' +
+              '<td class="text-center">' +
+              '  <button type="button" class="btn nk-preview-btn js-preview-comment" ' +
+              '    data-name="' +
+              r.patientName.replace(/"/g, "&quot;") +
+              '" ' +
+              '    data-comment="' +
+              r.comment.replace(/"/g, "&quot;") +
+              '" ' +
+              '    data-bs-toggle="modal" data-bs-target="#comment-preview-modal" title="Preview">' +
+              '    <i class="fi fi-rr-eye"></i>' +
+              "  </button>" +
+              "</td>";
+
+            tbody.appendChild(tr);
+          });
+
+          updatePager(totalPages);
+        }
+
+        // Events
+        if (btnSearch) btnSearch.addEventListener("click", applySearchAndFilter);
+
+        if (searchInput) {
+          searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") applySearchAndFilter();
+          });
+        }
+
+        if (btnReset) {
+          btnReset.addEventListener("click", function () {
+            if (searchInput) searchInput.value = "";
+            if (rfDoctor) rfDoctor.value = "";
+            if (rfRating) rfRating.value = "";
+            applySearchAndFilter();
+          });
+        }
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", applySearchAndFilter);
+
+        if (btnFilterReset) {
+          btnFilterReset.addEventListener("click", function () {
+            if (rfDoctor) rfDoctor.value = "";
+            if (rfRating) rfRating.value = "";
+          });
+        }
+
+        if (rowsSelect) rowsSelect.addEventListener("change", render);
+
+        if (btnFirst) btnFirst.addEventListener("click", () => ((currentPage = 1), render()));
+        if (btnPrev) btnPrev.addEventListener("click", () => ((currentPage = Math.max(1, currentPage - 1)), render()));
+        if (btnNext) btnNext.addEventListener("click", () => ((currentPage = currentPage + 1), render()));
+        if (btnLast) {
+          btnLast.addEventListener("click", function () {
+            const perPage = rowsPerPageVal();
+            const totalPages = perPage === Infinity ? 1 : Math.ceil(filtered.length / perPage) || 1;
+            currentPage = totalPages;
+            render();
+          });
+        }
+
+        document.addEventListener("click", function (e) {
+          const btn = e.target.closest(".js-preview-comment");
+          if (!btn) return;
+
+          const name = btn.getAttribute("data-name") || "—";
+          const comment = btn.getAttribute("data-comment") || "—";
+
+          if (previewPatientName) previewPatientName.textContent = name;
+          if (previewCommentText) previewCommentText.textContent = comment;
+        });
+
+        // Init
+        applySearchAndFilter();
+      })();
+    </script>
+  </body>
+</html>

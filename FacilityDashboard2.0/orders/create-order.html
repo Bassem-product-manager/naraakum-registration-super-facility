@@ -1,0 +1,2017 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Create Order</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .facility-line{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+      .facility-mini-logo{width:22px;height:22px;border-radius:8px;border:1px solid rgba(15,140,140,.18);background:#fff;padding:3px;object-fit:contain;flex:0 0 22px;}
+      .facility-name{font-weight:900;line-height:1;margin:0;}
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:12px;font-weight:900;font-size:12px;color:#101828;white-space:nowrap;}
+      .ksa-clock .tz{color:var(--nk-green);font-weight:900;font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);}
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      /* ===== Steps shell ===== */
+      .nk-steps-wrap{border:1px solid rgba(0,0,0,.06);background:#fff;border-radius:12px;overflow:hidden;}
+      .nk-steps-head{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 16px;background:rgba(0,0,0,.02);border-bottom:1px solid rgba(0,0,0,.06);flex-wrap:wrap;}
+      .nk-step-pill{display:inline-flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;user-select:none;}
+      .nk-step-pill .num{width:26px;height:26px;border-radius:999px;display:grid;place-items:center;border:1px solid rgba(0,0,0,.14);font-weight:900;font-size:12px;background:#fff;}
+      .nk-step-pill .label{font-weight:800;font-size:13px;opacity:.85;}
+      .nk-step-pill.active{border-color:rgba(15,140,140,.35);box-shadow:0 0 0 3px rgba(15,140,140,.10);}
+      .nk-step-pill.done{border-color:rgba(15,140,140,.35);background:rgba(15,140,140,.06);}
+      .nk-step-pill.done .num{background:rgba(15,140,140,.12);border-color:rgba(15,140,140,.45);}
+      .nk-steps-body{padding:16px;}
+      .nk-steps-footer{display:flex;justify-content:space-between;gap:10px;padding:14px 16px;border-top:1px solid rgba(0,0,0,.06);background:rgba(0,0,0,.02);flex-wrap:wrap;}
+
+      .nk-alert{display:none;padding:10px 12px;border-radius:10px;background:rgba(220,53,69,.08);border:1px solid rgba(220,53,69,.18);color:rgba(220,53,69,.95);font-size:13px;margin-bottom:12px;}
+
+      /* Step 1 search */
+      .nk-search-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;}
+      .nk-search-row i{color:var(--nk-green);}
+      .nk-search-row input{border:none !important;outline:none !important;width:100%;background:transparent !important;font-size:14px;}
+      .nk-search-row:focus-within{border-color:rgba(15,140,140,.40);box-shadow:0 0 0 3px rgba(15,140,140,.10);}
+
+      /* Patient Card */
+      .nk-card{border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;overflow:hidden;}
+      .nk-card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:rgba(0,0,0,.02);border-bottom:1px solid rgba(0,0,0,.06);}
+      .nk-card-title{margin:0;font-weight:900;font-size:14px;}
+      .nk-badge{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 10px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);color:var(--nk-green);font-weight:900;font-size:12px;white-space:nowrap;}
+      .nk-help{font-size:12px;color:rgba(0,0,0,.55);margin:6px 0 0;}
+      .nk-card-body{padding:14px;}
+      .nk-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+      @media (max-width: 992px){.nk-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+      @media (max-width: 576px){.nk-grid{grid-template-columns:1fr;}}
+      .nk-field{padding:10px 12px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;}
+      .nk-field .k{font-size:12px;color:rgba(0,0,0,.55);margin:0;}
+      .nk-field .v{margin:4px 0 0;font-weight:900;font-size:13px;color:#101828;}
+
+      /* Step 2 layout */
+      .nk-svc-layout{display:grid;grid-template-columns:320px 1fr;gap:12px;align-items:start;}
+      @media (max-width: 992px){.nk-svc-layout{grid-template-columns:1fr;}}
+      .nk-svc-cat{border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;overflow:hidden;}
+      .nk-svc-cat .cat-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 12px;cursor:pointer;border-bottom:1px solid rgba(0,0,0,.06);}
+      .nk-svc-cat .cat-item:last-child{border-bottom:none;}
+      .nk-svc-cat .cat-item:hover{background:rgba(0,0,0,.02);}
+      .nk-svc-cat .cat-item.active{background:rgba(15,140,140,.06);}
+      .nk-svc-cat .cat-left{display:flex;align-items:center;gap:10px;min-width:0;}
+      .nk-ico{width:40px;height:40px;border-radius:12px;border:1px solid rgba(15,140,140,.25);background:rgba(15,140,140,.12);display:grid;place-items:center;flex:0 0 40px;}
+      .nk-ico i{color:var(--nk-green);font-size:18px;font-weight:bold;}
+      .nk-svc-cat .cat-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+      .nk-svc-cat .cat-name{font-weight:900;font-size:13px;margin:0;color:#101828;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .nk-svc-cat .cat-sub{font-size:12px;color:rgba(0,0,0,.55);margin:0;}
+      .nk-count{min-width:34px;height:26px;padding:0 10px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:rgba(0,0,0,.75);}
+      .nk-svc-cat .cat-item.active .nk-count{border-color:rgba(15,140,140,.25);color:var(--nk-green);background:rgba(15,140,140,.06);}
+
+      .nk-svc-panel{border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;overflow:hidden;}
+      .nk-svc-panel .panel-head{padding:12px 14px;background:rgba(0,0,0,.02);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+      .nk-svc-panel .panel-title{margin:0;font-weight:900;font-size:14px;}
+      .nk-svc-panel .panel-body{padding:14px;}
+
+      .nk-svc-list{display:grid;gap:10px;}
+      .nk-svc-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;flex-wrap:wrap;}
+      .nk-svc-row:hover{border-color:rgba(15,140,140,.25);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .nk-svc-row .left{display:flex;align-items:center;gap:10px;min-width:0;}
+      .nk-svc-row .svc-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+      .nk-svc-row .svc-name{margin:0;font-weight:900;font-size:13px;color:#101828;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .nk-svc-row .svc-sub{margin:0;font-size:12px;color:rgba(0,0,0,.55);}
+      .nk-svc-row .svc-meta{margin:2px 0 0;font-size:12px;color:rgba(0,0,0,.70);line-height:1.5;}
+      .nk-svc-row select{min-width:240px;max-width:320px;height:38px;border-radius:10px;}
+      @media (max-width: 576px){
+        .nk-svc-row{align-items:flex-start;flex-direction:column;}
+        .nk-svc-row .right,.nk-svc-row select{width:100%;max-width:none;}
+      }
+
+      .nk-product-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+      @media (max-width: 1200px){.nk-product-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+      @media (max-width: 768px){.nk-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+      @media (max-width: 576px){.nk-product-grid{grid-template-columns:1fr;}}
+      .nk-product-card{border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;padding:9px;display:grid;gap:8px;align-content:start;}
+      .nk-product-img{height:76px;border-radius:10px;background:rgba(15,140,140,.06);display:grid;place-items:center;overflow:hidden;}
+      .nk-product-img img{max-width:100%;max-height:100%;object-fit:contain;}
+      .nk-product-name{font-weight:900;font-size:12px;color:#101828;margin:0;line-height:1.35;min-height:32px;}
+      .nk-product-sub{font-size:11px;color:rgba(0,0,0,.55);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .nk-product-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+      .nk-product-price{font-weight:900;color:#f26b50;font-size:12px;}
+      .nk-product-card .nk-qty{gap:5px;}
+      .nk-product-card .nk-qty .btn-qty{width:26px;height:26px;border-radius:8px;}
+
+      .nk-record-section{border:1px solid rgba(15,140,140,.14);background:rgba(15,140,140,.05);border-radius:12px;padding:12px;margin-bottom:12px;}
+      .nk-record-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+      .nk-record-title{margin:0;font-size:14px;font-weight:900;color:#101828;}
+      .nk-record-card{border:1px solid rgba(0,0,0,.10);background:#fff;border-radius:12px;padding:12px;cursor:pointer;}
+      .nk-record-card:hover{border-color:rgba(15,140,140,.35);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .nk-record-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px;}
+      @media (max-width: 576px){.nk-record-grid{grid-template-columns:1fr;}}
+      .nk-record-detail{display:none;margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.08);}
+      .nk-record-card.open .nk-record-detail{display:block;}
+
+      .nk-doctors-wrap{width:100%;flex:1 0 100%;margin-top:12px;border:1px solid rgba(15,140,140,.14);background:rgba(15,140,140,.04);border-radius:12px;padding:12px;}
+      .nk-doctors-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+      .nk-doctors-title{margin:0;font-size:14px;font-weight:900;color:#101828;}
+      .nk-doctor-card{border:1px solid rgba(0,0,0,.10);background:#fff;border-radius:12px;padding:12px;margin-top:10px;}
+      .nk-doctor-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+      .nk-doctor-name{font-size:15px;font-weight:900;color:var(--nk-green);margin:0;}
+      .nk-doctor-meta{margin:4px 0 0;color:rgba(0,0,0,.62);font-size:12px;line-height:1.5;}
+      .nk-doctor-facility{display:inline-flex;align-items:center;gap:6px;font-weight:900;font-size:12px;color:#101828;}
+      .nk-slot-row{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.08);}
+      .nk-slot-label{font-size:12px;color:rgba(0,0,0,.55);font-weight:800;margin-inline-end:auto;}
+      .nk-slot-btn{height:36px;min-width:76px;padding:0 12px;border-radius:8px;border:1px solid rgba(15,140,140,.65);background:#fff;color:var(--nk-green);font-weight:900;}
+      .nk-slot-btn:hover,.nk-slot-btn.active{background:var(--nk-green);color:#fff;}
+      .nk-specialty-filter{width:100%;display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:thin;}
+      .nk-specialty-select-wrap{width:100%;max-width:320px;padding:4px 2px 12px;}
+      .nk-specialty-select{width:100%;height:40px;border-radius:10px;border:1px solid rgba(0,0,0,.14);background:#fff;color:#101828;font-size:13px;font-weight:800;padding:0 12px;}
+      .nk-specialty-select:focus{outline:none;border-color:rgba(15,140,140,.65);box-shadow:0 0 0 3px rgba(15,140,140,.10);}
+      .nk-filter-chip{height:38px;padding:0 12px;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;color:#101828;font-size:12px;font-weight:900;white-space:nowrap;}
+      .nk-filter-chip:hover,.nk-filter-chip.active{border-color:rgba(15,140,140,.55);background:rgba(15,140,140,.08);color:var(--nk-green);}
+      .nk-doctors-wrap.compact{background:transparent;border:none;padding:0;margin-top:8px;}
+      .nk-doctor-grid{display:grid;grid-template-columns:1fr;gap:10px;max-width:100%;}
+      .nk-doctor-card.compact{margin-top:0;padding:10px;border-radius:10px;}
+      .nk-doctor-card.compact .nk-slot-row{justify-content:flex-start;gap:6px;margin-top:10px;padding-top:10px;}
+      .nk-doctor-card.compact .nk-slot-label{flex-basis:100%;margin:0;}
+      .nk-doctor-card.compact .nk-slot-btn{height:30px;min-width:66px;font-size:11px;padding:0 8px;}
+      .nk-doctor-card.compact .nk-doctor-name{font-size:13px;}
+      .nk-tab-row{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin;}
+      .nk-tab-btn{height:42px;padding:0 14px;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;color:#101828;font-weight:900;font-size:13px;white-space:nowrap;}
+      .nk-tab-btn.active,.nk-tab-btn:hover{background:var(--nk-green);border-color:var(--nk-green);color:#fff;}
+      .nk-package-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;}
+      @media (max-width: 1200px){.nk-package-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+      @media (max-width: 576px){.nk-package-grid{grid-template-columns:1fr;}}
+      .nk-package-card{border:1px solid rgba(0,0,0,.10);background:#fff;border-radius:12px;padding:14px;display:grid;gap:10px;min-height:190px;}
+      .nk-package-card.active{border-color:rgba(15,140,140,.65);background:rgba(15,140,140,.04);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .nk-package-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+      .nk-package-name{margin:0;font-weight:900;color:#101828;font-size:15px;line-height:1.35;}
+      .nk-package-meta{margin:0;color:rgba(0,0,0,.62);font-size:12px;line-height:1.5;}
+      .nk-package-price{color:#f26b50;font-weight:900;font-size:13px;}
+      .nk-package-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:auto;}
+      .nk-cart-btn{width:100%;height:50px;border-radius:10px;border:0;background:rgba(15,140,140,.10);color:var(--nk-green);font-size:22px;display:grid;place-items:center;}
+      .nk-cart-btn:hover,.nk-cart-btn.active{background:var(--nk-green);color:#fff;}
+      .nk-info-btn{width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.12);color:#fff;display:grid;place-items:center;font-size:13px;flex:0 0 auto;}
+      .nk-info-btn:hover{background:var(--nk-green);}
+      .nk-package-tests{margin:0;padding:0;list-style:none;display:grid;gap:5px;color:rgba(0,0,0,.62);font-size:12px;line-height:1.4;}
+      .nk-package-tests li{position:relative;padding-inline-start:14px;}
+      .nk-package-tests li::before{content:"";position:absolute;inset-inline-start:0;top:.55em;width:6px;height:6px;border-radius:50%;background:var(--nk-green);}
+      .nk-service-empty{border:1px dashed rgba(15,140,140,.35);border-radius:12px;padding:18px;background:rgba(15,140,140,.04);color:rgba(0,0,0,.62);font-weight:800;text-align:center;}
+      .nk-remote-type-card{min-height:230px;text-align:center;align-content:center;cursor:pointer;}
+      .nk-remote-type-card:hover{border-color:rgba(15,140,140,.55);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .nk-remote-type-icon{width:70px;height:70px;margin:0 auto 14px;border-radius:22px;background:rgba(15,140,140,.10);color:var(--nk-green);display:grid;place-items:center;font-size:34px;}
+      .nk-remote-type-card.active .nk-remote-type-icon{background:var(--nk-green);color:#fff;}
+      .nk-remote-type-card .nk-package-meta{max-width:260px;margin:8px auto 0;font-size:13px;}
+      .nk-plan-tag{display:inline-flex;align-items:center;justify-content:center;min-height:28px;padding:0 12px;border-radius:999px;background:rgba(15,140,140,.09);color:var(--nk-green);font-size:12px;font-weight:900;margin-bottom:4px;width:max-content;}
+      .nk-pharmacy-tabs{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+
+      .nk-qty{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;}
+      .nk-qty .btn-qty{width:30px;height:30px;border-radius:10px;border:1px solid rgba(0,0,0,.12);background:#fff;display:grid;place-items:center;cursor:pointer;}
+      .nk-qty .btn-qty:hover{border-color:rgba(15,140,140,.30);box-shadow:0 0 0 3px rgba(15,140,140,.08);}
+      .nk-qty .val{min-width:26px;text-align:center;font-weight:900;color:#101828;}
+      .nk-check{width:18px;height:18px;}
+
+      /* Selected services summary */
+      .nk-summary{margin-top:12px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fff;overflow:hidden;}
+      .nk-summary .sum-head{padding:12px 14px;background:rgba(0,0,0,.02);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;}
+      .nk-summary .sum-title{margin:0;font-weight:900;font-size:14px;}
+      .nk-summary .sum-body{padding:14px;}
+      .nk-chip{display:inline-flex;align-items:center;gap:8px;height:30px;padding:0 10px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;font-weight:900;font-size:12px;}
+      .nk-list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px;}
+      .nk-list li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid rgba(0,0,0,.10);border-radius:12px;background:#fff;}
+      .nk-list .li-left{min-width:0;}
+      .nk-list .li-name{margin:0;font-weight:900;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+      .nk-list .li-sub{margin:2px 0 0;font-size:12px;color:rgba(0,0,0,.55);}
+      .nk-list .li-right{display:inline-flex;align-items:center;gap:10px;white-space:nowrap;}
+      .nk-remove{width:32px;height:32px;border-radius:10px;border:1px solid rgba(220,53,69,.25);background:rgba(220,53,69,.06);color:rgba(220,53,69,1);display:grid;place-items:center;cursor:pointer;}
+      .nk-remove:hover{box-shadow:0 0 0 3px rgba(220,53,69,.10);}
+
+      .nk-confirm-modal .modal-content{border-radius:16px;overflow:hidden;}
+      .nk-confirm-modal .modal-title{font-weight:900;}
+      .nk-confirm-mini{font-size:12px;color:rgba(0,0,0,.55);margin:0;}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE (FULL) ===================== -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ===================== MAIN ===================== -->
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Create New Order</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Create Order</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="nk-steps-wrap">
+            <div class="nk-steps-head">
+              <div class="nk-step-pill active" data-step-pill="1"><span class="num">1</span><span class="label">Patient</span></div>
+              <div class="nk-step-pill" data-step-pill="2"><span class="num">2</span><span class="label">Services</span></div>
+              <div class="nk-step-pill" data-step-pill="3"><span class="num">3</span><span class="label">Confirm</span></div>
+            </div>
+
+            <div class="nk-steps-body">
+              <div class="nk-alert" id="nkAlert">Please complete the required information.</div>
+
+              <!-- STEP 1 -->
+              <section class="nk-step" data-step="1">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                    <div>
+                      <h3 class="m-0">Search Patient</h3>
+                      <p class="text-grey mt-8 mb-0">Enter patient ID then click Search.</p>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="nk-search-row">
+                    <i class="fi fi-rr-search"></i>
+                    <input id="patientSearchInput" type="text" placeholder="Enter Patient ID" />
+                    <button id="btnPatientSearch" type="button" class="btn btn-primary btn-40" style="min-width:110px;">Search</button>
+                  </div>
+
+                  <div class="mt-10 nk-help">
+                    <b>Patient Rating</b> shown here is the <b>patient’s rating for the service provider</b> (doctor/nurse) based on previous visits.
+                    (In the future, you can add another section for “Provider rating of patient”.)
+                  </div>
+
+                  <div class="mt-16" id="patientInfoWrap" style="display:none;">
+                    <div class="nk-card">
+                      <div class="nk-card-head">
+                        <h4 class="nk-card-title">Patient Information</h4>
+                        <span class="nk-badge">
+                          <i class="fi fi-sr-star" style="color:#F5C542;"></i>
+                          <span id="patientRating">4.0</span>
+                          <span style="opacity:.7;">(</span><span id="patientRatingCount">122</span><span style="opacity:.7;"> rating)</span>
+                        </span>
+                      </div>
+                      <div class="nk-card-body">
+                        <div class="nk-grid">
+                          <div class="nk-field"><p class="k">Name</p><p class="v" id="pName">Abdullah Al-Enezi</p></div>
+                          <div class="nk-field"><p class="k">Phone No.</p><p class="v" id="pPhone">966 5123485159</p></div>
+                          <div class="nk-field"><p class="k">Gender</p><p class="v" id="pGender">Male</p></div>
+
+                          <div class="nk-field"><p class="k">Age</p><p class="v" id="pAge">31</p></div>
+                          <div class="nk-field"><p class="k">ID Number</p><p class="v" id="pIdNumber">123465794563</p></div>
+                          <div class="nk-field"><p class="k">Relative relation</p><p class="v" id="pRelation">my self</p></div>
+
+                          <div class="nk-field"><p class="k">Nationality</p><p class="v" id="pNationality">resident</p></div>
+                          <div class="nk-field"><p class="k">Insurance company</p><p class="v" id="pInsurance">—</p></div>
+                          <div class="nk-field"><p class="k">Patient ID</p><p class="v" id="pPatientId">1234567</p></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              <!-- STEP 2 -->
+              <section class="nk-step" data-step="2" style="display:none;">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                    <div>
+                      <h3 class="m-0">Select Services</h3>
+                      <p class="text-grey mt-8 mb-0">Choose category and select services.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                      <span class="nk-chip" id="selectedCountChip">Selected: 0</span>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="nk-svc-layout">
+                    <div class="nk-svc-cat" id="svcCategories"></div>
+
+                    <div class="nk-svc-panel">
+                      <div class="panel-head">
+                        <h4 class="panel-title" id="svcPanelTitle">Virtual consultation</h4>
+                        <span class="nk-count" id="svcPanelCount">0</span>
+                      </div>
+                      <div class="panel-body">
+                        <div class="nk-svc-list" id="svcList"></div>
+
+                        <!-- Selected summary -->
+                        <div class="nk-summary">
+                          <div class="sum-head">
+                            <h4 class="sum-title" id="sumTitle">Selected Services (0)</h4>
+                            <span class="nk-badge"><i class="fi fi-rr-user"></i><span id="sumPatientName">—</span></span>
+                          </div>
+                          <div class="sum-body">
+                            <ul class="nk-list" id="selectedList"></ul>
+                            <div id="emptySelected" class="text-grey fsize-13" style="margin-top:8px;">No services selected yet.</div>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+              <!-- STEP 3 -->
+              <section class="nk-step" data-step="3" style="display:none;">
+                <div class="surface-light-50 p-16 radius-12">
+                  <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                    <div>
+                      <h3 class="m-0">Confirmation</h3>
+                      <p class="text-grey mt-8 mb-0">Review patient and services, then confirm.</p>
+                    </div>
+                  </div>
+
+                  <hr class="mt-16 mb-16" />
+
+                  <div class="row g-3">
+                    <div class="col-12 col-lg-5">
+                      <div class="nk-card">
+                        <div class="nk-card-head">
+                          <h4 class="nk-card-title">Patient Summary</h4>
+                          <span class="nk-badge">
+                            <i class="fi fi-sr-star" style="color:#F5C542;"></i>
+                            <span id="cRating">4.0</span>
+                            <span style="opacity:.7;">(</span><span id="cRatingCount">10</span><span style="opacity:.7;">)</span>
+                          </span>
+                        </div>
+                        <div class="nk-card-body">
+                          <div class="nk-grid" style="grid-template-columns: repeat(2, minmax(0,1fr));">
+                            <div class="nk-field"><p class="k">Name</p><p class="v" id="cName">—</p></div>
+                            <div class="nk-field"><p class="k">Patient ID</p><p class="v" id="cPid">—</p></div>
+                            <div class="nk-field"><p class="k">Phone</p><p class="v" id="cPhone">—</p></div>
+                            <div class="nk-field"><p class="k">Gender / Age</p><p class="v" id="cGA">—</p></div>
+                            <div class="nk-field"><p class="k">Nationality</p><p class="v" id="cNat">—</p></div>
+                            <div class="nk-field"><p class="k">ID Number</p><p class="v" id="cIdNo">—</p></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7">
+                      <div class="nk-summary" style="margin-top:0;">
+                        <div class="sum-head">
+                          <h4 class="sum-title" id="cServicesTitle">Selected Services (0)</h4>
+                          <span class="nk-chip" id="cTotalChip">Total: 0</span>
+                        </div>
+                        <div class="sum-body">
+                          <ul class="nk-list" id="confirmList"></ul>
+                          <div class="text-grey fsize-13" id="confirmEmpty">No services selected.</div>
+                          <div class="d-flex justify-content-end mt-16">
+                            <button type="button" class="btn btn-primary btn-40" data-bs-toggle="modal" data-bs-target="#confirmModal">
+                              Confirm Order
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </section>
+
+            </div>
+
+            <div class="nk-steps-footer">
+              <div class="d-flex gap-2 flex-wrap">
+                <a href="orders-list.html" class="btn btn-light btn-40">Cancel</a>
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                <button type="button" class="btn btn-light btn-40" id="btnBack" disabled>Back</button>
+                <button type="button" class="btn btn-primary btn-40" id="btnNext" disabled>Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Confirm Modal -->
+    <div class="modal fade nk-confirm-modal" id="confirmModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title">Confirm Order</h5>
+              <p class="nk-confirm-mini" id="confirmMini">—</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <p class="fsize-14" style="margin:0;">Are you sure you want to create this order?</p>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="btnConfirmCreate">Yes, Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade nk-confirm-modal" id="packageDetailsModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title" id="packageDetailsTitle">Package Details</h5>
+              <p class="nk-confirm-mini" id="packageDetailsSubtitle">Package Details</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="fsize-14 text-grey" id="packageDetailsText"></p>
+            <ul class="nk-package-tests" id="packageDetailsList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts (ONCE) -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      /* ✅ KSA Clock (12-hour AM/PM) */
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+        tick(); setInterval(tick, 1000);
+      })();
+    </script>
+
+    <script>
+      (function(){
+        // === Fake patient lookup dataset (demo) ===
+        const patientDB = {
+          "1234567": {
+            patientId: "1234567",
+            name: "Abdullah Al-Enezi",
+            phone: "966 5123485159",
+            rating: "4.0",
+            ratingCount: "12",
+            gender: "Male",
+            age: "31",
+            idNumber: "123465794563",
+            relation: "my self",
+            nationality: "resident",
+            insurance: "—"
+          },
+          "abdullah": {
+            patientId: "1234567",
+            name: "Abdullah Al-Enezi",
+            phone: "966 5123485159",
+            rating: "4.0",
+            ratingCount: "12",
+            gender: "Male",
+            age: "31",
+            idNumber: "123465794563",
+            relation: "my self",
+            nationality: "resident",
+            insurance: "—"
+          }
+        };
+
+        // === Icons for categories/services ===
+        const ICONS = {
+          virtual: "fi fi-rr-video-camera",
+          doctor: "fi fi-rr-stethoscope",
+          clinic: "fi fi-rr-hospital",
+          caregiver: "fi fi-rr-hand-holding-medical",
+          physio: "fi fi-rr-running",
+          lab: "fi fi-rr-flask",
+          pharmacy: "fi fi-rr-pharmacy",
+          remote: "fi fi-rr-heart-rate"
+        };
+        const SVC_ICONS = {
+          vc_general_medicine: "fi fi-rr-doctor",
+          vc_dentistry: "fi fi-rr-tooth",
+          vc_cardiology: "fi fi-rr-heart",
+          vc_neurology: "fi fi-rr-head-side-brain",
+          vc_ear_nose: "fi fi-rr-ear",
+          vc_urology: "fi fi-rr-procedures",
+          vc_orthopedics: "fi fi-rr-bone",
+          vc_ophthalmology: "fi fi-rr-eye",
+          vc_digestive_system: "fi fi-rr-stomach",
+          vc_kidney: "fi fi-rr-kidneys",
+          vc_pulmonary: "fi fi-rr-lungs",
+          vc_pediatrics: "fi fi-rr-baby",
+          vc_obstetrics: "fi fi-rr-venus",
+          vc_psychiatry: "fi fi-rr-brain",
+          dv_home: "fi fi-rr-house-chimney-medical",
+          dv_clinic: "fi fi-rr-hospital",
+          clinic_consultation: "fi fi-rr-hospital",
+          cg_8_day: "fi fi-rr-sun",
+          cg_12_day: "fi fi-rr-clock-three",
+          cg_8_month: "fi fi-rr-calendar-clock",
+          cg_12_month: "fi fi-rr-calendar",
+          pt_one: "fi fi-rr-running",
+          pt_3: "fi fi-rr-dumbbell-alt",
+          pt_6: "fi fi-rr-dumbbell-alt",
+          pt_9: "fi fi-rr-dumbbell-alt",
+          lab_full_checkup: "fi fi-rr-clipboard-list-check",
+          lab_diabetes: "fi fi-rr-syringe",
+          lab_cbc: "fi fi-rr-test-tube",
+          fu_blood_sugar: "fi fi-rr-syringe",
+          fu_blood_pressure: "fi fi-rr-heart-rate",
+          fu_diet: "fi fi-rr-scale",
+          fu_activity: "fi fi-rr-running"
+        };
+
+        const medicalSpecialties = [
+          { value:"general_medicine", code:"General Medicine", name:"الطب العام" },
+          { value:"dentistry", code:"Dentistry", name:"طب الاسنان" },
+          { value:"cardiology", code:"Cardiology", name:"القلب" },
+          { value:"neurology", code:"Neurology", name:"المخ والاعصاب" },
+          { value:"ear_nose", code:"Ear_Nose", name:"انف واذن وحنجرة" },
+          { value:"urology", code:"Urology", name:"المسالك البولية" },
+          { value:"orthopedics", code:"Orthopedics", name:"طب العظام" },
+          { value:"ophthalmology", code:"Ophthalmology", name:"طب العيون" },
+          { value:"digestive_system", code:"Digestive_System", name:"الجهاز الهضمي" },
+          { value:"kidney", code:"Kidney", name:"الكلي" },
+          { value:"pulmonary", code:"Pulmonary", name:"الصدرية" },
+          { value:"pediatrics", code:"Pediatrics", name:"طب الاطفال" },
+          { value:"obstetrics", code:"Obstetrics", name:"النساء والولادة" },
+          { value:"psychiatry", code:"Psychiatry", name:"الطب النفسي" }
+        ];
+
+        const doctorAvailabilityBySpecialty = {
+          general_medicine: [
+            { id:"dr_riyadh_general", name:"Dr. Riyadh Hamad Al-Malhi", title:"Consultant General Medicine", facility:"BMC Hospital", rating:"4.8", experience:"10 years", language:"English", price:"120.00", slots:["04:00 PM","04:30 PM","05:00 PM","05:30 PM","06:00 PM"] },
+            { id:"dr_sara_general", name:"Dr. Sara Ahmed", title:"Specialist General Medicine", facility:"BMC Hospital", rating:"4.6", experience:"7 years", language:"English", price:"110.00", slots:["10:00 AM","11:00 AM","01:30 PM","03:00 PM"] }
+          ],
+          dentistry: [
+            { id:"dr_mona_dentistry", name:"Dr. Mona Saleh", title:"Consultant Dentistry", facility:"BMC Hospital", rating:"4.7", experience:"9 years", language:"English", price:"150.00", slots:["09:30 AM","12:00 PM","02:30 PM","05:00 PM"] }
+          ],
+          cardiology: [
+            { id:"dr_khaled_cardio", name:"Dr. Khaled Mansour", title:"Consultant Cardiology", facility:"BMC Hospital", rating:"4.9", experience:"14 years", language:"English", price:"180.00", slots:["10:30 AM","01:00 PM","04:30 PM"] }
+          ],
+          neurology: [
+            { id:"dr_nadine_neuro", name:"Dr. Nadine Fawzy", title:"Consultant Neurology", facility:"BMC Hospital", rating:"4.8", experience:"12 years", language:"English", price:"170.00", slots:["11:30 AM","03:30 PM","06:00 PM"] }
+          ],
+          ear_nose: [
+            { id:"dr_hassan_ent", name:"Dr. Hassan Omar", title:"ENT Specialist", facility:"BMC Hospital", rating:"4.5", experience:"8 years", language:"English", price:"130.00", slots:["09:00 AM","12:30 PM","04:00 PM"] }
+          ],
+          urology: [
+            { id:"dr_riyadh_urology", name:"Dr. Riyadh Hamad Al-Malhi", title:"Consultant Urology", facility:"BMC Hospital", rating:"4.8", experience:"10 years", language:"English", price:"120.00", slots:["04:00 PM","04:30 PM","05:00 PM","05:30 PM","06:00 PM","06:30 PM"] },
+            { id:"dr_suleiman_urology", name:"Dr. Suleiman Al-Habib", title:"Urology Specialist", facility:"BMC Hospital", rating:"4.7", experience:"11 years", language:"English", price:"180.00", slots:["10:00 AM","11:30 AM","02:00 PM","05:00 PM"] }
+          ],
+          orthopedics: [
+            { id:"dr_omar_ortho", name:"Dr. Omar Nabil", title:"Consultant Orthopedics", facility:"BMC Hospital", rating:"4.6", experience:"13 years", language:"English", price:"160.00", slots:["09:30 AM","01:30 PM","05:30 PM"] }
+          ],
+          ophthalmology: [
+            { id:"dr_laila_eye", name:"Dr. Laila Hassan", title:"Ophthalmology Specialist", facility:"BMC Hospital", rating:"4.7", experience:"8 years", language:"English", price:"140.00", slots:["10:30 AM","12:30 PM","03:30 PM"] }
+          ],
+          digestive_system: [
+            { id:"dr_ahmed_digestive", name:"Dr. Ahmed Youssef", title:"Gastroenterology Consultant", facility:"BMC Hospital", rating:"4.8", experience:"12 years", language:"English", price:"170.00", slots:["11:00 AM","02:00 PM","06:00 PM"] }
+          ],
+          kidney: [
+            { id:"dr_hany_kidney", name:"Dr. Hany Samir", title:"Nephrology Specialist", facility:"BMC Hospital", rating:"4.6", experience:"9 years", language:"English", price:"150.00", slots:["09:00 AM","01:00 PM","04:00 PM"] }
+          ],
+          pulmonary: [
+            { id:"dr_mariam_pulmonary", name:"Dr. Mariam Adel", title:"Pulmonary Specialist", facility:"BMC Hospital", rating:"4.7", experience:"10 years", language:"English", price:"145.00", slots:["10:00 AM","12:00 PM","05:00 PM"] }
+          ],
+          pediatrics: [
+            { id:"dr_sara_peds", name:"Dr. Sara Ahmed", title:"Pediatrics Specialist", facility:"BMC Hospital", rating:"4.8", experience:"9 years", language:"English", price:"130.00", slots:["09:30 AM","11:30 AM","03:30 PM","06:30 PM"] }
+          ],
+          obstetrics: [
+            { id:"dr_noha_obs", name:"Dr. Noha Kamal", title:"Obstetrics and Gynecology Consultant", facility:"BMC Hospital", rating:"4.9", experience:"15 years", language:"English", price:"180.00", slots:["10:00 AM","01:00 PM","04:00 PM"] }
+          ],
+          psychiatry: [
+            { id:"dr_karim_psy", name:"Dr. Karim Fouad", title:"Psychiatry Consultant", facility:"BMC Hospital", rating:"4.8", experience:"11 years", language:"English", price:"165.00", slots:["12:00 PM","03:00 PM","07:00 PM"] }
+          ]
+        };
+
+        const serviceDisplayNames = {
+          dv_home: "Doctor Visit",
+          clinic_consultation: "Clinic Consultation",
+          cg_8_day: "8 Hours / 1 Day Package",
+          cg_12_day: "12 Hours / 1 Day Package",
+          cg_8_month: "8 Hours / 1 Month Package",
+          cg_12_month: "12 Hours / 1 Month Package",
+          pt_one: "Single Session",
+          pt_3: "3 Sessions Package",
+          pt_6: "6 Sessions Package",
+          pt_9: "9 Sessions Package",
+          lab_full_checkup: "Comprehensive Checkup Package",
+          lab_diabetes: "Diabetes Package",
+          lab_cbc: "Complete Blood Count Package",
+          rx_record_abdullah: "Abdullah Al Rajhi (4 Records)",
+          ph_uripan: "Uripan Syrup 0.1 g - 120 ml",
+          ph_baclofen: "Baclofen 25 mg Tablets - Strip",
+          fu_blood_sugar: "Blood-sugar",
+          fu_blood_pressure: "Blood Pressure",
+          fu_diet: "Diet / Weight Management",
+          fu_activity: "Physical Activity"
+        };
+
+        const serviceDisplayMeta = {
+          rx_record_abdullah: "My Prescription Records",
+          lab_full_checkup: "Comprehensive tests and health indicators",
+          lab_diabetes: "HbA1c, fasting glucose, and basic follow-up",
+          lab_cbc: "Complete Blood Count (CBC)"
+        };
+
+        const caregiverProvidersByPackage = {
+          cg_8_day: [
+            { id:"cg_marilyn_8d", name:"Marilyn Mariano", title:"Caregiver", facility:"BMC Hospital", rating:"4.8", experience:"10 years", language:"English", price:"120.00", slots:["04:00 PM","04:30 PM","05:00 PM","05:30 PM","06:00 PM"] },
+            { id:"cg_lina_8d", name:"Lina Joseph", title:"Senior Caregiver", facility:"BMC Hospital", rating:"4.7", experience:"8 years", language:"English", price:"120.00", slots:["09:00 AM","11:00 AM","02:00 PM"] }
+          ],
+          cg_12_day: [
+            { id:"cg_mary_12d", name:"Mary Thomas", title:"Caregiver", facility:"BMC Hospital", rating:"4.6", experience:"7 years", language:"English", price:"150.00", slots:["08:00 AM","12:00 PM","04:00 PM"] }
+          ],
+          cg_8_month: [
+            { id:"cg_marilyn_8m", name:"Marilyn Mariano", title:"Caregiver", facility:"BMC Hospital", rating:"4.8", experience:"10 years", language:"English", price:"2200.00", slots:["09:00 AM","01:00 PM","05:00 PM"] }
+          ],
+          cg_12_month: [
+            { id:"cg_lina_12m", name:"Lina Joseph", title:"Senior Caregiver", facility:"BMC Hospital", rating:"4.7", experience:"8 years", language:"English", price:"3200.00", slots:["08:00 AM","02:00 PM","06:00 PM"] }
+          ]
+        };
+
+        // === Services structure (demo) ===
+        const categories = [
+          { key:"virtual", name:"Virtual consultation", sub:"Online medical specialties" },
+          { key:"doctor", name:"Doctor Visit", sub:"Home visit specialties" },
+          { key:"clinic", name:"Clinic Consultation", sub:"In-clinic specialties" },
+          { key:"caregiver", name:"Caregiver", sub:"Health escort packages" },
+          { key:"physio", name:"Physiotherapy", sub:"Session packages" },
+          { key:"lab", name:"Lab Analyses", sub:"Lab packages" },
+          { key:"pharmacy", name:"Medication Delivery", sub:"Medicines and prescriptions" },
+          { key:"remote", name:"Remote Follow-up", sub:"Monitoring packages" }
+        ];
+
+        const servicesByCat = {
+          virtual: [
+            { id:"vc_consultation", name:"Virtual Consultation", type:"select", placeholder:"Select Specialty", options: medicalSpecialties, meta:"Online consultation" }
+          ],
+          doctor: [
+            { id:"dv_home", name:"Doctor Visit", type:"select", placeholder:"Select Specialty", options: medicalSpecialties, meta:"Doctor home visit specialty" }
+          ],
+          clinic: [
+            { id:"clinic_consultation", name:"Clinic Consultation", type:"select", placeholder:"Select Specialty", options: medicalSpecialties, meta:"Clinic consultation specialty" }
+          ],
+          caregiver: [
+            { id:"cg_8_day", name:"8 Hours / 1 Day Package", type:"checkbox", meta:"Health escort package" },
+            { id:"cg_12_day", name:"12 Hours / 1 Day Package", type:"checkbox", meta:"Health escort package" },
+            { id:"cg_8_month", name:"8 Hours / 1 Month Package", type:"checkbox", meta:"Health escort package" },
+            { id:"cg_12_month", name:"12 Hours / 1 Month Package", type:"checkbox", meta:"Health escort package" }
+          ],
+          physio: [
+            { id:"pt_one", name:"Single Session", type:"checkbox", meta:"Physiotherapy sessions" },
+            { id:"pt_3", name:"3 Sessions Package", type:"checkbox", meta:"Physiotherapy sessions" },
+            { id:"pt_6", name:"6 Sessions Package", type:"checkbox", meta:"Physiotherapy sessions" },
+            { id:"pt_9", name:"9 Sessions Package", type:"checkbox", meta:"Physiotherapy sessions" }
+          ],
+          lab: [
+            { id:"lab_full_checkup", name:"Comprehensive Checkup Package", type:"package", meta:"Comprehensive tests and health indicators", detail:"Includes CBC, lipid profile, liver function, kidney function, and diabetes screening.", tests:["Complete Blood Count", "Lipid Profile", "Kidney Function"] },
+            { id:"lab_diabetes", name:"Diabetes Package", type:"package", meta:"HbA1c, fasting glucose, and basic follow-up", detail:"Designed for blood sugar monitoring and diabetes follow-up.", tests:["HbA1c", "Fasting Blood Sugar", "Kidney Function"] },
+            { id:"lab_cbc", name:"Complete Blood Count Package", type:"package", meta:"Complete Blood Count (CBC)", detail:"Basic complete blood count screening.", tests:["CBC", "Hemoglobin", "Platelets"] },
+            { id:"lab_hba1c", name:"HbA1c Test", type:"lab_test", meta:"Average blood sugar level for 3 months", detail:"Single HbA1c laboratory test.", tests:["HbA1c"] },
+            { id:"lab_fasting_glucose", name:"Fasting Blood Sugar", type:"lab_test", meta:"Fasting glucose screening", detail:"Single fasting blood sugar laboratory test.", tests:["Fasting Blood Sugar"] },
+            { id:"lab_lipid_profile", name:"Lipid Profile", type:"lab_test", meta:"Cholesterol and triglycerides", detail:"Single lipid profile laboratory test.", tests:["Total Cholesterol", "HDL / LDL", "Triglycerides"] }
+          ],
+          pharmacy: [
+            {
+              id:"rx_record_abdullah",
+              name:"Abdullah Al Rajhi (4 Records)",
+              type:"record",
+              meta:"My Prescription Records",
+              details:[
+                ["Date", "12/12/2023"],
+                ["Service Type", "Home Visit"],
+                ["Medical Center", "Dr. Bassam Center"],
+                ["Care Provider", "Dr. Bassam Al-Homsi"]
+              ]
+            },
+            { id:"ph_uripan", name:"Uripan Syrup 0.1 g - 120 ml", type:"product", image:"../assets/images/Uripan.png", price:"20.00 SAR", meta:"Over-the-counter medicine" },
+            { id:"ph_baclofen", name:"Baclofen 25 mg Tablets - Strip", type:"product", image:"../assets/images/BACLOFEN.png", price:"20.00 SAR", meta:"Prescription medicine" },
+            { id:"ph_omformin", name:"Omformin 500 mg", type:"product", image:"../assets/images/Omformin.webp", price:"20.00 SAR", meta:"Diabetes medicine" },
+            { id:"ph_gluco", name:"GLUCO test strips", type:"product", image:"../assets/images/GLUCO.jpeg", price:"20.00 SAR", meta:"Blood sugar supplies" },
+            { id:"ph_johnsons", name:"Johnson's baby oil", type:"product", image:"../assets/images/Johnsons.jpeg", price:"20.00 SAR", meta:"Daily care" },
+            { id:"ph_cerave", name:"CeraVe cream", type:"product", image:"../assets/images/ceraVe.webp", price:"20.00 SAR", meta:"Skin care" }
+          ],
+          remote: [
+            {
+              id:"fu_blood_sugar",
+              name:"Blood-sugar - سكر الدم",
+              type:"followup",
+              meta:"Remote monitoring",
+              packages:[
+                { value:"six", label:"6 Sessions Package", tag:"Starter follow-up", detail:"6 online sessions with diabetes follow-up, reading review, and basic lifestyle guidance. Suitable for patients who need short-term support after medication or diet changes.", tests:["HbA1c", "Fasting Blood Sugar", "Weekly review of readings and symptoms", "Simple diet and medication adherence notes"] },
+                { value:"twelve", label:"12 Sessions Package", tag:"Recommended", detail:"12 online sessions with expanded diabetes monitoring, trend comparison, and recurring care notes. Best for patients who need closer control and frequent checks before the next provider visit.", tests:["HbA1c", "Fasting Blood Sugar", "Kidney Function", "Weekly review of readings and symptoms", "Care coordinator notes for the next provider visit"] }
+              ]
+            },
+            {
+              id:"fu_blood_pressure",
+              name:"Blood-sugar - ضغط الدم",
+              type:"followup",
+              meta:"Remote monitoring",
+              packages:[
+                { value:"six", label:"6 Sessions Package", tag:"Focused support", detail:"6 online sessions for blood pressure monitoring, home reading checks, and symptom review. Good for patients who recently changed treatment and need structured follow-up.", tests:["Kidney Function", "Electrolytes", "Reading log review twice weekly", "Warning-sign escalation guidance"] },
+                { value:"twelve", label:"12 Sessions Package", tag:"Most complete", detail:"12 online sessions with monthly pressure plan, reading trends, and broader cardiovascular risk follow-up.", tests:["Kidney Function", "Electrolytes", "Lipid Profile", "Weekly review of readings and symptoms", "Care coordinator notes for the next provider visit"] }
+              ]
+            },
+            {
+              id:"fu_diet",
+              name:"Diet - الوزن / النظام الغذائي",
+              type:"followup",
+              meta:"Remote monitoring",
+              packages:[
+                { value:"six", label:"6 Sessions Package", tag:"Weight reset", detail:"6 online sessions with nutrition measurements, food diary review, and weekly adjustment notes.", tests:["Vitamin D", "Lipid Profile", "Meal pattern review", "Weight and waist tracking"] },
+                { value:"twelve", label:"12 Sessions Package", tag:"Long-term plan", detail:"12 online sessions with complete diet follow-up, behavior coaching, and lab-informed progress review.", tests:["Vitamin D", "Lipid Profile", "HbA1c", "Meal pattern review", "Care coordinator notes for the next provider visit"] }
+              ]
+            },
+            {
+              id:"fu_activity",
+              name:"Physical-activity - النشاط البدني",
+              type:"followup",
+              meta:"Remote monitoring",
+              packages:[
+                { value:"six", label:"6 Sessions Package", tag:"Activity starter", detail:"6 online sessions to assess current activity level, set weekly movement goals, and review safe exercise progress.", tests:["Activity progression review", "Weekly step or movement target", "Mobility and endurance notes", "Simple home exercise plan"] },
+                { value:"twelve", label:"12 Sessions Package", tag:"Full activity plan", detail:"12 online sessions with progressive activity planning, habit coaching, and provider-ready progress notes.", tests:["Activity progression review", "Weekly step or movement target", "Mobility and endurance notes", "Care coordinator notes for the next provider visit"] }
+              ]
+            }
+          ]
+        };
+
+        // === State ===
+        let currentStep = 1;
+        let selectedPatient = null;
+        let activeCat = "virtual";
+        const activeDoctorFilters = { vc_consultation:"all", dv_home:"all", clinic_consultation:"all" };
+        const activePackageTabs = { caregiver:"cg_8_day", pharmacy:"medicines", lab:"packages", remoteType:"" };
+        const selected = {}; // id -> {catKey, id, name, qty}
+
+        // === Elements ===
+        const steps = Array.from(document.querySelectorAll(".nk-step"));
+        const pills = Array.from(document.querySelectorAll(".nk-step-pill"));
+        const btnBack = document.getElementById("btnBack");
+        const btnNext = document.getElementById("btnNext");
+        const nkAlert = document.getElementById("nkAlert");
+
+        const patientSearchInput = document.getElementById("patientSearchInput");
+        const btnPatientSearch = document.getElementById("btnPatientSearch");
+        const patientInfoWrap = document.getElementById("patientInfoWrap");
+
+        const pName = document.getElementById("pName");
+        const pPhone = document.getElementById("pPhone");
+        const pGender = document.getElementById("pGender");
+        const pAge = document.getElementById("pAge");
+        const pIdNumber = document.getElementById("pIdNumber");
+        const pRelation = document.getElementById("pRelation");
+        const pNationality = document.getElementById("pNationality");
+        const pInsurance = document.getElementById("pInsurance");
+        const pPatientId = document.getElementById("pPatientId");
+        const patientRating = document.getElementById("patientRating");
+        const patientRatingCount = document.getElementById("patientRatingCount");
+        const sumPatientName = document.getElementById("sumPatientName");
+
+        const svcCategories = document.getElementById("svcCategories");
+        const svcPanelTitle = document.getElementById("svcPanelTitle");
+        const svcPanelCount = document.getElementById("svcPanelCount");
+        const svcList = document.getElementById("svcList");
+        const selectedList = document.getElementById("selectedList");
+        const emptySelected = document.getElementById("emptySelected");
+        const selectedCountChip = document.getElementById("selectedCountChip");
+        const sumTitle = document.getElementById("sumTitle");
+
+
+        const cName = document.getElementById("cName");
+        const cPid = document.getElementById("cPid");
+        const cPhone = document.getElementById("cPhone");
+        const cGA = document.getElementById("cGA");
+        const cNat = document.getElementById("cNat");
+        const cIdNo = document.getElementById("cIdNo");
+        const cRating = document.getElementById("cRating");
+        const cRatingCount = document.getElementById("cRatingCount");
+        const confirmList = document.getElementById("confirmList");
+        const confirmEmpty = document.getElementById("confirmEmpty");
+        const cServicesTitle = document.getElementById("cServicesTitle");
+        const cTotalChip = document.getElementById("cTotalChip");
+        const confirmMini = document.getElementById("confirmMini");
+        const btnConfirmCreate = document.getElementById("btnConfirmCreate");
+        const packageDetailsTitle = document.getElementById("packageDetailsTitle");
+        const packageDetailsSubtitle = document.getElementById("packageDetailsSubtitle");
+        const packageDetailsText = document.getElementById("packageDetailsText");
+        const packageDetailsList = document.getElementById("packageDetailsList");
+
+        // === Helpers ===
+        function showAlert(msg){ nkAlert.textContent = msg || "Please complete the required information."; nkAlert.style.display = "block"; }
+        function hideAlert(){ nkAlert.style.display = "none"; }
+        function svcName(svc){ return serviceDisplayNames[svc.id] || svc.name; }
+        function svcMeta(svc, fallback){ return serviceDisplayMeta[svc.id] || svc.meta || fallback || "Service"; }
+        const remoteFollowupMeta = {
+          fu_blood_sugar: "Track daily glucose readings with package recommendations based on diabetes follow-up needs.",
+          fu_blood_pressure: "Follow home blood pressure readings, symptoms, and risk indicators with planned remote sessions.",
+          fu_diet: "Support weight, meals, and nutrition habits with recurring measurements and practical action steps.",
+          fu_activity: "Build a safe activity routine with session-based coaching, progress tracking, and simple movement goals."
+        };
+        function followupMeta(svc){ return remoteFollowupMeta[svc.id] || svcMeta(svc, "Remote monitoring"); }
+        function packageDetailText(svc, pkg){ return pkg?.detail || svc.detail || svcMeta(svc, "Package Details"); }
+        function packageTests(svc, pkg){ return pkg?.tests || svc.tests || []; }
+        function escapeAttr(value){ return String(value || "").replace(/"/g, "&quot;"); }
+        function openPackageDetails(title, subtitle, detail, tests){
+          packageDetailsTitle.textContent = title || "Package Details";
+          packageDetailsSubtitle.textContent = subtitle || "Package Details";
+          packageDetailsText.textContent = detail || "";
+          packageDetailsList.innerHTML = (tests || []).map(item => `<li>${item}</li>`).join("");
+          bootstrap.Modal.getOrCreateInstance(document.getElementById("packageDetailsModal")).show();
+        }
+        function specialtyLabel(value){
+          if(value === "all") return "All Specialties";
+          const found = medicalSpecialties.find(sp => sp.value === value);
+          return found ? found.code : "";
+        }
+
+        function getDoctorsForSpecialty(value){
+          if(value && value !== "all"){
+            return (doctorAvailabilityBySpecialty[value] || []).map(doctor => ({ ...doctor, specialtyValue:value }));
+          }
+
+          return medicalSpecialties.flatMap(sp => (
+            (doctorAvailabilityBySpecialty[sp.value] || []).map(doctor => ({ ...doctor, specialtyValue:sp.value }))
+          ));
+        }
+
+        function setStep(step){
+          currentStep = step;
+          steps.forEach(s => s.style.display = (parseInt(s.getAttribute("data-step"),10) === step) ? "" : "none");
+          pills.forEach(p => {
+            const n = parseInt(p.getAttribute("data-step-pill"),10);
+            p.classList.remove("active","done");
+            if(n < step) p.classList.add("done");
+            if(n === step) p.classList.add("active");
+          });
+          btnBack.disabled = (step === 1);
+          updateNextState();
+          window.scrollTo({top:0, behavior:"smooth"});
+        }
+
+        function totalSelectedCount(){ return Object.values(selected).reduce((acc, it) => acc + (it.qty || 0), 0); }
+        function categorySelectedCount(catKey){ return Object.values(selected).filter(it => it.catKey === catKey).reduce((acc, it) => acc + (it.qty || 0), 0); }
+        function updateNextState(){
+          if(currentStep === 1){ btnNext.disabled = !selectedPatient; return; }
+          if(currentStep === 2){ btnNext.disabled = totalSelectedCount() <= 0; return; }
+          if(currentStep === 3){ btnNext.disabled = true; return; }
+        }
+
+        function renderPatient(p){
+          pName.textContent = p.name;
+          pPhone.textContent = p.phone;
+          pGender.textContent = p.gender;
+          pAge.textContent = p.age;
+          pIdNumber.textContent = p.idNumber;
+          pRelation.textContent = p.relation;
+          pNationality.textContent = p.nationality;
+          pInsurance.textContent = p.insurance || "—";
+          pPatientId.textContent = p.patientId;
+          patientRating.textContent = p.rating;
+          patientRatingCount.textContent = p.ratingCount;
+          sumPatientName.textContent = p.name;
+          patientInfoWrap.style.display = "";
+        }
+
+        // Patient search
+        btnPatientSearch.addEventListener("click", () => {
+          hideAlert();
+          const raw = (patientSearchInput.value || "").trim();
+          if(!raw){
+            showAlert("Please enter Patient ID.");
+            selectedPatient = null;
+            patientInfoWrap.style.display = "none";
+            updateNextState();
+            return;
+          }
+          const key = raw.toLowerCase();
+          const found = patientDB[key] || patientDB[raw] || patientDB[key.replace(/\s+/g,"")];
+          selectedPatient = found ? found : { ...patientDB["1234567"], patientId: raw };
+          renderPatient(selectedPatient);
+          updateNextState();
+        });
+        patientSearchInput.addEventListener("keydown", (e) => { if(e.key === "Enter") btnPatientSearch.click(); });
+
+        // Categories render
+        function renderCategories(){
+          svcCategories.innerHTML = categories.map(c => {
+            const cnt = categorySelectedCount(c.key);
+            const icon = ICONS[c.key] || "fi fi-rr-grid";
+            return `
+              <div class="cat-item ${c.key === activeCat ? "active" : ""}" data-cat="${c.key}">
+                <div class="cat-left">
+                  <span class="nk-ico"><i class="${icon}"></i></span>
+                  <div class="cat-text">
+                    <p class="cat-name">${c.name}</p>
+                    <p class="cat-sub">${c.sub}</p>
+                  </div>
+                </div>
+                <span class="nk-count">${cnt}</span>
+              </div>
+            `;
+          }).join("");
+
+          svcCategories.querySelectorAll(".cat-item").forEach(item => {
+            item.addEventListener("click", () => {
+              activeCat = item.getAttribute("data-cat");
+              renderCategories();
+              renderServicePanel();
+            });
+          });
+        }
+
+        function upsertSelected(catKey, svcId, svcName, qty, detail, optionValue, extra){
+          if(qty <= 0) delete selected[svcId];
+          else selected[svcId] = { catKey, id: svcId, name: svcName, qty: qty, detail: detail || "", optionValue: optionValue || "", ...(extra || {}) };
+
+          renderSelectedSummary();
+          renderCategories();
+          renderServicePanelCounts();
+          updateNextState();
+        }
+
+        function renderServicePanelCounts(){
+          svcPanelCount.textContent = String(categorySelectedCount(activeCat));
+          selectedCountChip.textContent = "Selected: " + totalSelectedCount();
+        }
+
+        function renderDoctorPicker(svc, specialtyValue, existing){
+          if(!specialtyValue) return "";
+          const doctors = getDoctorsForSpecialty(specialtyValue);
+          const specialty = specialtyLabel(specialtyValue);
+          if(!doctors.length){
+            return `<div class="nk-doctors-wrap"><p class="nk-help m-0">No BMC Hospital doctors available for ${specialty}.</p></div>`;
+          }
+
+          return `
+            <div class="nk-doctors-wrap">
+              <div class="nk-doctors-head">
+                <h5 class="nk-doctors-title">BMC Hospital Doctors</h5>
+                <span class="nk-badge">${specialty}</span>
+              </div>
+              ${doctors.map(doctor => `
+                <div class="nk-doctor-card">
+                  <div class="nk-doctor-top">
+                    <div>
+                      <p class="nk-doctor-name">${doctor.name}</p>
+                      <p class="nk-doctor-meta">${doctor.title}</p>
+                      <p class="nk-doctor-meta">${doctor.experience} - ${doctor.language} - Rating ${doctor.rating}</p>
+                    </div>
+                    <div>
+                      <span class="nk-doctor-facility"><i class="fi fi-rr-hospital"></i>${doctor.facility}</span>
+                      <p class="nk-doctor-meta" style="text-align:end;">Price / ${doctor.price} SAR</p>
+                    </div>
+                  </div>
+                  <div class="nk-slot-row">
+                    <span class="nk-slot-label">Available times</span>
+                    ${doctor.slots.map(time => {
+                      const active = existing?.doctorId === doctor.id && existing?.time === time ? "active" : "";
+                      return `<button class="nk-slot-btn ${active}" type="button" data-action="select-doctor-slot" data-svc="${svc.id}" data-specialty="${doctor.specialtyValue}" data-doctor="${doctor.id}" data-time="${time}">${time}</button>`;
+                    }).join("")}
+                  </div>
+                </div>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        function renderDoctorService(svc, existing){
+          const selectedValue = activeDoctorFilters[svc.id] || "all";
+          const doctors = getDoctorsForSpecialty(selectedValue);
+          const specialty = specialtyLabel(selectedValue);
+          return `
+            <div class="nk-doctor-service" data-svc="${svc.id}">
+              <div class="nk-svc-row">
+                <div class="left">
+                  <span class="nk-ico"><i class="${SVC_ICONS[svc.id] || ICONS[activeCat] || "fi fi-rr-grid"}"></i></span>
+                  <div class="svc-text">
+                    <p class="svc-name">${svcName(svc)}</p>
+                    <p class="svc-sub">Filter BMC Hospital doctors by specialty</p>
+                  </div>
+                </div>
+              </div>
+              <div class="nk-specialty-select-wrap">
+                <select class="nk-specialty-select" data-action="filter-specialty-select" data-svc="${svc.id}" aria-label="Specialty filter">
+                  <option value="all" ${selectedValue === "all" ? "selected" : ""}>All Specialties</option>
+                  ${medicalSpecialties.map(opt => `
+                    <option value="${opt.value}" ${opt.value === selectedValue ? "selected" : ""}>${opt.code}</option>
+                  `).join("")}
+                </select>
+              </div>
+              <div class="nk-doctors-wrap compact">
+                <div class="nk-doctors-head">
+                  <h5 class="nk-doctors-title">BMC Hospital Doctors</h5>
+                  <span class="nk-badge">${specialty}</span>
+                </div>
+                <div class="nk-doctor-grid">
+                  ${doctors.map(doctor => `
+                    <div class="nk-doctor-card compact">
+                      <div class="nk-doctor-top">
+                        <div>
+                          <p class="nk-doctor-name">${doctor.name}</p>
+                          <p class="nk-doctor-meta">${doctor.title}</p>
+                          <p class="nk-doctor-meta">${doctor.experience} - ${doctor.language} - Rating ${doctor.rating}</p>
+                        </div>
+                        <div>
+                          <span class="nk-doctor-facility"><i class="fi fi-rr-hospital"></i>${doctor.facility}</span>
+                          <p class="nk-doctor-meta" style="text-align:end;">${doctor.price} SAR</p>
+                        </div>
+                      </div>
+                      <div class="nk-slot-row">
+                        <span class="nk-slot-label">Available times</span>
+                        ${doctor.slots.map(time => {
+                          const active = existing?.doctorId === doctor.id && existing?.time === time ? "active" : "";
+                          return `<button class="nk-slot-btn ${active}" type="button" data-action="select-doctor-slot" data-svc="${svc.id}" data-specialty="${doctor.specialtyValue}" data-doctor="${doctor.id}" data-time="${time}">${time}</button>`;
+                        }).join("")}
+                      </div>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        function renderProviderCards(providers, selectedPackageId, selectedPackageName){
+          return `
+            <div class="nk-doctors-wrap compact">
+              <div class="nk-doctors-head">
+                <h5 class="nk-doctors-title">BMC Hospital Providers</h5>
+                <span class="nk-badge">${selectedPackageName}</span>
+              </div>
+              <div class="nk-doctor-grid">
+                ${providers.map(provider => `
+                  <div class="nk-doctor-card compact">
+                    <div class="nk-doctor-top">
+                      <div>
+                        <p class="nk-doctor-name">${provider.name}</p>
+                        <p class="nk-doctor-meta">${provider.title}</p>
+                        <p class="nk-doctor-meta">${provider.experience} - ${provider.language} - Rating ${provider.rating}</p>
+                      </div>
+                      <div>
+                        <span class="nk-doctor-facility"><i class="fi fi-rr-hospital"></i>${provider.facility}</span>
+                        <p class="nk-doctor-meta" style="text-align:end;">${provider.price} SAR</p>
+                      </div>
+                    </div>
+                    <div class="nk-slot-row">
+                      <span class="nk-slot-label">Available times</span>
+                      ${provider.slots.map(time => `<button class="nk-slot-btn" type="button" data-action="select-caregiver-slot" data-package="${selectedPackageId}" data-provider="${provider.id}" data-time="${time}">${time}</button>`).join("")}
+                    </div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          `;
+        }
+
+        function renderCaregiverService(list){
+          const activePackageId = activePackageTabs.caregiver || list[0]?.id;
+          const activePackage = list.find(item => item.id === activePackageId) || list[0];
+          const providers = caregiverProvidersByPackage[activePackage?.id] || [];
+          return `
+            <div>
+              <div class="nk-tab-row">
+                ${list.map(pkg => `
+                  <button class="nk-tab-btn ${pkg.id === activePackage?.id ? "active" : ""}" type="button" data-action="select-package-tab" data-tab-group="caregiver" data-package="${pkg.id}">
+                    ${svcName(pkg)}
+                  </button>
+                `).join("")}
+              </div>
+              ${activePackage ? renderProviderCards(providers, activePackage.id, svcName(activePackage)) : ""}
+            </div>
+          `;
+        }
+
+        function renderPackageCards(list, catKey){
+          return `
+            <div class="nk-package-grid">
+              ${list.map(svc => {
+                const selectedItem = selected[svc.id];
+                const packages = svc.packages || [];
+                return `
+                  <div class="nk-package-card ${selectedItem ? "active" : ""}" data-package-card="${svc.id}">
+                    <div class="nk-package-head">
+                      <div>
+                        <p class="nk-package-name">${svcName(svc)}</p>
+                        <p class="nk-package-meta">${svcMeta(svc, "Package")}</p>
+                      </div>
+                      <button class="nk-info-btn" type="button" data-action="open-package-details" data-title="${escapeAttr(svcName(svc))}" data-subtitle="Package Details" data-detail="${escapeAttr(packageDetailText(svc))}" data-tests="${escapeAttr(packageTests(svc).join("|"))}">
+                        <i class="fi fi-rr-info"></i>
+                      </button>
+                    </div>
+                    ${packageTests(svc).length ? `
+                      <ul class="nk-package-tests">
+                        ${packageTests(svc).map(test => `<li>${test}</li>`).join("")}
+                      </ul>
+                    ` : `
+                      <p class="nk-package-meta">${svcMeta(svc, "Package")}</p>
+                    `}
+                    ${packages.length ? `
+                      <div class="nk-package-actions">
+                        ${packages.map(pkg => `
+                          <button class="nk-cart-btn" type="button" data-action="select-followup-package" data-svc="${svc.id}" data-package="${pkg.value}" title="${pkg.label}">
+                            <i class="fi fi-rr-shopping-cart"></i>
+                          </button>
+                        `).join("")}
+                      </div>
+                    ` : `
+                      <div class="nk-package-actions">
+                        <button class="nk-cart-btn ${selectedItem ? "active" : ""}" type="button" data-action="add-package-to-cart" data-svc="${svc.id}" data-cat="${catKey}" title="Add to cart">
+                          <i class="fi fi-rr-shopping-cart"></i>
+                        </button>
+                      </div>
+                    `}
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+        }
+
+        function renderServiceTabs(group, activeTab, tabs){
+          return `
+            <div class="nk-tab-row">
+              ${tabs.map(tab => `
+                <button class="nk-tab-btn ${activeTab === tab.value ? "active" : ""}" type="button" data-action="select-service-tab" data-tab-group="${group}" data-tab="${tab.value}">
+                  ${tab.label}
+                </button>
+              `).join("")}
+            </div>
+          `;
+        }
+
+        function renderLabService(list){
+          const activeTab = activePackageTabs.lab || "packages";
+          const packages = list.filter(svc => svc.type === "package");
+          const tests = list.filter(svc => svc.type === "lab_test");
+          return `
+            <div>
+              ${renderServiceTabs("lab", activeTab, [{value:"packages", label:"Packages"}, {value:"tests", label:"Lab Tests"}])}
+              ${renderPackageCards(activeTab === "tests" ? tests : packages, "lab")}
+            </div>
+          `;
+        }
+
+        function renderRemoteFollowupService(list){
+          const followupTypes = list;
+          const activeType = activePackageTabs.remoteType || "";
+          const activeSvc = followupTypes.find(item => item.id === activeType);
+          const remoteIcons = {
+            fu_blood_sugar: "fi fi-rr-syringe",
+            fu_blood_pressure: "fi fi-rr-heart-rate",
+            fu_diet: "fi fi-rr-scale",
+            fu_activity: "fi fi-rr-running"
+          };
+          return `
+            <div>
+              <div class="nk-package-grid">
+                ${followupTypes.map(svc => `
+                  <div class="nk-package-card nk-remote-type-card ${svc.id === activeType ? "active" : ""}" data-package-card="${svc.id}" data-action="select-remote-type" data-svc="${svc.id}">
+                    <div class="nk-remote-type-icon">
+                      <i class="${remoteIcons[svc.id] || "fi fi-rr-heart-rate"}"></i>
+                    </div>
+                    <p class="nk-package-name">${svcName(svc)}</p>
+                    <p class="nk-package-meta">${followupMeta(svc)}</p>
+                  </div>
+                `).join("")}
+              </div>
+              ${activeSvc ? `
+                <div class="nk-tab-row mt-16">
+                  <button class="nk-tab-btn active" type="button">${svcName(activeSvc)} Packages</button>
+                </div>
+                <div class="nk-package-grid">
+                  ${(activeSvc.packages || []).map(pkg => {
+                    const selectedItem = selected[activeSvc.id]?.optionValue === pkg.value;
+                    return `
+                      <div class="nk-package-card ${selectedItem ? "active" : ""}">
+                        <div class="nk-package-head">
+                          <div>
+                            ${pkg.tag ? `<span class="nk-plan-tag">${pkg.tag}</span>` : ""}
+                            <p class="nk-package-name">${pkg.label}</p>
+                            <p class="nk-package-meta">${svcName(activeSvc)}</p>
+                          </div>
+                          <button class="nk-info-btn" type="button" data-action="open-package-details" data-title="${escapeAttr(pkg.label)}" data-subtitle="${escapeAttr(svcName(activeSvc))}" data-detail="${escapeAttr(packageDetailText(activeSvc, pkg))}" data-tests="${escapeAttr(packageTests(activeSvc, pkg).join("|"))}">
+                            <i class="fi fi-rr-info"></i>
+                          </button>
+                        </div>
+                        <ul class="nk-package-tests">
+                          ${packageTests(activeSvc, pkg).map(test => `<li>${test}</li>`).join("")}
+                        </ul>
+                        <div class="nk-package-actions">
+                          <button class="nk-cart-btn ${selectedItem ? "active" : ""}" type="button" data-action="select-followup-package" data-svc="${activeSvc.id}" data-package="${pkg.value}" title="Add to cart">
+                            <i class="fi fi-rr-shopping-cart"></i>
+                          </button>
+                        </div>
+                      </div>
+                    `;
+                  }).join("")}
+                </div>
+              ` : `<div class="nk-service-empty mt-16">Select follow-up type to view packages.</div>`}
+            </div>
+          `;
+        }
+
+        function renderPharmacyService(records, products){
+          const activeTab = activePackageTabs.pharmacy || "medicines";
+          const recordHtml = records.map(svc => `
+            <div class="nk-record-section">
+              <div class="nk-record-head">
+                <h5 class="nk-record-title">${svcMeta(svc)}</h5>
+                <span class="nk-badge"><i class="fi fi-rr-document"></i>${svcName(svc)}</span>
+              </div>
+              <div class="nk-record-card" data-record="${svc.id}">
+                <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+                  <div>
+                    <p class="svc-name">${svcName(svc)}</p>
+                    <p class="svc-sub">${svcMeta(svc)}</p>
+                  </div>
+                  <span class="nk-chip">View Details</span>
+                </div>
+                <div class="nk-record-detail">
+                  <div class="nk-record-grid">
+                    ${svc.details.map(([label, value]) => `
+                      <div class="nk-field">
+                        <p class="k">${label}</p>
+                        <p class="v">${value}</p>
+                      </div>
+                    `).join("")}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join("");
+
+          const productsHtml = `
+            <div class="nk-product-grid">
+              ${products.map(svc => {
+                const qty = selected[svc.id]?.qty || 0;
+                return `
+                  <div class="nk-product-card" data-product="${svc.id}">
+                    <div class="nk-product-img">
+                      <img src="${svc.image}" alt="${svcName(svc)}" />
+                    </div>
+                    <div>
+                      <p class="nk-product-sub">${svcMeta(svc)}</p>
+                      <p class="nk-product-name">${svcName(svc)}</p>
+                    </div>
+                    <div class="nk-product-foot">
+                      <span class="nk-product-price">${svc.price}</span>
+                      <div class="nk-qty">
+                        <button class="btn-qty" type="button" data-action="dec-product">-</button>
+                        <span class="val" data-product-qty>${qty}</span>
+                        <button class="btn-qty" type="button" data-action="inc-product">+</button>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          `;
+
+          return `
+            <div>
+              <div class="nk-pharmacy-tabs">
+                <button class="nk-tab-btn ${activeTab === "medicines" ? "active" : ""}" type="button" data-action="select-pharmacy-tab" data-tab="medicines">Medicines</button>
+                <button class="nk-tab-btn ${activeTab === "records" ? "active" : ""}" type="button" data-action="select-pharmacy-tab" data-tab="records">My Prescription Records</button>
+              </div>
+              ${activeTab === "records" ? recordHtml : productsHtml}
+            </div>
+          `;
+        }
+        function renderServicePanel(){
+          const cat = categories.find(x => x.key === activeCat);
+          svcPanelTitle.textContent = cat ? cat.name : "Services";
+
+          const list = servicesByCat[activeCat] || [];
+          const records = list.filter(svc => svc.type === "record");
+          const products = list.filter(svc => svc.type === "product");
+
+          if(activeCat === "caregiver"){
+            svcList.innerHTML = renderCaregiverService(list);
+          } else if(activeCat === "pharmacy"){
+            svcList.innerHTML = renderPharmacyService(records, products);
+          } else if(activeCat === "lab"){
+            svcList.innerHTML = renderLabService(list);
+          } else if(activeCat === "remote"){
+            svcList.innerHTML = renderRemoteFollowupService(list);
+          } else if(activeCat === "physio"){
+            svcList.innerHTML = renderPackageCards(list, activeCat);
+          } else {
+            const rowsHtml = list.map(svc => {
+              const existing = selected[svc.id];
+              const qty = existing ? existing.qty : 0;
+              const icon = SVC_ICONS[svc.id] || ICONS[activeCat] || "fi fi-rr-grid";
+
+              if(svc.type === "select") return renderDoctorService(svc, existing);
+
+              const checked = qty > 0 ? "checked" : "";
+              return `
+                <div class="nk-svc-row" data-svc="${svc.id}">
+                  <div class="left">
+                    <span class="nk-ico"><i class="${icon}"></i></span>
+                    <div class="svc-text">
+                      <p class="svc-name">${svcName(svc)}</p>
+                      <p class="svc-sub">${svcMeta(svc, cat?.name)}</p>
+                    </div>
+                  </div>
+                  <div class="right d-flex align-items-center gap-2">
+                    <input class="nk-check" type="checkbox" ${checked} data-action="toggle" />
+                  </div>
+                </div>
+              `;
+            }).join("");
+            svcList.innerHTML = rowsHtml;
+          }
+
+          svcList.querySelectorAll('[data-action="filter-specialty-select"]').forEach(select => {
+            select.addEventListener("change", () => {
+              const svcId = select.getAttribute("data-svc");
+              activeDoctorFilters[svcId] = select.value || "all";
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-package-tab"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const group = btn.getAttribute("data-tab-group");
+              activePackageTabs[group] = btn.getAttribute("data-package");
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-pharmacy-tab"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              activePackageTabs.pharmacy = btn.getAttribute("data-tab") || "medicines";
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-service-tab"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const group = btn.getAttribute("data-tab-group");
+              activePackageTabs[group] = btn.getAttribute("data-tab");
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-remote-type"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              activePackageTabs.remoteType = btn.getAttribute("data-svc") || "";
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="open-package-details"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              openPackageDetails(
+                btn.getAttribute("data-title"),
+                btn.getAttribute("data-subtitle"),
+                btn.getAttribute("data-detail"),
+                (btn.getAttribute("data-tests") || "").split("|").filter(Boolean)
+              );
+            });
+          });
+
+          svcList.querySelectorAll('input[data-action="toggle"]').forEach(cb => {
+            cb.addEventListener("change", () => {
+              const row = cb.closest("[data-svc]");
+              const svcId = row?.getAttribute("data-svc");
+              const svc = list.find(x => x.id === svcId);
+              if(!svc) return;
+              upsertSelected(activeCat, svcId, svcName(svc), cb.checked ? 1 : 0, svcMeta(svc));
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-card-package"], [data-action="add-package-to-cart"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const svcId = btn.getAttribute("data-svc");
+              const svc = list.find(x => x.id === svcId);
+              if(!svc) return;
+              upsertSelected(activeCat, svcId, svcName(svc), 1, svcMeta(svc), svcId);
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-followup-package"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const svcId = btn.getAttribute("data-svc");
+              const packageValue = btn.getAttribute("data-package");
+              const svc = list.find(x => x.id === svcId);
+              const pkg = svc?.packages?.find(item => item.value === packageValue);
+              if(!svc || !pkg) return;
+              upsertSelected(activeCat, svcId, `${svcName(svc)} - ${pkg.label}`, 1, pkg.detail, packageValue);
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll("[data-product]").forEach(card => {
+            const svcId = card.getAttribute("data-product");
+            const svc = products.find(x => x.id === svcId);
+            if(!svc) return;
+            card.querySelectorAll("[data-action]").forEach(btn => {
+              btn.addEventListener("click", () => {
+                const action = btn.getAttribute("data-action");
+                const currentQty = selected[svcId]?.qty || 0;
+                const nextQty = action === "inc-product" ? currentQty + 1 : Math.max(0, currentQty - 1);
+                upsertSelected(activeCat, svcId, svcName(svc), nextQty, svcMeta(svc));
+                const qtyEl = card.querySelector("[data-product-qty]");
+                if(qtyEl) qtyEl.textContent = String(nextQty);
+              });
+            });
+          });
+
+          svcList.querySelectorAll("[data-record]").forEach(card => {
+            card.addEventListener("click", () => card.classList.toggle("open"));
+          });
+
+          svcList.querySelectorAll('[data-action="select-doctor-slot"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const svcId = btn.getAttribute("data-svc");
+              const svc = list.find(x => x.id === svcId);
+              const specialtyValue = btn.getAttribute("data-specialty") || activeDoctorFilters[svcId] || "all";
+              const doctorId = btn.getAttribute("data-doctor");
+              const time = btn.getAttribute("data-time");
+              const doctor = (doctorAvailabilityBySpecialty[specialtyValue] || []).find(item => item.id === doctorId);
+              if(!svc || !doctor) return;
+              upsertSelected(activeCat, svcId, `${svcName(svc)} - ${specialtyLabel(specialtyValue)}`, 1, `${doctor.name} - ${time}`, specialtyValue, { doctorId: doctor.id, doctorName: doctor.name, time });
+              renderServicePanel();
+            });
+          });
+
+          svcList.querySelectorAll('[data-action="select-caregiver-slot"]').forEach(btn => {
+            btn.addEventListener("click", () => {
+              const packageId = btn.getAttribute("data-package");
+              const providerId = btn.getAttribute("data-provider");
+              const time = btn.getAttribute("data-time");
+              const pkg = list.find(x => x.id === packageId);
+              const provider = (caregiverProvidersByPackage[packageId] || []).find(item => item.id === providerId);
+              if(!pkg || !provider) return;
+              upsertSelected(activeCat, packageId, `${svcName(pkg)} - ${provider.name}`, 1, `${provider.title} - ${time}`, packageId, { providerId: provider.id, providerName: provider.name, time });
+              renderServicePanel();
+            });
+          });
+
+          renderServicePanelCounts();
+        }
+function renderSelectedSummary(){
+          const items = Object.values(selected);
+          const total = totalSelectedCount();
+          sumTitle.textContent = `Selected Services (${total})`;
+
+          if(items.length === 0){
+            selectedList.innerHTML = "";
+            emptySelected.style.display = "";
+            return;
+          }
+          emptySelected.style.display = "none";
+
+          selectedList.innerHTML = items.map(it => {
+            const cat = categories.find(c => c.key === it.catKey);
+            const catName = cat ? cat.name : "Service";
+            return `
+              <li>
+                <div class="li-left">
+                  <p class="li-name">${it.name}</p>
+                  <p class="li-sub">${it.detail ? `${catName} - ${it.detail}` : catName}</p>
+                </div>
+                <div class="li-right">
+                  <span class="nk-chip">Qty: ${it.qty}</span>
+                  <button class="nk-remove" type="button" title="Remove" data-remove="${it.id}">
+                    <i class="fi fi-rr-trash"></i>
+                  </button>
+                </div>
+              </li>
+            `;
+          }).join("");
+
+          selectedList.querySelectorAll("[data-remove]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              const id = btn.getAttribute("data-remove");
+              delete selected[id];
+              renderSelectedSummary();
+              renderCategories();
+              renderServicePanel();
+              updateNextState();
+            });
+          });
+        }
+
+        function renderConfirm(){
+          if(!selectedPatient) return;
+
+          cName.textContent = selectedPatient.name;
+          cPid.textContent = selectedPatient.patientId;
+          cPhone.textContent = selectedPatient.phone;
+          cGA.textContent = `${selectedPatient.gender} / ${selectedPatient.age}`;
+          cNat.textContent = selectedPatient.nationality;
+          cIdNo.textContent = selectedPatient.idNumber;
+          cRating.textContent = selectedPatient.rating;
+          cRatingCount.textContent = selectedPatient.ratingCount;
+
+          const items = Object.values(selected);
+          const total = totalSelectedCount();
+          cServicesTitle.textContent = `Selected Services (${total})`;
+          cTotalChip.textContent = `Total: ${total}`;
+
+          confirmMini.textContent = `${selectedPatient.name} • ${total} service(s)`;
+
+          if(items.length === 0){
+            confirmList.innerHTML = "";
+            confirmEmpty.style.display = "";
+            return;
+          }
+          confirmEmpty.style.display = "none";
+
+          confirmList.innerHTML = items.map(it => {
+            const cat = categories.find(c => c.key === it.catKey);
+            const catName = cat ? cat.name : "Service";
+            return `
+              <li>
+                <div class="li-left">
+                  <p class="li-name">${it.name}</p>
+                  <p class="li-sub">${it.detail ? `${catName} - ${it.detail}` : catName}</p>
+                </div>
+                <div class="li-right">
+                  <span class="nk-chip">Qty: ${it.qty}</span>
+                </div>
+              </li>
+            `;
+          }).join("");
+        }
+
+        // Navigation
+        btnBack.addEventListener("click", () => { hideAlert(); if(currentStep > 1) setStep(currentStep - 1); });
+
+        btnNext.addEventListener("click", () => {
+          hideAlert();
+          if(currentStep === 1){
+            if(!selectedPatient){ showAlert("Please search and select a patient first."); return; }
+            setStep(2);
+            return;
+          }
+          if(currentStep === 2){
+            if(totalSelectedCount() <= 0){ showAlert("Please select at least one service before continuing."); return; }
+            renderConfirm();
+            setStep(3);
+            return;
+          }
+        });
+
+        btnConfirmCreate.addEventListener("click", () => {
+          // redirect to correct list page
+          window.location.href = "orders-list.html";
+        });
+
+        // Init
+        renderCategories();
+        renderServicePanel();
+        renderSelectedSummary();
+        setStep(1);
+      })();
+    </script>
+  </body>
+</html>

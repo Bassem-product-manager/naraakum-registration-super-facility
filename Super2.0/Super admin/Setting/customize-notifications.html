@@ -1,0 +1,627 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Customize Notifications</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-primary: #0f8c8c;
+        --nk-primary-soft: rgba(15, 140, 140, 0.08);
+        --nk-border: #e4eaef;
+        --nk-muted: #667085;
+        --nk-text: #101828;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .custom-page {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nk-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .intro-card,
+      .custom-grid,
+      .editor-card,
+      .preview-card {
+        padding: 12px;
+      }
+
+      .intro-card h3 {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .intro-card p {
+        margin: 6px 0 0;
+        color: var(--nk-muted);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .back-link {
+        margin-top: 10px;
+        display: inline-flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.06);
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .back-link:hover {
+        color: #0b6f6f;
+        text-decoration: none;
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .custom-grid {
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 14px;
+        padding: 0;
+        border: 0;
+        background: transparent;
+      }
+
+      .sidebar-card {
+        padding: 12px;
+      }
+
+      .side-head {
+        margin-bottom: 10px;
+      }
+
+      .side-head h4,
+      .editor-head h4,
+      .preview-head h4 {
+        margin: 0;
+        color: var(--nk-text);
+        font-size: 15px;
+        font-weight: 900;
+      }
+
+      .side-head p,
+      .editor-head p,
+      .preview-head p {
+        margin: 3px 0 0;
+        color: var(--nk-muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .control-row {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .control-row label {
+        color: #344054;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .control-select,
+      .control-input,
+      .control-textarea {
+        width: 100%;
+        border: 1px solid #d7e0e7;
+        border-radius: 10px;
+        background: #fff;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 700;
+        padding: 0 10px;
+      }
+
+      .control-select,
+      .control-input {
+        height: 36px;
+      }
+
+      .control-textarea {
+        min-height: 110px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        resize: vertical;
+      }
+
+      .control-select:focus,
+      .control-input:focus,
+      .control-textarea:focus {
+        outline: none;
+        border-color: var(--nk-primary);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+
+      .event-list {
+        margin-top: 12px;
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        max-height: 460px;
+        overflow-y: auto;
+      }
+
+      .event-group {
+        border-bottom: 1px solid #edf2f6;
+      }
+
+      .event-group:last-child {
+        border-bottom: 0;
+      }
+
+      .event-group-title {
+        margin: 0;
+        padding: 8px 10px;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+        background: #f8fafc;
+      }
+
+      .event-item {
+        width: 100%;
+        border: 0;
+        border-top: 1px solid #f2f4f7;
+        background: #fff;
+        text-align: left;
+        padding: 8px 10px;
+        color: #475467;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .event-item:first-of-type {
+        border-top: 0;
+      }
+
+      .event-item.active {
+        background: #eef9f9;
+        color: #0b6f6f;
+      }
+
+      .editor-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .editor-card,
+      .preview-card,
+      .sidebar-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 14px;
+        background: #fff;
+      }
+
+      .segment-tabs {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .segment-tab {
+        height: 32px;
+        padding: 0 10px;
+        border: 1px solid #d7e0e7;
+        border-radius: 10px;
+        background: #fff;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .segment-tab.active {
+        border-color: var(--nk-primary);
+        background: var(--nk-primary-soft);
+        color: #0b6f6f;
+      }
+
+      .editor-form {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .editor-form .full {
+        grid-column: 1 / -1;
+      }
+
+      .placeholder-box {
+        margin-top: 12px;
+        border: 1px solid #dbe7ec;
+        border-radius: 10px;
+        background: #f9fcfd;
+        padding: 10px;
+      }
+
+      .placeholder-title {
+        margin: 0;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .placeholder-list {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .placeholder-btn {
+        height: 28px;
+        padding: 0 8px;
+        border: 1px solid #cddce4;
+        border-radius: 999px;
+        background: #fff;
+        color: #475467;
+        font-size: 11px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .placeholder-btn:hover {
+        border-color: rgba(15, 140, 140, 0.45);
+        background: #f2fbfb;
+        color: #0b6f6f;
+      }
+
+      .warn-note {
+        margin-top: 10px;
+        display: none;
+        border: 1px solid #fecd89;
+        border-radius: 10px;
+        background: #fffaeb;
+        color: #b54708;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .warn-note.show {
+        display: block;
+      }
+
+      .editor-actions {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .nk-btn {
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nk-btn-solid {
+        color: #fff;
+        border-color: var(--nk-primary);
+        background: var(--nk-primary);
+      }
+
+      .nk-btn-solid:hover {
+        border-color: #0b6f6f;
+        background: #0b6f6f;
+      }
+
+      .nk-btn-outline {
+        color: #0b6f6f;
+        border-color: rgba(15, 140, 140, 0.3);
+        background: #fff;
+      }
+
+      .nk-btn-outline:hover {
+        background: var(--nk-primary-soft);
+      }
+
+      .status-note {
+        margin-top: 8px;
+        display: none;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .status-note.show {
+        display: block;
+      }
+
+      .status-success {
+        border: 1px solid #abefc6;
+        background: #ecfdf3;
+        color: #067647;
+      }
+
+      .status-error {
+        border: 1px solid #fecdca;
+        background: #fef3f2;
+        color: #b42318;
+      }
+
+      .preview-grid {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .preview-tile {
+        border: 1px solid #dbe7ec;
+        border-radius: 12px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .preview-tile h5 {
+        margin: 0;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .preview-field {
+        margin-top: 8px;
+      }
+
+      .preview-field .label {
+        color: #98a2b3;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .preview-field .value {
+        margin-top: 2px;
+        color: var(--nk-text);
+        font-size: 13px;
+        font-weight: 800;
+        white-space: pre-wrap;
+        line-height: 1.45;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-primary);
+        font-size: 11px;
+        font-weight: 900;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      @media (max-width: 1200px) {
+        .custom-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .event-list {
+          max-height: 240px;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .editor-form,
+        .preview-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Customize Notifications</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Super Admin</b><p class="fsize-12 text-grey">Admin / System Dashboard</p></div></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="./Notifications.html">Notifications</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Customize</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content custom-page">
+          <section class="nk-card intro-card">
+            <h3>Notification Template Builder</h3>
+            <p>Customize each notification for In-App and Email in EN and AR.</p>
+          </section>
+
+          <section class="custom-grid">
+            <aside class="sidebar-card">
+              <div class="side-head">
+                <h4>Event Navigator</h4>
+                <p>Select module and event to edit templates.</p>
+              </div>
+
+              <div class="control-row">
+                <label for="moduleSelect">Module</label>
+                <select id="moduleSelect" class="control-select"></select>
+              </div>
+
+              <div class="control-row" style="margin-top:10px">
+                <label>Event</label>
+                <div class="fsize-12 text-grey">Select an event from the list below.</div>
+              </div>
+
+              <div id="groupedEventList" class="event-list"></div>
+            </aside>
+
+            <div class="editor-wrap">
+              <section class="editor-card">
+                <div class="editor-head">
+                  <h4 id="editorEventTitle">Template Editor</h4>
+                  <p>Change the message content and save.</p>
+                </div>
+
+                <div class="segment-tabs" id="channelTabs">
+                  <button type="button" class="segment-tab active" data-channel="in_app">In-App</button>
+                  <button type="button" class="segment-tab" data-channel="email">Email</button>
+                </div>
+
+                <div class="segment-tabs" id="localeTabs">
+                  <button type="button" class="segment-tab active" data-locale="en">EN</button>
+                  <button type="button" class="segment-tab" data-locale="ar">AR</button>
+                </div>
+
+                <form class="editor-form" id="templateForm" novalidate>
+                  <div class="full" id="templateSubjectRow" style="display:none">
+                    <label for="templateSubject" class="fsize-12 semiBold mb-1">Email Subject</label>
+                    <input id="templateSubject" class="control-input" type="text" placeholder="Email subject" />
+                  </div>
+
+                  <div class="full">
+                    <label for="templateTitle" class="fsize-12 semiBold mb-1">Title</label>
+                    <input id="templateTitle" class="control-input" type="text" placeholder="Notification title" />
+                  </div>
+
+                  <div class="full">
+                    <label for="templateBody" class="fsize-12 semiBold mb-1">Body</label>
+                    <textarea id="templateBody" class="control-textarea" placeholder="Notification body"></textarea>
+                  </div>
+
+                  <div class="full">
+                    <label for="templateActionLabel" class="fsize-12 semiBold mb-1">Action Label</label>
+                    <input id="templateActionLabel" class="control-input" type="text" placeholder="Action button label" />
+                  </div>
+                </form>
+
+                <div class="placeholder-box">
+                  <p class="placeholder-title">Placeholders</p>
+                  <div id="placeholderList" class="placeholder-list"></div>
+                  <div id="unknownPlaceholderNote" class="warn-note"></div>
+                </div>
+
+                <div class="editor-actions">
+                  <button id="btnSaveTemplate" type="button" class="nk-btn nk-btn-solid">Save Template</button>
+                  <button id="btnResetTemplate" type="button" class="nk-btn nk-btn-outline">Reset This Template</button>
+                </div>
+
+                <div id="templateStatusNote" class="status-note"></div>
+              </section>
+
+              <section class="preview-card">
+                <div class="preview-head">
+                  <h4>Live Preview</h4>
+                  <p>Rendered output with sample data for placeholders.</p>
+                </div>
+
+                <div class="preview-grid">
+                  <article class="preview-tile">
+                    <h5>In-App Preview</h5>
+                    <div class="preview-field"><div class="label">Title</div><div id="previewInAppTitle" class="value">-</div></div>
+                    <div class="preview-field"><div class="label">Body</div><div id="previewInAppBody" class="value">-</div></div>
+                    <div class="preview-field"><div class="label">Action</div><div id="previewInAppAction" class="value">-</div></div>
+                  </article>
+
+                  <article class="preview-tile">
+                    <h5>Email Preview</h5>
+                    <div class="preview-field"><div class="label">Subject</div><div id="previewEmailSubject" class="value">-</div></div>
+                    <div class="preview-field"><div class="label">Title</div><div id="previewEmailTitle" class="value">-</div></div>
+                    <div class="preview-field"><div class="label">Body</div><div id="previewEmailBody" class="value">-</div></div>
+                    <div class="preview-field"><div class="label">Action</div><div id="previewEmailAction" class="value">-</div></div>
+                  </article>
+                </div>
+              </section>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/notification-rules.js"></script>
+    <script src="../assets/js/setting-customize-notifications.js"></script>
+  </body>
+</html>
+

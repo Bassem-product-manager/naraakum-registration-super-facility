@@ -1,0 +1,944 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Facilities Calendar</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .ksa-clock .time {
+        letter-spacing: 0.2px;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open {
+        transform: translateX(0);
+      }
+
+      .side-menu-list li.is-open > .sub-list {
+        display: block;
+      }
+
+      .side-menu-list li > .sub-list {
+        display: none;
+      }
+
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down {
+        transform: rotate(180deg);
+      }
+
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, 0.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .nk-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .nk-search {
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+      }
+
+      .nk-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #98a2b3;
+      }
+
+      .nk-search input {
+        padding-left: 42px;
+      }
+
+      .nk-count-line {
+        margin-top: 10px;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .table-wrap {
+        border: 1px solid #eef1f4;
+        border-radius: 14px;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      table.nk-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      table.nk-table thead th {
+        background: rgba(15, 140, 140, 0.95);
+        color: #fff;
+        font-weight: 900;
+        font-size: 13px;
+        padding: 14px 12px;
+        white-space: nowrap;
+        border: none;
+        vertical-align: middle;
+      }
+
+      table.nk-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #eef2f6;
+        font-size: 13px;
+        vertical-align: middle;
+        color: #101828;
+        font-weight: 700;
+      }
+
+      table.nk-table tbody tr:hover td {
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      table.nk-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .facility-cell {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 250px;
+      }
+
+      .facility-avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: #fff;
+        object-fit: contain;
+        padding: 6px;
+        flex: 0 0 42px;
+      }
+
+      .facility-title {
+        margin: 0;
+        font-weight: 900;
+        font-size: 14px;
+        line-height: 1.1;
+      }
+
+      .facility-sub {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .count-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 56px;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .link-details {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 32px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 12px;
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .link-details:hover {
+        background: rgba(15, 140, 140, 0.12);
+      }
+
+      .nk-filter-modal .modal-content {
+        border-radius: 14px;
+        overflow: hidden;
+        border: none;
+      }
+
+      .nk-filter-modal .nk-modal-top {
+        background: #eaf6f5;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+      }
+
+      .nk-filter-modal .nk-modal-title {
+        font-weight: 900;
+        font-size: 16px;
+        color: rgba(0, 0, 0, 0.75);
+      }
+
+      .nk-filter-modal .nk-modal-x {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 18px;
+        opacity: 0.85;
+        color: #000;
+      }
+
+      .nk-filter-modal .nk-modal-x:hover {
+        background: rgba(15, 140, 140, 0.06);
+        border-color: rgba(15, 140, 140, 0.25);
+        opacity: 1;
+      }
+
+      .nk-filter-modal .modal-body {
+        padding: 16px;
+      }
+
+      .nk-filter-modal .modal-footer {
+        padding: 14px 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .mono {
+        font-variant-numeric: tabular-nums;
+      }
+
+      @media (max-width: 1200px) {
+        .table-wrap {
+          overflow-x: auto;
+        }
+
+        table.nk-table {
+          min-width: 1080px;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-calendar">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Facilities Calendar</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Calendars</li>
+              <li class="breadcrumb-item active" aria-current="page">Facilities Calendar</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="surface-light-50 p-16 radius-12">
+            <div class="nk-toolbar">
+              <div class="nk-search">
+                <i class="fi fi-rr-search"></i>
+                <input id="qSearch" type="text" class="form-control form-control-40" placeholder="Search by facility name / code / city / timezone" />
+              </div>
+
+              <div class="d-flex align-items-center gap-2">
+                <button id="btnResetFilters" class="btn btn-primary-revers btn-40" type="button">
+                  <i class="fi fi-rr-rotate-right"></i><span>Reset</span>
+                </button>
+                <button id="btnShowFilters" class="btn btn-primary btn-40" type="button" data-bs-toggle="modal" data-bs-target="#modalFilterFacilities">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="nk-count-line">
+              Showing <span id="countLabel" class="mono">0</span> of <span id="totalLabel" class="mono">0</span> facilities
+            </div>
+
+            <div class="mt-16 table-wrap">
+              <table class="nk-table">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width:60px;">#</th>
+                    <th style="min-width:260px;">Facility</th>
+                    <th class="text-center" style="width:120px;">Staff Count</th>
+                    <th class="text-center" style="width:130px;">Branches Count</th>
+                    <th style="width:140px;">Primary City</th>
+                    <th style="width:170px;">Timezone</th>
+                    <th style="width:170px;">Last Calendar Update</th>
+                    <th class="text-center" style="width:150px;">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyFacilities"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade nk-filter-modal" id="modalFilterFacilities" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
+        <div class="modal-content">
+          <div class="nk-modal-top">
+            <div class="nk-modal-title">Filter Facilities Calendar</div>
+            <button type="button" class="nk-modal-x" data-bs-dismiss="modal" aria-label="Close">X</button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">City</label>
+                <select class="form-select form-control-40" id="cityFilter"></select>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Timezone</label>
+                <select class="form-select form-control-40" id="tzFilter"></select>
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Min Branches</label>
+                <input type="number" min="0" id="branchMin" class="form-control form-control-40" placeholder="0" />
+              </div>
+              <div class="col-6">
+                <label class="form-label">Max Branches</label>
+                <input type="number" min="0" id="branchMax" class="form-control form-control-40" placeholder="Any" />
+              </div>
+
+              <div class="col-6">
+                <label class="form-label">Min Staff</label>
+                <input type="number" min="0" id="staffMin" class="form-control form-control-40" placeholder="0" />
+              </div>
+              <div class="col-6">
+                <label class="form-label">Max Staff</label>
+                <input type="number" min="0" id="staffMax" class="form-control form-control-40" placeholder="Any" />
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-light btn-40" type="button" data-bs-dismiss="modal">Close</button>
+            <button class="btn btn-primary btn-40" type="button" id="btnApplyFilters">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        const el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            const fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () {
+          aside.classList.toggle("is-open");
+        });
+
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () {
+            li.classList.toggle("is-open");
+          });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function () {
+        const STORAGE_KEY = "naraakum_facility_calendars_v2";
+        const LEGACY_KEY = "naraakum_branches";
+        const DEFAULT_TZ = "(GMT+03:00) Riyadh";
+
+        const qSearch = document.getElementById("qSearch");
+        const tbody = document.getElementById("tbodyFacilities");
+        const countLabel = document.getElementById("countLabel");
+        const totalLabel = document.getElementById("totalLabel");
+
+        const cityFilter = document.getElementById("cityFilter");
+        const tzFilter = document.getElementById("tzFilter");
+        const branchMin = document.getElementById("branchMin");
+        const branchMax = document.getElementById("branchMax");
+        const staffMin = document.getElementById("staffMin");
+        const staffMax = document.getElementById("staffMax");
+
+        const btnApply = document.getElementById("btnApplyFilters");
+        const btnReset = document.getElementById("btnResetFilters");
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function formatDateTime(iso) {
+          if (!iso) return "-";
+          const d = new Date(iso);
+          if (Number.isNaN(d.getTime())) return "-";
+          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const yyyy = d.getFullYear();
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mi = String(d.getMinutes()).padStart(2, "0");
+          return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + mi;
+        }
+
+        function esc(v) {
+          return (v || "")
+            .toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function normalize(v) {
+          return (v || "").toString().trim().toLowerCase();
+        }
+
+        function scheduleTemplate(timezone) {
+          const days = {
+            monday: { enabled: true, from: "08:00", to: "16:00" },
+            tuesday: { enabled: true, from: "08:00", to: "16:00" },
+            wednesday: { enabled: true, from: "08:00", to: "16:00" },
+            thursday: { enabled: true, from: "08:00", to: "16:00" },
+            friday: { enabled: false, from: "08:00", to: "16:00" },
+            saturday: { enabled: false, from: "08:00", to: "16:00" },
+            sunday: { enabled: true, from: "09:00", to: "15:00" },
+          };
+          return { timezone: timezone || DEFAULT_TZ, days: days, exceptions: "" };
+        }
+
+        function makeStaff(id, name, role, specialty, status) {
+          return {
+            id: id,
+            name: name,
+            role: role,
+            specialty: specialty,
+            status: status || "Active",
+            updatedAt: nowIso(),
+            schedule: scheduleTemplate(DEFAULT_TZ),
+          };
+        }
+
+        function makeBranch(id, name, city, managerPhone, timezone, staff, isMain) {
+          return {
+            id: id,
+            name: name,
+            city: city,
+            managerPhone: managerPhone,
+            timezone: timezone || DEFAULT_TZ,
+            isMain: Boolean(isMain),
+            updatedAt: nowIso(),
+            schedule: scheduleTemplate(timezone || DEFAULT_TZ),
+            staff: staff,
+          };
+        }
+
+        function defaultFacilities() {
+          return [
+            {
+              id: "FAC-1",
+              code: "FC-00001",
+              name: "BMC Hospital",
+              logo: "../assets/images/logo.svg",
+              city: "Riyadh",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-001", "Main Branch", "Riyadh", "+966 50 110 1001", DEFAULT_TZ, [
+                  makeStaff("ST-101", "Dr. Ahmed Saleh", "Doctor", "Internal Medicine", "Active"),
+                  makeStaff("ST-102", "Dr. Laila Omar", "Doctor", "Cardiology", "Active"),
+                  makeStaff("ST-103", "Nurse Mariam Ali", "Nurse", "Emergency Care", "Active"),
+                ], true),
+                makeBranch("BR-002", "North Branch", "Riyadh", "+966 50 110 1002", DEFAULT_TZ, [
+                  makeStaff("ST-104", "Dr. Rami Nasser", "Doctor", "General Surgery", "Active"),
+                  makeStaff("ST-105", "Nurse Huda Salem", "Nurse", "Outpatient Care", "Active"),
+                ], false),
+              ],
+            },
+            {
+              id: "FAC-2",
+              code: "FC-00002",
+              name: "Al Noor Medical Center",
+              logo: "../assets/images/logo.svg",
+              city: "Jeddah",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-101", "Main Branch", "Jeddah", "+966 50 210 2001", DEFAULT_TZ, [
+                  makeStaff("ST-201", "Dr. Noura Fahad", "Doctor", "Family Medicine", "Active"),
+                  makeStaff("ST-202", "Dr. Yasser Adel", "Doctor", "Dermatology", "Active"),
+                ], true),
+                makeBranch("BR-102", "West Branch", "Jeddah", "+966 50 210 2002", DEFAULT_TZ, [
+                  makeStaff("ST-203", "Nurse Rana Ibrahim", "Nurse", "Chronic Care", "Active"),
+                  makeStaff("ST-204", "Dr. Sami Khaled", "Doctor", "Pediatrics", "Active"),
+                  makeStaff("ST-205", "Nurse Mona Saeed", "Nurse", "Vaccination", "Active"),
+                ], false),
+              ],
+            },
+            {
+              id: "FAC-3",
+              code: "FC-00003",
+              name: "Green Valley Clinic",
+              logo: "../assets/images/logo.svg",
+              city: "Dammam",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-201", "Main Branch", "Dammam", "+966 50 310 3001", DEFAULT_TZ, [
+                  makeStaff("ST-301", "Dr. Basel Karim", "Doctor", "Primary Care", "Active"),
+                  makeStaff("ST-302", "Nurse Salma Tariq", "Nurse", "Triage", "Active"),
+                ], true),
+              ],
+            },
+            {
+              id: "FAC-4",
+              code: "FC-00004",
+              name: "Future Care Hospital",
+              logo: "../assets/images/logo.svg",
+              city: "Khobar",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-301", "Main Branch", "Khobar", "+966 50 410 4001", DEFAULT_TZ, [
+                  makeStaff("ST-401", "Dr. Lina Majed", "Doctor", "Neurology", "Active"),
+                  makeStaff("ST-402", "Dr. Imad Hassan", "Doctor", "Orthopedics", "Active"),
+                  makeStaff("ST-403", "Nurse Amal Yusuf", "Nurse", "Inpatient Care", "Active"),
+                ], true),
+                makeBranch("BR-302", "South Branch", "Khobar", "+966 50 410 4002", DEFAULT_TZ, [
+                  makeStaff("ST-404", "Nurse Maha Omar", "Nurse", "Rehabilitation", "Active"),
+                ], false),
+                makeBranch("BR-303", "East Branch", "Khobar", "+966 50 410 4003", DEFAULT_TZ, [
+                  makeStaff("ST-405", "Dr. Fares Adel", "Doctor", "ENT", "Active"),
+                  makeStaff("ST-406", "Nurse Heba Ali", "Nurse", "Procedure Room", "Active"),
+                ], false),
+              ],
+            },
+          ];
+        }
+        function migrateLegacyIfNeeded() {
+          const legacyRaw = localStorage.getItem(LEGACY_KEY);
+          if (!legacyRaw) return null;
+
+          try {
+            const legacy = JSON.parse(legacyRaw);
+            if (!Array.isArray(legacy) || !legacy.length) return null;
+
+            const convertedBranches = legacy.map(function (b, idx) {
+              const branchId = (b.id || "BR-" + String(idx + 1).padStart(3, "0")).toString();
+              const branchName = (b.name || "Branch " + (idx + 1)).toString();
+              const branchCity = (b.city || "Riyadh").toString();
+              const timezone = (b.timezone || DEFAULT_TZ).toString();
+              const managerPhone = (b.phone || "+966 50 000 0000").toString();
+
+              return makeBranch(
+                branchId,
+                branchName,
+                branchCity,
+                managerPhone,
+                timezone,
+                [
+                  makeStaff("ST-L" + idx + "1", "Dr. Legacy One", "Doctor", "General Medicine", "Active"),
+                  makeStaff("ST-L" + idx + "2", "Nurse Legacy Two", "Nurse", "Routine Care", "Active"),
+                ],
+                idx === 0
+              );
+            });
+
+            const migrated = defaultFacilities();
+            migrated[0].branches = convertedBranches;
+            migrated[0].city = convertedBranches[0] ? convertedBranches[0].city : migrated[0].city;
+            migrated[0].timezone = convertedBranches[0] ? convertedBranches[0].timezone : migrated[0].timezone;
+            migrated[0].updatedAt = nowIso();
+            return migrated;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function loadFacilities() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) {}
+          }
+
+          const migrated = migrateLegacyIfNeeded();
+          const data = migrated || defaultFacilities();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          return data;
+        }
+
+        function saveFacilities(data) {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function branchCount(facility) {
+          return Array.isArray(facility.branches) ? facility.branches.length : 0;
+        }
+
+        function staffCount(facility) {
+          return (facility.branches || []).reduce(function (total, branch) {
+            return total + ((branch.staff || []).length || 0);
+          }, 0);
+        }
+
+        function primaryBranch(facility) {
+          const list = facility.branches || [];
+          return list.find(function (b) { return b.isMain; }) || list[0] || null;
+        }
+
+        function primaryCity(facility) {
+          const main = primaryBranch(facility);
+          return (main && main.city) || facility.city || "-";
+        }
+
+        function primaryTimezone(facility) {
+          const main = primaryBranch(facility);
+          return (main && main.timezone) || facility.timezone || DEFAULT_TZ;
+        }
+
+        function matchesSearch(facility, q) {
+          if (!q) return true;
+          const hay = normalize([
+            facility.name,
+            facility.code,
+            primaryCity(facility),
+            primaryTimezone(facility),
+          ].join(" "));
+          return hay.includes(q);
+        }
+
+        function numOrNull(v) {
+          if (v === "" || v === null || typeof v === "undefined") return null;
+          const n = Number(v);
+          return Number.isFinite(n) ? n : null;
+        }
+
+        function matchesFilters(facility) {
+          const selectedCity = cityFilter.value || "All";
+          const selectedTz = tzFilter.value || "All";
+
+          const bMin = numOrNull(branchMin.value);
+          const bMax = numOrNull(branchMax.value);
+          const sMin = numOrNull(staffMin.value);
+          const sMax = numOrNull(staffMax.value);
+
+          const branchTotal = branchCount(facility);
+          const staffTotal = staffCount(facility);
+          const city = primaryCity(facility);
+          const timezone = primaryTimezone(facility);
+
+          if (selectedCity !== "All" && city !== selectedCity) return false;
+          if (selectedTz !== "All" && timezone !== selectedTz) return false;
+
+          if (bMin !== null && branchTotal < bMin) return false;
+          if (bMax !== null && branchTotal > bMax) return false;
+          if (sMin !== null && staffTotal < sMin) return false;
+          if (sMax !== null && staffTotal > sMax) return false;
+
+          return true;
+        }
+
+        function fillFilterOptions(allFacilities) {
+          const cities = Array.from(new Set(allFacilities.map(primaryCity).filter(Boolean))).sort();
+          const tzList = Array.from(new Set(allFacilities.map(primaryTimezone).filter(Boolean))).sort();
+
+          cityFilter.innerHTML = ["<option value=\"All\">All Cities</option>"].concat(
+            cities.map(function (city) { return "<option value=\"" + esc(city) + "\">" + esc(city) + "</option>"; })
+          ).join("");
+
+          tzFilter.innerHTML = ["<option value=\"All\">All Timezones</option>"].concat(
+            tzList.map(function (tz) { return "<option value=\"" + esc(tz) + "\">" + esc(tz) + "</option>"; })
+          ).join("");
+        }
+
+        function rowTemplate(facility, idx) {
+          const sCount = staffCount(facility);
+          const bCount = branchCount(facility);
+          const code = facility.code || "-";
+          const city = primaryCity(facility);
+          const timezone = primaryTimezone(facility);
+
+          return ""
+            + "<tr>"
+            + "<td class=\"text-center mono\">" + (idx + 1) + "</td>"
+            + "<td>"
+            + "  <div class=\"facility-cell\">"
+            + "    <img class=\"facility-avatar\" src=\"" + esc(facility.logo || "../assets/images/logo.svg") + "\" alt=\"Facility Logo\" />"
+            + "    <div>"
+            + "      <p class=\"facility-title\">" + esc(facility.name || "-") + "</p>"
+            + "      <p class=\"facility-sub\">" + esc(code) + "</p>"
+            + "    </div>"
+            + "  </div>"
+            + "</td>"
+            + "<td class=\"text-center\"><span class=\"count-pill mono\">" + sCount + "</span></td>"
+            + "<td class=\"text-center\"><span class=\"count-pill mono\">" + bCount + "</span></td>"
+            + "<td>" + esc(city) + "</td>"
+            + "<td>" + esc(timezone) + "</td>"
+            + "<td class=\"mono\">" + esc(formatDateTime(facility.updatedAt)) + "</td>"
+            + "<td class=\"text-center\">"
+            + "  <a class=\"link-details\" data-facility-code=\"" + esc(code) + "\" href=\"../Calander/facilites-calander-details.html?facility=" + encodeURIComponent(code) + "&context=main\">"
+            + "    <i class=\"fi fi-rr-calendar\"></i><span>Edit Calendar</span>"
+            + "  </a>"
+            + "</td>"
+            + "</tr>";
+        }
+
+        function render() {
+          const allFacilities = loadFacilities();
+          const q = normalize(qSearch.value);
+
+          const filtered = allFacilities.filter(function (facility) {
+            return matchesSearch(facility, q) && matchesFilters(facility);
+          });
+
+          totalLabel.textContent = String(allFacilities.length);
+          countLabel.textContent = String(filtered.length);
+
+          tbody.innerHTML = filtered.map(rowTemplate).join("");
+
+          if (!filtered.length) {
+            tbody.innerHTML = ""
+              + "<tr>"
+              + "<td colspan=\"8\" class=\"text-center text-grey\" style=\"padding:26px;\">No facilities found.</td>"
+              + "</tr>";
+          }
+
+          document.querySelectorAll("a[data-facility-code]").forEach(function (link) {
+            link.addEventListener("click", function () {
+              const code = (link.getAttribute("data-facility-code") || "").toUpperCase();
+              if (code) sessionStorage.setItem("lastFacilityCalendarCode", code);
+            });
+          });
+        }
+
+        qSearch.addEventListener("input", render);
+
+        btnApply.addEventListener("click", function () {
+          render();
+          const modal = bootstrap.Modal.getInstance(document.getElementById("modalFilterFacilities"));
+          if (modal) modal.hide();
+        });
+
+        btnReset.addEventListener("click", function () {
+          qSearch.value = "";
+          cityFilter.value = "All";
+          tzFilter.value = "All";
+          branchMin.value = "";
+          branchMax.value = "";
+          staffMin.value = "";
+          staffMax.value = "";
+          render();
+        });
+
+        const seeded = loadFacilities();
+        saveFacilities(seeded);
+        fillFilterOptions(seeded);
+        render();
+      })();
+    </script>
+  </body>
+</html>
+
+
+

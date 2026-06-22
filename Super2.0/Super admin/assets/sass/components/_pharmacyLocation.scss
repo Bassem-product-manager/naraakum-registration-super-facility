@@ -1,0 +1,39 @@
+.pharmacy-Location-container {
+  display: flex;
+  flex-direction: column;
+  height: 26rem;
+  border-radius: $value-12;
+  overflow: hidden;
+  width: 100%;
+
+  .location-map {
+    flex-grow: 1;
+    width: 100%;
+  }
+
+  .location-header {
+    padding: 1rem;
+    position: relative;
+  }
+  .location-control {
+    padding: 1rem;
+    position: relative;
+    background-color: #fff;
+    #location-info {
+      padding: 0px 0px $value-12 0px;
+    }
+  }
+}
+
+/*/ view map autocompate list*/
+
+.pac-container {
+  background-color: #fff;
+  z-index: 2050;
+  position: fixed;
+  float: left;
+  font-size: 2rem !important;
+
+  box-shadow: 0rem 0.1875rem 0.9375rem rgba(0, 0, 0, 8%);
+  padding: 0.9375rem;
+}

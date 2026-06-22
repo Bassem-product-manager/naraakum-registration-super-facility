@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | API Management</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root {
+        --api-brand: #0f8c8c;
+        --api-brand-dark: #0b6f6f;
+        --api-brand-soft: rgba(15, 140, 140, 0.12);
+        --api-border: rgba(16, 24, 40, 0.12);
+        --api-text: #101828;
+        --api-muted: #667085;
+        --api-shadow: 0 10px 28px rgba(16, 24, 40, 0.06);
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        color: var(--api-text);
+      }
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .ksa-clock .tz {
+        color: var(--api-brand);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+      .api-intro h3 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 900;
+      }
+      .api-intro p {
+        margin: 6px 0 12px;
+        font-size: 13px;
+        color: var(--api-muted);
+      }
+      .api-toolbar {
+        border: 1px solid var(--api-border);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: var(--api-shadow);
+        padding: 12px;
+        margin-bottom: 14px;
+      }
+      .search-input {
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--api-border);
+        font-size: 13px;
+      }
+      .search-input:focus {
+        border-color: var(--api-brand);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.16);
+      }
+      .api-buttons {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+      .btn-api-outline {
+        border: 1px solid var(--api-brand) !important;
+        color: var(--api-brand) !important;
+        background: #fff !important;
+      }
+      .btn-api-outline:hover,
+      .btn-api-outline:focus {
+        background: var(--api-brand-soft) !important;
+      }
+      .feedback {
+        display: none;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .feedback.show {
+        display: block;
+      }
+      .feedback.info {
+        background: #eff8ff;
+        border: 1px solid #b2ddff;
+        color: #175cd3;
+      }
+      .feedback.success {
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #027a48;
+      }
+      .feedback.error {
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+      .api-table-card {
+        border: 1px solid var(--api-border);
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: var(--api-shadow);
+      }
+      .api-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+      .api-table thead th {
+        background: #1f8f8b;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 800;
+        padding: 12px;
+        white-space: nowrap;
+      }
+      .api-table thead th:first-child {
+        border-top-left-radius: 14px;
+      }
+      .api-table thead th:last-child {
+        border-top-right-radius: 14px;
+      }
+      .api-table tbody td {
+        padding: 12px;
+        border-bottom: 1px solid #eef1f6;
+        font-size: 13px;
+        vertical-align: middle;
+      }
+      .api-table tbody tr:hover {
+        background: #f7fbfb;
+      }
+      .provider-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 220px;
+      }
+      .provider-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.14);
+        color: var(--api-brand-dark);
+        font-size: 12px;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .provider-name {
+        margin: 0;
+        font-weight: 900;
+      }
+      .provider-code {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: var(--api-muted);
+        font-weight: 700;
+      }
+      .base-url {
+        max-width: 240px;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: #344054;
+        font-weight: 700;
+      }
+      .pill,
+      .badge-api {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        border: 1px solid transparent;
+      }
+      .type-shipping {
+        background: rgba(41, 112, 255, 0.1);
+        color: #155eef;
+        border-color: rgba(41, 112, 255, 0.2);
+      }
+      .type-payments {
+        background: rgba(2, 122, 72, 0.1);
+        color: #027a48;
+        border-color: rgba(2, 122, 72, 0.2);
+      }
+      .type-messaging {
+        background: rgba(105, 65, 198, 0.1);
+        color: #6941c6;
+        border-color: rgba(105, 65, 198, 0.2);
+      }
+      .type-lab {
+        background: rgba(180, 35, 24, 0.1);
+        color: #b42318;
+        border-color: rgba(180, 35, 24, 0.2);
+      }
+      .type-other {
+        background: rgba(16, 24, 40, 0.08);
+        color: #344054;
+        border-color: rgba(16, 24, 40, 0.14);
+      }
+      .env-production {
+        background: #ecfdf3;
+        color: #027a48;
+        border-color: #abefc6;
+      }
+      .env-sandbox {
+        background: #fffaeb;
+        color: #b54708;
+        border-color: #fedf89;
+      }
+      .st-active {
+        background: #ecfdf3;
+        color: #027a48;
+        border-color: #abefc6;
+      }
+      .st-inactive {
+        background: rgba(16, 24, 40, 0.08);
+        color: #475467;
+        border-color: rgba(16, 24, 40, 0.14);
+      }
+      .api-toggle .form-check-input {
+        cursor: pointer;
+        width: 2.3rem;
+        height: 1.2rem;
+        border-color: rgba(16, 24, 40, 0.22);
+        background-color: #f2f4f7;
+      }
+      .api-toggle .form-check-input:focus {
+        border-color: var(--api-brand);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+      .api-toggle .form-check-input:checked {
+        background-color: var(--api-brand);
+        border-color: var(--api-brand);
+      }
+      .actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+      }
+      .btn-details {
+        height: 32px;
+        border-radius: 9px;
+        border: 1px solid var(--api-brand);
+        background: #fff;
+        color: var(--api-brand);
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 10px;
+      }
+      .btn-details:hover {
+        background: var(--api-brand-soft);
+        color: var(--api-brand-dark);
+      }
+      .api-footer {
+        border-top: 1px solid #eef1f6;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .page-indicator {
+        font-size: 12px;
+        color: var(--api-muted);
+        font-weight: 800;
+      }
+      .pager {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
+      .pager button {
+        min-width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid #d0d5dd;
+        background: #fff;
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .pager button.active {
+        background: var(--api-brand-soft);
+        border-color: rgba(15, 140, 140, 0.3);
+        color: var(--api-brand-dark);
+      }
+      .pager button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .empty-row {
+        text-align: center;
+        color: var(--api-muted);
+        font-weight: 700;
+      }
+      .modal .form-control {
+        height: 38px;
+      }
+      @media (max-width: 1200px) {
+        .api-buttons {
+          justify-content: flex-start;
+        }
+      }
+      @media (max-width: 768px) {
+        .api-footer {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>API Management</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+          </div>
+        </header>
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">API Management</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="page-content">
+          <div class="api-intro">
+            <h3>API Management</h3>
+            <p>Manage external providers and connection settings from one secure control center.</p>
+          </div>
+          <div class="api-toolbar">
+            <div class="row g-3 align-items-center">
+              <div class="col-12 col-xl">
+                <input id="searchInput" type="text" class="form-control search-input" placeholder="Search integration..." />
+              </div>
+              <div class="col-12 col-xl-auto">
+                <div class="api-buttons">
+                  <button class="btn btn-primary btn-icon btn-40" type="button" data-bs-toggle="modal" data-bs-target="#apiFilterModal">
+                    <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                  </button>
+                  <a id="addBtn" href="add-integration.html" class="btn btn-primary btn-icon btn-40">
+                    <i class="fi fi-rr-plus-small"></i><span>Add Integration</span>
+                  </a>
+                  <button id="exportBtn" type="button" class="btn btn-api-outline btn-icon btn-40">
+                    <i class="fi fi-rr-download"></i><span>Export</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="feedback" class="feedback info"></div>
+          <div class="api-table-card">
+            <div class="table-responsive">
+              <table class="api-table">
+                <thead>
+                  <tr>
+                    <th>Provider</th>
+                    <th>Type</th>
+                    <th>Base URL</th>
+                    <th>Auth Method</th>
+                    <th>Environment</th>
+                    <th class="text-center">Active</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+              </table>
+            </div>
+            <div class="api-footer">
+              <div class="page-indicator" id="pageIndicator">Page 1 of 1</div>
+              <div class="pager">
+                <button id="prevBtn" type="button">Prev</button>
+                <div id="pageNumbers" class="d-flex gap-1"></div>
+                <button id="nextBtn" type="button">Next</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="apiFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Integrations</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Type</label>
+                <select id="typeFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="statusFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnFilterApply" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/api-integrations-store.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var store = window.NKApiIntegrationsStore;
+        if (!store) return;
+
+        store.ensureSeedData();
+
+        var state = { q: "", type: "", status: "", page: 1, perPage: 5 };
+        var searchInput = document.getElementById("searchInput");
+        var typeFilter = document.getElementById("typeFilter");
+        var statusFilter = document.getElementById("statusFilter");
+        var tableBody = document.getElementById("tableBody");
+        var pageIndicator = document.getElementById("pageIndicator");
+        var pageNumbers = document.getElementById("pageNumbers");
+        var prevBtn = document.getElementById("prevBtn");
+        var nextBtn = document.getElementById("nextBtn");
+        var exportBtn = document.getElementById("exportBtn");
+        var feedback = document.getElementById("feedback");
+        var filterResetBtn = document.getElementById("btnFilterReset");
+        var filterApplyBtn = document.getElementById("btnFilterApply");
+
+        function norm(v) {
+          return String(v || "")
+            .trim()
+            .toLowerCase();
+        }
+
+        function escapeHtml(value) {
+          return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/\"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        function initials(name) {
+          var parts = String(name || "")
+            .split(" ")
+            .filter(Boolean);
+          if (!parts.length) return "IN";
+          return ((parts[0][0] || "") + ((parts[1] && parts[1][0]) || (parts[0][1] || ""))).toUpperCase();
+        }
+
+        function typeClass(type) {
+          if (type === "Shipping") return "type-shipping";
+          if (type === "Payments") return "type-payments";
+          if (type === "Messaging") return "type-messaging";
+          if (type === "Lab") return "type-lab";
+          return "type-other";
+        }
+
+        function envClass(env) {
+          return env === "Sandbox" ? "env-sandbox" : "env-production";
+        }
+
+        function notify(message, kind) {
+          feedback.textContent = message;
+          feedback.className = "feedback show " + (kind || "info");
+          clearTimeout(notify.timer);
+          notify.timer = setTimeout(function () {
+            feedback.className = "feedback info";
+            feedback.textContent = "";
+          }, 2600);
+        }
+
+        function allRows() {
+          return store.getAll();
+        }
+
+        function syncTypeFilter(rows) {
+          var options = {};
+          rows.forEach(function (row) {
+            var type = String(row.type || "").trim();
+            if (type) options[type] = true;
+          });
+          var values = Object.keys(options).sort();
+          typeFilter.innerHTML = '<option value="">All</option>';
+          values.forEach(function (type) {
+            var option = document.createElement("option");
+            option.value = type;
+            option.textContent = type;
+            typeFilter.appendChild(option);
+          });
+
+          if (state.type && values.indexOf(state.type) !== -1) {
+            typeFilter.value = state.type;
+          } else {
+            state.type = "";
+            typeFilter.value = "";
+          }
+        }
+
+        function filtered(rows) {
+          return rows.filter(function (row) {
+            var haystack = [row.name, row.code, row.baseUrl, row.type, row.authMethod, row.environment, row.status]
+              .join(" ")
+              .toLowerCase();
+            if (state.q && haystack.indexOf(state.q) === -1) return false;
+            if (state.type && row.type !== state.type) return false;
+            if (state.status && row.status !== state.status) return false;
+            return true;
+          });
+        }
+
+        function pagesCount(list) {
+          return Math.max(1, Math.ceil(list.length / state.perPage));
+        }
+
+        function renderPager(totalPages) {
+          pageNumbers.innerHTML = "";
+          for (var i = 1; i <= totalPages; i += 1) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.textContent = String(i);
+            btn.dataset.page = String(i);
+            if (i === state.page) btn.classList.add("active");
+            pageNumbers.appendChild(btn);
+          }
+          prevBtn.disabled = state.page <= 1;
+          nextBtn.disabled = state.page >= totalPages;
+        }
+
+        function render() {
+          var rows = allRows();
+          syncTypeFilter(rows);
+          statusFilter.value = state.status;
+          var list = filtered(rows);
+          var totalPages = pagesCount(list);
+
+          if (state.page > totalPages) state.page = totalPages;
+          var start = (state.page - 1) * state.perPage;
+          var view = list.slice(start, start + state.perPage);
+
+          if (!view.length) {
+            tableBody.innerHTML = '<tr><td colspan="7" class="empty-row">No integrations match your current filters.</td></tr>';
+          } else {
+            tableBody.innerHTML = view
+              .map(function (row) {
+                var checked = row.status === "Active" ? " checked" : "";
+                return (
+                  "<tr>" +
+                  '<td><div class="provider-cell"><div class="provider-avatar">' +
+                  escapeHtml(initials(row.name)) +
+                  '</div><div><p class="provider-name">' +
+                  escapeHtml(row.name) +
+                  '</p><p class="provider-code">' +
+                  escapeHtml(row.code) +
+                  "</p></div></div></td>" +
+                  '<td><span class="badge-api ' +
+                  typeClass(row.type) +
+                  '">' +
+                  escapeHtml(row.type) +
+                  "</span></td>" +
+                  '<td><span class="base-url" title="' +
+                  escapeHtml(row.baseUrl) +
+                  '">' +
+                  escapeHtml(row.baseUrl) +
+                  "</span></td>" +
+                  "<td>" +
+                  escapeHtml(row.authMethod) +
+                  "</td>" +
+                  '<td><span class="pill ' +
+                  envClass(row.environment) +
+                  '">' +
+                  escapeHtml(row.environment) +
+                  "</span></td>" +
+                  '<td class="text-center"><div class="form-check form-switch api-toggle m-0 d-inline-flex"><input class="form-check-input js-active-toggle" type="checkbox" role="switch" data-id="' +
+                  escapeHtml(row.id) +
+                  '"' +
+                  checked +
+                  " /></div></td>" +
+                  '<td class="text-end"><div class="actions"><a class="btn-details" href="api-details.html?id=' +
+                  encodeURIComponent(row.id) +
+                  '">Details</a></div></td>' +
+                  "</tr>"
+                );
+              })
+              .join("");
+          }
+
+          pageIndicator.textContent = "Page " + state.page + " of " + totalPages;
+          renderPager(totalPages);
+        }
+
+        function csvEscape(v) {
+          var s = String(v == null ? "" : v)
+            .replace(/\r?\n/g, " ")
+            .trim();
+          return /[\",]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+        }
+
+        searchInput.addEventListener("input", function () {
+          state.q = norm(searchInput.value);
+          state.page = 1;
+          render();
+        });
+
+        filterApplyBtn.addEventListener("click", function () {
+          state.type = typeFilter.value;
+          state.status = statusFilter.value;
+          state.page = 1;
+          render();
+        });
+
+        filterResetBtn.addEventListener("click", function () {
+          state.type = "";
+          state.status = "";
+          typeFilter.value = "";
+          statusFilter.value = "";
+          state.page = 1;
+          render();
+        });
+
+        prevBtn.addEventListener("click", function () {
+          state.page = Math.max(1, state.page - 1);
+          render();
+        });
+
+        nextBtn.addEventListener("click", function () {
+          state.page += 1;
+          render();
+        });
+
+        pageNumbers.addEventListener("click", function (event) {
+          var target = event.target;
+          if (!(target instanceof HTMLButtonElement)) return;
+          var page = parseInt(target.dataset.page || "1", 10);
+          if (Number.isNaN(page)) return;
+          state.page = page;
+          render();
+        });
+
+        tableBody.addEventListener("change", function (event) {
+          var toggle = event.target.closest(".js-active-toggle");
+          if (!toggle) return;
+
+          var integrationId = toggle.getAttribute("data-id");
+          var shouldBeActive = !!toggle.checked;
+          var result = shouldBeActive ? store.setIntegrationActive(integrationId) : store.setIntegrationInactive(integrationId);
+
+          if (!result || !result.ok) {
+            toggle.checked = !shouldBeActive;
+            notify((result && result.message) || "Unable to update status.", "error");
+            return;
+          }
+
+          notify("Integration status changed to " + result.integration.status + ".", "success");
+          render();
+        });
+
+        exportBtn.addEventListener("click", function () {
+          var list = filtered(allRows());
+          if (!list.length) {
+            notify("No integrations available for export.", "info");
+            return;
+          }
+
+          var headers = ["Provider ID", "Provider Name", "Provider Code", "Type", "Base URL", "Auth Method", "Environment", "Status"];
+          var lines = [headers.map(csvEscape).join(",")];
+
+          list.forEach(function (row) {
+            lines.push([row.id, row.name, row.code, row.type, row.baseUrl, row.authMethod, row.environment, row.status].map(csvEscape).join(","));
+          });
+
+          var csv = "\ufeff" + lines.join("\n");
+          var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          var url = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = url;
+          a.download = "api-integrations-export.csv";
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          URL.revokeObjectURL(url);
+
+          notify("Export completed for " + list.length + " integration(s).", "success");
+        });
+
+        var params = new URLSearchParams(window.location.search);
+        if (params.get("saved") === "1") {
+          var id = params.get("id");
+          notify(id ? "Integration " + id + " added successfully." : "Integration added successfully.", "success");
+        }
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

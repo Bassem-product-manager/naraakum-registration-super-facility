@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Provider Management - Positions</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: .3px;
+        color: #0b6f6f;
+        line-height: 1;
+        margin: 0;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open { transform: translateX(0); }
+      .side-menu-list li.is-open > .sub-list { display: block; }
+      .side-menu-list li > .sub-list { display: none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down { transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, .08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .page-section-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .page-section-title h1 {
+        margin: 0;
+        color: #101828;
+        font-size: 22px;
+        font-weight: 900;
+        line-height: 1.2;
+      }
+
+      .positions-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-size: 13px;
+      }
+
+      .positions-table thead th {
+        font-weight: 900;
+        color: #344054;
+        font-size: 12px;
+        white-space: nowrap;
+        background: #fff;
+        border-bottom: 1px solid rgba(16, 24, 40, .10);
+        padding: 12px;
+        vertical-align: middle;
+      }
+
+      .positions-table tbody td {
+        padding: 12px;
+        vertical-align: middle;
+        border-bottom: 1px solid rgba(16, 24, 40, .08);
+        color: #101828;
+        font-weight: 700;
+      }
+
+      .positions-table tbody tr:hover td {
+        background: rgba(15, 140, 140, .04);
+      }
+
+      .positions-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .positions-table .col-seq { width: 52px; }
+      .positions-table .col-position { min-width: 220px; }
+      .positions-table .col-title { min-width: 220px; }
+      .positions-table .col-doctors { width: 150px; }
+      .positions-table .col-status { width: 150px; }
+      .positions-table .col-actions {
+        width: 120px;
+        text-align: right;
+      }
+
+      .position-name,
+      .title-name {
+        display: block;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+        line-height: 1.2;
+      }
+
+      .position-sub,
+      .title-sub {
+        display: block;
+        margin-top: 3px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #667085;
+      }
+
+      .doctors-count {
+        display: inline-block;
+        min-width: 32px;
+        color: #101828;
+        font-size: 14px;
+        font-weight: 900;
+        text-align: center;
+      }
+
+      .status-toggle {
+        position: relative;
+        width: 48px;
+        height: 26px;
+        border: 0;
+        border-radius: 999px;
+        background: #d0d5dd;
+        padding: 0;
+        transition: background .18s ease;
+      }
+
+      .status-toggle::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, .20);
+        transition: transform .18s ease;
+      }
+
+      .status-toggle.active {
+        background: #12b76a;
+      }
+
+      .status-toggle.active::after {
+        transform: translateX(22px);
+      }
+
+      .pm-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .nk-edit-icon {
+        color: var(--nk-green, #0f8c8c) !important;
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      .edit-position-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 32px;
+        border: 1px solid rgba(15, 140, 140, .18);
+        border-radius: 8px;
+        background: rgba(15, 140, 140, .06);
+      }
+
+      .edit-position-btn:hover {
+        background: rgba(15, 140, 140, .12);
+      }
+
+      .provider-search-bar {
+        border: 1px solid rgba(16, 24, 40, .08);
+        background: #fff !important;
+        box-shadow: 0 8px 20px rgba(16, 24, 40, .04);
+      }
+
+      .provider-search-bar .row {
+        --bs-gutter-x: 12px;
+        --bs-gutter-y: 12px;
+      }
+
+      .provider-search-bar .search-box-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+        min-height: 34px;
+      }
+
+      .provider-search-bar .search-box-group .form-control {
+        flex: 1 1 auto;
+        min-width: 220px;
+        height: 34px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .provider-search-bar .search-box-group .btn,
+      .provider-search-bar .col-auto .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 34px;
+        min-width: 34px;
+        padding: 0 10px;
+        border-radius: 8px;
+        line-height: 1;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+
+      .provider-search-bar .search-box-group .btn i,
+      .provider-search-bar .col-auto .btn i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        line-height: 1;
+      }
+
+      @media (max-width: 992px) {
+        .filter-bar .row {
+          gap: 12px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .provider-search-bar .row > .col,
+        .provider-search-bar .row > .col-auto {
+          width: 100%;
+        }
+
+        .provider-search-bar .col-auto {
+          justify-content: stretch;
+        }
+
+        .provider-search-bar .col-auto .btn {
+          flex: 1 1 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Positions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="page-section-title">
+            <h1>Positions</h1>
+          </div>
+
+          <div class="filter-bar filter-bar--compact-search provider-search-bar surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input id="positionSearchInput" type="text" class="form-control form-control-32" placeholder="Search by position / title / doctors count" />
+                  <button id="btnPositionSearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                  <button id="btnPositionReset" type="button" class="btn btn-primary-revers btn-32" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reset" data-bs-custom-class="custom-tooltip">
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#positionFilterModal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                </button>
+                <a id="btnAddPosition" class="btn btn-primary btn-icon btn-40" href="add-position.html">
+                  <i class="fi fi-rr-plus"></i><span>Add Position</span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-16">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="naraakum-table positions-table" id="positionsTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq text-center">#</th>
+                      <th class="col-position">Position Name</th>
+                      <th class="col-title">Job Title</th>
+                      <th class="col-doctors text-center">Doctors Count</th>
+                      <th class="col-status text-center">Activation</th>
+                      <th class="col-actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="positionsTbody">
+                    <tr data-position="Senior Consultant" data-title="General Practitioner" data-doctors="14" data-status="active">
+                      <td class="text-center seq-cell">1</td>
+                      <td><span class="position-name">Senior Consultant</span></td>
+                      <td><span class="title-name">General Practitioner</span></td>
+                      <td class="text-center"><span class="doctors-count">14</span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-position-btn" type="button" data-edit-position title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-position="Specialist" data-title="Dermatologist" data-doctors="18" data-status="active">
+                      <td class="text-center seq-cell">2</td>
+                      <td><span class="position-name">Specialist</span></td>
+                      <td><span class="title-name">Dermatologist</span></td>
+                      <td class="text-center"><span class="doctors-count">18</span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-position-btn" type="button" data-edit-position title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-position="Home Visit Lead" data-title="Home Care Nurse" data-doctors="7" data-status="inactive">
+                      <td class="text-center seq-cell">3</td>
+                      <td><span class="position-name">Home Visit Lead</span></td>
+                      <td><span class="title-name">Home Care Nurse</span></td>
+                      <td class="text-center"><span class="doctors-count">7</span></td>
+                      <td class="text-center"><button class="status-toggle" type="button" data-toggle-status aria-label="Inactive"></button></td>
+                      <td><div class="pm-actions"><button class="edit-position-btn" type="button" data-edit-position title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                    <tr data-position="Consultant" data-title="Nutrition Consultant" data-doctors="12" data-status="active">
+                      <td class="text-center seq-cell">4</td>
+                      <td><span class="position-name">Consultant</span></td>
+                      <td><span class="title-name">Nutrition Consultant</span></td>
+                      <td class="text-center"><span class="doctors-count">12</span></td>
+                      <td class="text-center"><button class="status-toggle active" type="button" data-toggle-status aria-label="Active"></button></td>
+                      <td><div class="pm-actions"><button class="edit-position-btn" type="button" data-edit-position title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div id="positionEmptyState" class="empty-row d-none">No positions found for current search/filter.</div>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="positionsRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+                  <div class="page-indicator" id="positionsPageIndicator">Page 1 of 1</div>
+                  <div class="pager">
+                    <button class="pg-btn" id="positionsFirstPage" type="button" aria-label="First"><i class="fi fi-rr-angle-double-small-left"></i></button>
+                    <button class="pg-btn" id="positionsPrevPage" type="button" aria-label="Previous"><i class="fi fi-rr-angle-small-left"></i></button>
+                    <span class="pg-current" id="positionsCurrentPageBadge">1</span>
+                    <button class="pg-btn" id="positionsNextPage" type="button" aria-label="Next"><i class="fi fi-rr-angle-small-right"></i></button>
+                    <button class="pg-btn" id="positionsLastPage" type="button" aria-label="Last"><i class="fi fi-rr-angle-double-small-right"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="positionFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Positions</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Job Title</label>
+                <select id="positionTitleFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="General Practitioner">General Practitioner</option>
+                  <option value="Dermatologist">Dermatologist</option>
+                  <option value="Home Care Nurse">Home Care Nurse</option>
+                  <option value="Nutrition Consultant">Nutrition Consultant</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="positionStatusFilter" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="active">Active</option>
+                  <option value="inactive">Inactive</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnPositionFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnPositionApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="positionFormModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="positionFormTitle">Edit Position</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="positionForm">
+              <input type="hidden" id="positionEditingIndex" value="" />
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Position Name</label>
+                  <input id="editPositionName" type="text" class="form-control form-control-32" placeholder="Example: Senior Consultant" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Job Title</label>
+                  <select id="editPositionTitle" class="form-control form-control-32" required>
+                    <option value="General Practitioner">General Practitioner</option>
+                    <option value="Dermatologist">Dermatologist</option>
+                    <option value="Home Care Nurse">Home Care Nurse</option>
+                    <option value="Nutrition Consultant">Nutrition Consultant</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="fsize-12 text-grey">Activation</label>
+                  <select id="editPositionStatus" class="form-control form-control-32">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSavePosition" type="submit" form="positionForm" class="btn btn-primary">Save Position</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () { aside.classList.toggle("is-open"); });
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () { li.classList.toggle("is-open"); });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function () {
+        const tbody = document.getElementById("positionsTbody");
+        if (!tbody) return;
+
+        const searchInput = document.getElementById("positionSearchInput");
+        const btnSearch = document.getElementById("btnPositionSearch");
+        const btnReset = document.getElementById("btnPositionReset");
+        const titleFilter = document.getElementById("positionTitleFilter");
+        const statusFilter = document.getElementById("positionStatusFilter");
+        const btnApplyFilter = document.getElementById("btnPositionApplyFilter");
+        const btnFilterReset = document.getElementById("btnPositionFilterReset");
+        const rowsSelect = document.getElementById("positionsRowsPerPage");
+        const indicator = document.getElementById("positionsPageIndicator");
+        const currentBadge = document.getElementById("positionsCurrentPageBadge");
+        const emptyState = document.getElementById("positionEmptyState");
+        const btnFirst = document.getElementById("positionsFirstPage");
+        const btnPrev = document.getElementById("positionsPrevPage");
+        const btnNext = document.getElementById("positionsNextPage");
+        const btnLast = document.getElementById("positionsLastPage");
+        const form = document.getElementById("positionForm");
+        const editingIndex = document.getElementById("positionEditingIndex");
+        const positionName = document.getElementById("editPositionName");
+        const positionTitle = document.getElementById("editPositionTitle");
+        const positionStatus = document.getElementById("editPositionStatus");
+
+        let currentPage = 1;
+        let rowsFiltered = [];
+
+        function norm(value) {
+          return (value || "").toString().trim().toLowerCase();
+        }
+
+        function rowsAll() {
+          return Array.from(tbody.querySelectorAll("tr"));
+        }
+
+        function getRowData(tr) {
+          return {
+            position: norm(tr.getAttribute("data-position")),
+            title: norm(tr.getAttribute("data-title")),
+            doctors: norm(tr.getAttribute("data-doctors")),
+            status: norm(tr.getAttribute("data-status"))
+          };
+        }
+
+        function matchesSearch(tr) {
+          const q = norm(searchInput && searchInput.value);
+          if (!q) return true;
+          const d = getRowData(tr);
+          return d.position.includes(q) || d.title.includes(q) || d.doctors.includes(q) || d.status.includes(q);
+        }
+
+        function matchesFilters(tr) {
+          const d = getRowData(tr);
+          const title = norm(titleFilter && titleFilter.value);
+          const status = norm(statusFilter && statusFilter.value);
+          if (title && d.title !== title) return false;
+          if (status && d.status !== status) return false;
+          return true;
+        }
+
+        function perPageVal() {
+          if (!rowsSelect) return rowsFiltered.length || 1;
+          return rowsSelect.value === "all" ? rowsFiltered.length || 1 : parseInt(rowsSelect.value, 10) || 10;
+        }
+
+        function totalPages() {
+          return Math.max(1, Math.ceil(rowsFiltered.length / perPageVal()));
+        }
+
+        function render() {
+          const all = rowsAll();
+          all.forEach(function (tr) { tr.classList.add("d-none"); });
+
+          const pages = totalPages();
+          if (currentPage > pages) currentPage = pages;
+          if (currentPage < 1) currentPage = 1;
+
+          if (rowsSelect && rowsSelect.value === "all") {
+            rowsFiltered.forEach(function (tr) { tr.classList.remove("d-none"); });
+          } else {
+            const start = (currentPage - 1) * perPageVal();
+            rowsFiltered.slice(start, start + perPageVal()).forEach(function (tr) { tr.classList.remove("d-none"); });
+          }
+
+          const visibleRows = all.filter(function (tr) { return !tr.classList.contains("d-none"); });
+          visibleRows.forEach(function (tr, index) {
+            const cell = tr.querySelector(".seq-cell");
+            if (cell) cell.textContent = String(index + 1);
+          });
+
+          if (emptyState) emptyState.classList.toggle("d-none", rowsFiltered.length > 0);
+          if (indicator) indicator.textContent = "Page " + currentPage + " of " + pages;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = (rowsSelect && rowsSelect.value === "all") || pages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === pages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === pages;
+        }
+
+        function applyAll() {
+          rowsFiltered = rowsAll().filter(function (tr) { return matchesSearch(tr) && matchesFilters(tr); });
+          currentPage = 1;
+          render();
+        }
+
+        function escapeHtml(value) {
+          return (value || "").toString().replace(/[&<>"']/g, function (char) {
+            return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char];
+          });
+        }
+
+        function setRowValues(tr, values) {
+          tr.setAttribute("data-position", values.position);
+          tr.setAttribute("data-title", values.title);
+          tr.setAttribute("data-doctors", String(values.doctors));
+          tr.setAttribute("data-status", values.status);
+          tr.innerHTML = [
+            '<td class="text-center seq-cell">1</td>',
+            '<td><span class="position-name">' + escapeHtml(values.position) + '</span></td>',
+            '<td><span class="title-name">' + escapeHtml(values.title) + '</span></td>',
+            '<td class="text-center"><span class="doctors-count">' + escapeHtml(values.doctors) + '</span></td>',
+            '<td class="text-center"><button class="status-toggle ' + (values.status === "active" ? "active" : "") + '" type="button" data-toggle-status aria-label="' + (values.status === "active" ? "Active" : "Inactive") + '"></button></td>',
+            '<td><div class="pm-actions"><button class="edit-position-btn" type="button" data-edit-position title="Edit"><i class="fi fi-rr-edit nk-edit-icon"></i></button></div></td>'
+          ].join("");
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", applyAll);
+        if (searchInput) searchInput.addEventListener("input", applyAll);
+        if (rowsSelect) rowsSelect.addEventListener("change", function () { currentPage = 1; render(); });
+        if (btnFirst) btnFirst.addEventListener("click", function () { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", function () { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", function () { currentPage = Math.min(totalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", function () { currentPage = totalPages(); render(); });
+
+        if (btnReset) btnReset.addEventListener("click", function () {
+          if (searchInput) searchInput.value = "";
+          if (titleFilter) titleFilter.value = "";
+          if (statusFilter) statusFilter.value = "";
+          applyAll();
+        });
+
+        if (btnApplyFilter) btnApplyFilter.addEventListener("click", function () {
+          applyAll();
+          const modalEl = document.getElementById("positionFilterModal");
+          if (modalEl && window.bootstrap) {
+            (bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)).hide();
+          }
+        });
+
+        if (btnFilterReset) btnFilterReset.addEventListener("click", function () {
+          if (titleFilter) titleFilter.value = "";
+          if (statusFilter) statusFilter.value = "";
+          applyAll();
+        });
+
+        tbody.addEventListener("click", function (event) {
+          const statusBtn = event.target.closest("[data-toggle-status]");
+          if (statusBtn) {
+            const row = statusBtn.closest("tr");
+            const next = row.getAttribute("data-status") === "active" ? "inactive" : "active";
+            row.setAttribute("data-status", next);
+            statusBtn.className = "status-toggle" + (next === "active" ? " active" : "");
+            statusBtn.setAttribute("aria-label", next === "active" ? "Active" : "Inactive");
+            applyAll();
+            return;
+          }
+
+          const editBtn = event.target.closest("[data-edit-position]");
+          if (!editBtn) return;
+
+          const row = editBtn.closest("tr");
+          const all = rowsAll();
+          if (editingIndex) editingIndex.value = String(all.indexOf(row));
+          if (positionName) positionName.value = row.getAttribute("data-position") || "";
+          if (positionTitle) positionTitle.value = row.getAttribute("data-title") || "";
+          if (positionStatus) positionStatus.value = row.getAttribute("data-status") || "active";
+          const modalEl = document.getElementById("positionFormModal");
+          if (modalEl && window.bootstrap) new bootstrap.Modal(modalEl).show();
+        });
+
+        if (form) form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          const index = editingIndex.value === "" ? -1 : parseInt(editingIndex.value, 10);
+          const all = rowsAll();
+          const target = index >= 0 ? all[index] : null;
+          if (!target || !positionName.value.trim() || !positionTitle.value) return;
+
+          setRowValues(target, {
+            position: positionName.value.trim(),
+            title: positionTitle.value,
+            doctors: target.getAttribute("data-doctors") || "0",
+            status: positionStatus.value
+          });
+
+          applyAll();
+          const modalEl = document.getElementById("positionFormModal");
+          if (modalEl && window.bootstrap) {
+            (bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl)).hide();
+          }
+        });
+
+        applyAll();
+      })();
+    </script>
+  </body>
+</html>

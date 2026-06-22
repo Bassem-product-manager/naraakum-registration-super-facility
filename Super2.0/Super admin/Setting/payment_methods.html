@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Payment Methods</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .summary-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 992px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .summary-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fff;
+      }
+
+      .summary-item .label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .summary-item .value {
+        margin-top: 4px;
+        font-size: 18px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .toolbar-card {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .pm-action-trigger {
+        width: 34px;
+        min-width: 34px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--nk-green) !important;
+        border-color: var(--nk-green) !important;
+        color: #fff !important;
+      }
+
+      .pm-action-trigger:hover,
+      .pm-action-trigger:focus {
+        background: #0b7777 !important;
+        border-color: #0b7777 !important;
+        color: #fff !important;
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.16) !important;
+      }
+
+      .pm-table-tools {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .pm-toggle .form-check-input {
+        cursor: pointer;
+        width: 2.35rem;
+        height: 1.2rem;
+        border-color: rgba(16, 24, 40, 0.22);
+        background-color: #f2f4f7;
+      }
+
+      .pm-toggle .form-check-input:focus {
+        border-color: var(--nk-green);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+
+      .pm-toggle .form-check-input:checked {
+        background-color: var(--nk-green);
+        border-color: var(--nk-green);
+      }
+
+      .empty-state {
+        border: 1px dashed #d0d5dd;
+        border-radius: 14px;
+        background: #fff;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .pm-type-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 72px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .pm-type-bank {
+        color: #0f8c8c;
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        background: rgba(15, 140, 140, 0.08);
+      }
+
+      .pm-type-wallet {
+        color: #6941c6;
+        border: 1px solid rgba(105, 65, 198, 0.25);
+        background: rgba(105, 65, 198, 0.08);
+      }
+
+      .pm-default-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 800;
+        background: #ecfdf3;
+        color: #027a48;
+        border: 1px solid #abefc6;
+      }
+
+      .pm-actions-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .alert-box {
+        border-radius: 10px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .alert-success {
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #027a48;
+      }
+
+      .alert-danger {
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Payment Methods</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Payment Methods</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="pmMissingEntity" class="empty-state d-none">
+            <h5 class="mb-8">No Entity Found</h5>
+            <p class="text-grey mb-12">No entities are available. Seed data will appear automatically after refresh.</p>
+            <a href="../payment/deposits.html" class="btn btn-primary btn-32">Back to Deposits</a>
+          </div>
+
+          <div id="pmContent" class="d-none">
+            <div id="pmListMessage" class="alert-box d-none mb-12"></div>
+
+            <div class="filter-bar surface-light-50 p-12 radius-8 mt-16">
+              <div class="row g-3 align-items-center">
+                <div class="col-12 col-lg">
+                  <div class="search-box-group w-100 search-box-group--md">
+                    <input id="pmSearchInput" type="text" class="form-control form-control-32" placeholder="Search by label or destination" />
+                    <button id="btnPmSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                      <i class="fi fi-rr-search"></i>
+                    </button>
+                    <button id="btnPmReset" type="button" class="btn btn-primary-revers btn-32" title="Reset">
+                      <i class="fi fi-rr-rotate-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-12 col-lg-auto">
+                  <div class="search-actions">
+                    <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#pm-filter-modal" type="button">
+                      <i class="fi fi-rr-bars-filter"></i>
+                      <span>Filter</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="pm-table-tools mt-12">
+              <a id="pmAddMethodBtn" href="#" class="btn btn-primary btn-icon btn-40">
+                <i class="fi fi-rr-plus"></i>
+                <span>Add Payment</span>
+              </a>
+            </div>
+
+            <div id="pmTableWrap" class="tabel-box-item mt-16 d-none">
+              <div class="box-body p-12">
+                <div class="table-responsive">
+                  <table class="staff-table naraakum-table table-tight">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Method Type</th>
+                        <th>Label</th>
+                        <th>Destination</th>
+                        <th>Currency</th>
+                        <th>Active</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pmTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div id="pmNoResults" class="empty-state d-none mt-16">
+              <h6 class="mb-8">No Results</h6>
+              <p class="text-grey m-0">No payment methods match your current filters.</p>
+            </div>
+
+            <div id="pmEmptyMethods" class="empty-state d-none mt-16">
+              <h6 class="mb-8">No Payment Methods Yet</h6>
+              <p class="text-grey mb-12">Start by adding a bank account or wallet for this entity.</p>
+              <a id="pmEmptyAddBtn" href="#" class="btn btn-primary btn-32">Add Payment Method</a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="pm-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Payment Methods</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Type</label>
+                <select id="fPmType" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="bank">Bank</option>
+                  <option value="wallet">Wallet</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Currency</label>
+                <select id="fPmCurrency" class="form-control form-control-32">
+                  <option value="">All Currencies</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnPmFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnPmApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/payment-methods-store.js"></script>
+    <script src="../assets/js/setting-payment-methods.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

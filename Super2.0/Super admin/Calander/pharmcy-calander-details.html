@@ -1,0 +1,1508 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Pharmacy Calendar Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+      }
+
+      .facility-line {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 6px;
+      }
+
+      .facility-name {
+        font-size: 14px;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+        color: #0b6f6f;
+        text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+        line-height: 1;
+        margin: 0;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .ksa-clock .time {
+        letter-spacing: 0.2px;
+      }
+
+      .switch-account-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .switch-account-item i {
+        color: var(--nk-green);
+      }
+
+      .side-menu.is-open {
+        transform: translateX(0);
+      }
+
+      .side-menu-list li.is-open > .sub-list {
+        display: block;
+      }
+
+      .side-menu-list li > .sub-list {
+        display: none;
+      }
+
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down {
+        transform: rotate(180deg);
+      }
+
+      .side-menu-list a.menu-list-item.is-active {
+        background: rgba(15, 140, 140, 0.08);
+        border-radius: 10px;
+        font-weight: 900;
+      }
+
+      .details-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+      }
+
+      @media (max-width: 1100px) {
+        .details-shell {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .summary-card,
+      .nk-card {
+        background: #fff;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+      }
+
+      .summary-card {
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+
+      .sum-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .sum-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 280px;
+      }
+
+      .sum-logo {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        object-fit: contain;
+        background: #fff;
+        padding: 5px;
+      }
+
+      .sum-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .sum-meta {
+        margin-top: 6px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .meta-pill,
+      .context-tab-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: rgba(16, 24, 40, 0.02);
+        color: #344054;
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .meta-pill.count {
+        border-color: rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0b6f6f;
+      }
+
+      .context-tabs {
+        margin-top: 12px;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .context-tab-btn {
+        cursor: pointer;
+        background: #fff;
+      }
+
+      .context-tab-btn:hover {
+        background: rgba(15, 140, 140, 0.06);
+        border-color: rgba(15, 140, 140, 0.22);
+      }
+
+      .context-tab-btn.is-active {
+        background: rgba(15, 140, 140, 0.12);
+        color: #0f8c8c;
+        border-color: rgba(15, 140, 140, 0.32);
+      }
+
+      .nk-card {
+        padding: 14px;
+      }
+
+      .nk-card + .nk-card {
+        margin-top: 12px;
+      }
+
+      .nk-card-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .nk-card-title h4 {
+        margin: 0;
+        color: #101828;
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .nk-muted {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .ov-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .ov-item {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 12px;
+        padding: 10px;
+        background: rgba(16, 24, 40, 0.01);
+      }
+
+      .ov-item .l {
+        font-size: 12px;
+        font-weight: 800;
+        color: #667085;
+      }
+
+      .ov-item .v {
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+        margin-top: 4px;
+      }
+
+      .staff-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .staff-table thead th {
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+        color: #475467;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: left;
+        padding: 10px;
+        white-space: nowrap;
+      }
+
+      .staff-table tbody td {
+        border-bottom: 1px solid rgba(16, 24, 40, 0.06);
+        color: #101828;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px;
+        vertical-align: middle;
+      }
+
+      .staff-table tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 74px;
+        height: 26px;
+        border-radius: 999px;
+        border: 1px solid rgba(18, 183, 106, 0.24);
+        background: rgba(18, 183, 106, 0.1);
+        color: #067647;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .btn-mini {
+        border: 1px solid rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+        border-radius: 10px;
+        height: 30px;
+        padding: 0 10px;
+        font-size: 12px;
+        font-weight: 900;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .btn-mini:hover {
+        background: rgba(15, 140, 140, 0.14);
+      }
+
+      .empty-row {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .bh-head-tools {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .bh-switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 44px;
+        height: 26px;
+      }
+
+      .bh-switch input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .bh-switch span {
+        width: 44px;
+        height: 26px;
+        border-radius: 999px;
+        background: #d0d5dd;
+        border: 1px solid #c4c9d4;
+        display: block;
+        position: relative;
+        transition: all 0.15s ease;
+      }
+
+      .bh-switch span::after {
+        content: "";
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #fff;
+        transition: all 0.15s ease;
+      }
+
+      .bh-switch input:checked + span {
+        background: rgba(15, 140, 140, 0.28);
+        border-color: rgba(15, 140, 140, 0.45);
+      }
+
+      .bh-switch input:checked + span::after {
+        left: 21px;
+        background: #0f8c8c;
+      }
+
+      .day-grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      .day-grid.is-disabled {
+        opacity: 0.6;
+      }
+
+      .bh-day-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .bh-day-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid rgba(16, 24, 40, 0.08);
+      }
+
+      .bh-day-left {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bh-day-name {
+        font-size: 13px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .bh-day-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 900;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: rgba(16, 24, 40, 0.02);
+        color: #667085;
+      }
+
+      .bh-day-pill.is-open {
+        border-color: rgba(18, 183, 106, 0.28);
+        background: rgba(18, 183, 106, 0.12);
+        color: #067647;
+      }
+
+      .bh-day-toggle {
+        height: 32px;
+        min-width: 62px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.14);
+        background: #f8fafc;
+        color: #667085;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .bh-day-toggle.is-on {
+        border-color: rgba(15, 140, 140, 0.32);
+        background: rgba(15, 140, 140, 0.14);
+        color: #0f8c8c;
+      }
+
+      .bh-day-body {
+        padding: 10px;
+        background: rgba(248, 250, 252, 0.5);
+      }
+
+      .bh-intervals {
+        display: grid;
+        gap: 8px;
+      }
+
+      .bh-interval-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .bh-interval-row .sep {
+        color: #667085;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .bh-interval-row .form-control:disabled {
+        opacity: 0.55;
+      }
+
+      .bh-remove {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        border: 1px solid rgba(240, 68, 56, 0.24);
+        background: rgba(240, 68, 56, 0.06);
+        color: #b42318;
+        font-size: 14px;
+        font-weight: 900;
+        cursor: pointer;
+      }
+
+      .bh-add {
+        margin-top: 8px;
+        width: 100%;
+        height: 34px;
+        border: 1px dashed rgba(15, 140, 140, 0.3);
+        border-radius: 10px;
+        background: rgba(15, 140, 140, 0.05);
+        color: #0f8c8c;
+        font-size: 12px;
+        font-weight: 900;
+        text-align: left;
+        padding: 0 10px;
+        cursor: pointer;
+      }
+
+      .bh-day-card.is-closed .bh-day-body {
+        opacity: 0.75;
+      }
+
+      .bh-empty {
+        font-size: 12px;
+        font-weight: 800;
+        color: #98a2b3;
+      }
+
+      .not-found {
+        display: none;
+        border: 1px dashed rgba(16, 24, 40, 0.2);
+        border-radius: 12px;
+        padding: 24px;
+        background: #fff;
+        text-align: center;
+      }
+
+      .not-found h3 {
+        margin: 0 0 8px;
+        color: #101828;
+        font-size: 20px;
+        font-weight: 900;
+      }
+
+      .not-found p {
+        margin: 0 0 14px;
+        color: #667085;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 768px) {
+        .ov-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .bh-interval-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-calendar">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Pharmacy Calendar Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../Calander/Pharmacy-calander.html">Pharmacies Calendar</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="notFound" class="not-found">
+            <h3>Pharmacy not found</h3>
+            <p>The pharmacy code is missing or invalid. Return to Pharmacies Calendar and select a valid record.</p>
+            <a class="btn btn-primary" href="../Calander/Pharmacy-calander.html">Back to Pharmacies Calendar</a>
+          </div>
+
+          <div id="detailsView" class="details-shell" style="display:none;">
+            <section>
+              <div class="summary-card">
+                <div class="sum-top">
+                  <div class="sum-left">
+                    <img id="sumLogo" class="sum-logo" src="../assets/images/logo.svg" alt="Pharmacy" />
+                    <div>
+                      <h3 id="sumName" class="sum-title">-</h3>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="context-tabs" id="contextTabs"></div>
+              </div>
+
+              <div class="nk-card">
+                <div class="nk-card-title">
+                  <h4>Branch Overview</h4>
+                  <button id="btnEditBranchCalendar" type="button" class="btn-mini">
+                    <i class="fi fi-rr-calendar"></i><span>Edit Branch Calendar</span>
+                  </button>
+                </div>
+                <div class="ov-grid" id="branchOverviewGrid"></div>
+              </div>
+
+              <div class="nk-card">
+                <div class="nk-card-title">
+                  <h4>Staff Calendars</h4>
+                  <span id="staffCountLabel" class="nk-muted">0 staff</span>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="staff-table">
+                    <thead>
+                      <tr>
+                        <th>Staff Name</th>
+                        <th>Role</th>
+                        <th>Specialty</th>
+                        <th>Status</th>
+                        <th>Last Update</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody id="staffTbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="branchScheduleModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="branchModalTitle">Edit Branch Calendar</h5>
+            <div class="bh-head-tools">
+              <span class="fsize-12 text-grey semiBold">Enable</span>
+              <label class="bh-switch">
+                <input type="checkbox" id="branchEnabled" checked />
+                <span></span>
+              </label>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Timezone</label>
+                <select id="branchTz" class="form-control form-control-40">
+                  <option>(GMT+03:00) Riyadh</option>
+                  <option>(GMT+04:00) Dubai</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Weekly Schedule</label>
+                <div id="branchDayGrid" class="day-grid"></div>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Holidays</label>
+                <textarea id="branchExceptions" class="form-control" rows="3" placeholder="Example: National Day 23/09 closed, Eid holiday, custom branch off-days"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="btnSaveBranchSchedule" class="btn btn-primary">Save Branch Calendar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="staffScheduleModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staffModalTitle">Edit Staff Calendar</h5>
+            <div class="bh-head-tools">
+              <span class="fsize-12 text-grey semiBold">Enable</span>
+              <label class="bh-switch">
+                <input type="checkbox" id="staffEnabled" checked />
+                <span></span>
+              </label>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Timezone</label>
+                <select id="staffTz" class="form-control form-control-40">
+                  <option>(GMT+03:00) Riyadh</option>
+                  <option>(GMT+04:00) Dubai</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Weekly Availability</label>
+                <div id="staffDayGrid" class="day-grid"></div>
+              </div>
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Holidays</label>
+                <textarea id="staffExceptions" class="form-control" rows="3" placeholder="Example: Annual leave 10/03-14/03, sick leave, public holidays"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary-revers" data-bs-dismiss="modal">Close</button>
+            <button type="button" id="btnSaveStaffSchedule" class="btn btn-primary">Save Staff Calendar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+    <script>
+      (function () {
+        const el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            const fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        if (window.__NK_PM_MENU_INIT__) return;
+        window.__NK_PM_MENU_INIT__ = true;
+
+        const aside = document.querySelector(".side-menu");
+        const btn = document.getElementById("open-menu-btn");
+        const list = document.querySelector(".side-menu-list");
+        if (!aside || !btn || !list) return;
+
+        btn.addEventListener("click", function () {
+          aside.classList.toggle("is-open");
+        });
+
+        list.querySelectorAll("li").forEach(function (li) {
+          const sub = li.querySelector(":scope > .sub-list");
+          const trigger = li.querySelector(":scope > a.menu-list-item:not([href])");
+          if (!sub || !trigger) return;
+          trigger.addEventListener("click", function () {
+            li.classList.toggle("is-open");
+          });
+        });
+
+        const activeId = document.body.getAttribute("data-menu");
+        if (activeId) {
+          const activeEl = document.getElementById(activeId);
+          if (activeEl) {
+            activeEl.classList.add("is-active");
+            const parentLi = activeEl.closest("li");
+            if (parentLi && parentLi.querySelector(":scope > .sub-list")) parentLi.classList.add("is-open");
+          }
+        }
+      })();
+
+      (function () {
+        const STORAGE_KEY = "naraakum_pharmacy_calendars_v2";
+        const LEGACY_KEY = "naraakum_pharmacy_branches_legacy";
+        const DEFAULT_TZ = "(GMT+03:00) Riyadh";
+        const DAYS = [
+          ["monday", "Monday"],
+          ["tuesday", "Tuesday"],
+          ["wednesday", "Wednesday"],
+          ["thursday", "Thursday"],
+          ["friday", "Friday"],
+          ["saturday", "Saturday"],
+          ["sunday", "Sunday"],
+        ];
+
+        const detailsView = document.getElementById("detailsView");
+        const notFound = document.getElementById("notFound");
+
+        const sumLogo = document.getElementById("sumLogo");
+        const sumName = document.getElementById("sumName");
+        const contextTabs = document.getElementById("contextTabs");
+
+        const branchOverviewGrid = document.getElementById("branchOverviewGrid");
+
+        const staffCountLabel = document.getElementById("staffCountLabel");
+        const staffTbody = document.getElementById("staffTbody");
+
+        const btnEditBranchCalendar = document.getElementById("btnEditBranchCalendar");
+
+        const branchModalEl = document.getElementById("branchScheduleModal");
+        const branchModalTitle = document.getElementById("branchModalTitle");
+        const branchEnabled = document.getElementById("branchEnabled");
+        const branchTz = document.getElementById("branchTz");
+        const branchDayGrid = document.getElementById("branchDayGrid");
+        const branchExceptions = document.getElementById("branchExceptions");
+        const btnSaveBranchSchedule = document.getElementById("btnSaveBranchSchedule");
+
+        const staffModalEl = document.getElementById("staffScheduleModal");
+        const staffModalTitle = document.getElementById("staffModalTitle");
+        const staffEnabled = document.getElementById("staffEnabled");
+        const staffTz = document.getElementById("staffTz");
+        const staffDayGrid = document.getElementById("staffDayGrid");
+        const staffExceptions = document.getElementById("staffExceptions");
+        const btnSaveStaffSchedule = document.getElementById("btnSaveStaffSchedule");
+
+        let facilities = [];
+        let facility = null;
+        let selectedContext = "main";
+        let selectedStaffId = null;
+        let branchSyncFns = [];
+        let staffSyncFns = [];
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function formatDateTime(iso) {
+          if (!iso) return "-";
+          const d = new Date(iso);
+          if (Number.isNaN(d.getTime())) return "-";
+          const dd = String(d.getDate()).padStart(2, "0");
+          const mm = String(d.getMonth() + 1).padStart(2, "0");
+          const yyyy = d.getFullYear();
+          const hh = String(d.getHours()).padStart(2, "0");
+          const mi = String(d.getMinutes()).padStart(2, "0");
+          return dd + "/" + mm + "/" + yyyy + " " + hh + ":" + mi;
+        }
+
+        function esc(v) {
+          return (v || "")
+            .toString()
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
+        }
+
+        function scheduleTemplate(timezone) {
+          function day(enabled, from, to) {
+            return {
+              enabled: enabled,
+              intervals: enabled ? [{ from: from, to: to }] : [],
+              from: from,
+              to: to,
+            };
+          }
+
+          return {
+            enabled: true,
+            timezone: timezone || DEFAULT_TZ,
+            days: {
+              monday: day(true, "08:00", "16:00"),
+              tuesday: day(true, "08:00", "16:00"),
+              wednesday: day(true, "08:00", "16:00"),
+              thursday: day(true, "08:00", "16:00"),
+              friday: day(false, "08:00", "16:00"),
+              saturday: day(false, "08:00", "16:00"),
+              sunday: day(true, "09:00", "15:00"),
+            },
+            holidays: "",
+            exceptions: "",
+          };
+        }
+
+        function normalizeSchedule(raw, timezoneFallback) {
+          const base = scheduleTemplate(timezoneFallback || DEFAULT_TZ);
+          const out = {
+            enabled: raw && typeof raw.enabled === "boolean" ? raw.enabled : true,
+            timezone: (raw && raw.timezone) || timezoneFallback || DEFAULT_TZ,
+            days: {},
+            holidays: (raw && (raw.holidays || raw.exceptions)) || "",
+            exceptions: (raw && (raw.holidays || raw.exceptions)) || "",
+          };
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const src = raw && raw.days && raw.days[key] ? raw.days[key] : base.days[key];
+            const enabled = Boolean(src && src.enabled);
+            let intervals = [];
+
+            if (src && Array.isArray(src.intervals) && src.intervals.length) {
+              intervals = src.intervals.map(function (it) {
+                return {
+                  from: (it && it.from) || "08:00",
+                  to: (it && it.to) || "16:00",
+                };
+              });
+            } else if (src && (src.from || src.to)) {
+              intervals = [{ from: src.from || "08:00", to: src.to || "16:00" }];
+            }
+
+            if (enabled && !intervals.length) {
+              intervals = [{ from: "08:00", to: "16:00" }];
+            }
+
+            out.days[key] = {
+              enabled: enabled,
+              intervals: intervals,
+              from: intervals[0] ? intervals[0].from : "08:00",
+              to: intervals[0] ? intervals[0].to : "16:00",
+            };
+          });
+
+          return out;
+        }
+
+        function makeStaff(id, name, role, specialty, status) {
+          return {
+            id: id,
+            name: name,
+            role: role,
+            specialty: specialty,
+            status: status || "Active",
+            updatedAt: nowIso(),
+            schedule: scheduleTemplate(DEFAULT_TZ),
+          };
+        }
+
+        function makeBranch(id, name, city, managerPhone, timezone, staff, isMain) {
+          return {
+            id: id,
+            name: name,
+            city: city,
+            managerPhone: managerPhone,
+            timezone: timezone || DEFAULT_TZ,
+            isMain: Boolean(isMain),
+            updatedAt: nowIso(),
+            schedule: scheduleTemplate(timezone || DEFAULT_TZ),
+            staff: staff,
+          };
+        }
+
+        function defaultFacilities() {
+          return [
+            {
+              id: "PHM-1",
+              code: "PH-00001",
+              name: "Naraa Community Pharmacy",
+              logo: "../assets/images/logo.svg",
+              city: "Riyadh",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-001", "Main Branch", "Riyadh", "+966 50 110 1001", DEFAULT_TZ, [
+                  makeStaff("ST-101", "Mona Alqahtani", "Pharmacist", "Clinical Pharmacy", "Active"),
+                  makeStaff("ST-102", "Salem Alharbi", "Pharmacy Technician", "Dispensing", "Active"),
+                  makeStaff("ST-103", "Nourah Saad", "Pharmacy Assistant", "OTC Support", "Active"),
+                ], true),
+                makeBranch("BR-002", "North Branch", "Riyadh", "+966 50 110 1002", DEFAULT_TZ, [
+                  makeStaff("ST-104", "Yara Adel", "Pharmacist", "Medication Therapy", "Active"),
+                  makeStaff("ST-105", "Tariq Jaber", "Pharmacy Technician", "Inventory Control", "Active"),
+                ], false),
+              ],
+            },
+            {
+              id: "PHM-2",
+              code: "PH-00002",
+              name: "Al Noor Pharmacy",
+              logo: "../assets/images/logo.svg",
+              city: "Jeddah",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-101", "Main Branch", "Jeddah", "+966 50 210 2001", DEFAULT_TZ, [
+                  makeStaff("ST-201", "Raghad Fahad", "Pharmacist", "Chronic Therapy", "Active"),
+                  makeStaff("ST-202", "Khaled Adel", "Pharmacy Technician", "Prescription Intake", "Active"),
+                ], true),
+                makeBranch("BR-102", "West Branch", "Jeddah", "+966 50 210 2002", DEFAULT_TZ, [
+                  makeStaff("ST-203", "Fahad Saad", "Pharmacist", "Pediatric Dosing", "Active"),
+                  makeStaff("ST-204", "Rana Ibrahim", "Pharmacy Assistant", "Patient Counseling", "Active"),
+                  makeStaff("ST-205", "Majed Nasser", "Pharmacy Technician", "Packaging", "Active"),
+                ], false),
+              ],
+            },
+            {
+              id: "PHM-3",
+              code: "PH-00003",
+              name: "Green Valley Pharmacy",
+              logo: "../assets/images/logo.svg",
+              city: "Dammam",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-201", "Main Branch", "Dammam", "+966 50 310 3001", DEFAULT_TZ, [
+                  makeStaff("ST-301", "Rayan Basel", "Pharmacist", "Compounding", "Active"),
+                  makeStaff("ST-302", "Salma Tariq", "Pharmacy Technician", "Cold Chain", "Active"),
+                ], true),
+              ],
+            },
+            {
+              id: "PHM-4",
+              code: "PH-00004",
+              name: "Future Care Pharmacy",
+              logo: "../assets/images/logo.svg",
+              city: "Khobar",
+              timezone: DEFAULT_TZ,
+              updatedAt: nowIso(),
+              branches: [
+                makeBranch("BR-301", "Main Branch", "Khobar", "+966 50 410 4001", DEFAULT_TZ, [
+                  makeStaff("ST-401", "Lina Majed", "Pharmacist", "Cardio Medication", "Active"),
+                  makeStaff("ST-402", "Imad Hassan", "Pharmacy Technician", "Controlled Dispense", "Active"),
+                  makeStaff("ST-403", "Amal Yusuf", "Pharmacy Assistant", "Walk-in Desk", "Active"),
+                ], true),
+                makeBranch("BR-302", "South Branch", "Khobar", "+966 50 410 4002", DEFAULT_TZ, [
+                  makeStaff("ST-404", "Maha Omar", "Pharmacist", "Chronic Refills", "Active"),
+                ], false),
+                makeBranch("BR-303", "East Branch", "Khobar", "+966 50 410 4003", DEFAULT_TZ, [
+                  makeStaff("ST-405", "Fares Adel", "Pharmacy Technician", "Stock Transfer", "Active"),
+                  makeStaff("ST-406", "Heba Ali", "Pharmacy Assistant", "Retail Counter", "Active"),
+                ], false),
+              ],
+            },
+          ];
+        }
+        function migrateLegacyIfNeeded() {
+          const raw = localStorage.getItem(LEGACY_KEY);
+          if (!raw) return null;
+
+          try {
+            const legacy = JSON.parse(raw);
+            if (!Array.isArray(legacy) || !legacy.length) return null;
+
+            const migrated = defaultFacilities();
+            migrated[0].branches = legacy.map(function (b, idx) {
+              return makeBranch(
+                (b.id || "BR-" + String(idx + 1).padStart(3, "0")).toString(),
+                (b.name || "Branch " + (idx + 1)).toString(),
+                (b.city || "Riyadh").toString(),
+                (b.phone || "+966 50 000 0000").toString(),
+                (b.timezone || DEFAULT_TZ).toString(),
+                [
+                  makeStaff("ST-L" + idx + "1", "Legacy Pharmacist", "Pharmacist", "Dispensing", "Active"),
+                  makeStaff("ST-L" + idx + "2", "Legacy Technician", "Pharmacy Technician", "Support", "Active"),
+                ],
+                idx === 0
+              );
+            });
+            migrated[0].updatedAt = nowIso();
+            return migrated;
+          } catch (e) {
+            return null;
+          }
+        }
+
+        function loadFacilities() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            try {
+              const parsed = JSON.parse(raw);
+              if (Array.isArray(parsed) && parsed.length) return parsed;
+            } catch (e) {}
+          }
+
+          const migrated = migrateLegacyIfNeeded();
+          const data = migrated || defaultFacilities();
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+          return data;
+        }
+
+        function saveFacilities() {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(facilities));
+        }
+
+        function getMainBranch() {
+          if (!facility) return null;
+          const branches = facility.branches || [];
+          return branches.find(function (b) { return b.isMain; }) || branches[0] || null;
+        }
+
+        function getCurrentBranch() {
+          const branches = facility ? (facility.branches || []) : [];
+          if (selectedContext === "main") return getMainBranch();
+          return branches.find(function (b) { return b.id === selectedContext; }) || getMainBranch();
+        }
+
+        function countStaff(f) {
+          return (f.branches || []).reduce(function (total, b) { return total + (b.staff || []).length; }, 0);
+        }
+
+        function renderContextTabs() {
+          const branches = facility.branches || [];
+          const main = getMainBranch();
+          const others = branches.filter(function (b) { return !main || b.id !== main.id; });
+
+          const items = [{ id: "main", label: "Main Pharmacy" }].concat(
+            others.map(function (b, idx) {
+              return { id: b.id, label: "Branch " + (idx + 1), hint: b.name };
+            })
+          );
+
+          contextTabs.innerHTML = "";
+          items.forEach(function (item) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "context-tab-btn" + (selectedContext === item.id ? " is-active" : "");
+            btn.textContent = item.label;
+            if (item.hint) btn.title = item.hint;
+            btn.addEventListener("click", function () {
+              selectedContext = item.id;
+              renderAll();
+            });
+            contextTabs.appendChild(btn);
+          });
+        }
+
+        function addOV(container, label, value) {
+          const item = document.createElement("div");
+          item.className = "ov-item";
+          item.innerHTML = "<div class=\"l\">" + esc(label) + "</div><div class=\"v\">" + esc(value || "-") + "</div>";
+          container.appendChild(item);
+        }
+
+        function renderSummary() {
+          const branch = getCurrentBranch();
+          sumLogo.src = facility.logo || "../assets/images/logo.svg";
+          sumName.textContent = facility.name || "-";
+
+          renderContextTabs();
+
+          branchOverviewGrid.innerHTML = "";
+          addOV(branchOverviewGrid, "Branch Name", branch ? branch.name : "-");
+          addOV(branchOverviewGrid, "Branch ID", branch ? branch.id : "-");
+          addOV(branchOverviewGrid, "City", branch ? branch.city : "-");
+          addOV(branchOverviewGrid, "Manager Phone", branch ? branch.managerPhone : "-");
+          addOV(branchOverviewGrid, "Timezone", branch ? branch.timezone : "-");
+          addOV(branchOverviewGrid, "Total Staff", branch ? String((branch.staff || []).length) : "0");
+          addOV(branchOverviewGrid, "Last Update", branch ? formatDateTime(branch.updatedAt) : "-");
+        }
+
+        function renderStaffTable() {
+          const branch = getCurrentBranch();
+          const staff = branch ? (branch.staff || []) : [];
+          staffCountLabel.textContent = staff.length + " staff";
+
+          if (!staff.length) {
+            staffTbody.innerHTML = "<tr><td colspan=\"6\" class=\"empty-row\">No staff records found for this branch.</td></tr>";
+            return;
+          }
+
+          staffTbody.innerHTML = staff.map(function (person) {
+            return ""
+              + "<tr>"
+              + "<td>" + esc(person.name) + "</td>"
+              + "<td>" + esc(person.role) + "</td>"
+              + "<td>" + esc(person.specialty) + "</td>"
+              + "<td><span class=\"status-pill\">" + esc(person.status || "Active") + "</span></td>"
+              + "<td>" + esc(formatDateTime(person.updatedAt)) + "</td>"
+              + "<td><button type=\"button\" class=\"btn-mini\" data-staff-id=\"" + esc(person.id) + "\"><i class=\"fi fi-rr-calendar\"></i><span>Edit Calendar</span></button></td>"
+              + "</tr>";
+          }).join("");
+
+          staffTbody.querySelectorAll("button[data-staff-id]").forEach(function (btn) {
+            btn.addEventListener("click", function () {
+              const id = btn.getAttribute("data-staff-id") || "";
+              openStaffModal(id);
+            });
+          });
+        }
+
+        function buildDayRows(container, schedule, prefix) {
+          container.innerHTML = "";
+          const syncFns = [];
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const label = entry[1];
+            const day = (schedule.days && schedule.days[key]) ? schedule.days[key] : { enabled: false, intervals: [] };
+
+            const card = document.createElement("div");
+            card.className = "bh-day-card";
+            card.innerHTML = ""
+              + "<div class=\"bh-day-head\">"
+              + "  <div class=\"bh-day-left\">"
+              + "    <span class=\"bh-day-name\">" + label + "</span>"
+              + "    <span class=\"bh-day-pill\" id=\"" + prefix + "-" + key + "-pill\">Closed</span>"
+              + "  </div>"
+              + "  <button type=\"button\" class=\"bh-day-toggle\" id=\"" + prefix + "-" + key + "-toggle\">Off</button>"
+              + "</div>"
+              + "<div class=\"bh-day-body\">"
+              + "  <div id=\"" + prefix + "-" + key + "-intervals\" class=\"bh-intervals\"></div>"
+              + "  <button type=\"button\" class=\"bh-add\" id=\"" + prefix + "-" + key + "-add\">+ Add Interval</button>"
+              + "</div>";
+            container.appendChild(card);
+
+            const toggleEl = document.getElementById(prefix + "-" + key + "-toggle");
+            const pillEl = document.getElementById(prefix + "-" + key + "-pill");
+            const intervalsEl = document.getElementById(prefix + "-" + key + "-intervals");
+            const addBtn = document.getElementById(prefix + "-" + key + "-add");
+            const intervalState = Array.isArray(day.intervals) ? day.intervals.slice() : [];
+            toggleEl.dataset.state = day.enabled ? "on" : "off";
+
+            function renderIntervals() {
+              intervalsEl.innerHTML = "";
+              if (!intervalState.length) {
+                intervalsEl.innerHTML = "<div class=\"bh-empty\">No intervals.</div>";
+                return;
+              }
+
+              intervalState.forEach(function (it, idx) {
+                const row = document.createElement("div");
+                row.className = "bh-interval-row";
+                row.innerHTML = ""
+                  + "<input type=\"time\" class=\"form-control form-control-40\" data-part=\"from\" value=\"" + esc(it.from || "08:00") + "\" />"
+                  + "<span class=\"sep\">to</span>"
+                  + "<input type=\"time\" class=\"form-control form-control-40\" data-part=\"to\" value=\"" + esc(it.to || "16:00") + "\" />"
+                  + "<button type=\"button\" class=\"bh-remove\" title=\"Remove\">X</button>";
+                intervalsEl.appendChild(row);
+
+                const fromEl = row.querySelector('input[data-part="from"]');
+                const toEl = row.querySelector('input[data-part="to"]');
+                const removeBtn = row.querySelector(".bh-remove");
+                fromEl.addEventListener("input", function () {
+                  intervalState[idx].from = fromEl.value || "08:00";
+                });
+                toEl.addEventListener("input", function () {
+                  intervalState[idx].to = toEl.value || "16:00";
+                });
+                removeBtn.addEventListener("click", function () {
+                  intervalState.splice(idx, 1);
+                  renderIntervals();
+                  sync();
+                });
+              });
+            }
+
+            function sync() {
+              const open = toggleEl.dataset.state === "on";
+              const interactive = open;
+              toggleEl.classList.toggle("is-on", open);
+              toggleEl.textContent = open ? "On" : "Off";
+              pillEl.textContent = open ? "OPEN" : "CLOSED";
+              pillEl.classList.toggle("is-open", open);
+              card.classList.toggle("is-closed", !open);
+              addBtn.disabled = !interactive;
+              intervalsEl.querySelectorAll("input,button").forEach(function (el) {
+                el.disabled = !interactive;
+              });
+            }
+
+            addBtn.addEventListener("click", function () {
+              intervalState.push({ from: "08:00", to: "16:00" });
+              renderIntervals();
+              sync();
+            });
+
+            toggleEl.addEventListener("click", function () {
+              toggleEl.dataset.state = toggleEl.dataset.state === "on" ? "off" : "on";
+              if (toggleEl.dataset.state === "on" && !intervalState.length) {
+                intervalState.push({ from: "08:00", to: "16:00" });
+              }
+              renderIntervals();
+              sync();
+            });
+
+            renderIntervals();
+            sync();
+            syncFns.push(sync);
+          });
+
+          return syncFns;
+        }
+
+        function applyGridEnabled(gridEl, enabled, syncFns) {
+          gridEl.classList.toggle("is-disabled", !enabled);
+          if (!enabled) {
+            gridEl.querySelectorAll("input,button").forEach(function (el) {
+              el.disabled = true;
+            });
+            return;
+          }
+          (syncFns || []).forEach(function (fn) {
+            fn();
+          });
+        }
+
+        function collectSchedule(prefix, timezoneEl, exceptionsEl, enabledEl) {
+          const out = {
+            enabled: enabledEl ? enabledEl.checked : true,
+            timezone: timezoneEl.value || DEFAULT_TZ,
+            days: {},
+            holidays: exceptionsEl.value || "",
+            exceptions: exceptionsEl.value || "",
+          };
+
+          DAYS.forEach(function (entry) {
+            const key = entry[0];
+            const stateEl = document.getElementById(prefix + "-" + key + "-toggle");
+            const intervalsWrap = document.getElementById(prefix + "-" + key + "-intervals");
+            const intervals = Array.from(intervalsWrap.querySelectorAll(".bh-interval-row")).map(function (row) {
+              const fromEl = row.querySelector('input[data-part="from"]');
+              const toEl = row.querySelector('input[data-part="to"]');
+              return {
+                from: (fromEl && fromEl.value) || "08:00",
+                to: (toEl && toEl.value) || "16:00",
+              };
+            });
+
+            out.days[key] = {
+              enabled: stateEl ? stateEl.dataset.state === "on" : false,
+              intervals: intervals,
+              from: intervals[0] ? intervals[0].from : "08:00",
+              to: intervals[0] ? intervals[0].to : "16:00",
+            };
+          });
+
+          return out;
+        }
+
+        function openBranchModal() {
+          const branch = getCurrentBranch();
+          if (!branch) return;
+
+          branchModalTitle.textContent = "Edit Branch Calendar - " + (branch.name || "Branch");
+          const schedule = normalizeSchedule(branch.schedule, branch.timezone || DEFAULT_TZ);
+          branchTz.value = schedule.timezone || branch.timezone || DEFAULT_TZ;
+          branchEnabled.checked = schedule.enabled !== false;
+          branchExceptions.value = schedule.holidays || schedule.exceptions || "";
+          branchSyncFns = buildDayRows(branchDayGrid, schedule, "branch-day");
+          applyGridEnabled(branchDayGrid, branchEnabled.checked, branchSyncFns);
+
+          bootstrap.Modal.getOrCreateInstance(branchModalEl).show();
+        }
+
+        function openStaffModal(staffId) {
+          const branch = getCurrentBranch();
+          if (!branch) return;
+          const person = (branch.staff || []).find(function (s) { return s.id === staffId; });
+          if (!person) return;
+
+          selectedStaffId = staffId;
+          staffModalTitle.textContent = "Edit Staff Calendar - " + person.name;
+          const schedule = normalizeSchedule(person.schedule, branch.timezone || DEFAULT_TZ);
+          staffTz.value = schedule.timezone || branch.timezone || DEFAULT_TZ;
+          staffEnabled.checked = schedule.enabled !== false;
+          staffExceptions.value = schedule.holidays || schedule.exceptions || "";
+          staffSyncFns = buildDayRows(staffDayGrid, schedule, "staff-day");
+          applyGridEnabled(staffDayGrid, staffEnabled.checked, staffSyncFns);
+
+          bootstrap.Modal.getOrCreateInstance(staffModalEl).show();
+        }
+
+        function saveBranchSchedule() {
+          const branch = getCurrentBranch();
+          if (!branch) return;
+
+          branch.schedule = collectSchedule("branch-day", branchTz, branchExceptions, branchEnabled);
+          branch.timezone = branch.schedule.timezone;
+          branch.updatedAt = nowIso();
+          facility.updatedAt = nowIso();
+          saveFacilities();
+
+          bootstrap.Modal.getInstance(branchModalEl)?.hide();
+          renderAll();
+        }
+
+        function saveStaffSchedule() {
+          const branch = getCurrentBranch();
+          if (!branch || !selectedStaffId) return;
+
+          const person = (branch.staff || []).find(function (s) { return s.id === selectedStaffId; });
+          if (!person) return;
+
+          person.schedule = collectSchedule("staff-day", staffTz, staffExceptions, staffEnabled);
+          person.updatedAt = nowIso();
+          branch.updatedAt = nowIso();
+          facility.updatedAt = nowIso();
+          saveFacilities();
+
+          bootstrap.Modal.getInstance(staffModalEl)?.hide();
+          renderAll();
+        }
+
+        function renderAll() {
+          renderSummary();
+          renderStaffTable();
+        }
+
+        function initPage() {
+          facilities = loadFacilities();
+
+          const params = new URLSearchParams(window.location.search);
+          const code = (params.get("pharmacy") || sessionStorage.getItem("lastPharmacyCalendarCode") || "").toUpperCase();
+          selectedContext = params.get("context") || "main";
+
+          facility = facilities.find(function (f) {
+            return (f.code || "").toUpperCase() === code;
+          }) || facilities[0] || null;
+
+          if (!facility) {
+            detailsView.style.display = "none";
+            notFound.style.display = "block";
+            return;
+          }
+
+          const branches = facility.branches || [];
+          if (selectedContext !== "main" && !branches.find(function (b) { return b.id === selectedContext; })) {
+            selectedContext = "main";
+          }
+
+          notFound.style.display = "none";
+          detailsView.style.display = "grid";
+          renderAll();
+        }
+
+        branchEnabled.addEventListener("change", function () {
+          applyGridEnabled(branchDayGrid, branchEnabled.checked, branchSyncFns);
+        });
+
+        staffEnabled.addEventListener("change", function () {
+          applyGridEnabled(staffDayGrid, staffEnabled.checked, staffSyncFns);
+        });
+
+        btnEditBranchCalendar.addEventListener("click", openBranchModal);
+        btnSaveBranchSchedule.addEventListener("click", saveBranchSchedule);
+        btnSaveStaffSchedule.addEventListener("click", saveStaffSchedule);
+
+        initPage();
+      })();
+    </script>
+  </body>
+</html>
+
+
+

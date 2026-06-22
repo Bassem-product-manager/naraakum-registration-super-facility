@@ -1,0 +1,23 @@
+.fixed-icons {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 1rem;
+
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 10;
+  display: none;
+  @media screen and (min-width: 1024px) {
+    display: flex;
+  }
+  img {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+  a:hover {
+    img {
+      opacity: 0.9;
+    }
+  }
+}

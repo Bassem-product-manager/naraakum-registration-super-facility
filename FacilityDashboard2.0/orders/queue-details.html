@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Queue Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+            <main class="main-page queue-details-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Queue Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 - 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Order Management</li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance Queue</li>
+              <li class="breadcrumb-item active" aria-current="page">Queue Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="surface-light-50 p-12 radius-8 mb-12 d-none" id="serviceContextNote">
+            <div class="semiBold fsize-13">Selected context is a Service case.</div>
+            <div class="fsize-12 text-grey mt-4">No package items in this specific order context. Only package items are actionable in this view.</div>
+          </div>
+
+          <div class="surface-light-50 p-12 radius-8 mb-12 d-none" id="qdPatientCard">
+            <div class="row g-2">
+              <div class="col-md-4">
+                <div class="fsize-12 text-grey">Patient</div>
+                <div class="semiBold fsize-14" id="qdPatientName">-</div>
+              </div>
+              <div class="col-md-3">
+                <div class="fsize-12 text-grey">Phone</div>
+                <div class="semiBold fsize-14" id="qdPatientPhone">-</div>
+              </div>
+              <div class="col-md-3">
+                <div class="fsize-12 text-grey">Order ID</div>
+                <div class="semiBold fsize-14" id="qdPatientOrder">-</div>
+              </div>
+              <div class="col-md-2">
+                <div class="fsize-12 text-grey">Insurance</div>
+                <div class="semiBold fsize-14" id="qdPatientInsurance">-</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="surface-light-50 p-12 radius-8 mt-12 d-none" id="qdBulkBar">
+            <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+              <div class="fsize-12 semiBold" id="qdBulkLabel">0 selected</div>
+              <div class="d-flex align-items-center gap-2">
+                <button id="btnBulkApprove" type="button" class="btn btn-primary btn-32">Approve Selected</button>
+                <button id="btnBulkReject" type="button" class="btn btn-primary-revers btn-32">Reject Selected</button>
+                <button id="btnBulkSend" type="button" class="btn btn-primary btn-32">Send Decision Selected</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight services-table" id="qdTable">
+                  <thead>
+                    <tr>
+                      <th class="col-check">
+                        <div class="head-check">
+                          <input type="checkbox" id="checkAllVisibleQd" title="Select visible rows" />
+                        </div>
+                      </th>
+                      <th class="col-seq">#</th>
+                      <th>Order ID</th>
+                      <th>Patient</th>
+                      <th>Package</th>
+                      <th>Requested Qty</th>
+                      <th>Status</th>
+                      <th>Approved Qty</th>
+                      <th>Last Update</th>
+                      <th class="text-center">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="qdTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="qdRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="qdPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="qdFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="qdPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="qdCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="qdNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="qdLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-3 mt-8">
+            <div class="col-lg-6">
+              <div class="tabel-box-item services-table-wrap">
+                <div class="box-body p-12">
+                  <div class="semiBold fsize-14 mb-8">Approved Packages</div>
+                  <div class="table-responsive">
+                    <table class="staff-table naraakum-table table-tight services-table">
+                      <thead>
+                        <tr>
+                          <th>Order ID</th>
+                          <th>Package</th>
+                          <th>Approved Qty</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="approvedSummaryBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="tabel-box-item services-table-wrap">
+                <div class="box-body p-12">
+                  <div class="semiBold fsize-14 mb-8">Not Approved Packages</div>
+                  <div class="table-responsive">
+                    <table class="staff-table naraakum-table table-tight services-table">
+                      <thead>
+                        <tr>
+                          <th>Order ID</th>
+                          <th>Package</th>
+                          <th>Status</th>
+                          <th>Reason</th>
+                        </tr>
+                      </thead>
+                      <tbody id="notApprovedSummaryBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    <!-- Filter Modal -->
+    <div class="modal fade" id="qd-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Package Queue</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="qdfStatus" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Insurance Company</label>
+                <select id="qdfCompany" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Plan</label>
+                <select id="qdfPlan" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Class</label>
+                <select id="qdfClass" class="form-control form-control-32"></select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Main Service</label>
+                <select id="qdfMainService" class="form-control form-control-32"></select>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnQdFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <button id="btnQdApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row Approve Modal -->
+    <div class="modal fade" id="qd-approve-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Approve Package</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="qdApproveMeta">-</div>
+
+            <div class="mb-8">
+              <label class="fsize-12 text-grey">Coverage Percentage</label>
+              <input id="qdCoveragePct" type="number" min="1" max="100" step="0.01" class="form-control form-control-32" placeholder="Enter coverage %" />
+              <div class="form-check mt-8">
+                <input class="form-check-input" type="checkbox" id="qdCoverageFull" />
+                <label class="form-check-label fsize-12" for="qdCoverageFull">Coverage 100%</label>
+              </div>
+            </div>
+
+            <div class="surface-light-50 p-12 radius-8 mt-8">
+              <div class="d-flex justify-content-between fsize-12">
+                <span class="text-grey">Requested Qty</span>
+                <span class="semiBold" id="qdApproveRequested">-</span>
+              </div>
+              <div class="d-flex justify-content-between fsize-12 mt-4">
+                <span class="text-grey">Insurance Covered</span>
+                <span class="semiBold" id="qdApproveCovered">-</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnConfirmQdApprove" type="button" class="btn btn-primary">Confirm Approval</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row Rejection Modal -->
+    <div class="modal fade" id="qd-decision-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="qdDecisionTitle">Reject Package</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="qdDecisionMeta">-</div>
+
+            <div id="qdRejectWrap" class="mb-12 d-none">
+              <label class="fsize-12 text-grey">Rejection Reason</label>
+              <select id="qdRejectReason" class="form-control form-control-32">
+                <option value="NotRegistered">Patient Not Registered</option>
+                <option value="NotEligiblePlan">Not Eligible for This Benefit</option>
+                <option value="NotAuthorizedPlan">Not Authorized for This Plan</option>
+                <option value="NotCoveredBenefit">Not Covered Benefit</option>
+                <option value="PlanClassMismatch">Plan/Class Not Eligible (Mismatch)</option>
+                <option value="OutOfNetwork">Out of Network</option>
+                <option value="PolicyInactive">Policy Inactive / Expired</option>
+                <option value="MissingInvalidData">Missing/Invalid Data</option>
+                <option value="Other">Other</option>
+              </select>
+              <label class="fsize-12 text-grey mt-8">Additional Note (Optional)</label>
+              <textarea id="qdRejectText" class="form-control" rows="3" placeholder="Add extra details if needed"></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveQdDecision" type="button" class="btn btn-primary">Send Rejection</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk Reject Modal -->
+    <div class="modal fade" id="qd-bulk-reject-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Reject Selected Packages</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="fsize-12 text-grey mb-8" id="qdBulkRejectMeta">-</div>
+            <label class="fsize-12 text-grey">Rejection Reason</label>
+            <select id="qdBulkRejectReason" class="form-control form-control-32">
+              <option value="NotRegistered">Patient Not Registered</option>
+              <option value="NotEligiblePlan">Not Eligible for This Benefit</option>
+              <option value="NotAuthorizedPlan">Not Authorized for This Plan</option>
+              <option value="NotCoveredBenefit">Not Covered Benefit</option>
+              <option value="PlanClassMismatch">Plan/Class Not Eligible (Mismatch)</option>
+              <option value="OutOfNetwork">Out of Network</option>
+              <option value="PolicyInactive">Policy Inactive / Expired</option>
+              <option value="MissingInvalidData">Missing/Invalid Data</option>
+              <option value="Other">Other</option>
+            </select>
+            <label class="fsize-12 text-grey mt-8">Additional Note (Optional)</label>
+            <textarea id="qdBulkRejectText" class="form-control" rows="3" placeholder="Add extra details if needed"></textarea>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnConfirmBulkReject" type="button" class="btn btn-primary">Reject Selected</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+<script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/queue-details-page.js"></script>
+<script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
+

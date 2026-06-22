@@ -1,0 +1,25 @@
+.scrollable-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  // gap: $value-12;
+  padding: $value-8 0px;
+
+  cursor: grab;
+  scroll-behavior: smooth;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  // mask-image: linear-gradient(
+  //   to right,
+  //   rgba(0, 0, 0, 0) 0%,
+  //   rgb(0, 0, 0) 5%,
+  //   rgb(0, 0, 0) 95%,
+  //   rgba(0, 0, 0, 0) 100%
+  // );
+}
+
+.scrollable-container::-webkit-scrollbar {
+  display: none;
+}

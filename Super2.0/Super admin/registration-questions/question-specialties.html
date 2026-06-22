@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Question Specialties</title>
+    <meta name="description" content="Naraakum Super Admin Registration Questions" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+  </head>
+
+  <body data-menu="menu-registration-questions">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Registration Questions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="AR" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14 switch-account-item" href="../template.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Registration Questions</li>
+              <li class="breadcrumb-item active" aria-current="page">Question Specialties</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="rq-page-heading">
+            <h3>Question Specialties</h3>
+          </div>
+
+          <div class="rq-table-surface">
+            <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+              <div class="row g-3 justify-content-between align-items-center">
+                <div class="col">
+                  <div class="search-box-group w-100">
+                    <input id="specialtySearch" type="text" class="form-control form-control-32" placeholder="Search by specialty / status / counts" />
+                    <button id="btnSpecialtySearch" type="button" class="btn btn-primary btn-32"><i class="fi fi-rr-search"></i></button>
+                    <button id="btnResetSpecialtyFilters" type="button" class="btn btn-primary-revers btn-32" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Reset" data-bs-custom-class="custom-tooltip">
+                      <i class="fi fi-rr-rotate-right"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="col-auto d-flex gap-2">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#specialtiesFilterModal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i><span>Filter</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="rq-table-summary" id="specialtiesSummary"></div>
+
+            <div class="table-responsive">
+              <table class="naraakum-table rq-table rq-specialties-table">
+                <thead>
+                  <tr>
+                    <th>Specialty Name</th>
+                    <th>Doctors Count</th>
+                    <th>Questions Count</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="specialtiesTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="modal fade" id="specialtiesFilterModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Question Specialties</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="filterSpecialtyStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Doctors count</label>
+                <select id="filterDoctorsCount" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="with_doctors">With doctors</option>
+                  <option value="no_doctors">No doctors</option>
+                  <option value="ten_plus">10+ doctors</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Questions count</label>
+                <select id="filterQuestionsCount" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="with_questions">With questions</option>
+                  <option value="ten_plus">10+ questions</option>
+                  <option value="twenty_plus">20+ questions</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnSpecialtyFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button id="btnSpecialtyApplyFilter" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/registration-questions-data.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            el.textContent = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            }).format(new Date());
+          } catch (err) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var data = window.NKRegistrationQuestionsData;
+        var tbody = document.getElementById("specialtiesTableBody");
+        var summary = document.getElementById("specialtiesSummary");
+        var searchInput = document.getElementById("specialtySearch");
+        var btnSearch = document.getElementById("btnSpecialtySearch");
+        var btnReset = document.getElementById("btnResetSpecialtyFilters");
+        var filterStatus = document.getElementById("filterSpecialtyStatus");
+        var filterDoctorsCount = document.getElementById("filterDoctorsCount");
+        var filterQuestionsCount = document.getElementById("filterQuestionsCount");
+        var btnFilterReset = document.getElementById("btnSpecialtyFilterReset");
+        var btnApplyFilter = document.getElementById("btnSpecialtyApplyFilter");
+        if (!data || !tbody) return;
+        var summaries = data.getSpecialtySummaries();
+
+        function esc(value) {
+          return String(value == null ? "" : value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        function norm(value) {
+          return String(value || "").trim().toLowerCase();
+        }
+
+        function matches(specialty) {
+          var search = norm(searchInput.value);
+          var status = filterStatus.value;
+          var doctorFilter = filterDoctorsCount.value;
+          var questionFilter = filterQuestionsCount.value;
+
+          if (search) {
+            var haystack = norm([
+              specialty.name,
+              specialty.status,
+              specialty.doctorCount,
+              specialty.questionCount
+            ].join(" "));
+            if (!haystack.includes(search)) return false;
+          }
+
+          if (status && specialty.status !== status) return false;
+          if (doctorFilter === "with_doctors" && specialty.doctorCount <= 0) return false;
+          if (doctorFilter === "no_doctors" && specialty.doctorCount !== 0) return false;
+          if (doctorFilter === "ten_plus" && specialty.doctorCount < 10) return false;
+          if (questionFilter === "with_questions" && specialty.questionCount <= 0) return false;
+          if (questionFilter === "ten_plus" && specialty.questionCount < 10) return false;
+          if (questionFilter === "twenty_plus" && specialty.questionCount < 20) return false;
+          return true;
+        }
+
+        function render() {
+          var rows = summaries.filter(matches);
+          if (summary) summary.textContent = rows.length + " of " + summaries.length + " specialties found";
+
+          if (!rows.length) {
+            tbody.innerHTML = '<tr><td colspan="5"><div class="rq-empty">No specialties match the selected filters.</div></td></tr>';
+            return;
+          }
+
+          tbody.innerHTML = rows.map(function (specialty) {
+            var isActive = String(specialty.status || "Active").toLowerCase() === "active";
+            return ''
+              + '<tr>'
+              + '  <td><span class="rq-specialty-cell">' + esc(specialty.name) + '</span></td>'
+              + '  <td>' + esc(specialty.doctorCount) + '</td>'
+              + '  <td>' + esc(specialty.questionCount) + '</td>'
+              + '  <td>'
+              + '    <label class="rq-toggle">'
+              + '      <input type="checkbox" data-specialty-id="' + esc(specialty.id) + '" ' + (isActive ? "checked" : "") + ' />'
+              + '      <span class="rq-toggle-track"><span class="rq-toggle-thumb"></span></span>'
+              + '      <span class="rq-toggle-label">' + (isActive ? "Active" : "Inactive") + '</span>'
+              + '    </label>'
+              + '  </td>'
+              + '  <td><a class="rq-row-action" href="question-bank.html?specialty=' + encodeURIComponent(specialty.id) + '">View Questions</a></td>'
+              + '</tr>';
+          }).join("");
+
+          tbody.querySelectorAll(".rq-toggle input").forEach(function (input) {
+            input.addEventListener("change", function () {
+              var specialtyId = input.getAttribute("data-specialty-id");
+              summaries.forEach(function (specialty) {
+                if (specialty.id === specialtyId) specialty.status = input.checked ? "Active" : "Inactive";
+              });
+              render();
+            });
+          });
+        }
+
+        btnSearch.addEventListener("click", render);
+        searchInput.addEventListener("input", render);
+        btnReset.addEventListener("click", function () {
+          searchInput.value = "";
+          filterStatus.value = "";
+          filterDoctorsCount.value = "";
+          filterQuestionsCount.value = "";
+          render();
+        });
+        btnFilterReset.addEventListener("click", function () {
+          filterStatus.value = "";
+          filterDoctorsCount.value = "";
+          filterQuestionsCount.value = "";
+          render();
+        });
+        btnApplyFilter.addEventListener("click", function () {
+          render();
+          var modal = document.getElementById("specialtiesFilterModal");
+          if (modal && window.bootstrap) bootstrap.Modal.getOrCreateInstance(modal).hide();
+        });
+
+        render();
+      })();
+    </script>
+  </body>
+</html>

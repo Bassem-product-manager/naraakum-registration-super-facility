@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Follow-Up History</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <link rel="stylesheet" href="../assets/css/patient-followup.css" />
+
+    <style>
+      .preloader.hide,
+      .preloader.preloader-hide {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+    <script>
+      (function () {
+        function hideLoader() {
+          var pre = document.querySelector(".preloader");
+          if (!pre) return;
+          pre.classList.add("hide", "preloader-hide");
+          pre.style.display = "none";
+        }
+
+        window.addEventListener("load", hideLoader);
+        setTimeout(hideLoader, 1200);
+      })();
+    </script>
+
+    <div id="app"></div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/facility-dashboard-shell.js"></script>
+    <script src="../assets/js/patient-followup-data.js"></script>
+    <script>
+      (function () {
+        var store = window.patientFollowUpData;
+        if (!store || !window.renderFacilityDashboardShell) return;
+
+        var params = new URLSearchParams(window.location.search);
+        var patientSlug = params.get("patient") || store.patient.slug;
+        var patientCode = params.get("code") || store.patient.code;
+        var patientName = store.helpers.humanizePatient(patientSlug);
+        var history = store.history.weight;
+
+        window.renderFacilityDashboardShell({
+          title: "Follow-Up History",
+          breadcrumbs: [
+            { label: "Home", href: "../index.html" },
+            { label: "Patients", href: "patients-list.html" },
+            { label: "Follow-Up History" }
+          ],
+          contentHtml:
+            '<div class="fu-shell">' +
+            '<div class="fu-chip-row">' +
+            '<span class="fu-chip"><i class="fi fi-rr-user"></i> Patient: <b id="fuHistoryPatient"></b></span>' +
+            '<span class="fu-chip"><i class="fi fi-rr-file"></i> Report: <b id="fuHistoryReport"></b></span>' +
+            '<span class="fu-chip"><i class="fi fi-rr-clock"></i> Latest change: <b id="fuHistoryLatest"></b></span>' +
+            "</div>" +
+            '<section class="fu-history-hero">' +
+            '<div class="fu-history-hero-top">' +
+            "<div>" +
+            '<h3 id="fuHistoryPlanName"></h3>' +
+            '<p><b id="fuHistoryDoctor"></b><br /><span id="fuHistoryHospital"></span></p>' +
+            '<div class="fu-plan-chip-row" id="fuHistoryChips"></div>' +
+            "</div>" +
+            '<a class="fu-btn is-primary" href="#" data-bs-toggle="modal" data-bs-target="#fuPackageModal"><i class="fi fi-rr-document"></i>View package details</a>' +
+            "</div>" +
+            "</section>" +
+            '<section class="fu-card">' +
+            '<div class="fu-card-head">' +
+            "<div>" +
+            "<h3>Plan and clinical updates</h3>" +
+            "<p>Every change below shows what was updated, why it changed, and which doctor is responsible for that step.</p>" +
+            "</div>" +
+            '<span class="fu-count" id="fuHistoryCount"></span>' +
+            "</div>" +
+            '<div class="fu-card-body"><div class="fu-timeline" id="fuHistoryTimeline"></div></div>' +
+            "</section>" +
+            '<div class="modal fade" id="fuPackageModal" tabindex="-1" aria-hidden="true">' +
+            '<div class="modal-dialog modal-dialog-scrollable modal-lg"><div class="modal-content">' +
+            '<div class="modal-header"><div><h5 class="modal-title">Package details</h5><p class="text-grey mb-0" id="fuPackageDescription"></p></div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>' +
+            '<div class="modal-body"><ul class="fu-package-list" id="fuPackageList"></ul></div>' +
+            "</div></div></div>" +
+            "</div>"
+        });
+
+        document.getElementById("fuHistoryPatient").textContent = patientName;
+        document.getElementById("fuHistoryReport").textContent = history.reportLabel;
+        document.getElementById("fuHistoryLatest").textContent = history.latestChange;
+        document.getElementById("fuHistoryPlanName").textContent = history.planName;
+        document.getElementById("fuHistoryDoctor").textContent = history.doctor;
+        document.getElementById("fuHistoryHospital").textContent = history.hospital;
+        document.getElementById("fuHistoryCount").textContent = history.updates.length + " updates";
+        document.getElementById("fuPackageDescription").textContent = history.packageDescription;
+
+        document.getElementById("fuHistoryChips").innerHTML = history.planChips
+          .map(function (item) {
+            return '<span class="fu-plan-chip">' + item + "</span>";
+          })
+          .join("");
+
+        document.getElementById("fuPackageList").innerHTML = history.packageDetails
+          .map(function (item) {
+            return (
+              '<li class="fu-package-item"><span>' +
+              item.label +
+              "</span><strong>" +
+              item.value +
+              "</strong></li>"
+            );
+          })
+          .join("");
+
+        document.getElementById("fuHistoryTimeline").innerHTML = history.updates
+          .map(function (update) {
+            var toneClass = "";
+            if (update.tone === "request") toneClass = " is-request";
+            if (update.tone === "meal") toneClass = " is-meal";
+
+            return (
+              '<article class="fu-timeline-item">' +
+              '<div class="fu-timeline-top">' +
+              '<span class="fu-tone' + toneClass + '">' + update.tag + "</span>" +
+              '<span class="fu-timeline-date">' + update.date + "</span>" +
+              "</div>" +
+              '<h4 class="fu-timeline-title">' + update.title + "</h4>" +
+              '<div class="fu-detail-grid">' +
+              update.details
+                .map(function (detail) {
+                  return (
+                    '<div class="fu-detail-box"><span>' +
+                    detail.label +
+                    "</span><strong>" +
+                    detail.value +
+                    "</strong></div>"
+                  );
+                })
+                .join("") +
+              "</div>" +
+              '<p class="fu-history-note">Responsible doctor: <b>' + update.doctor + "</b></p>" +
+              "</article>"
+            );
+          })
+          .join("");
+      })();
+    </script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+  </body>
+</html>

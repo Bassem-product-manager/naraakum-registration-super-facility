@@ -1,0 +1,67 @@
+.logo {
+  img {
+    width: 9.60256rem;
+    height: 2.92831rem;
+    flex-shrink: 0;
+  }
+}
+
+.sticky-navigation {
+  padding: 2.5rem 1.25rem;
+  transition: padding 0.3s ease;
+  position: fixed;
+  background-color: #fff;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .nav-pills-side {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      .nav-pills {
+        gap: 0;
+        .nav-item {
+          .nav-link {
+            height: $value-40 !important;
+            font-size: $fsize-16 !important;
+            border-radius: 100rem !important;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            border-color: #fff;
+            &:hover {
+              color: $secondary-500;
+            }
+          }
+          .active {
+            color: $secondary-600;
+            border-color: $secondary-500;
+            font-weight: 500 !important;
+            background-color: $secondary-50;
+          }
+        }
+        display: none;
+        @media screen and (min-width: 820px) {
+          display: flex;
+        }
+      }
+      .btn-40 {
+        width: 9.0625rem;
+      }
+    }
+  }
+}
+.navClear {
+  height: 8.1rem;
+}
+
+// -- nav when scroll
+.nav-shadow {
+  padding: 1rem !important;
+  box-shadow: 0rem 0rem 0.6rem rgba(0, 0, 0, 0.1);
+}

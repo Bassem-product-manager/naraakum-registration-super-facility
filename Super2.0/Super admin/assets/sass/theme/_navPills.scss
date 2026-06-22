@@ -1,0 +1,17 @@
+.nav-pills {
+  gap: 0.8rem;
+  padding-top: 0.5rem;
+  .nav-item {
+    .nav-link {
+      padding: 0.5rem 1rem 0.4rem 1rem;
+      border-radius: $value-12;
+      border: 1px solid #ddd;
+      color: $primary-500;
+      // background-color: #e9eeef;
+    }
+    .active {
+      background-color: $primary-500;
+      color: #fff;
+    }
+  }
+}

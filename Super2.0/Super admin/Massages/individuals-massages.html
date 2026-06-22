@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naraakum | Individuals Messages</title>
+  <meta name="description" content="Naraakum" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+  <link rel="manifest" href="../assets/images/site.webmanifest" />
+  <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+  <style>
+    :root{--nk-teal:#0f8c8c;--nk-soft:rgba(15,140,140,.08);--bd:#e2e8f0;--txt:#1e293b;--muted:#64748b}
+    .facility-line{display:flex;justify-content:center;margin-top:6px}.facility-name{font-size:14px;font-weight:900;color:#0b6f6f;margin:0}
+    .ksa-clock{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;border:1px solid rgba(16,24,40,.1);background:#fff;border-radius:12px;font-weight:900;font-size:12px}
+    .ksa-clock .tz{color:var(--nk-teal);font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06)}
+    .switch-account-item{display:flex;align-items:center;gap:10px}.switch-account-item i{color:var(--nk-teal)}
+            .msg-shell{background:#fff;border:1px solid var(--bd);border-radius:16px;display:flex;flex-direction:column;height:100%;overflow:hidden}
+    .msg-head{padding:16px 20px;border-bottom:1px solid var(--bd);font-weight:800;color:var(--txt)}
+    .msg-search{padding:12px 20px;border-bottom:1px solid var(--bd);background:#f8fafc}.search-wrap{position:relative;max-width:380px}
+    .search-wrap i{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:#94a3b8}.search-wrap input{padding-left:32px;height:36px}
+    .msg-body{display:flex;flex:1;min-height:0}.list-pane{width:340px;border-right:1px solid var(--bd);display:flex;flex-direction:column}.list-title{padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--bd);font-size:12px;font-weight:800;color:var(--muted)}
+    .conv-list{list-style:none;padding:0;margin:0;overflow:auto;flex:1}.conv-item{display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid #f1f5f9;cursor:pointer}.conv-item.active{background:var(--nk-soft)}
+    .av{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#0f8c8c,#0b6f6f);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:0 0 auto;position:relative}
+    .on{position:absolute;right:-2px;bottom:-2px;width:9px;height:9px;border-radius:50%;background:#22c55e;border:2px solid #fff}
+    .ci{flex:1;min-width:0}.row-top{display:flex;justify-content:space-between;gap:8px}.name{font-weight:800;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tm{font-size:12px;color:#94a3b8}
+    .pv{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.tag{font-size:10px;padding:2px 7px;border-radius:8px;background:#e0f2fe;color:#0369a1;font-weight:800;display:inline-block;margin-top:4px}
+    .chat-pane{flex:1;display:flex;flex-direction:column;min-width:0}.empty{margin:auto;text-align:center;padding:24px;color:var(--muted)}
+    .chat-top{padding:12px 20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}.who{display:flex;align-items:center;gap:10px}.back{display:none;border:none;background:none}
+    .msgs{flex:1;overflow:auto;padding:18px;background:#f8fafc;display:flex;flex-direction:column;gap:12px}.d{align-self:center;padding:3px 10px;border:1px solid var(--bd);border-radius:999px;font-size:11px;color:#94a3b8;background:#fff}
+    .m{max-width:78%}.m.sent{align-self:flex-end}.b{padding:9px 12px;border-radius:10px;font-size:14px}.m.recv .b{background:#fff;border:1px solid var(--bd)}.m.sent .b{background:#0f8c8c;color:#fff}.t{font-size:11px;color:#94a3b8;margin-top:3px}
+    .foot{padding:12px 16px;border-top:1px solid var(--bd)}.in{display:flex;gap:8px;align-items:center;border:1px solid var(--bd);border-radius:999px;padding:4px 6px;background:#f1f5f9}
+    .in input{border:none;background:transparent;flex:1;outline:none}.btnx{width:34px;height:34px;border:none;border-radius:50%;background:#fff}.send{background:#0f8c8c;color:#fff}
+    @media(max-width:992px){.list-pane{width:100%}.chat-pane{position:absolute;inset:0;background:#fff;transform:translateX(100%);transition:.25s}.msg-shell.open .chat-pane{transform:none}.back{display:block}}
+  </style>
+</head>
+<body data-menu="menu-messages">
+  <div class="preloader"></div>
+  <div id="full-container">
+    <div id="sidebar-slot" data-base="../"></div>
+
+    <main class="main-page" style="display:flex;flex-direction:column;overflow:hidden">
+      <header class="page-header">
+        <div class="page-name"><button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button><h2>Individuals Messages</h2></div>
+        <div class="member-side d-flex align-items-center gap-2">
+          <div class="Orders notifcation-box dropdown"><div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">Notifications <span class="fsize-12 surface-secondary-400">0</span></div></div>
+          <div class="ksa-clock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+          <div class="language-box"><a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a><a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a></div>
+          <div class="user dropdown"><figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"><img src="../assets/images/avatar.svg" alt="avatar" /></figure><ul class="dropdown-menu"><li><div class="p-12 pb-0"><b class="fsize-14 semiBold">Super Admin</b><p class="fsize-12 text-grey">Admin / System Dashboard</p></div></li><div class="dropdown-divider"></div><li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li><li><a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html"><i class="fi fi-rr-refresh"></i><span>Switch Account</span></a></li><div class="dropdown-divider"></div><li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li></ul></div>
+        </div>
+      </header>
+
+      <div class="page-root"><nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item active" aria-current="page">Messages</li><li class="breadcrumb-item active" aria-current="page">Individuals Messages</li></ol></nav></div>
+
+      <div class="page-content" style="flex:1;overflow:hidden;display:flex;flex-direction:column;padding-bottom:20px">
+        <div class="msg-shell" id="dash">
+          <div class="msg-head">Individuals Messages</div>
+          <div class="msg-search"><div class="search-wrap"><i class="fi fi-rr-search"></i><input id="q" class="form-control" type="text" placeholder="Search individuals..." /></div></div>
+          <div class="msg-body">
+            <div class="list-pane"><div class="list-title">Individuals Conversations</div><ul id="list" class="conv-list"></ul></div>
+            <div class="chat-pane">
+              <div id="empty" class="empty"><h4>Select an Individual Conversation</h4><div>Choose an individual provider thread from the left to manage messages.</div></div>
+              <div id="chat" style="display:none;flex-direction:column;height:100%">
+                <div class="chat-top"><div class="who"><button id="back" class="back"><i class="fi fi-rr-arrow-left"></i></button><div class="av" id="ha"></div><div><div class="name" id="hn"></div><div class="tm" id="hr"></div></div></div><button class="btnx"><i class="fi fi-rr-info"></i></button></div>
+                <div id="msgs" class="msgs"></div>
+                <div class="foot"><div class="in"><button class="btnx"><i class="fi fi-rr-clip"></i></button><input id="msgIn" type="text" placeholder="Type a message..." /><button id="send" class="btnx send"><i class="fi fi-rr-paper-plane"></i></button></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/js/jquery-3.4.1.min.js"></script>
+  <script src="../assets/js/bootstrap.bundle.min.js"></script>
+  <script src="../assets/js/includes.js"></script>
+<script src="../assets/js/adminSideMenu.js"></script>
+  <script>
+    const conversations=[{"id":"i1","type":"Individual","name":"Dr. Ahmed Salem","role":"Home Care Specialist","time":"10:09 AM","preview":"I have updated todays visit availability.","unread":true,"online":true,"initials":"AS","messages":[{"from":"them","text":"I have updated todays visit availability.","time":"10:09 AM"},{"from":"me","text":"Received. We will sync bookings in 15 minutes.","time":"10:11 AM"}]},{"id":"i2","type":"Individual","name":"Nurse Rana Adel","role":"Private Nursing","time":"Yesterday","preview":"Can I increase my evening slots?","unread":false,"online":false,"initials":"RA","messages":[{"from":"them","text":"Can I increase my evening slots next week?","time":"06:30 PM"}]}];
+    const s={id:null,q:""};
+    const e={list:document.getElementById("list"),q:document.getElementById("q"),dash:document.getElementById("dash"),empty:document.getElementById("empty"),chat:document.getElementById("chat"),msgs:document.getElementById("msgs"),hn:document.getElementById("hn"),hr:document.getElementById("hr"),ha:document.getElementById("ha"),msgIn:document.getElementById("msgIn"),send:document.getElementById("send"),back:document.getElementById("back")};
+    function list(){e.list.innerHTML="";conversations.filter(c=>(`${c.name} ${c.preview} ${c.role}`).toLowerCase().includes(s.q)).forEach(c=>{const li=document.createElement("li");li.className=`conv-item ${s.id===c.id?"active":""}`;li.dataset.id=c.id;li.innerHTML=`<div class="av">${c.initials}${c.online?'<span class="on"></span>':""}</div><div class="ci"><div class="row-top"><span class="name">${c.name}</span><span class="tm">${c.time}</span></div><div class="pv">${c.preview}</div><span class="tag">${c.type}</span></div>`;e.list.appendChild(li)});}
+    function openChat(id){s.id=id;const c=conversations.find(x=>x.id===id);if(!c)return;c.unread=false;list();e.empty.style.display="none";e.chat.style.display="flex";e.dash.classList.add("open");e.hn.textContent=c.name;e.hr.textContent=c.role;e.ha.textContent=c.initials;render(c)}
+    function render(c){e.msgs.innerHTML='<div class="d">Today</div>';c.messages.forEach(m=>{const mine=m.from==="me";const row=document.createElement("div");row.className=`m ${mine?"sent":"recv"}`;row.innerHTML=`<div class="b">${m.text}</div><div class="t">${m.time}</div>`;e.msgs.appendChild(row)});e.msgs.scrollTop=e.msgs.scrollHeight}
+    function send(){const t=e.msgIn.value.trim();if(!t||!s.id)return;const c=conversations.find(x=>x.id===s.id);const tm=new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});c.messages.push({from:"me",text:t,time:tm});c.preview=t;c.time=tm;e.msgIn.value="";render(c);list()}
+    document.addEventListener("DOMContentLoaded",()=>{list();e.list.addEventListener("click",x=>{const i=x.target.closest(".conv-item");if(i)openChat(i.dataset.id)});e.q.addEventListener("input",x=>{s.q=(x.target.value||"").toLowerCase();list()});e.send.addEventListener("click",send);e.msgIn.addEventListener("keypress",x=>{if(x.key==="Enter")send()});e.back.addEventListener("click",()=>e.dash.classList.remove("open"));});
+  </script>
+  <script>
+    (function(){const el=document.getElementById("ksaTime");if(!el)return;function t(){try{el.textContent=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Riyadh",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true}).format(new Date())}catch(e){el.textContent=new Date().toLocaleTimeString("en-US",{hour12:true})}}t();setInterval(t,1000)})();
+</script>
+</body>
+</html>
+
+

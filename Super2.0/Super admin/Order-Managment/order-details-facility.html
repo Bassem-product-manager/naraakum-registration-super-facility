@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Facility Order Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #101828;
+        white-space: nowrap;
+      }
+
+      .ksa-clock .tz {
+        color: var(--nk-green);
+        font-weight: 900;
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+
+      .details-wrap {
+        display: grid;
+        gap: 14px;
+      }
+
+      .details-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 30px;
+        padding: 0 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .status-pill.st-pending {
+        color: #b54708;
+        background: rgba(181, 71, 8, 0.08);
+        border-color: rgba(181, 71, 8, 0.2);
+      }
+
+      .status-pill.st-progress {
+        color: #175cd3;
+        background: rgba(23, 92, 211, 0.08);
+        border-color: rgba(23, 92, 211, 0.2);
+      }
+
+      .status-pill.st-completed {
+        color: #027a48;
+        background: rgba(2, 122, 72, 0.08);
+        border-color: rgba(2, 122, 72, 0.2);
+      }
+
+      .status-pill.st-cancelled {
+        color: #b42318;
+        background: rgba(180, 35, 24, 0.08);
+        border-color: rgba(180, 35, 24, 0.2);
+      }
+
+      .status-pill.st-failed {
+        color: #b42318;
+        background: rgba(240, 68, 56, 0.1);
+        border-color: rgba(240, 68, 56, 0.24);
+      }
+
+      .panel {
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .panel-title {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 992px) {
+        .summary-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 576px) {
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .summary-item {
+        border: 1px dashed rgba(16, 24, 40, 0.14);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .summary-item .k {
+        font-size: 11px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .summary-item .v {
+        margin-top: 4px;
+        font-size: 14px;
+        color: #101828;
+        font-weight: 900;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .mini-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .map-frame {
+        width: 100%;
+        height: 280px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .map-frame iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+      }
+
+      .stars {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 16px;
+      }
+
+      .stars .fi-sr-star {
+        color: #f5c542;
+      }
+
+      .stars .fi-rr-star {
+        color: #c9ced6;
+      }
+
+      .empty-state {
+        border: 1px dashed rgba(16, 24, 40, 0.2);
+        border-radius: 14px;
+        background: #fff;
+        text-align: center;
+        padding: 28px 16px;
+      }
+
+      @media print {
+        .side-menu,
+        .member-side,
+        #open-menu-btn,
+        .details-top .btn,
+        .breadcrumb {
+          display: none !important;
+        }
+
+        .main-page {
+          padding: 0 !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-orders" data-detail-mode="facility">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Order Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                    </span>
+                    <span class="fsize-12 text-grey">Preview details</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../template.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a id="breadcrumbOrdersLink" href="facilities-order.html">Order Management</a></li>
+              <li class="breadcrumb-item active" aria-current="page" id="breadcrumbProvider">Facility</li>
+              <li class="breadcrumb-item active" aria-current="page">Order Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="orderEmptyState" class="empty-state d-none">
+            <p class="mb-12">Order not found for this code.</p>
+            <a id="emptyBackLink" href="facilities-order.html" class="btn btn-primary btn-32">Back to Orders</a>
+          </div>
+
+          <div id="orderDetailsContent" class="details-wrap d-none">
+            <div class="details-top">
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <span class="status-pill st-pending" id="odStatusPill">Pending</span>
+                <span class="fsize-12 text-grey">Order No: <b id="odOrderNoTop">-</b></span>
+              </div>
+
+              <div class="d-flex align-items-center gap-2 flex-wrap">
+                <a href="#" id="downloadPdfBtn" class="btn btn-primary btn-32">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Download PDF</span>
+                </a>
+                <a id="backLink" href="facilities-order.html" class="btn btn-primary-revers btn-32">
+                  <i class="fi fi-rr-arrow-small-left"></i>
+                  <span>Back</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">Order Summary</h3>
+              <div class="summary-grid">
+                <div class="summary-item"><div class="k">Order No</div><div class="v" id="odOrderNo">-</div></div>
+                <div class="summary-item"><div class="k">Institution</div><div class="v" id="odInstitutionName">-</div></div>
+                <div class="summary-item"><div class="k">Institution Code</div><div class="v" id="odInstitutionCode">-</div></div>
+                <div class="summary-item"><div class="k">Provider Type</div><div class="v" id="odProviderType">-</div></div>
+                <div class="summary-item"><div class="k">Status</div><div class="v" id="odStatusText">-</div></div>
+                <div class="summary-item"><div class="k">Order Date</div><div class="v" id="odOrderDate">-</div></div>
+                <div class="summary-item"><div class="k">Scheduled Date</div><div class="v" id="odScheduledDate">-</div></div>
+                <div class="summary-item"><div class="k">Payment Method</div><div class="v" id="odPaymentMethod">-</div></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">Payment Breakdown</h3>
+              <div class="summary-grid">
+                <div class="summary-item"><div class="k">Price</div><div class="v" id="odSubtotal">-</div></div>
+                <div class="summary-item"><div class="k">VAT</div><div class="v" id="odVat">-</div></div>
+                <div class="summary-item"><div class="k">Fees</div><div class="v" id="odFees">-</div></div>
+                <div class="summary-item"><div class="k">Total</div><div class="v" id="odTotal">-</div></div>
+              </div>
+            </div>
+
+            <div id="serviceSection" class="panel d-none">
+              <h3 class="panel-title">Service Details</h3>
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight">
+                  <thead>
+                    <tr>
+                      <th>Quantity</th>
+                      <th>Service</th>
+                      <th>Status</th>
+                      <th>Provider Name</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th class="text-end">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="serviceTbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="medicationSection" class="panel d-none">
+              <h3 class="panel-title">Medication Details</h3>
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight">
+                  <thead>
+                    <tr>
+                      <th>Medication</th>
+                      <th>Form</th>
+                      <th>Strength</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                      <th>VAT</th>
+                      <th>Fulfillment</th>
+                      <th>Status</th>
+                      <th class="text-end">Total</th>
+                    </tr>
+                  </thead>
+                  <tbody id="medicationTbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="mini-grid">
+              <div class="panel">
+                <h3 class="panel-title">Patient Details</h3>
+                <div class="summary-grid">
+                  <div class="summary-item"><div class="k">Name</div><div class="v" id="odPatientName">-</div></div>
+                  <div class="summary-item"><div class="k">Age</div><div class="v" id="odPatientAge">-</div></div>
+                  <div class="summary-item"><div class="k">Phone</div><div class="v" id="odPatientPhone">-</div></div>
+                  <div class="summary-item"><div class="k">Gender</div><div class="v" id="odPatientGender">-</div></div>
+                  <div class="summary-item"><div class="k">Nationality</div><div class="v" id="odPatientNationality">-</div></div>
+                  <div class="summary-item"><div class="k">City</div><div class="v" id="odPatientCity">-</div></div>
+                </div>
+              </div>
+
+              <div class="panel">
+                <h3 class="panel-title">Provider Rating by Patient</h3>
+                <div id="ratingStars" class="mb-8"></div>
+                <p id="ratingComment" class="fsize-14 mb-8">-</p>
+                <div class="fsize-12 text-grey">Rated at: <span id="ratingDate">-</span></div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 class="panel-title">Patient Location</h3>
+              <div class="map-frame">
+                <iframe id="patientMap" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="about:blank" title="Patient Location"></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/order-details-data.js"></script>
+    <script src="../assets/js/order-details-view.js"></script>
+  </body>
+</html>

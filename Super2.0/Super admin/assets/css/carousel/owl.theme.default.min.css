@@ -1,0 +1,17 @@
+/* Error: expected ":".
+ *    ,
+ * 95 |   .owl-nav .owl-next,
+ *    |            ^
+ *    '
+ *   OneDrive\Desktop\competitions\assets\sass\carousel\owl.theme.default.min.css 95:12  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: expected ":".\a    \2577 \a 95 \2502    .owl-nav .owl-next,\a    \2502             ^\a    \2575 \a   OneDrive\\Desktop\\competitions\\assets\\sass\\carousel\\owl.theme.default.min.css 95:12  root stylesheet';
+}

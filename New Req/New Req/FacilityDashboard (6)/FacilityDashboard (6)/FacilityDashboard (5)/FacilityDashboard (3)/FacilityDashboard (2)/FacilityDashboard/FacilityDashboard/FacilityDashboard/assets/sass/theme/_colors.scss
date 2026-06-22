@@ -1,0 +1,251 @@
+/*====== primary =====*/
+$primary-50: #e4f1ef;
+$primary-100: #bbe1e2;
+$primary-200: #9ad2d3;
+$primary-300: #6cbebf;
+$primary-400: #4fb1b3;
+$primary-500: #239ea0; // defalut
+$primary-600: #209092;
+$primary-700: #197072;
+$primary-800: #135758;
+$primary-900: #0f4243;
+
+/*====== secondary =====*/
+$secondary-50: #e6f3ef;
+$secondary-100: #b0dbce;
+$secondary-200: #8acab7;
+$secondary-300: #54b196;
+$secondary-400: #33a281;
+$secondary-500: #008b62; // defalut
+$secondary-600: #007e59;
+$secondary-700: #006346;
+$secondary-800: #004c36;
+$secondary-900: #003a29;
+
+/*====== lightBlue =====*/
+$lightBlue-50: #fdfdfd;
+$lightBlue-100: #f8fafa;
+$lightBlue-200: #f5f7f8;
+$lightBlue-300: #f0f4f4;
+$lightBlue-400: #eff5f5;
+$lightBlue-500: #e9eeef; // defalut
+$lightBlue-600: #d4d9d9;
+$lightBlue-700: #a5a9aa;
+$lightBlue-800: #808383;
+$lightBlue-900: #626464;
+
+/*====== Grey =====*/
+$grey-50: #f1f1f1;
+$grey-100: #d4d4d4;
+$grey-200: #bfbfbf;
+$grey-300: #a2a2a2;
+$grey-400: #909090;
+$grey-500: #747474;
+$grey-600: #6a6a6a;
+$grey-700: #525252;
+$grey-800: #404040;
+$grey-900: #313131;
+
+/*====== charts =====*/
+$chart-green: #00be65;
+$chart-blue: #3592e5;
+$chart-red: #de574d;
+$chart-yellow: #ffd166;
+
+/*====== Surfaces =====*/
+$surface-primary: $primary-50;
+$surface-basic: #fff;
+$surface-secondary-1: $secondary-50;
+$surface-secondary-2: $secondary-100;
+
+/*====== text =====*/
+$text-brand: $primary-500;
+$text-primary: #1b1b1b;
+$text-body: #666;
+
+$red: #de574d;
+$border-color: #ddd;
+/*/*/
+
+body {
+  color: $text-primary;
+  background-color: $lightBlue-400;
+}
+.surface-basic {
+  background-color: #ffffff;
+}
+.surface-secondary-1 {
+  background-color: $surface-secondary-1;
+}
+.surface-secondary-2 {
+  background-color: $surface-secondary-2;
+}
+
+/*/*/
+
+.badge-green {
+  background-color: #f2fbfa;
+  color: #198754;
+}
+.badge-yellow {
+  background-color: #fbf8f2;
+  color: #b98000;
+}
+.badge-blue {
+  background-color: #f2f8fb;
+  color: #0377df;
+}
+
+.status {
+  padding: 0.1rem 0.5rem;
+  border-radius: 2rem;
+  min-width: 5rem;
+  display: inline-block;
+}
+.status-yellow {
+  color: #b98000;
+  // background-color: #fbf8f2;
+}
+
+.status-green {
+  color: #198754;
+  // background-color: #f2fbfa;
+}
+.status-red {
+  color: #de574d;
+  // background-color: #fdf6f6;
+}
+.status-blue {
+  color: #0377df;
+  // background-color: #fdf6f6;
+}
+
+/*/*/
+
+.text-brand {
+  color: $text-brand;
+}
+.text-secondary {
+  color: $text-body;
+}
+.text-red {
+  color: $red !important;
+}
+.text-orange {
+  color: orange;
+}
+
+/*/*/
+
+.be-yellow {
+  background-color: #b98000;
+}
+.bg-green {
+  background-color: #198754;
+}
+.bg-red {
+  background-color: #de574d;
+}
+.bg-blue {
+  background-color: #0377df;
+}
+
+.bg-yellow-light {
+  background-color: #fef2e6;
+}
+.bg-green-light {
+  background-color: #bde5e5;
+}
+.bg-semon-light {
+  background-color: #ffd4c9;
+}
+.bg-blue-light {
+  background-color: #d5ecf9;
+}
+
+/*/*/
+
+.text-primary {
+  color: $text-primary;
+}
+.text-yellow {
+  color: #b98000;
+}
+.text-green {
+  color: #198754;
+}
+.text-red {
+  color: #de574d;
+}
+.text-blue {
+  color: #0377df;
+}
+.text-grey {
+  color: #666666;
+}
+.text-white {
+  color: #fff;
+}
+
+/*/*/
+
+.surface-primary-50 {
+  background-color: $primary-50;
+}
+.surface-primary-100 {
+  background-color: $primary-100;
+}
+.surface-primary-200 {
+  background-color: $primary-200;
+}
+.surface-primary-300 {
+  background-color: $primary-300;
+}
+.surface-primary-400 {
+  background-color: $primary-400;
+}
+.surface-primary-500 {
+  background-color: $primary-500;
+}
+
+/*/*/
+
+.surface-secondary-50 {
+  background-color: $secondary-50 !important;
+}
+.surface-secondary-100 {
+  background-color: $secondary-100 !important;
+}
+.surface-secondary-200 {
+  background-color: $secondary-200 !important;
+}
+.surface-secondary-300 {
+  background-color: $secondary-300 !important;
+}
+.surface-secondary-400 {
+  background-color: $secondary-400 !important;
+}
+.surface-secondary-500 {
+  background-color: $secondary-500 !important;
+}
+
+/*/*/
+
+.surface-light-50 {
+  background-color: $lightBlue-50;
+}
+.surface-light-100 {
+  background-color: $lightBlue-100;
+}
+.surface-light-200 {
+  background-color: $lightBlue-200;
+}
+.surface-light-300 {
+  background-color: $lightBlue-300;
+}
+.surface-light-400 {
+  background-color: $lightBlue-400;
+}
+.surface-light-500 {
+  background-color: $lightBlue-500;
+}

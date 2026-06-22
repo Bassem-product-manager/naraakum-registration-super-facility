@@ -1,0 +1,121 @@
+.chat-list {
+  max-height: 30rem;
+  overflow: auto;
+  .nav-pills {
+    gap: 0rem;
+    display: flex;
+    flex-direction: column;
+    .nav-item {
+      .nav-link {
+        border-radius: $value-12;
+        padding: $value-8;
+        width: 100%;
+        display: flex;
+        gap: $value-12;
+        cursor: pointer;
+        align-items: center;
+        margin: 0px;
+        color: $text-primary;
+        border: 0rem;
+
+        img {
+          width: 2.6rem;
+          height: 2.6rem;
+          border-radius: 100%;
+          object-fit: contain;
+          flex-shrink: 0;
+        }
+      }
+      .active {
+        background-color: $lightBlue-300;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .chat-figure {
+    text-align: center !important;
+    img {
+      margin: 0 auto;
+    }
+    align-items: center !important;
+    figcaption {
+      display: none !important;
+    }
+  }
+}
+
+/*/*/
+
+.chat-room {
+  .tab-content {
+    background-color: $lightBlue-400;
+    border: 0.1rem solid $lightBlue-400;
+
+    border-radius: $value-12;
+    overflow: hidden;
+
+    .tab-pane {
+      min-height: 29rem;
+
+      .chat-room-head {
+        padding: $value-8 $value-12;
+        background-color: $lightBlue-50;
+        border-bottom: 0.1rem solid $lightBlue-500;
+        & > div {
+          display: flex;
+          gap: $value-8;
+          align-items: center;
+          img {
+            width: 2rem;
+            height: 2rem;
+            object-fit: contain;
+            flex-shrink: 0;
+            border-radius: 100%;
+          }
+        }
+      }
+
+      .chat-room-content {
+        height: 26rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+        .messages-items {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          padding: $value-20;
+          .item {
+            margin-bottom: $value-12;
+            span {
+              background-color: #fff;
+              padding: $value-4 $value-16;
+              border-radius: 100rem;
+              border-bottom-left-radius: 0rem;
+              font-size: 0.84rem;
+              font-weight: 500;
+              border: 0.1rem solid $lightBlue-600;
+            }
+            p {
+              font-size: 0.6rem;
+              color: $lightBlue-800;
+              margin-top: $value-8;
+            }
+          }
+          .reverse {
+            text-align: right;
+            span {
+              border-bottom-left-radius: 100rem !important;
+              border-bottom-right-radius: 0rem !important;
+              background-color: $secondary-100;
+            }
+          }
+        }
+      }
+    }
+  }
+}

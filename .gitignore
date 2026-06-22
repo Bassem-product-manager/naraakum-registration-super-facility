@@ -1,0 +1,11 @@
+node_modules/
+output/
+test-results/
+.playwright/
+.cache/
+.vscode/
+*.log
+Thumbs.db
+.DS_Store
+system_tune_backups/
+*.reg

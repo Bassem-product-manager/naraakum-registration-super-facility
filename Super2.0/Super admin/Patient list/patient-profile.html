@@ -1,0 +1,531 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Patient Profile</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e7eff1;
+      }
+
+      .profile-wrap {
+        display: grid;
+        gap: 16px;
+      }
+
+      .profile-card {
+        border: 1px solid var(--nk-border);
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .profile-card-top {
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--nk-border);
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .patient-head {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .patient-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid var(--nk-border);
+      }
+
+      .patient-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .patient-name {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .patient-sub {
+        margin: 2px 0 0;
+        font-size: 12px;
+        color: #6b7c86;
+      }
+
+      .profile-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .pill-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid #9fd0d6;
+        background: #f2fbfc;
+        color: #0b6b78;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .pill-btn--ghost {
+        background: #fff;
+        border-color: #cde3e7;
+      }
+
+      .patient-info-grid {
+        padding: 14px;
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 10px;
+      }
+
+      .info-item {
+        grid-column: span 3;
+        border: 1px dashed #d7e6ea;
+        border-radius: 10px;
+        padding: 8px 10px;
+      }
+
+      .info-item .lbl {
+        display: block;
+        font-size: 11px;
+        color: #6b7c86;
+      }
+
+      .info-item .val {
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 10px;
+      }
+
+      .kpi-item {
+        grid-column: span 3;
+        border: 1px solid var(--nk-border);
+        border-radius: 10px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .kpi-item .k {
+        font-size: 11px;
+        color: #6b7c86;
+      }
+
+      .kpi-item .v {
+        font-size: 17px;
+        font-weight: 900;
+        color: #1b2b34;
+      }
+
+      .tabs-head {
+        border: 1px solid var(--nk-border);
+        background: #fff;
+        border-radius: 12px;
+        padding: 8px;
+      }
+
+      .tabs-nav {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .tab-btn {
+        border: 1px solid #cde3e7;
+        background: #fff;
+        color: #345;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tab-btn[aria-selected="true"] {
+        background: var(--nk-green);
+        border-color: var(--nk-green);
+        color: #fff;
+      }
+
+      .tab-panel {
+        border: 1px solid var(--nk-border);
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px;
+      }
+
+      .tab-panel[hidden] {
+        display: none;
+      }
+
+      .status-filters {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+
+      .status-filter {
+        border: 1px solid #cde3e7;
+        background: #fff;
+        border-radius: 999px;
+        padding: 5px 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .status-filter.is-active {
+        background: #f2fbfc;
+        color: #0b6b78;
+        border-color: #9fd0d6;
+      }
+
+      .table-compact {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      .table-compact th,
+      .table-compact td {
+        border-bottom: 1px solid var(--nk-border);
+        padding: 9px 8px;
+        font-size: 12px;
+        vertical-align: top;
+      }
+
+      .table-compact th {
+        font-weight: 800;
+        color: #2a3a42;
+        background: #f7fbfc;
+      }
+
+      .table-compact tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .record-type-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 9px;
+        border-radius: 999px;
+        border: 1px solid #cde3e7;
+        background: #f7fbfc;
+        font-size: 11px;
+        font-weight: 800;
+        color: #0b6b78;
+        text-transform: capitalize;
+      }
+
+      .empty-state {
+        padding: 20px;
+        text-align: center;
+        color: #6b7c86;
+      }
+
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+
+      @media (max-width: 992px) {
+        .info-item,
+        .kpi-item {
+          grid-column: span 6;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .info-item,
+        .kpi-item {
+          grid-column: span 12;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-patients">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Patient Profile</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb" id="profileBreadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="patients-list.html">Patients List</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Patient Profile</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div id="profileEmpty" class="empty-state" hidden>
+            Invalid patient code. <a href="patients-list.html">Back to Patients List</a>
+          </div>
+
+          <div class="profile-wrap" id="profileWrap">
+            <section class="profile-card">
+              <div class="profile-card-top">
+                <div class="patient-head">
+                  <div class="patient-avatar"><img src="../assets/images/avatar.svg" alt="patient" /></div>
+                  <div>
+                    <p class="patient-name" id="profileName">-</p>
+                    <p class="patient-sub" id="profileCodeLine">Patient Code: -</p>
+                  </div>
+                </div>
+                <div class="profile-actions">
+                  <a class="pill-btn pill-btn--ghost" id="openMedicalHistory" href="#">
+                    <i class="fi fi-rr-notebook"></i>
+                    Medical History
+                  </a>
+                  <a class="pill-btn" href="patients-list.html">
+                    <i class="fi fi-rr-arrow-small-left"></i>
+                    Back to List
+                  </a>
+                </div>
+              </div>
+
+              <div class="patient-info-grid">
+                <div class="info-item"><span class="lbl">Phone</span><div class="val" id="profilePhone">-</div></div>
+                <div class="info-item"><span class="lbl">Gender</span><div class="val" id="profileGender">-</div></div>
+                <div class="info-item"><span class="lbl">Nationality</span><div class="val" id="profileNationality">-</div></div>
+                <div class="info-item"><span class="lbl">City</span><div class="val" id="profileCity">-</div></div>
+              </div>
+            </section>
+
+            <section class="kpi-grid" id="profileKpis">
+              <div class="kpi-item"><div class="k">Total Orders</div><div class="v" id="kpiTotalOrders">0</div></div>
+              <div class="kpi-item"><div class="k">Pending</div><div class="v" id="kpiPending">0</div></div>
+              <div class="kpi-item"><div class="k">Ongoing</div><div class="v" id="kpiOngoing">0</div></div>
+              <div class="kpi-item"><div class="k">Completed</div><div class="v" id="kpiCompleted">0</div></div>
+              <div class="kpi-item"><div class="k">Canceled</div><div class="v" id="kpiCanceled">0</div></div>
+              <div class="kpi-item"><div class="k">Total Visits</div><div class="v" id="kpiVisits">0</div></div>
+              <div class="kpi-item"><div class="k">Total Services</div><div class="v" id="kpiServices">0</div></div>
+              <div class="kpi-item"><div class="k">Total Meds</div><div class="v" id="kpiMeds">0</div></div>
+            </section>
+
+            <section class="tabs-head">
+              <div class="tabs-nav" id="profileTabs" role="tablist" aria-label="Patient profile tabs">
+                <button type="button" class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-orders" data-tab="orders" id="tab-orders">Orders</button>
+                <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-visits" data-tab="visits" id="tab-visits">Visits / Medical Records</button>
+                <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-medications" data-tab="medications" id="tab-medications">Medications</button>
+                <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-services" data-tab="services" id="tab-services">Services</button>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="panel-orders" role="tabpanel" aria-labelledby="tab-orders">
+              <div class="status-filters" id="orderStatusFilters">
+                <button type="button" class="status-filter is-active" data-status="all">All</button>
+                <button type="button" class="status-filter" data-status="pending">Pending</button>
+                <button type="button" class="status-filter" data-status="ongoing">Ongoing</button>
+                <button type="button" class="status-filter" data-status="completed">Completed</button>
+                <button type="button" class="status-filter" data-status="canceled">Canceled</button>
+              </div>
+              <div class="table-responsive">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Order No</th>
+                      <th>Status</th>
+                      <th>Item Type</th>
+                      <th>Created At</th>
+                      <th>Meds</th>
+                      <th>Services</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ordersTabBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="panel-visits" role="tabpanel" aria-labelledby="tab-visits" hidden>
+              <div class="table-responsive">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Record ID</th>
+                      <th>Record Type</th>
+                      <th>Provider</th>
+                      <th>Hospital</th>
+                      <th>Date</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="visitsTabBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="panel-medications" role="tabpanel" aria-labelledby="tab-medications" hidden>
+              <div class="table-responsive">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Medication</th>
+                      <th>Qty</th>
+                      <th>Pharmacy</th>
+                      <th>Date</th>
+                      <th>Order Code</th>
+                    </tr>
+                  </thead>
+                  <tbody id="medicationsTabBody"></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="tab-panel" id="panel-services" role="tabpanel" aria-labelledby="tab-services" hidden>
+              <div class="table-responsive">
+                <table class="table-compact">
+                  <thead>
+                    <tr>
+                      <th>Service</th>
+                      <th>Qty</th>
+                      <th>Type</th>
+                      <th>Date</th>
+                      <th>Linked Order</th>
+                    </tr>
+                  </thead>
+                  <tbody id="servicesTabBody"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/data.js"></script>
+    <script src="../assets/js/patient-profile.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (err) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+  </body>
+</html>

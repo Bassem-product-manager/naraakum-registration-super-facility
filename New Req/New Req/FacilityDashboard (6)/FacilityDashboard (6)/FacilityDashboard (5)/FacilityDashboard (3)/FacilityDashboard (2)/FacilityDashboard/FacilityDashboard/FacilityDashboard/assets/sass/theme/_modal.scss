@@ -1,0 +1,16 @@
+.modal {
+  .modal-content {
+    border: none !important;
+    box-shadow: 0rem 1rem 1rem rgba(0, 0, 0, 0.1);
+  }
+  .modal-header {
+    background-color: $secondary-50 !important;
+
+    padding-top: $value-12;
+    padding-bottom: $value-12;
+  }
+}
+
+.modal-xl {
+  max-width: 60rem;
+}

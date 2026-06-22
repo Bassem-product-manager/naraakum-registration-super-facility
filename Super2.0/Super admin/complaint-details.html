@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Ticket Details</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+      }
+
+      body {
+        font-family: "Cairo", "Segoe UI", Tahoma, sans-serif;
+      }
+
+      .details-header {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        padding: 16px;
+      }
+
+      .details-header-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .ticket-meta-top {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .ticket-id-chip {
+        display: inline-flex;
+        align-items: center;
+        height: 28px;
+        padding: 0 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.24);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0b6f6f;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .badge-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 92px;
+        height: 28px;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 900;
+        padding: 0 10px;
+      }
+
+      .st-new {
+        color: #175cd3;
+        background: #eff8ff;
+        border-color: #b2ddff;
+      }
+
+      .st-in-progress {
+        color: #b54708;
+        background: #fffaeb;
+        border-color: #fedf89;
+      }
+
+      .st-resolved {
+        color: #067647;
+        background: #ecfdf3;
+        border-color: #abefc6;
+      }
+
+      .st-closed {
+        color: #6941c6;
+        background: #f4f3ff;
+        border-color: #d9d6fe;
+      }
+
+      .pr-low {
+        color: #067647;
+        background: rgba(18, 183, 106, 0.1);
+        border-color: rgba(18, 183, 106, 0.24);
+      }
+
+      .pr-medium {
+        color: #b54708;
+        background: rgba(247, 144, 9, 0.1);
+        border-color: rgba(247, 144, 9, 0.24);
+      }
+
+      .pr-high {
+        color: #b42318;
+        background: rgba(240, 68, 56, 0.1);
+        border-color: rgba(240, 68, 56, 0.24);
+      }
+
+      .subject-title {
+        margin: 10px 0 8px;
+        font-size: 26px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .meta-line {
+        color: #667085;
+        font-size: 13px;
+        font-weight: 700;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: 1.7fr 1fr;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .nk-card {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+
+      .nk-card h4 {
+        margin: 0 0 10px;
+        font-size: 16px;
+        font-weight: 900;
+        color: #101828;
+      }
+
+      .message-content {
+        font-size: 14px;
+        line-height: 1.7;
+        white-space: pre-line;
+        color: #344054;
+        margin: 0;
+      }
+
+      .attachments-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .attachment-item {
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .attachment-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .thumb {
+        width: 44px;
+        height: 44px;
+        border-radius: 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #f9fafb;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        color: #344054;
+        font-size: 11px;
+        overflow: hidden;
+      }
+
+      .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .attachment-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #101828;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .attachment-meta {
+        margin-top: 2px;
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .timeline {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .timeline li {
+        position: relative;
+        padding-left: 18px;
+      }
+
+      .timeline li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 6px;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: var(--nk-green);
+      }
+
+      .timeline .event-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #101828;
+      }
+
+      .timeline .event-time {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .assign-label {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .assigned-box {
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .assigned-box.is-unassigned {
+        color: #98a2b3;
+        background: #f9fafb;
+        border-style: dashed;
+      }
+
+      .assigned-box.is-assigned {
+        color: #0b6f6f;
+        background: rgba(15, 140, 140, 0.07);
+        border-color: rgba(15, 140, 140, 0.22);
+      }
+
+      .action-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .action-title i {
+        color: var(--nk-green);
+      }
+
+      .reply-form textarea {
+        min-height: 120px;
+        resize: vertical;
+        border-radius: 12px;
+      }
+
+      .conversation {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .bubble {
+        max-width: 92%;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 700;
+        line-height: 1.5;
+      }
+
+      .bubble.customer {
+        align-self: flex-start;
+        background: #f2f4f7;
+        color: #344054;
+        border: 1px solid #e4e7ec;
+      }
+
+      .bubble.agent {
+        align-self: flex-end;
+        background: rgba(15, 140, 140, 0.09);
+        color: #0b6f6f;
+        border: 1px solid rgba(15, 140, 140, 0.24);
+      }
+
+      .bubble-meta {
+        margin-top: 5px;
+        font-size: 11px;
+        opacity: 0.75;
+      }
+
+      .quick-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .assign-actions {
+        display: block;
+      }
+
+      .assign-actions .btn {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .btn-close-ticket {
+        height: 38px;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .btn-close-ticket.is-danger-action {
+        border: 1px solid rgba(180, 35, 24, 0.24) !important;
+        background: #b42318 !important;
+        color: #fff !important;
+        box-shadow: 0 8px 18px rgba(180, 35, 24, 0.14);
+      }
+
+      .btn-close-ticket.is-closed-action {
+        border-color: rgba(105, 65, 198, 0.24) !important;
+        background: #f4f3ff !important;
+        color: #6941c6 !important;
+        box-shadow: none;
+      }
+
+      .assign-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(16, 24, 40, 0.45);
+        z-index: 1050;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+      }
+
+      .assign-overlay.show {
+        display: flex;
+      }
+
+      .assign-panel {
+        width: min(640px, 100%);
+        max-height: 80vh;
+        overflow: auto;
+        background: #fff;
+        border-radius: 16px;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        padding: 14px;
+      }
+
+      .assign-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .assign-head h5 {
+        margin: 0;
+        font-weight: 900;
+      }
+
+      .agent-list {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .agent-item {
+        width: 100%;
+        border: 1px solid rgba(16, 24, 40, 0.12);
+        background: #fff;
+        border-radius: 12px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .agent-item:hover {
+        border-color: rgba(15, 140, 140, 0.3);
+        background: rgba(15, 140, 140, 0.04);
+      }
+
+      .agent-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+
+      .avatar-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.12);
+        color: #0b6f6f;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: 12px;
+      }
+
+      .agent-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: #101828;
+      }
+
+      .agent-role {
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      .status-note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #667085;
+        font-weight: 700;
+      }
+
+      @media (max-width: 992px) {
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-compliance">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base=""></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Ticket Details</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="template.html">Dashboard</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Compliance</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="complaints-admin.html">Complaints & Suggestions</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Ticket Details</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <section class="details-header">
+            <div class="details-header-top">
+              <div class="ticket-meta-top">
+                <span class="ticket-id-chip" id="ticketIdChip">-</span>
+                <span class="badge-pill st-new" id="statusPill">New</span>
+                <span class="badge-pill pr-low" id="priorityPill">Low</span>
+              </div>
+              <button id="closeTicketBtn" type="button" class="btn btn-primary-revers btn-close-ticket is-danger-action">
+                <i class="fi fi-rr-check-circle"></i>
+                <span>Close Ticket</span>
+              </button>
+            </div>
+            <h1 class="subject-title" id="subjectTitle">-</h1>
+            <div class="meta-line">
+              <span id="metaSubmittedBy">Submitted by: -</span>
+              <span id="metaContact">Contact: -</span>
+              <span id="metaChannel">Channel: -</span>
+              <span id="metaCreated">Created: -</span>
+            </div>
+          </section>
+
+          <section class="details-grid">
+            <div>
+              <article class="nk-card">
+                <h4>Message</h4>
+                <p class="message-content" id="messageText">-</p>
+              </article>
+
+              <article class="nk-card mt-16">
+                <h4>Attachments</h4>
+                <div class="attachments-list" id="attachmentsList"></div>
+              </article>
+
+              <article class="nk-card mt-16">
+                <h4>Activity / Timeline</h4>
+                <ul class="timeline" id="timelineList"></ul>
+              </article>
+            </div>
+
+            <div>
+              <article class="nk-card">
+                <h4 class="action-title"><i class="fi fi-rr-user-add"></i><span>Assign</span></h4>
+                <div class="assign-label">Assigned To</div>
+                <div class="assigned-box" id="assignedToBox">Unassigned</div>
+                <div class="assign-actions">
+                  <button id="openAssignBtn" type="button" class="btn btn-primary">
+                    <i class="fi fi-rr-user-add"></i>
+                    <span>Assign</span>
+                  </button>
+                </div>
+              </article>
+
+              <article class="nk-card mt-16">
+                <h4 class="action-title"><i class="fi fi-rr-comment"></i><span>Reply to Customer</span></h4>
+                <div class="reply-form">
+                  <textarea id="replyText" class="form-control" placeholder="Write your reply here..."></textarea>
+                  <div class="mt-10">
+                    <label class="fsize-12 text-grey mb-6 d-block">Attach file (optional)</label>
+                    <input id="attachInput" type="file" class="form-control" />
+                  </div>
+                  <div class="d-flex gap-2 mt-12">
+                    <button id="sendReplyBtn" type="button" class="btn btn-primary">
+                      <i class="fi fi-rr-paper-plane"></i>
+                      <span>Send Reply</span>
+                    </button>
+                    <button id="saveNoteBtn" type="button" class="btn btn-primary-revers">Save Note</button>
+                  </div>
+                  <p class="status-note" id="replyStatusNote"></p>
+                  <div id="conversation" class="conversation"></div>
+                </div>
+              </article>
+
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="assignOverlay" class="assign-overlay" aria-hidden="true">
+      <div class="assign-panel">
+        <div class="assign-head">
+          <h5>Select Support Agent</h5>
+          <button id="closeAssignBtn" class="btn btn-primary-revers btn-32" type="button">Close</button>
+        </div>
+        <div class="mt-10">
+          <input id="agentSearchInput" type="text" class="form-control" placeholder="Search by agent name or role" />
+        </div>
+        <div id="agentList" class="agent-list"></div>
+      </div>
+    </div>
+
+    <script src="assets/js/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/includes.js"></script>
+    <script src="assets/js/adminSideMenu.js"></script>
+    <script>
+      const tickets = [
+        {
+          id: "CMP-2026-000231",
+          name: "Al Noor Medical Center",
+          role: "Facility",
+          phone: "+966 50 243 1122",
+          email: "ops@alnoor-mc.sa",
+          subject: "Delay in claim approval for urgent case",
+          type: "Complaint",
+          status: "New",
+          priority: "High",
+          createdAt: "2026-02-15 09:12 AM",
+          assignedTo: "Unassigned",
+          channel: "Web",
+          message:
+            "Hello Team,\n\nWe submitted an urgent oncology claim yesterday, but approval is still pending and no reason is shown.\nPlease review this case as soon as possible because treatment scheduling is impacted.\n\nRegards,\nOperations Desk",
+          attachments: [
+            { name: "claim-reference-screenshot.png", type: "PNG", size: "1.3 MB", kind: "image" },
+            { name: "medical-priority-letter.pdf", type: "PDF", size: "842 KB", kind: "pdf" }
+          ],
+          timeline: [
+            { event: "Ticket Created", time: "2026-02-15 09:12 AM" },
+            { event: "Status set to New", time: "2026-02-15 09:13 AM" }
+          ],
+          conversation: []
+        },
+        {
+          id: "CMP-2026-000232",
+          name: "Safa Pharmacy",
+          role: "Pharmacy",
+          phone: "+966 55 734 9014",
+          email: "support@safapharm.sa",
+          subject: "Suggestion to add faster stock sync",
+          type: "Suggestion",
+          status: "In Progress",
+          priority: "Medium",
+          createdAt: "2026-02-15 11:28 AM",
+          assignedTo: "Lina Fares",
+          channel: "App",
+          message:
+            "We suggest adding a quick sync option for stock levels.\nThis helps pharmacies avoid rejecting prescriptions due to stale quantities.",
+          attachments: [{ name: "sync-flow-notes.pdf", type: "PDF", size: "532 KB", kind: "pdf" }],
+          timeline: [
+            { event: "Ticket Created", time: "2026-02-15 11:28 AM" },
+            { event: "Assigned to Lina Fares", time: "2026-02-15 12:04 PM" },
+            { event: "Status changed to In Progress", time: "2026-02-15 12:06 PM" }
+          ],
+          conversation: [
+            { side: "customer", text: "Can this be considered in your next update?", time: "2026-02-15 11:30 AM" },
+            { side: "agent", text: "Thanks for the input. We shared it with the product team.", time: "2026-02-15 12:20 PM" }
+          ]
+        },
+        {
+          id: "CMP-2026-000233",
+          name: "Mariam Al-Harbi",
+          role: "Client",
+          phone: "+966 54 141 1010",
+          email: "mariam.h@example.com",
+          subject: "Unable to upload insurance card image",
+          type: "Complaint",
+          status: "In Progress",
+          priority: "Medium",
+          createdAt: "2026-02-14 04:03 PM",
+          assignedTo: "Hassan Qasem",
+          channel: "Web",
+          message:
+            "I tried uploading my insurance card several times from the profile section.\nThe screen freezes after selecting image from my gallery.",
+          attachments: [{ name: "upload-error.jpg", type: "JPG", size: "927 KB", kind: "image" }],
+          timeline: [
+            { event: "Ticket Created", time: "2026-02-14 04:03 PM" },
+            { event: "Assigned to Hassan Qasem", time: "2026-02-14 04:20 PM" },
+            { event: "Reply sent to customer", time: "2026-02-14 04:36 PM" },
+            { event: "Status changed to In Progress", time: "2026-02-14 05:10 PM" }
+          ],
+          conversation: [
+            { side: "customer", text: "I still cannot upload from Android app version 4.2.", time: "2026-02-14 04:04 PM" },
+            { side: "agent", text: "Please update the app and retry. We fixed the upload issue.", time: "2026-02-14 04:36 PM" }
+          ]
+        }
+      ];
+
+      const agents = [
+        { name: "Lina Fares", role: "Senior Support Agent" },
+        { name: "Hassan Qasem", role: "Claims Support Specialist" },
+        { name: "Rana Al-Khatib", role: "Quality Assurance Agent" },
+        { name: "Sara Nabil", role: "Customer Success Officer" },
+        { name: "Yousef Salah", role: "Technical Support Agent" },
+        { name: "Omar Hendi", role: "Operations Support Agent" },
+        { name: "Maha Jaber", role: "Compliance Support Agent" },
+        { name: "Khaled Mansour", role: "Escalation Officer" }
+      ];
+
+      const statusClass = { "New": "st-new", "In Progress": "st-in-progress", "Closed": "st-closed" };
+      const priorityClass = { "Low": "pr-low", "Medium": "pr-medium", "High": "pr-high" };
+      const params = new URLSearchParams(window.location.search);
+      const ticketId = params.get("id") || "CMP-2026-000231";
+      const ticket = tickets.find((t) => t.id === ticketId) || tickets[0];
+
+      function syncTicketStatus() {
+        if (ticket.status === "Closed") return;
+        ticket.status = ticket.assignedTo === "Unassigned" ? "New" : "In Progress";
+      }
+
+      syncTicketStatus();
+
+      const ticketIdChip = document.getElementById("ticketIdChip");
+      const statusPill = document.getElementById("statusPill");
+      const priorityPill = document.getElementById("priorityPill");
+      const subjectTitle = document.getElementById("subjectTitle");
+      const metaSubmittedBy = document.getElementById("metaSubmittedBy");
+      const metaContact = document.getElementById("metaContact");
+      const metaChannel = document.getElementById("metaChannel");
+      const metaCreated = document.getElementById("metaCreated");
+      const messageText = document.getElementById("messageText");
+      const assignedToBox = document.getElementById("assignedToBox");
+      const attachmentsList = document.getElementById("attachmentsList");
+      const timelineList = document.getElementById("timelineList");
+      const conversation = document.getElementById("conversation");
+      const replyStatusNote = document.getElementById("replyStatusNote");
+
+      const assignOverlay = document.getElementById("assignOverlay");
+      const openAssignBtn = document.getElementById("openAssignBtn");
+      const closeAssignBtn = document.getElementById("closeAssignBtn");
+      const agentSearchInput = document.getElementById("agentSearchInput");
+      const agentList = document.getElementById("agentList");
+
+      const replyText = document.getElementById("replyText");
+      const sendReplyBtn = document.getElementById("sendReplyBtn");
+      const saveNoteBtn = document.getElementById("saveNoteBtn");
+      const closeTicketBtn = document.getElementById("closeTicketBtn");
+
+      function initials(name) {
+        return name
+          .split(" ")
+          .slice(0, 2)
+          .map((s) => s[0])
+          .join("")
+          .toUpperCase();
+      }
+
+      function nowLabel() {
+        return new Date().toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true
+        });
+      }
+
+      function renderHeader() {
+        ticketIdChip.textContent = ticket.id;
+        statusPill.textContent = ticket.status;
+        statusPill.className = `badge-pill ${statusClass[ticket.status] || "st-new"}`;
+        priorityPill.textContent = ticket.priority;
+        priorityPill.className = `badge-pill ${priorityClass[ticket.priority] || "pr-low"}`;
+        subjectTitle.textContent = ticket.subject;
+        metaSubmittedBy.textContent = `Submitted by: ${ticket.name} (${ticket.role})`;
+        metaContact.textContent = `Contact: ${ticket.phone} / ${ticket.email}`;
+        metaChannel.textContent = `Channel: ${ticket.channel}`;
+        metaCreated.textContent = `Created: ${ticket.createdAt}`;
+        messageText.textContent = ticket.message;
+        updateAssignedState();
+        updateCloseButton();
+      }
+
+      function updateAssignedState() {
+        const unassigned = ticket.assignedTo === "Unassigned";
+        assignedToBox.textContent = ticket.assignedTo;
+        assignedToBox.className = `assigned-box ${unassigned ? "is-unassigned" : "is-assigned"}`;
+      }
+
+      function renderAttachments() {
+        if (!ticket.attachments.length) {
+          attachmentsList.innerHTML = '<div class="text-grey fsize-13">No attachments uploaded.</div>';
+          return;
+        }
+
+        attachmentsList.innerHTML = ticket.attachments
+          .map((a) => {
+            const thumb =
+              a.kind === "image"
+                ? '<span class="thumb"><img alt="preview" src="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2244%22 height=%2244%22%3E%3Crect width=%2244%22 height=%2244%22 fill=%22%23d1fadf%22/%3E%3Ccircle cx=%2215%22 cy=%2214%22 r=%225%22 fill=%22%23027a48%22/%3E%3Cpath d=%22M5 35l10-10 6 6 7-8 11 12z%22 fill=%22%23027a48%22/%3E%3C/svg%3E" /></span>'
+                : '<span class="thumb">PDF</span>';
+
+            return `
+              <div class="attachment-item">
+                <div class="attachment-left">
+                  ${thumb}
+                  <div>
+                    <div class="attachment-title">${a.name}</div>
+                    <div class="attachment-meta">${a.type} | ${a.size}</div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary-revers btn-32"><i class="fi fi-rr-download"></i><span>Download</span></button>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderTimeline() {
+        timelineList.innerHTML = ticket.timeline
+          .map(
+            (item) => `
+            <li>
+              <div class="event-title">${item.event}</div>
+              <div class="event-time">${item.time}</div>
+            </li>
+          `
+          )
+          .join("");
+      }
+
+      function renderConversation() {
+        conversation.innerHTML = ticket.conversation
+          .map(
+            (msg) => `
+            <div class="bubble ${msg.side}">
+              <div>${msg.text}</div>
+              <div class="bubble-meta">${msg.side === "customer" ? ticket.name : "Support Team"} | ${msg.time}</div>
+            </div>
+          `
+          )
+          .join("");
+      }
+
+      function openAssignPanel() {
+        assignOverlay.classList.add("show");
+        assignOverlay.setAttribute("aria-hidden", "false");
+        agentSearchInput.value = "";
+        renderAgents();
+        agentSearchInput.focus();
+      }
+
+      function closeAssignPanel() {
+        assignOverlay.classList.remove("show");
+        assignOverlay.setAttribute("aria-hidden", "true");
+      }
+
+      function renderAgents() {
+        const q = agentSearchInput.value.trim().toLowerCase();
+        const filtered = agents.filter((a) => !q || a.name.toLowerCase().includes(q) || a.role.toLowerCase().includes(q));
+        agentList.innerHTML = filtered
+          .map(
+            (agent) => `
+            <button type="button" class="agent-item" data-agent="${agent.name}">
+              <span class="agent-left">
+                <span class="avatar-circle">${initials(agent.name)}</span>
+                <span>
+                  <span class="agent-name d-block">${agent.name}</span>
+                  <span class="agent-role d-block">${agent.role}</span>
+                </span>
+              </span>
+              <span class="btn btn-primary-revers btn-32">Select</span>
+            </button>
+          `
+          )
+          .join("");
+
+        agentList.querySelectorAll(".agent-item").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const name = btn.getAttribute("data-agent");
+            ticket.assignedTo = name;
+            const oldStatus = ticket.status;
+            syncTicketStatus();
+            updateAssignedState();
+            ticket.timeline.unshift({ event: `Assigned to ${name}`, time: nowLabel() });
+            if (oldStatus !== ticket.status) {
+              ticket.timeline.unshift({ event: `Status changed to ${ticket.status}`, time: nowLabel() });
+            }
+            renderHeader();
+            renderTimeline();
+            closeAssignPanel();
+          });
+        });
+      }
+
+      function setStatus(newStatus) {
+        ticket.status = newStatus;
+        statusPill.textContent = newStatus;
+        statusPill.className = `badge-pill ${statusClass[newStatus] || "st-new"}`;
+        updateCloseButton();
+      }
+
+      function updateCloseButton() {
+        const closed = ticket.status === "Closed";
+        closeTicketBtn.disabled = closed;
+        closeTicketBtn.classList.toggle("is-danger-action", !closed);
+        closeTicketBtn.classList.toggle("is-closed-action", closed);
+        closeTicketBtn.innerHTML = closed
+          ? '<i class="fi fi-rr-check-circle"></i><span>Ticket Closed</span>'
+          : '<i class="fi fi-rr-check-circle"></i><span>Close Ticket</span>';
+      }
+
+      function closeTicket() {
+        if (ticket.status === "Closed") return;
+        setStatus("Closed");
+        ticket.timeline.unshift({ event: "Ticket closed", time: nowLabel() });
+        renderTimeline();
+      }
+
+      function sendReply() {
+        const text = replyText.value.trim();
+        if (!text) {
+          replyStatusNote.textContent = "Write a reply before sending.";
+          return;
+        }
+
+        ticket.conversation.push({ side: "agent", text, time: nowLabel() });
+        ticket.timeline.unshift({ event: "Reply sent to customer", time: nowLabel() });
+
+        if (ticket.status === "New") {
+          setStatus("In Progress");
+          ticket.timeline.unshift({ event: "Status changed to In Progress", time: nowLabel() });
+        }
+
+        renderTimeline();
+        renderConversation();
+        replyText.value = "";
+        document.getElementById("attachInput").value = "";
+        replyStatusNote.textContent = "Reply sent successfully.";
+      }
+
+      function saveNote() {
+        const text = replyText.value.trim();
+        if (!text) {
+          replyStatusNote.textContent = "Write a note before saving.";
+          return;
+        }
+        ticket.timeline.unshift({ event: "Internal note saved", time: nowLabel() });
+        renderTimeline();
+        replyText.value = "";
+        replyStatusNote.textContent = "Internal note saved.";
+      }
+
+      openAssignBtn.addEventListener("click", openAssignPanel);
+      closeAssignBtn.addEventListener("click", closeAssignPanel);
+      assignOverlay.addEventListener("click", (e) => {
+        if (e.target === assignOverlay) closeAssignPanel();
+      });
+      agentSearchInput.addEventListener("input", renderAgents);
+      sendReplyBtn.addEventListener("click", sendReply);
+      saveNoteBtn.addEventListener("click", saveNote);
+      closeTicketBtn.addEventListener("click", closeTicket);
+
+      renderHeader();
+      renderAttachments();
+      renderTimeline();
+      renderConversation();
+    </script>
+  </body>
+</html>

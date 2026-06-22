@@ -1,0 +1,1936 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Facility Information</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <!-- Page-only (layout only, keeps your theme) -->
+    <style>
+      .fi-form-card {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(15, 23, 24, 0.05);
+      }
+      .fi-card-head {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: linear-gradient(180deg, #f9fcfc 0%, #f3f8f8 100%);
+      }
+      .fi-card-body {
+        padding: 20px;
+      }
+      .fi-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px 18px;
+      }
+      .fi-grid-1 {
+        grid-column: 1 / -1;
+      }
+      .fi-label {
+        display: inline-flex;
+        gap: 4px;
+        align-items: center;
+      }
+      .fi-req {
+        color: #ef4444;
+      }
+      .fi-help {
+        margin-top: 6px;
+      }
+      .fi-section-note {
+        margin: 4px 0 0;
+      }
+      .fi-form-card .form-control {
+        min-height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        padding: 10px 12px;
+        background: #fff;
+        color: #101828;
+        font-size: 13px;
+        box-shadow: none;
+      }
+      .fi-form-card input.form-control,
+      .fi-form-card select.form-control {
+        height: 44px;
+      }
+      .fi-form-card textarea.form-control {
+        min-height: 92px;
+        resize: vertical;
+      }
+      .fi-form-card .form-control:focus {
+        outline: none;
+        border-color: var(--nk-green, #17a697);
+        box-shadow: 0 0 0 4px rgba(23, 166, 151, 0.08);
+      }
+      .fi-branches-panel {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(15, 23, 24, 0.05);
+        margin-bottom: 18px;
+      }
+      .fi-branches-head {
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        background: linear-gradient(180deg, #f9fcfc 0%, #f3f8f8 100%);
+      }
+      .fi-branches-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .fi-branches-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 26px;
+        height: 26px;
+        padding: 0 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.18);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green, #0f8c8c);
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .fi-branches-strip {
+        padding: 12px 14px;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(150px, 1fr));
+        gap: 10px;
+      }
+      .fi-branch-card {
+        appearance: none;
+        width: 100%;
+        min-height: 92px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+        padding: 10px 12px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease, background 0.2s ease;
+      }
+      .fi-branch-card:hover,
+      .fi-branch-card:focus {
+        border-color: rgba(15, 140, 140, 0.28);
+        box-shadow: 0 12px 24px rgba(15, 140, 140, 0.08);
+        transform: translateY(-1px);
+        outline: none;
+      }
+      .fi-branch-card.is-active {
+        border-color: rgba(15, 140, 140, 0.55);
+        background: linear-gradient(180deg, rgba(15, 140, 140, 0.08) 0%, #ffffff 100%);
+        box-shadow: 0 12px 26px rgba(15, 140, 140, 0.1);
+      }
+      .fi-branch-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .fi-branch-name {
+        margin: 0;
+        color: #101828;
+        font-size: 13px;
+        font-weight: 800;
+        line-height: 1.25;
+      }
+      .fi-branch-city {
+        margin: 4px 0 0;
+        color: #667085;
+        font-size: 11px;
+        line-height: 1.25;
+      }
+      .fi-branch-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 22px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 800;
+        border: 1px solid transparent;
+        white-space: nowrap;
+      }
+      .fi-branch-status.active {
+        background: #e9fbf1;
+        color: #0f7a3f;
+        border-color: #b8efcd;
+      }
+      .fi-branch-status.review {
+        background: #fff7e9;
+        color: #b45309;
+        border-color: #fde3b0;
+      }
+      .fi-branch-status.expired {
+        background: #ffeaea;
+        color: #b42318;
+        border-color: #ffc8c8;
+      }
+      .fi-branch-meta {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 4px;
+        color: #475467;
+        font-size: 11px;
+      }
+      .fi-branch-meta span {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      /* Logo upload */
+      .logo-upload {
+        border: 1px dashed var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        cursor: pointer;
+        background: #fff;
+      }
+      .logo-upload:hover {
+        background: rgba(15, 140, 140, 0.03);
+      }
+      .logo-preview {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        overflow: hidden;
+        background: #f7fafc;
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logo-preview img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .phone-wrap {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 0;
+        align-items: center;
+      }
+      .phone-prefix {
+        height: 44px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-right: 0;
+        border-radius: 12px 0 0 12px;
+        padding: 0 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        background: rgba(15, 140, 140, 0.05);
+        color: var(--nk-green, #0f8c8c);
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .phone-wrap .form-control {
+        border-radius: 0 12px 12px 0;
+        height: 44px;
+      }
+      .phone-wrap .form-control:focus {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* Footer actions */
+      .fi-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .fi-documents-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .fi-document-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 16px;
+        background: linear-gradient(180deg, #ffffff 0%, #fbfdfd 100%);
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      }
+      .fi-document-item:hover {
+        border-color: rgba(15, 140, 140, 0.28);
+        box-shadow: 0 12px 24px rgba(15, 140, 140, 0.08);
+        transform: translateY(-1px);
+      }
+      .fi-document-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green, #0f8c8c);
+        flex: 0 0 auto;
+      }
+      .fi-document-icon i {
+        font-size: 20px;
+        line-height: 1;
+      }
+      .fi-document-content {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+      .fi-document-title {
+        margin: 0;
+        color: #101828;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .fi-document-meta {
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .fi-document-hint {
+        color: #667085;
+        font-size: 12px;
+      }
+      .fi-document-badge {
+        display: inline-flex;
+        align-items: center;
+        height: 24px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.1);
+        color: var(--nk-green, #0f8c8c);
+        font-size: 11px;
+        font-weight: 700;
+      }
+      .fi-document-badge.is-approved {
+        background: rgba(18, 183, 106, 0.12);
+        color: #027a48;
+      }
+      .fi-document-badge.is-rejected {
+        background: rgba(240, 68, 56, 0.12);
+        color: #b42318;
+      }
+      .fi-document-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 0 0 auto;
+      }
+      .fi-doc-action-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 88px;
+        height: 34px;
+        justify-content: center;
+      }
+      .fi-doc-btn {
+        min-width: 78px;
+        height: 34px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(15, 140, 140, 0.14);
+        background: #fff;
+        color: #0f8c8c;
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .fi-doc-btn:hover {
+        background: rgba(15, 140, 140, 0.05);
+      }
+      .fi-doc-btn.is-primary {
+        background: #0f8c8c;
+        color: #fff;
+        border-color: #0f8c8c;
+      }
+      .fi-doc-btn.is-primary:hover {
+        background: #0d7878;
+      }
+      .fi-doc-btn.is-subtle {
+        border-style: dashed;
+        border-color: rgba(15, 140, 140, 0.28);
+        color: var(--nk-green, #0f8c8c);
+        background: rgba(15, 140, 140, 0.04);
+        box-shadow: none;
+        transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+      }
+      .fi-doc-btn.is-subtle:hover,
+      .fi-doc-btn.is-subtle:focus {
+        border-color: rgba(15, 140, 140, 0.48);
+        color: #0d7878;
+        background: rgba(15, 140, 140, 0.08);
+      }
+      .fi-doc-btn.is-subtle:disabled,
+      .fi-doc-btn.is-subtle[aria-disabled="true"] {
+        opacity: 0.34;
+        cursor: not-allowed;
+        pointer-events: none;
+        border-color: rgba(16, 24, 40, 0.12);
+        color: rgba(16, 24, 40, 0.58);
+        background: rgba(16, 24, 40, 0.035);
+      }
+      .fi-doc-note {
+        position: absolute;
+        right: 0;
+        bottom: calc(100% + 10px);
+        width: 220px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: rgba(16, 24, 40, 0.96);
+        color: #fff;
+        font-size: 11px;
+        line-height: 1.45;
+        box-shadow: 0 12px 24px rgba(16, 24, 40, 0.16);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(6px);
+        pointer-events: none;
+        transition: opacity 0.2s ease 0.35s, transform 0.2s ease 0.35s, visibility 0s linear 0.35s;
+        z-index: 2;
+      }
+      .fi-doc-note::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        right: 18px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: rgba(16, 24, 40, 0.96) transparent transparent transparent;
+      }
+      .fi-doc-action-wrap:hover .fi-doc-note,
+      .fi-doc-action-wrap:focus-within .fi-doc-note {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 992px) {
+        .fi-grid {
+          grid-template-columns: 1fr;
+        }
+        .fi-branches-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .phone-wrap {
+          grid-template-columns: 96px minmax(0, 1fr);
+        }
+        .fi-documents-grid {
+          grid-template-columns: 1fr;
+        }
+        .fi-document-item {
+          flex-wrap: wrap;
+        }
+        .fi-document-actions {
+          width: 100%;
+          justify-content: flex-end;
+        }
+      }
+      @media (max-width: 576px) {
+        .fi-branches-strip {
+          grid-template-columns: 1fr;
+        }
+        .fi-branches-head {
+          align-items: flex-start;
+        }
+      }    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+      .header-branch-select-wrap{
+        position:relative;
+        min-width:168px;
+      }
+      .header-branch-select-wrap:before{
+        content:"";
+        position:absolute;
+        left:12px;
+        top:50%;
+        width:8px;
+        height:8px;
+        border-radius:999px;
+        background:#0f8c8c;
+        transform:translateY(-50%);
+        pointer-events:none;
+      }
+      .header-branch-select{
+        width:100%;
+        height:36px;
+        padding:0 34px 0 28px;
+        border:1px solid rgba(15,140,140,.22);
+        border-radius:12px;
+        background:#fff;
+        color:#101828;
+        font-size:13px;
+        font-weight:900;
+        outline:0;
+        cursor:pointer;
+        box-shadow:none;
+      }
+      .header-branch-select:hover{
+        background:rgba(15,140,140,.04);
+        border-color:rgba(15,140,140,.36);
+      }
+      .header-branch-select:focus{
+        border-color:#0f8c8c;
+        box-shadow:0 0 0 3px rgba(15,140,140,.12);
+      }
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}    </style>
+    <style>
+      .facility-info-shell{display:grid;grid-template-columns:1fr;gap:16px}
+      .facility-summary{border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:14px;padding:14px;display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+      .sum-left{display:flex;align-items:flex-start;gap:12px;min-width:0}
+      .sum-avatar{width:46px;height:46px;border-radius:14px;border:1px solid rgba(15,140,140,.18);background:rgba(15,140,140,.06);display:flex;align-items:center;justify-content:center;flex:0 0 46px;color:#0f8c8c;font-size:20px}
+      .sum-titles{min-width:0}.sum-title-row{display:flex;align-items:center;gap:8px;min-width:0}
+      .sum-title{font-size:16px;font-weight:1000;color:#101828;line-height:1.2;margin:0 0 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+      .sum-description{margin:0 0 8px;color:#0b6f6f;font-size:13px;font-weight:900;line-height:1.45}
+      .sum-sub{display:flex;flex-wrap:wrap;gap:10px;align-items:center;color:#667085;font-weight:800;font-size:12px}
+      .sum-sub .k{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid rgba(16,24,40,.10);background:rgba(16,24,40,.02)}
+      .fi-tabs{border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:14px;overflow:hidden}
+      .fi-tabs-header{display:flex;gap:6px;padding:10px;border-bottom:1px solid rgba(16,24,40,.08);background:rgba(16,24,40,.01);flex-wrap:wrap}
+      .fi-tab-btn{border:1px solid rgba(15,140,140,.18);background:#fff;color:#101828;font-weight:1000;font-size:12px;height:34px;padding:0 12px;border-radius:12px;display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+      .fi-tab-btn i{color:#0f8c8c}.fi-tab-btn.is-active{background:rgba(15,140,140,.10);border-color:rgba(15,140,140,.28);color:#0f8c8c}
+      .fi-tab-panel{display:none;padding:14px}.fi-tab-panel.is-active{display:block}
+      .fi-card{border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:14px;padding:14px}.fi-card+.fi-card{margin-top:12px}
+      .fi-card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.fi-card-title h4{margin:0;font-size:14px;font-weight:1000;color:#101828}
+      .card-title-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+      .btn-edit-soft{height:30px;padding:0 10px;border-radius:999px;border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);color:#0b6f6f;font-size:12px;font-weight:1000;display:inline-flex;align-items:center;gap:6px}
+      .btn-edit-soft.is-save{background:#0f8c8c;border-color:#0f8c8c;color:#fff}.sum-name-edit{width:28px;height:28px;padding:0;border-radius:50%;justify-content:center;flex:0 0 28px}.sum-name-edit span{display:none}
+      .ov-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.ov-item{border:1px solid rgba(16,24,40,.08);background:rgba(16,24,40,.01);border-radius:14px;padding:12px}
+      .ov-item .l{font-size:11px;font-weight:1000;color:#667085}.ov-item .v{font-size:13px;font-weight:1000;color:#101828;margin-top:4px}
+      .ov-action-row{grid-column:1/-1;display:flex;align-items:center;justify-content:flex-end;padding-top:2px}
+      .reset-link-btn{
+        min-height:44px;
+        padding:0 18px;
+        border:1px solid #0f8c8c;
+        border-radius:999px;
+        background:#0f8c8c;
+        color:#fff;
+        box-shadow:none!important;
+        font-size:14px;
+        font-weight:1000;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:9px;
+        line-height:1;
+        white-space:nowrap;
+        transition:background-color .15s ease,border-color .15s ease,color .15s ease,transform .08s ease;
+      }
+      .reset-link-btn i{color:inherit;font-size:16px}
+      .reset-link-btn:hover,.reset-link-btn:focus{background:#0b7777;border-color:#0b7777;color:#fff;box-shadow:none!important}
+      .reset-link-btn:focus-visible{outline:3px solid rgba(15,140,140,.28);outline-offset:3px}
+      .reset-link-btn:active{transform:translateY(1px);background:#096767;border-color:#096767}
+      .summary-edit-input,.summary-edit-textarea,.ov-edit-input{width:100%;border:1px solid rgba(16,24,40,.14);border-radius:10px;background:#f9fafb;color:#101828;font-weight:900;outline:0}
+      .summary-edit-input,.ov-edit-input{height:34px;padding:0 10px}.summary-edit-textarea{min-height:56px;padding:8px 10px;resize:vertical}
+      .mini-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.metric{border:1px solid rgba(15,140,140,.18);background:rgba(15,140,140,.05);border-radius:12px;padding:12px}.metric .l{color:#667085;font-size:11px;font-weight:1000}.metric .v{color:#0b6f6f;font-size:18px;font-weight:1000;margin-top:4px}
+      .service-toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}.service-search-control{max-width:280px;flex:1}
+      .nk-table{width:100%;border-collapse:collapse}.nk-table th{background:#0f8c8c;color:#fff;font-size:12px;font-weight:1000;padding:12px}.nk-table td{border-bottom:1px solid rgba(16,24,40,.08);padding:12px;font-size:13px;font-weight:800}
+      .status-pill{display:inline-flex;height:26px;align-items:center;justify-content:center;padding:0 10px;border-radius:999px;font-size:11px;font-weight:1000;border:1px solid transparent}.status-pill.active{color:#067647;background:rgba(18,183,106,.10);border-color:rgba(18,183,106,.22)}.status-pill.inactive{color:#667085;background:rgba(16,24,40,.05);border-color:rgba(16,24,40,.10)}
+      .switch{position:relative;display:inline-flex;width:42px;height:24px}.switch input{display:none}.switch span{position:absolute;inset:0;border-radius:999px;background:#d0d5dd;cursor:pointer}.switch span:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.15s ease}.switch input:checked+span{background:#0f8c8c}.switch input:checked+span:before{transform:translateX(18px)}
+      .staff-action-wrap{position:relative;display:inline-flex}.staff-action-menu{position:absolute;right:0;top:34px;min-width:132px;padding:6px;border:1px solid rgba(16,24,40,.10);border-radius:12px;background:#fff;box-shadow:0 14px 30px rgba(16,24,40,.12);z-index:20;display:none}.staff-action-wrap.is-open .staff-action-menu{display:block}.staff-menu-item{width:100%;height:32px;border:0;background:transparent;border-radius:8px;display:flex;align-items:center;gap:8px;padding:0 9px;color:#101828;font-size:12px;font-weight:1000;text-align:left}.staff-menu-item:hover{background:rgba(15,140,140,.08);color:#0b6f6f}
+      .payment-method-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.payment-method-field label{display:block;color:#667085;font-size:11px;font-weight:1000;margin-bottom:6px}
+      .d-none{display:none!important}
+      .page-content>.fi-branches-panel,
+      .page-content>#facilityInfoForm{display:none!important}
+      @media (max-width:992px){.ov-grid,.mini-metrics,.payment-method-grid{grid-template-columns:1fr}}    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Facility Information</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Facility Information</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <section class="facility-info-shell" id="facilityInfoExperience">
+            <div class="facility-summary">
+              <div class="sum-left">
+                <div class="sum-avatar"><i class="fi fi-rr-hospital"></i></div>
+                <div class="sum-titles">
+                  <div class="sum-title-row">
+                    <p class="sum-title" id="fi2FacilityName">BMC Hospital / مستشفى BMC</p>
+                  </div>
+                  <p class="sum-description" id="fi2Description">مستشفى متعدد التخصصات يقدم خدمات الرعاية المنزلية والتمريض داخل الرياض.</p>
+                  <div class="sum-sub">
+                    <span class="k"><i class="fi fi-rr-id-badge"></i><span id="fi2Code">fc 1-0</span></span>
+                    <span class="k"><i class="fi fi-rr-calendar"></i><span>Submitted: 20/01/2026</span></span>
+                    <span class="k"><i class="fi fi-rr-time-forward"></i><span id="fi2Updated">Updated: 22/06/2026</span></span>
+                  </div>
+                </div>
+              </div>
+              <span class="status-pill active">Active</span>
+            </div>
+
+            <div class="fi-tabs">
+              <div class="fi-tabs-header">
+                <button class="fi-tab-btn is-active" data-fi2-tab="overview" type="button">
+                  <i class="fi fi-rr-info"></i><span>Overview</span>
+                </button>
+                <button class="fi-tab-btn" data-fi2-tab="main-services" type="button">
+                  <i class="fi fi-rr-apps"></i><span>Main Services</span>
+                </button>
+                <button class="fi-tab-btn" data-fi2-tab="services" type="button">
+                  <i class="fi fi-rr-settings-sliders"></i><span>Services</span>
+                </button>
+              </div>
+
+              <div class="fi-tab-panel is-active" id="fi2TabOverview">
+                <div class="fi-card">
+                  <div class="fi-card-title">
+                    <h4>Facility Information</h4>
+                    <div class="card-title-actions">
+                      <span class="text-grey fsize-12">Facility overview</span>
+                    </div>
+                  </div>
+                  <div class="ov-grid" id="fi2OverviewGrid"></div>
+                </div>
+
+                <div class="fi-card">
+                  <div class="fi-card-title">
+                    <h4>Owner Info</h4>
+                    <div class="card-title-actions">
+                      <span class="text-grey fsize-12" id="fi2OwnerHint">Primary</span>
+                    </div>
+                  </div>
+                  <div class="ov-grid" id="fi2OwnerGrid"></div>
+                </div>
+
+                <div class="fi-card">
+                  <div class="fi-card-title">
+                    <h4>Submitted Documents</h4>
+                    <span class="text-grey fsize-12">Facility files</span>
+                  </div>
+                  <div class="fi-documents-grid">
+                    <div class="fi-document-item">
+                      <div class="fi-document-icon"><i class="fi fi-rr-id-badge"></i></div>
+                      <div class="fi-document-content">
+                        <div class="fi-document-title">Owner ID</div>
+                        <div class="fi-document-meta"><span class="fi-document-badge is-approved">Approved</span><span>ID-FC-1-0.pdf</span></div>
+                        <div class="fi-document-hint">Owner identity verification</div>
+                      </div>
+                      <div class="fi-document-actions">
+                        <button class="fi-doc-btn is-subtle" type="button" disabled aria-disabled="true">Approved</button>
+                      </div>
+                    </div>
+                    <div class="fi-document-item">
+                      <div class="fi-document-icon"><i class="fi fi-rr-building"></i></div>
+                      <div class="fi-document-content">
+                        <div class="fi-document-title">Commercial Registration</div>
+                        <div class="fi-document-meta"><span class="fi-document-badge is-approved">Approved</span><span>CR-1010000000.pdf</span></div>
+                        <div class="fi-document-hint">Registered legal entity</div>
+                      </div>
+                      <div class="fi-document-actions">
+                        <button class="fi-doc-btn is-subtle" type="button" disabled aria-disabled="true">Approved</button>
+                      </div>
+                    </div>
+                    <div class="fi-document-item">
+                      <div class="fi-document-icon"><i class="fi fi-rr-receipt"></i></div>
+                      <div class="fi-document-content">
+                        <div class="fi-document-title">Tax Registration</div>
+                        <div class="fi-document-meta"><span class="fi-document-badge is-rejected">Not approved</span><span>Tax-300000000000003.pdf</span></div>
+                        <div class="fi-document-hint">VAT and tax record needs re-upload</div>
+                      </div>
+                      <div class="fi-document-actions">
+                        <button class="fi-doc-btn is-primary" type="button">Re-upload</button>
+                      </div>
+                    </div>
+                    <div class="fi-document-item">
+                      <div class="fi-document-icon"><i class="fi fi-rr-bank"></i></div>
+                      <div class="fi-document-content">
+                        <div class="fi-document-title">Bank Account Letter</div>
+                        <div class="fi-document-meta"><span class="fi-document-badge is-approved">Approved</span><span>Bank_Letter_BMC.pdf</span></div>
+                        <div class="fi-document-hint">Settlement account proof</div>
+                      </div>
+                      <div class="fi-document-actions">
+                        <button class="fi-doc-btn is-subtle" type="button" disabled aria-disabled="true">Approved</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fi-tab-panel" id="fi2TabMainServices">
+                <div class="fi-card">
+                  <div class="fi-card-title">
+                    <h4>Main Services</h4>
+                    <span class="text-grey fsize-12" id="fi2MainServicesHint">-</span>
+                  </div>
+                  <div class="service-toolbar">
+                    <div class="service-search-control">
+                      <input class="form-control form-control-32" id="fi2MainSearch" type="search" placeholder="Search main service" />
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="nk-table">
+                      <thead><tr><th>#</th><th>Main Service</th><th class="text-center">Services</th><th class="text-center">Active</th></tr></thead>
+                      <tbody id="fi2MainServicesBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fi-tab-panel" id="fi2TabServices">
+                <div class="fi-card">
+                  <div class="fi-card-title">
+                    <h4>Services</h4>
+                    <span class="text-grey fsize-12" id="fi2ServicesHint">-</span>
+                  </div>
+                  <div class="service-toolbar">
+                    <div class="service-search-control">
+                      <input class="form-control form-control-32" id="fi2ServiceSearch" type="search" placeholder="Search service or main service" />
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="nk-table">
+                      <thead><tr><th>#</th><th>Service</th><th>Main Service</th><th class="text-center">Status</th><th class="text-center">Active</th></tr></thead>
+                      <tbody id="fi2ServicesBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="fi-branches-panel" aria-labelledby="facilityBranchesTitle">
+            <div class="fi-branches-head">
+              <div>
+                <div class="fi-branches-title">
+                  <b class="fsize-14 semiBold" id="facilityBranchesTitle">Facility Branches</b>
+                  <span class="fi-branches-count" id="facilityBranchesCount">4</span>
+                </div>
+                <p class="fsize-12 text-grey fi-section-note">Switch between branches before reviewing or updating facility details.</p>
+              </div>
+            </div>
+
+            <div class="fi-branches-strip" id="facilityBranchesStrip">
+              <button type="button" class="fi-branch-card is-active" data-branch-id="1" data-branch-name="Main Branch" data-branch-city="Yanbu" data-branch-address="8451 King Abdullah Street, Yanbu">
+                <span class="fi-branch-card-top">
+                  <span>
+                    <span class="fi-branch-name">Main Branch</span>
+                    <span class="fi-branch-city">Yanbu</span>
+                  </span>
+                  <span class="fi-branch-status active">Active</span>
+                </span>
+                <span class="fi-branch-meta">
+                  <span>+966 54 887 7493</span>
+                  <span>8451 King Abdullah Street, Yanbu</span>
+                </span>
+              </button>
+
+              <button type="button" class="fi-branch-card" data-branch-id="2" data-branch-name="Downtown Branch" data-branch-city="Khobar" data-branch-address="1112 King Abdullah Street, Khobar">
+                <span class="fi-branch-card-top">
+                  <span>
+                    <span class="fi-branch-name">Downtown Branch</span>
+                    <span class="fi-branch-city">Khobar</span>
+                  </span>
+                  <span class="fi-branch-status active">Active</span>
+                </span>
+                <span class="fi-branch-meta">
+                  <span>+966 55 119 2238</span>
+                  <span>1112 King Abdullah Street, Khobar</span>
+                </span>
+              </button>
+
+              <button type="button" class="fi-branch-card" data-branch-id="3" data-branch-name="North Branch" data-branch-city="Taif" data-branch-address="2212 Tahlia Street, Taif">
+                <span class="fi-branch-card-top">
+                  <span>
+                    <span class="fi-branch-name">North Branch</span>
+                    <span class="fi-branch-city">Taif</span>
+                  </span>
+                  <span class="fi-branch-status review">Under Review</span>
+                </span>
+                <span class="fi-branch-meta">
+                  <span>+966 53 141 9320</span>
+                  <span>2212 Tahlia Street, Taif</span>
+                </span>
+              </button>
+
+              <button type="button" class="fi-branch-card" data-branch-id="4" data-branch-name="South Branch" data-branch-city="Taif" data-branch-address="3266 King Abdullah Street, Taif">
+                <span class="fi-branch-card-top">
+                  <span>
+                    <span class="fi-branch-name">South Branch</span>
+                    <span class="fi-branch-city">Taif</span>
+                  </span>
+                  <span class="fi-branch-status expired">License Expired</span>
+                </span>
+                <span class="fi-branch-meta">
+                  <span>+966 51 920 0474</span>
+                  <span>3266 King Abdullah Street, Taif</span>
+                </span>
+              </button>
+            </div>
+          </section>
+
+          <form id="facilityInfoForm">
+            <!-- Facility Information -->
+            <div class="fi-form-card">
+              <div class="fi-card-head">
+                <div>
+                  <b class="fsize-14 semiBold">Facility Information</b>
+                  <p class="fsize-12 text-grey fi-section-note">Manage the core identity and branding details for your facility.</p>
+                </div>
+              </div>
+              <div class="fi-card-body">
+                <div class="fi-grid">
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      Facility Name (Arabic) <span class="fi-req">*</span>
+                    </label>
+                    <input type="text" class="form-control form-control-32" value="مستشفى بي إم سي" placeholder="اسم المنشأة" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      Facility Name (English) <span class="fi-req">*</span>
+                    </label>
+                    <input id="facilityNameEn" type="text" class="form-control form-control-32" value="BMC Hospital" placeholder="Facility Name" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      License Number <span class="fi-req">*</span>
+                    </label>
+                    <input id="facilityLicenseNumber" type="text" class="form-control form-control-32" value="CR-10004511" placeholder="License Number" required />
+                  </div>
+
+                  <div class="fi-grid-1">
+                    <label class="fsize-12 text-grey fi-label">
+                      Description (Arabic) <span class="fi-req">*</span>
+                    </label>
+                    <textarea class="form-control" rows="3" placeholder="وصف المنشأة بالعربية..." required></textarea>
+                  </div>
+
+                  <div class="fi-grid-1">
+                    <label class="fsize-12 text-grey fi-label">
+                      Description (English) <span class="fi-req">*</span>
+                    </label>
+                    <textarea class="form-control" rows="3" placeholder="Facility description in English..." required></textarea>
+                  </div>
+
+                  <div class="fi-grid-1">
+                    <label class="fsize-12 text-grey">Facility Logo</label>
+
+                    <input id="facilityLogoInput" type="file" accept="image/*" hidden />
+                    <div class="logo-upload" id="logoUploadBox" role="button" tabindex="0">
+                      <div>
+                        <b class="fsize-14 semiBold">Click to upload image</b>
+                        <div class="fsize-12 text-grey fi-help">PNG/JPG recommended</div>
+                      </div>
+                      <div class="logo-preview" id="logoPreview">
+                        <span class="text-grey fsize-12">Logo</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Owner Information -->
+            <div class="fi-form-card mt-24">
+              <div class="fi-card-head">
+                <div>
+                  <b class="fsize-14 semiBold">Owner Information</b>
+                  <p class="fsize-12 text-grey fi-section-note">Keep the primary contact details current for approvals and operational follow-up.</p>
+                </div>
+              </div>
+              <div class="fi-card-body">
+                <div class="fi-grid">
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      Full Name <span class="fi-req">*</span>
+                    </label>
+                    <input id="ownerFullName" type="text" class="form-control form-control-32" value="BMC Branch Admin" placeholder="Owner Full Name" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      Phone Number <span class="fi-req">*</span>
+                    </label>
+                    <div class="phone-wrap">
+                      <div class="phone-prefix">+966</div>
+                      <input id="ownerPhoneNumber" type="tel" class="form-control form-control-32" inputmode="tel" value="54 887 7493" placeholder="54 887 7493" autocomplete="tel-national" required />
+                    </div>
+                  </div>
+
+                  <div class="fi-grid-1">
+                    <label class="fsize-12 text-grey fi-label">
+                      Email Address <span class="fi-req">*</span>
+                    </label>
+                    <input id="ownerEmailAddress" type="email" class="form-control form-control-32" value="contact@bmcpharmacy.sa" placeholder="email@example.com" required />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Address Information -->
+            <div class="fi-form-card mt-24">
+              <div class="fi-card-head">
+                <div>
+                  <b class="fsize-14 semiBold">Address Information</b>
+                  <p class="fsize-12 text-grey fi-section-note">Confirm the registered location that appears on facility records and compliance files.</p>
+                </div>
+              </div>
+              <div class="fi-card-body">
+                <div class="fi-grid">
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      Country <span class="fi-req">*</span>
+                    </label>
+                    <select id="addressCountry" class="form-control form-control-32" required>
+                      <option value="" disabled>Choose</option>
+                      <option value="Saudi Arabia" selected>Saudi Arabia</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey fi-label">
+                      City <span class="fi-req">*</span>
+                    </label>
+                    <select id="addressCity" class="form-control form-control-32" required>
+                      <option value="" disabled>Choose</option>
+                      <option value="Yanbu" selected>Yanbu</option>
+                      <option value="Khobar">Khobar</option>
+                      <option value="Taif">Taif</option>
+                      <option value="Riyadh">Riyadh</option>
+                      <option value="Jeddah">Jeddah</option>
+                      <option value="Dammam">Dammam</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">District</label>
+                    <input id="addressDistrict" type="text" class="form-control form-control-32" value="Yanbu" placeholder="District Name" />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Street Name</label>
+                    <input id="addressStreet" type="text" class="form-control form-control-32" value="8451 King Abdullah Street, Yanbu" placeholder="Street Name" />
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="fi-form-card mt-24">
+              <div class="fi-card-head">
+                <div>
+                  <b class="fsize-14 semiBold">Uploaded Documents</b>
+                  <p class="fsize-12 text-grey fi-section-note">Keep your compliance files organized and easy to review.</p>
+                </div>
+              </div>
+              <div class="fi-card-body">
+                <div class="fi-documents-grid" id="documentsGrid">
+                  <div class="fi-document-item" data-document-kind="owner-id" data-document-status="approved">
+                    <div class="fi-document-icon">
+                      <i class="fi fi-rr-document"></i>
+                    </div>
+                    <div class="fi-document-content">
+                      <p class="fi-document-title">Owner / Owners ID</p>
+                      <div class="fi-document-meta">
+                        <span class="fi-document-badge is-approved">Approved</span>
+                        <span class="fi-document-hint">20/01/2026</span>
+                        <span class="fi-document-hint">Owner_ID_BMC.pdf</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="fi-document-item" data-document-kind="commercial-registration" data-document-status="approved">
+                    <div class="fi-document-icon">
+                      <i class="fi fi-rr-document"></i>
+                    </div>
+                    <div class="fi-document-content">
+                      <p class="fi-document-title">Commercial Registration (CR)</p>
+                      <div class="fi-document-meta">
+                        <span class="fi-document-badge is-approved">Approved</span>
+                        <span class="fi-document-hint">Branch Document</span>
+                        <span class="fi-document-hint" id="branchDocumentName">Main Branch</span>
+                        <span class="fi-document-hint">CR Number</span>
+                        <span class="fi-document-hint" id="branchCrNumber">CR-10004511</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="fi-document-item" data-document-kind="bank-letter" data-document-status="approved">
+                    <div class="fi-document-icon">
+                      <i class="fi fi-rr-document"></i>
+                    </div>
+                    <div class="fi-document-content">
+                      <p class="fi-document-title">Bank Account Letter</p>
+                      <div class="fi-document-meta">
+                        <span class="fi-document-badge is-approved">Approved</span>
+                        <span class="fi-document-hint">21/01/2026</span>
+                        <span class="fi-document-hint">Bank_Letter_BMC.pdf</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="fi-document-item" data-document-kind="suppliers-file" data-document-status="missing">
+                    <div class="fi-document-icon">
+                      <i class="fi fi-rr-document"></i>
+                    </div>
+                    <div class="fi-document-content">
+                      <p class="fi-document-title">Suppliers File</p>
+                      <div class="fi-document-meta">
+                        <span class="fi-document-badge">Missing</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="fi-actions">
+                  <button type="button" class="btn btn-primary-revers" onclick="history.back()">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script src="../assets/js/dataTables/datatablesLib.min.js"></script>
+    <script src="../assets/js/dataTables/tablesOptions.js"></script>
+
+    <script src="../assets/js/tabelResponsive/tabelResponsiveLib.js"></script>
+    <script src="../assets/js/tabelResponsive/tabelResponsiveOptions.js"></script>
+
+    <script src="../assets/js/datepicker/datepicker.min.js"></script>
+    <script src="../assets/js/datepicker/datepickerOptions.js"></script>
+
+    <script src="../assets/js/LightBox/fancybox.umd.js"></script>
+
+    <script>
+      (function () {
+        const facility = {
+          nameEn: "BMC Hospital",
+          nameAr: "مستشفى BMC",
+          descriptionAr: "مستشفى متعدد التخصصات يقدم خدمات الرعاية المنزلية والتمريض داخل الرياض.",
+          address: "King Fahd Rd, Riyadh, KSA",
+          branchId: "fc 1-0",
+          licenseExpiry: "30/12/2027",
+          legalEntity: "BMC Hospital Company",
+          crNumber: "1010000000",
+          taxNumber: "300000000000003",
+          ownerName: "Ahmed Alqahtani",
+          ownerPhone: "+966 55 111 2200",
+          ownerEmail: "owner@bmchospital.sa",
+          ownerPassword: "Owner@2026"
+        };
+
+        const services = [
+          { serviceName: "Home Doctor Visit", mainService: "Doctor Visit", active: true },
+          { serviceName: "Video Consultation", mainService: "Telemedicine", active: true },
+          { serviceName: "Nursing at Home", mainService: "Nursing Visit", active: true },
+          { serviceName: "Lab Sample Collection", mainService: "Lab Tests", active: false },
+          { serviceName: "Physiotherapy Session", mainService: "Physiotherapy", active: true }
+        ];
+        const staff = [
+          { name: "Dr. Omar Khalid", email: "omar.khalid@bmchospital.sa", phone: "+966 55 610 1201", role: "Doctor", status: "inactive" },
+          { name: "Nurse Reem Hassan", email: "reem.hassan@bmchospital.sa", phone: "+966 55 610 1202", role: "Nurse", status: "active" },
+          { name: "Dr. Lina Mansour", email: "lina.mansour@bmchospital.sa", phone: "+966 55 610 1203", role: "Doctor", status: "active" },
+          { name: "Nurse Sami Alotaibi", email: "sami.alotaibi@bmchospital.sa", phone: "+966 55 610 1204", role: "Nurse", status: "inactive" },
+          { name: "Dr. Yara Saleh", email: "yara.saleh@bmchospital.sa", phone: "+966 55 610 1205", role: "Doctor", status: "inactive" },
+          { name: "Nurse Huda Nasser", email: "huda.nasser@bmchospital.sa", phone: "+966 55 610 1206", role: "Nurse", status: "active" }
+        ];
+        let editMode = false;
+        let activeStaffIndex = -1;
+
+        const qs = (s, r = document) => r.querySelector(s);
+        const qsa = (s, r = document) => Array.from(r.querySelectorAll(s));
+        const esc = (v) => String(v ?? "");
+
+        function ov(label, key, value, secret) {
+          if (!editMode) {
+            return `<div class="ov-item"><div class="l">${label}</div><div class="v">${secret ? "********" : esc(value || "-")}</div></div>`;
+          }
+          return `<div class="ov-item"><div class="l">${label}</div><input class="ov-edit-input" data-fi2-field="${key}" value="${esc(value || "")}" /></div>`;
+        }
+
+        function ro(label, value, secret) {
+          return `<div class="ov-item"><div class="l">${label}</div><div class="v">${secret ? "********" : esc(value || "-")}</div></div>`;
+        }
+
+        function renderSummary() {
+          const name = qs("#fi2FacilityName");
+          const desc = qs("#fi2Description");
+          if (editMode) {
+            name.innerHTML = `<input class="summary-edit-input" data-fi2-field="namePair" value="${esc(facility.nameEn + " / " + facility.nameAr)}" />`;
+            desc.innerHTML = `<textarea class="summary-edit-textarea" data-fi2-field="descriptionAr">${esc(facility.descriptionAr)}</textarea>`;
+          } else {
+            name.textContent = `${facility.nameEn} / ${facility.nameAr}`;
+            desc.textContent = facility.descriptionAr;
+          }
+        }
+
+        function renderOverview() {
+          qs("#fi2OverviewGrid").innerHTML = [
+            ov("Arabic Name", "nameAr", facility.nameAr),
+            ov("Description", "descriptionAr", facility.descriptionAr),
+            ov("Address", "address", facility.address),
+            ov("Branch ID", "branchId", facility.branchId),
+            ov("Medical License Expiry", "licenseExpiry", facility.licenseExpiry),
+            ov("Legal Entity", "legalEntity", facility.legalEntity),
+            ov("Commercial Registration", "crNumber", facility.crNumber),
+            ov("Tax Registration", "taxNumber", facility.taxNumber)
+          ].join("");
+          qs("#fi2OwnerGrid").innerHTML = [
+            ro("Owner Name", facility.ownerName),
+            ro("Owner Mobile", facility.ownerPhone),
+            ro("Owner Email", facility.ownerEmail),
+            ro("Password", facility.ownerPassword, true)
+          ].join("") + `<div class="ov-action-row"><button class="reset-link-btn" id="fi2ResetPassword" type="button"><i class="fi fi-rr-paper-plane"></i><span>Send Reset Link</span></button></div>`;
+          qs("#fi2ResetPassword")?.addEventListener("click", () => {
+            qs("#fi2OwnerHint").textContent = "Reset link sent";
+          });
+        }
+
+        function saveEdits() {
+          qsa("[data-fi2-field]").forEach((el) => {
+            const key = el.getAttribute("data-fi2-field");
+            const value = el.value.trim();
+            if (key === "namePair") {
+              const parts = value.split("/");
+              facility.nameEn = (parts[0] || "").trim() || facility.nameEn;
+              facility.nameAr = (parts.slice(1).join("/") || "").trim() || facility.nameAr;
+            } else {
+              facility[key] = value;
+            }
+          });
+          qs("#fi2Updated").textContent = "Updated: 22/06/2026";
+        }
+
+        function toggleEdit() {
+          if (editMode) saveEdits();
+          editMode = !editMode;
+          renderSummary();
+          renderOverview();
+        }
+
+        function renderMainServices() {
+          const grouped = new Map();
+          services.forEach((svc) => {
+            if (!grouped.has(svc.mainService)) grouped.set(svc.mainService, { name: svc.mainService, total: 0, active: 0 });
+            const item = grouped.get(svc.mainService);
+            item.total += 1;
+            if (svc.active) item.active += 1;
+          });
+          const search = (qs("#fi2MainSearch")?.value || "").toLowerCase();
+          const rows = Array.from(grouped.values()).filter((x) => x.name.toLowerCase().includes(search));
+          qs("#fi2MainServicesHint").textContent = `${rows.length}/${grouped.size} groups`;
+          qs("#fi2MainServicesBody").innerHTML = rows.map((item, i) => `
+            <tr><td>${i + 1}</td><td>${item.name}</td><td class="text-center">${item.total}</td><td class="text-center"><label class="switch"><input type="checkbox" ${item.active === item.total ? "checked" : ""}><span></span></label></td></tr>
+          `).join("");
+        }
+
+        function renderServices() {
+          const search = (qs("#fi2ServiceSearch")?.value || "").toLowerCase();
+          const rows = services.filter((x) => `${x.serviceName} ${x.mainService}`.toLowerCase().includes(search));
+          qs("#fi2ServicesHint").textContent = `${rows.length}/${services.length} services`;
+          qs("#fi2ServicesBody").innerHTML = rows.map((svc, i) => `
+            <tr><td>${i + 1}</td><td>${svc.serviceName}</td><td>${svc.mainService}</td><td class="text-center"><span class="status-pill ${svc.active ? "active" : "inactive"}">${svc.active ? "Active" : "Inactive"}</span></td><td class="text-center"><label class="switch"><input type="checkbox" ${svc.active ? "checked" : ""}><span></span></label></td></tr>
+          `).join("");
+        }
+
+        function renderStaff() {
+          if (!qs("#fi2StaffBody") || !qs("#fi2StaffHint")) return;
+          const search = (qs("#fi2StaffSearch")?.value || "").toLowerCase();
+          const rows = staff.filter((x) => `${x.name} ${x.email} ${x.phone} ${x.role}`.toLowerCase().includes(search));
+          qs("#fi2StaffHint").textContent = `${rows.length}/${staff.length} staff`;
+          qs("#fi2StaffBody").innerHTML = rows.map((user, i) => {
+            const sourceIndex = staff.indexOf(user);
+            const label = user.status === "active" ? "Active" : "Inactive";
+            return `<tr><td>${i + 1}</td><td>${user.name}</td><td>${user.email}</td><td>${user.phone}</td><td>${user.role}</td><td class="text-center"><span class="status-pill ${user.status}">${label}</span></td><td class="text-right"><div class="staff-action-wrap"><button class="btn-edit-soft sum-name-edit" data-staff-menu="${sourceIndex}" type="button"><i class="fi fi-rr-edit"></i><span>Actions</span></button><div class="staff-action-menu"><button class="staff-menu-item" data-staff-preview="${sourceIndex}" type="button"><i class="fi fi-rr-eye"></i><span>Preview</span></button><button class="staff-menu-item" data-staff-edit="${sourceIndex}" type="button"><i class="fi fi-rr-edit"></i><span>Edit</span></button></div></div></td></tr>`;
+          }).join("");
+          qsa("[data-staff-menu]").forEach((btn) => btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const wrap = btn.closest(".staff-action-wrap");
+            qsa(".staff-action-wrap").forEach((x) => { if (x !== wrap) x.classList.remove("is-open"); });
+            wrap.classList.toggle("is-open");
+          }));
+          qsa("[data-staff-preview]").forEach((btn) => btn.addEventListener("click", () => openStaff(Number(btn.dataset.staffPreview), false)));
+          qsa("[data-staff-edit]").forEach((btn) => btn.addEventListener("click", () => openStaff(Number(btn.dataset.staffEdit), true)));
+        }
+
+        function openStaff(index, editable) {
+          if (!qs("#fi2StaffModal")) return;
+          activeStaffIndex = index;
+          const user = staff[index];
+          qs("#fi2StaffModalTitle").textContent = editable ? "Edit Staff" : "Staff Preview";
+          qs("#fi2StaffName").value = user.name;
+          qs("#fi2StaffPhone").value = user.phone;
+          qs("#fi2StaffEmail").value = user.email;
+          qs("#fi2StaffRole").value = user.role;
+          qs("#fi2StaffStatus").value = user.status === "active" ? "active" : "inactive";
+          qsa("#fi2StaffModal input,#fi2StaffModal select").forEach((el) => el.disabled = !editable);
+          qs("#fi2SaveStaff").classList.toggle("d-none", !editable);
+          new bootstrap.Modal(qs("#fi2StaffModal")).show();
+        }
+
+        function saveStaff() {
+          if (!qs("#fi2StaffBody")) return;
+          const user = staff[activeStaffIndex];
+          if (!user) return;
+          user.name = qs("#fi2StaffName").value.trim() || user.name;
+          user.phone = qs("#fi2StaffPhone").value.trim();
+          user.email = qs("#fi2StaffEmail").value.trim();
+          user.role = qs("#fi2StaffRole").value;
+          user.status = qs("#fi2StaffStatus").value === "active" ? "active" : "inactive";
+          renderStaff();
+          bootstrap.Modal.getInstance(qs("#fi2StaffModal"))?.hide();
+        }
+
+        qsa("[data-fi2-tab]").forEach((btn) => btn.addEventListener("click", () => {
+          const tab = btn.dataset.fi2Tab;
+          qsa("[data-fi2-tab]").forEach((x) => x.classList.remove("is-active"));
+          btn.classList.add("is-active");
+          qsa(".fi-tab-panel").forEach((p) => p.classList.remove("is-active"));
+          qs("#fi2Tab" + tab.split("-").map((x) => x.charAt(0).toUpperCase() + x.slice(1)).join("")).classList.add("is-active");
+        }));
+        qs("#fi2MainSearch")?.addEventListener("input", renderMainServices);
+        qs("#fi2ServiceSearch")?.addEventListener("input", renderServices);
+        qs("#fi2StaffSearch")?.addEventListener("input", renderStaff);
+        qs("#fi2SaveStaff")?.addEventListener("click", saveStaff);
+        document.addEventListener("click", () => qsa(".staff-action-wrap").forEach((x) => x.classList.remove("is-open")));
+
+        renderSummary();
+        renderOverview();
+        renderMainServices();
+        renderServices();
+        renderStaff();
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const BRANCHES_KEY = "nk_facility_branches";
+        const defaults = [
+          { id: "1", city: "Yanbu", name: "Main Branch", phone: "0548877493", commercialLicense: "CR-10004511", status: "Active", addrEn: "8451 King Abdullah Street, Yanbu" },
+          { id: "2", city: "Khobar", name: "Downtown Branch", phone: "0551192238", commercialLicense: "CR-10007239", status: "Active", addrEn: "1112 King Abdullah Street, Khobar" },
+          { id: "3", city: "Taif", name: "North Branch", phone: "0531419320", commercialLicense: "CR-10008762", status: "Under Review", addrEn: "2212 Tahlia Street, Taif" },
+          { id: "4", city: "Taif", name: "South Branch", phone: "0519200474", commercialLicense: "CR-10003188", status: "License Expired", addrEn: "3266 King Abdullah Street, Taif" }
+        ];
+
+        const strip = document.getElementById("facilityBranchesStrip");
+        const countEl = document.getElementById("facilityBranchesCount");
+        const fields = {
+          facilityNameEn: document.getElementById("facilityNameEn"),
+          facilityLicenseNumber: document.getElementById("facilityLicenseNumber"),
+          ownerPhoneNumber: document.getElementById("ownerPhoneNumber"),
+          addressCity: document.getElementById("addressCity"),
+          addressDistrict: document.getElementById("addressDistrict"),
+          addressStreet: document.getElementById("addressStreet"),
+          branchDocumentName: document.getElementById("branchDocumentName"),
+          branchCrNumber: document.getElementById("branchCrNumber"),
+          documentsGrid: document.getElementById("documentsGrid")
+        };
+        let selectedBranch = null;
+        if (!strip) return;
+
+        const esc = (v) => (v || "").toString()
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/\"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+
+        const mergeBranchDefaults = (branches) => {
+          return branches.map((branch) => {
+            const fallback = defaults.find((item) => String(item.id) === String(branch.id)) || {};
+            return { ...fallback, ...branch };
+          });
+        };
+
+        const readBranches = () => {
+          try {
+            const raw = localStorage.getItem(BRANCHES_KEY);
+            const parsed = raw ? JSON.parse(raw) : null;
+            return Array.isArray(parsed) && parsed.length ? mergeBranchDefaults(parsed) : defaults;
+          } catch {
+            return defaults;
+          }
+        };
+
+        const statusClass = (status) => {
+          const s = (status || "").toLowerCase();
+          if (s === "active") return "active";
+          if (s === "under review") return "review";
+          return "expired";
+        };
+
+        const formatSaudiPhone = (phone) => {
+          const digits = (phone || "").toString().replace(/\D/g, "");
+          let local = digits;
+          if (local.startsWith("00966")) local = local.slice(5);
+          if (local.startsWith("966")) local = local.slice(3);
+          if (local.startsWith("0")) local = local.slice(1);
+          if (local.length === 9) {
+            return "+966 " + local.slice(0, 2) + " " + local.slice(2, 5) + " " + local.slice(5);
+          }
+          return phone || "-";
+        };
+
+        const formatLocalSaudiPhone = (phone) => {
+          const formatted = formatSaudiPhone(phone);
+          return formatted.startsWith("+966 ") ? formatted.slice(5) : formatted;
+        };
+
+        const setValue = (field, value) => {
+          if (field) field.value = value || "";
+        };
+
+        const ensureCityOption = (city) => {
+          if (!fields.addressCity || !city) return;
+          const exists = Array.from(fields.addressCity.options).some((option) => option.value === city);
+          if (!exists) {
+            const option = document.createElement("option");
+            option.value = city;
+            option.textContent = city;
+            fields.addressCity.appendChild(option);
+          }
+        };
+
+        const applyBranchDetails = (branch) => {
+          if (!branch) return;
+          selectedBranch = branch;
+          const crNumber = branch.commercialLicense || "-";
+          setValue(fields.facilityNameEn, branch.name || "");
+          setValue(fields.facilityLicenseNumber, crNumber);
+          setValue(fields.ownerPhoneNumber, formatLocalSaudiPhone(branch.phone));
+          ensureCityOption(branch.city);
+          setValue(fields.addressCity, branch.city || "");
+          setValue(fields.addressDistrict, branch.city || "");
+          setValue(fields.addressStreet, branch.addrEn || "");
+          updateBranchDocument(branch, crNumber);
+        };
+
+        const updateBranchDocument = (branch, crNumber) => {
+          if (fields.branchDocumentName) fields.branchDocumentName.textContent = branch.name || "-";
+          if (fields.branchCrNumber) fields.branchCrNumber.textContent = crNumber || "-";
+        };
+
+        const branchCrDocument = (branch) => ({
+          kind: "commercial-registration",
+          title: "Commercial Registration (CR)",
+          status: "Approved",
+          statusClass: "is-approved",
+          meta: [
+            "Branch Document",
+            branch.name || "-",
+            "CR Number",
+            branch.commercialLicense || "-"
+          ]
+        });
+
+        const mainBranchDocuments = (branch) => [
+          {
+            kind: "owner-id",
+            title: "Owner / Owners ID",
+            status: "Approved",
+            statusClass: "is-approved",
+            meta: ["20/01/2026", "Owner_ID_BMC.pdf"]
+          },
+          branchCrDocument(branch),
+          {
+            kind: "bank-letter",
+            title: "Bank Account Letter",
+            status: "Approved",
+            statusClass: "is-approved",
+            meta: ["21/01/2026", "Bank_Letter_BMC.pdf"]
+          },
+          {
+            kind: "suppliers-file",
+            title: "Suppliers File",
+            status: "Missing",
+            statusClass: "",
+            meta: []
+          }
+        ];
+
+        const documentAction = (doc) => doc.status === "Approved"
+          ? '<button class="fi-doc-btn is-subtle" type="button" disabled aria-disabled="true">Approved</button>'
+          : `<button class="fi-doc-btn is-primary" type="button">${doc.status === "Missing" ? "Upload" : "Re-upload"}</button>`;
+
+        const documentCard = (doc) => `
+          <div class="fi-document-item" data-document-kind="${esc(doc.kind)}" data-document-status="${esc((doc.status || "").toLowerCase())}">
+            <div class="fi-document-icon">
+              <i class="fi fi-rr-document"></i>
+            </div>
+            <div class="fi-document-content">
+              <p class="fi-document-title">${esc(doc.title)}</p>
+              <div class="fi-document-meta">
+                <span class="fi-document-badge ${esc(doc.statusClass)}">${esc(doc.status)}</span>
+                ${doc.meta.map((item) => `<span class="fi-document-hint">${esc(item)}</span>`).join("")}
+              </div>
+            </div>
+            <div class="fi-document-actions">
+              ${documentAction(doc)}
+            </div>
+          </div>
+        `;
+
+        const renderBranchDocuments = (branch) => {
+          if (!fields.documentsGrid || !branch) return;
+          const docs = String(branch.id) === "1" ? mainBranchDocuments(branch) : [branchCrDocument(branch)];
+          fields.documentsGrid.innerHTML = docs.map(documentCard).join("");
+          fields.branchDocumentName = document.getElementById("branchDocumentName");
+          fields.branchCrNumber = document.getElementById("branchCrNumber");
+        };
+
+        const setActive = (card, branch) => {
+          strip.querySelectorAll(".fi-branch-card").forEach((item) => {
+            item.classList.toggle("is-active", item === card);
+          });
+          renderBranchDocuments(branch);
+          applyBranchDetails(branch);
+        };
+
+        const branchCard = (branch, index) => `
+          <button type="button" class="fi-branch-card ${index === 0 ? "is-active" : ""}" data-branch-id="${esc(branch.id)}" data-branch-name="${esc(branch.name)}" data-branch-city="${esc(branch.city)}" data-branch-address="${esc(branch.addrEn)}" data-branch-cr="${esc(branch.commercialLicense)}">
+            <span class="fi-branch-card-top">
+              <span>
+                <span class="fi-branch-name">${esc(branch.name || "-")}</span>
+                <span class="fi-branch-city">${esc(branch.city || "-")}</span>
+              </span>
+              <span class="fi-branch-status ${statusClass(branch.status)}">${esc(branch.status || "Active")}</span>
+            </span>
+            <span class="fi-branch-meta">
+              <span>${esc(formatSaudiPhone(branch.phone))}</span>
+              <span>${esc(branch.addrEn || "-")}</span>
+            </span>
+          </button>
+        `;
+
+        const branches = readBranches();
+        strip.innerHTML = branches.map(branchCard).join("");
+        if (countEl) countEl.textContent = String(branches.length);
+        setActive(strip.querySelector(".fi-branch-card"), branches[0]);
+
+        strip.addEventListener("click", function (event) {
+          const card = event.target.closest(".fi-branch-card");
+          if (!card) return;
+          const branchId = card.getAttribute("data-branch-id");
+          const branch = branches.find((item) => String(item.id) === String(branchId));
+          setActive(card, branch);
+        });
+      })();
+
+      (function () {
+        const fileInput = document.getElementById("facilityLogoInput");
+        const uploadBox = document.getElementById("logoUploadBox");
+        const preview = document.getElementById("logoPreview");
+
+        function openPicker() {
+          if (fileInput) fileInput.click();
+        }
+
+        if (uploadBox) {
+          uploadBox.addEventListener("click", openPicker);
+          uploadBox.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" || e.key === " ") openPicker();
+          });
+        }
+
+        if (fileInput) {
+          fileInput.addEventListener("change", function () {
+            const f = fileInput.files && fileInput.files[0];
+            if (!f) return;
+
+            const url = URL.createObjectURL(f);
+            preview.innerHTML = '<img src="' + url + '" alt="logo" />';
+          });
+        }
+
+        // Basic required validation (optional)
+        const form = document.getElementById("facilityInfoForm");
+        if (form) {
+          form.addEventListener("submit", function (e) {
+            // Keep browser validation UI
+            if (!form.checkValidity()) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+            form.classList.add("was-validated");
+          });
+        }
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

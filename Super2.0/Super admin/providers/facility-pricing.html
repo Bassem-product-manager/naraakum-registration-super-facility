@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Facility Pricing</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root {
+        --nk-green: #0f8c8c;
+        --nk-border: #e6eaef;
+        --nk-text: #101828;
+        --nk-muted: #667085;
+      }
+
+      .facility-line { display:flex; align-items:center; justify-content:center; gap:10px; margin-top:6px; }
+      .facility-mini-logo { width:22px; height:22px; border-radius:8px; border:1px solid rgba(15,140,140,.18); background:#fff; padding:3px; object-fit:contain; }
+      .facility-name { font-size:14px; font-weight:900; letter-spacing:.3px; color:#0b6f6f; margin:0; line-height:1; }
+
+      .ksa-clock {
+        display:inline-flex; align-items:center; gap:8px; height:34px; padding:0 10px;
+        border:1px solid rgba(16,24,40,.10); background:#fff; border-radius:12px;
+        font-weight:900; font-size:12px; color:#101828; white-space:nowrap;
+      }
+      .ksa-clock .tz {
+        color:var(--nk-green); font-weight:900; font-size:11px; padding:2px 8px;
+        border-radius:999px; border:1px solid rgba(15,140,140,.22); background:rgba(15,140,140,.06);
+      }
+      .switch-account-item { display:flex; align-items:center; gap:10px; }
+      .switch-account-item i { color:var(--nk-green); }
+
+      .side-menu.is-open{ transform:translateX(0); }
+      .side-menu-list li.is-open > .sub-list{ display:block; }
+      .side-menu-list li > .sub-list{ display:none; }
+      .side-menu-list li.is-open > a.menu-list-item i.fi-rr-caret-down{ transform: rotate(180deg); }
+      .side-menu-list a.menu-list-item.is-active{ background:rgba(15,140,140,.08); border-radius:10px; font-weight:900; }
+
+      .fp-header { margin-bottom:12px; }
+      .fp-header h4 { margin:0 0 4px; color:var(--nk-text); font-weight:1000; }
+      .fp-header p { margin:0; color:var(--nk-muted); font-size:13px; }
+      #pricingPageContent { padding-bottom:110px; }
+
+      .facility-strip {
+        border:1px solid rgba(16,24,40,.10); border-radius:14px; background:#fff;
+        padding:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:12px;
+      }
+      .facility-strip .left { display:flex; align-items:center; gap:12px; min-width:0; }
+      .facility-strip .avatar {
+        width:42px; height:42px; border-radius:12px; border:1px solid rgba(15,140,140,.2);
+        background:rgba(15,140,140,.09); color:var(--nk-green); display:flex; align-items:center; justify-content:center; font-size:18px;
+      }
+      .facility-strip .title { margin:0; color:#101828; font-size:15px; font-weight:1000; line-height:1.2; }
+      .chip-row { margin-top:4px; display:flex; gap:8px; flex-wrap:wrap; }
+      .meta-chip {
+        display:inline-flex; align-items:center; gap:6px; height:26px; padding:0 10px; border-radius:999px;
+        border:1px solid rgba(16,24,40,.10); background:rgba(16,24,40,.02); color:#475467; font-size:12px; font-weight:800;
+      }
+
+      .checklist {
+        border:1px solid rgba(16,24,40,.10); border-radius:14px; background:#fff; padding:10px;
+        display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; margin-bottom:12px;
+      }
+      .check-item {
+        border:1px solid rgba(16,24,40,.10); border-radius:10px; background:#fff; padding:8px;
+        display:flex; align-items:center; gap:8px;
+      }
+      .check-item .ic {
+        width:22px; height:22px; border-radius:999px; display:flex; align-items:center; justify-content:center;
+        background:rgba(247,144,9,.12); color:#b54708; font-size:11px;
+      }
+      .check-item .label { margin:0; color:#475467; font-size:12px; font-weight:800; }
+      .check-item .value { margin:2px 0 0; color:#98a2b3; font-size:11px; font-weight:700; }
+      .check-item.is-done { border-color:rgba(18,183,106,.24); }
+      .check-item.is-done .ic { background:rgba(18,183,106,.12); color:#067647; }
+
+      .fp-card {
+        border:1px solid rgba(16,24,40,.10); border-radius:14px; background:#fff;
+        box-shadow:0 8px 20px rgba(16,24,40,.04); margin-bottom:12px;
+      }
+      .fp-card .head {
+        padding:12px 14px; border-bottom:1px solid rgba(16,24,40,.08);
+        display:flex; align-items:center; justify-content:space-between; gap:8px;
+      }
+      .fp-card .head h5 { margin:0; font-size:15px; color:#101828; font-weight:1000; }
+      .fp-card .head p { margin:4px 0 0; color:#667085; font-size:12px; }
+      .fp-card .body { padding:12px 14px; }
+
+      .field-wrap { margin-bottom:10px; }
+      .field-wrap label { display:block; margin-bottom:4px; color:#475467; font-size:12px; font-weight:800; }
+      .field-helper { margin:0 0 6px; color:#98a2b3; font-size:11px; }
+      .form-control.form-control-32 { width:100%; border-radius:10px; border-color:rgba(16,24,40,.18); }
+      .form-control.form-control-32:focus { border-color:var(--nk-green); box-shadow:0 0 0 3px rgba(15,140,140,.14); }
+      .field-error { margin-top:4px; font-size:12px; color:#b42318; font-weight:700; display:none; }
+      .field-error.show { display:block; }
+      .field-invalid { border-color:#fda29b !important; }
+
+      .service-head {
+        border:1px solid rgba(16,24,40,.08); border-radius:10px; background:rgba(16,24,40,.02);
+        display:grid; grid-template-columns:66px 1.8fr 1.1fr 1fr; gap:8px;
+        padding:8px 10px; color:#475467; font-size:11px; font-weight:900; text-transform:uppercase;
+      }
+      .service-list { margin-top:8px; display:grid; gap:8px; }
+      .service-row {
+        border:1px solid rgba(16,24,40,.08); border-radius:12px; background:#fff; padding:10px;
+        display:grid; grid-template-columns:66px 1.8fr 1.1fr 1fr; gap:8px; align-items:start;
+      }
+      .service-row.is-disabled { background:rgba(16,24,40,.02); }
+      .service-name { margin:0; font-size:13px; color:#101828; font-weight:900; line-height:1.2; }
+      .service-ar { margin:3px 0 0; color:#667085; font-size:12px; font-weight:700; }
+      .service-base { margin:4px 0 0; color:#0f8c8c; font-size:11px; font-weight:800; }
+      .mode-segment { display:inline-flex; width:100%; border:1px solid rgba(16,24,40,.14); border-radius:10px; overflow:hidden; background:#f8fafc; }
+      .mode-segment input { display:none; }
+      .mode-segment label {
+        flex:1; margin:0; height:30px; border-right:1px solid rgba(16,24,40,.12);
+        display:inline-flex; align-items:center; justify-content:center; color:#475467;
+        font-size:11px; font-weight:800; cursor:pointer;
+      }
+      .mode-segment label:last-child { border-right:0; }
+      .mode-segment input:checked + label { background:rgba(15,140,140,.16); color:#0b6f6f; }
+      .fee-grid { display:grid; gap:6px; }
+      .row-error { grid-column:1 / -1; }
+
+      .insurance-toolbar {
+        border:1px solid rgba(16,24,40,.08); border-radius:10px; background:#fff;
+        padding:8px 10px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+      }
+      .insurance-toolbar .label { margin:0; color:#344054; font-size:13px; font-weight:800; }
+      .insurance-toolbar .sub { margin:3px 0 0; color:#98a2b3; font-size:11px; }
+      .insurance-count {
+        display:inline-flex; align-items:center; height:24px; padding:0 10px;
+        border-radius:999px; border:1px solid rgba(15,140,140,.22); background:rgba(15,140,140,.08);
+        color:#0f8c8c; font-size:11px; font-weight:800;
+      }
+      .insurance-modal-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+
+      .collapse-wrap { display:none; margin-top:10px; }
+      .collapse-wrap.is-open { display:block; }
+      .grid-2 { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+      .grid-3 { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+
+      .option-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+      .option-tile { border:1px solid rgba(16,24,40,.1); border-radius:10px; padding:8px; background:#fff; }
+      .option-tile .form-check-label { font-size:12px; font-weight:700; color:#475467; }
+
+      .fp-actions {
+        position:fixed; left:16px; right:16px; bottom:0; z-index:1080; margin-top:12px;
+        border:1px solid rgba(16,24,40,.08); border-radius:14px; background:#fff;
+        box-shadow:0 -6px 24px rgba(16,24,40,.12); padding:10px 12px;
+        display:flex; justify-content:flex-end; gap:8px;
+      }
+
+      .fp-empty {
+        border:1px solid rgba(16,24,40,.10); border-radius:14px; background:#fff;
+        box-shadow:0 8px 20px rgba(16,24,40,.04); padding:24px; text-align:center;
+      }
+      .fp-empty h4 { margin:0 0 8px; color:#101828; font-weight:1000; }
+      .fp-empty p { margin:0 0 14px; color:#667085; }
+
+      .fp-toast {
+        position:fixed; right:18px; bottom:22px; z-index:1085; min-width:260px; max-width:360px;
+        border-radius:12px; padding:10px 12px; color:#fff; background:#027a48;
+        box-shadow:0 12px 24px rgba(16,24,40,.2); opacity:0; transform:translateY(8px);
+        pointer-events:none; transition:all .25s ease; font-size:13px; font-weight:800;
+      }
+      .fp-toast.show { opacity:1; transform:translateY(0); }
+      .fp-toast.info { background:#155eef; }
+
+      @media (max-width: 992px) {
+        .checklist { grid-template-columns:repeat(2,minmax(0,1fr)); }
+        .service-head { display:none; }
+        .service-row { grid-template-columns:1fr; }
+        .grid-2,.grid-3,.option-grid,.insurance-modal-list,.fee-grid { grid-template-columns:1fr; }
+      }
+
+      @media (min-width: 1200px) {
+        .fp-actions { left:292px; right:20px; }
+      }
+    </style>
+  </head>
+
+  <body data-menu="menu-provider">
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn" aria-label="Open menu"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Provider Management</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications <span class="fsize-12 surface-secondary-400" id="notifCount">0</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span><span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../Order-Managment/facilities-order.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i><span class="fsize-14 semiBold">-</span>
+                      <span class="fsize-12 surface-secondary-400">-</span>
+                    </span>
+                    <span class="fsize-12 text-grey">-</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a href="../Setting/Notifications_Nav.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a></li>
+              </ul>
+            </div>
+
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Super Admin</b>
+                    <p class="fsize-12 text-grey">Admin / System Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a></li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i><span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Provider Management</li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="../providers/facilities.html">Facilities</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Facility Pricing</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content" id="pricingPageContent">
+          <div id="facilityPricingEmpty" class="fp-empty d-none">
+            <h4>Facility not found</h4>
+            <p>Missing or invalid facility code. Open this page using <b>?code=FC-00001</b>.</p>
+            <a id="btnEmptyBack" href="../providers/facilities.html" class="btn btn-primary btn-40">
+              <i class="fi fi-rr-arrow-left"></i><span>Back to Facilities</span>
+            </a>
+          </div>
+
+          <div id="facilityPricingContent">
+            <div class="fp-header">
+              <h4>Facility Pricing</h4>
+              <p>Step 2 commercial setup is required before activation.</p>
+            </div>
+
+            <div class="facility-strip">
+              <div class="left">
+                <span class="avatar"><i class="fi fi-rr-hospital"></i></span>
+                <div>
+                  <p class="title" id="fpFacilityName">-</p>
+                  <div class="chip-row">
+                    <span class="meta-chip"><i class="fi fi-rr-id-badge"></i><span id="fpFacilityCode">-</span></span>
+                    <span class="meta-chip"><i class="fi fi-rr-building"></i><span id="fpFacilityType">-</span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="checklist" id="completionChecklist">
+              <div class="check-item" data-check="services">
+                <span class="ic"><i class="fi fi-rr-check"></i></span>
+                <div>
+                  <p class="label">Self-Pay Pricing</p>
+                  <p class="value" id="checkServicesValue">Incomplete</p>
+                </div>
+              </div>
+              <div class="check-item" data-check="insurance">
+                <span class="ic"><i class="fi fi-rr-check"></i></span>
+                <div>
+                  <p class="label">Insurance Block</p>
+                  <p class="value" id="checkInsuranceValue">Optional</p>
+                </div>
+              </div>
+            </div>
+
+            <form id="facilityPricingForm" novalidate>
+              <section class="fp-card" id="cardServices">
+                <div class="head">
+                  <div>
+                    <h5>A) Self-Pay Service Pricing</h5>
+                    <p>Set platform pricing mode and value per service.</p>
+                  </div>
+                </div>
+                <div class="body">
+                  <div id="servicesCardError" class="field-error"></div>
+                  <div class="service-head">
+                    <span>Enable</span>
+                    <span>Service</span>
+                    <span>Platform Pricing Mode</span>
+                    <span>Platform Fee Value</span>
+                  </div>
+                  <div id="servicesRows" class="service-list"></div>
+                </div>
+              </section>
+
+              <section class="fp-card" id="cardInsurance">
+                <div class="head">
+                  <div>
+                    <h5>B) Insurance Settings</h5>
+                    <p>Optional. Add insurers from the picker when needed.</p>
+                  </div>
+                </div>
+                <div class="body">
+                  <div class="insurance-toolbar">
+                    <div>
+                      <p class="label">Insurance Providers</p>
+                      <p class="sub">Add at least one insurer to enable insurance pricing.</p>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                      <span id="insuranceSelectedCount" class="insurance-count">0 selected</span>
+                      <button id="btnOpenInsurancePicker" type="button" class="btn btn-primary btn-32">
+                        <i class="fi fi-rr-plus"></i><span>Add Insurance</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div id="insuranceFields" class="collapse-wrap">
+                    <div class="field-wrap mt-12">
+                      <label>Accepted Insurers / TPAs</label>
+                      <p class="field-helper">Select at least one insurer when insurance is enabled.</p>
+                      <div id="acceptedInsurersWrap" class="option-grid"></div>
+                      <p id="insErrInsurers" class="field-error"></p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              <div class="fp-actions">
+                <button id="btnSaveDraft" type="button" class="btn btn-primary-revers btn-32">Save Draft</button>
+                <button id="btnCancelPricing" type="button" class="btn btn-secondary btn-32">Cancel</button>
+                <button id="btnActivateFacility" type="button" class="btn btn-primary btn-32" disabled>Activate Facility</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+    <div class="modal fade" id="insurancePickerModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Select Insurance Providers</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p class="text-grey mb-8">Choose one or more insurers for this facility.</p>
+            <div id="insurancePickerList" class="insurance-modal-list"></div>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnClearInsuranceSelection" type="button" class="btn btn-primary-revers">Clear All</button>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button id="btnSaveInsuranceSelection" type="button" class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="pricingToast" class="fp-toast">Saved.</div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/provider-facility-pricing.js"></script>
+  </body>
+</html>
+
+

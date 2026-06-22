@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Coupons</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      /* page-only improvements (no theme change) */
+      .nk-edit-icon {
+        color: var(--nk-green, #0f8c8c) !important;
+        font-size: 16px;
+        line-height: 1;
+      }
+      .btn-edit-dd {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+      #couponsTable tbody td {
+        padding-top: 8px;
+        padding-bottom: 8px;
+        vertical-align: middle;
+      }
+      #couponsTable th,
+      #couponsTable td {
+        white-space: nowrap;
+      }
+      #couponsTable td.col-name,
+      #couponsTable th.col-name {
+        white-space: normal;
+        min-width: 220px;
+      }
+      .top-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .file-input {
+        display: none;
+      }
+      .form-check-input.coupon-activation-toggle {
+        width: 44px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .form-check-input.coupon-activation-toggle:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(25,163,154,0.08);
+      }
+      .coupon-target-wrap{margin-top:16px;}
+      .target-card{
+        border:1px solid var(--nk-border,#e6eaef);
+        border-radius:14px;
+        background:#fff;
+        padding:14px;
+        height:100%;
+      }
+      .target-head{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:10px;
+        margin-bottom:10px;
+      }
+      .target-title{margin:0;font-size:14px;font-weight:900;}
+      .target-sub{margin-top:6px;font-size:12px;color:#6b7280;font-weight:900;}
+      .target-tabs{
+        display:flex;
+        gap:8px;
+        flex-wrap:wrap;
+        margin-top:8px;
+      }
+      .target-tab{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        border:1px solid #eef1f4;
+        border-radius:999px;
+        padding:8px 10px;
+        background:#fff;
+        font-weight:900;
+        font-size:12px;
+        cursor:pointer;
+        user-select:none;
+      }
+      .target-tab input{accent-color: var(--nk-green, #0f8c8c);}
+      .target-tab.active{
+        background:rgba(15,140,140,.08);
+        border-color:rgba(15,140,140,.35);
+        color:var(--nk-green, #0f8c8c);
+      }
+      .target-fields{display:none;margin-top:10px;}
+      .target-fields.active{display:block;}
+      .target-hint{margin-top:8px;font-size:12px;color:#6b7280;font-weight:900;}
+      .target-actions{
+        display:flex;
+        gap:8px;
+        justify-content:flex-end;
+        margin-top:12px;
+      }
+      .target-list{
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
+      }
+      .target-chip{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        border:1px solid rgba(15,140,140,.2);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green, #0f8c8c);
+        border-radius:999px;
+        padding:6px 10px;
+        font-size:12px;
+        font-weight:900;
+      }
+      .target-chip button{
+        border:none;
+        background:transparent;
+        color:var(--nk-green, #0f8c8c);
+        padding:0;
+        line-height:1;
+        cursor:pointer;
+      }
+      .target-empty{
+        color:#6b7280;
+        font-size:12px;
+        font-weight:900;
+        padding:4px 0;
+      }
+      .target-count{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding:4px 8px;
+        border-radius:999px;
+        border:1px solid #eef1f4;
+        background:#fff;
+        font-weight:900;
+        font-size:12px;
+        white-space:nowrap;
+      }
+      .target-scope{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding:4px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.2);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green, #0f8c8c);
+        font-weight:900;
+        font-size:12px;
+        white-space:nowrap;
+      }
+      #couponsTable td.col-target,
+      #couponsTable th.col-target{
+        white-space:normal;
+        min-width:180px;
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Coupons</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Coupons</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <!-- Top bar: Search + Reset + Filter + Add Coupon + Import/Export -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 align-items-center justify-content-between">
+              <div class="col-12 col-lg">
+                <div class="search-box-group w-100 search-box-group--md">
+                  <input id="couponSearch" type="text" class="form-control form-control-32" placeholder="Search by" />
+                  <button id="btnCouponSearch" type="button" class="btn btn-primary btn-32" title="Search">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnCouponReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                    title="Reset"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-12 col-lg-auto">
+                <div class="top-actions">
+                  <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#couponFilterModal" type="button">
+                    <i class="fi fi-rr-bars-filter"></i>
+                    <span>Filter</span>
+                  </button>
+
+                  <button class="btn btn-primary-revers btn-icon btn-40" id="btnExport" type="button">
+                    <i class="fi fi-rr-file-export"></i>
+                    <span>Export</span>
+                  </button>
+
+                  <label class="btn btn-primary-revers btn-icon btn-40" for="importFile">
+                    <i class="fi fi-rr-file-import"></i>
+                    <span>Import</span>
+                  </label>
+                  <input class="file-input" id="importFile" type="file" accept=".csv,.xlsx" />
+
+                  <a href="add-coupon.html" class="btn btn-primary btn-icon btn-40">
+                    <i class="fi fi-rr-plus-small"></i>
+                    <span>Add Coupon</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+  
+          <!-- Table -->
+          <div class="tabel-box-item mt-24">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight" id="couponsTable">
+                  <thead>
+                    <tr>
+                      <th style="width:60px;">#</th>
+                      <th>Coupon Code</th>
+                      <th class="col-name">Coupon Name</th>
+                      <th>Coupon Type</th>
+                      <th class="col-target">Applies To</th>
+                      <th>Discount</th>
+                      <th>Minimum Amount</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th style="width:120px;">Activation</th>
+                      <th style="width:90px;">Actions</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="couponsTbody">
+                    <tr data-code="CP-1001" data-name="New Year Offer" data-type="Percentage" data-scope="All Patients" data-activated="true">
+                      <td>1</td>
+                      <td><span class="staff-code">CP-1001</span></td>
+                      <td class="col-name">New Year Offer</td>
+                      <td>Percentage</td>
+                      <td class="col-target"><span class="target-scope">All Patients</span></td>
+                      <td>15%</td>
+                      <td>200 SAR</td>
+                      <td>Jan 01, 2026</td>
+                      <td>Jan 31, 2026</td>
+                      <td>
+                        <div style="display:flex; justify-content:center;">
+                          <div class="form-check form-switch">
+                            <input class="form-check-input coupon-activation-toggle" type="checkbox" id="act-1" data-id="CP-1001" checked />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="text-end">
+                        <div class="dropdown">
+                          <button class="btn btn-primary-revers btn-32 dropdown-toggle btn-edit-dd" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">
+                            <i class="fi fi-rr-edit nk-edit-icon"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                              <a class="dropdown-item" href="edit-coupon.html?id=1">
+                                <i class="fi fi-rr-edit"></i>
+                                <span style="margin-left:8px;">Edit</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item text-red" href="#" data-action="delete" data-id="1">
+                                <i class="fi fi-rr-trash"></i>
+                                <span style="margin-left:8px;">Delete</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr data-code="CP-1002" data-name="Flat Discount" data-type="Fixed" data-scope="Service: Radiology" data-activated="false">
+                      <td>2</td>
+                      <td><span class="staff-code">CP-1002</span></td>
+                      <td class="col-name">Flat Discount</td>
+                      <td>Fixed</td>
+                      <td class="col-target"><span class="target-scope">Service: Radiology</span></td>
+                      <td>50 SAR</td>
+                      <td>300 SAR</td>
+                      <td>Jan 10, 2026</td>
+                      <td>Feb 10, 2026</td>
+                      <td>
+                        <div style="display:flex; justify-content:center;">
+                          <div class="form-check form-switch">
+                            <input class="form-check-input coupon-activation-toggle" type="checkbox" id="act-2" data-id="CP-1002" />
+                          </div>
+                        </div>
+                      </td>
+                      <td class="text-end">
+                        <div class="dropdown">
+                          <button class="btn btn-primary-revers btn-32 dropdown-toggle btn-edit-dd" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions">
+                            <i class="fi fi-rr-edit nk-edit-icon"></i>
+                          </button>
+                          <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                              <a class="dropdown-item" href="edit-coupon.html?id=2">
+                                <i class="fi fi-rr-edit"></i>
+                                <span style="margin-left:8px;">Edit</span>
+                              </a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item text-red" href="#" data-action="delete" data-id="2">
+                                <i class="fi fi-rr-trash"></i>
+                                <span style="margin-left:8px;">Delete</span>
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <!-- Footer (simple) -->
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="couponRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                      <option value="all">All</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="couponPageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="couponPrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="couponCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="couponNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Filter Modal -->
+          <div class="modal fade" id="couponFilterModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Filter Coupons</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="fsize-12 text-grey">Coupon Type</label>
+                      <select id="fType" class="form-control form-control-32">
+                        <option value="">All</option>
+                        <option value="Percentage">Percentage</option>
+                        <option value="Fixed">Fixed</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-between">
+                  <button id="btnFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button id="btnApplyFilter" type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const tbody = document.getElementById("couponsTbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        const searchInput = document.getElementById("couponSearch");
+        const btnReset = document.getElementById("btnCouponReset");
+        const btnSearch = document.getElementById("btnCouponSearch");
+
+        const fType = document.getElementById("fType");
+        const btnApply = document.getElementById("btnApplyFilter");
+        const btnFilterReset = document.getElementById("btnFilterReset");
+
+        const btnExport = document.getElementById("btnExport");
+        const importFile = document.getElementById("importFile");
+
+        // Basic search + filter
+        function norm(v) { return (v || "").toString().trim().toLowerCase(); }
+
+        function applyFilters() {
+          const q = norm(searchInput.value);
+          const type = (fType.value || "").trim();
+
+          rows.forEach((tr) => {
+            const code = tr.getAttribute("data-code") || "";
+            const name = tr.getAttribute("data-name") || "";
+            const t = tr.getAttribute("data-type") || "";
+            const scope = tr.getAttribute("data-scope") || "";
+            const key = norm(code + " " + name + " " + t + " " + scope);
+
+            const okSearch = !q || key.includes(q);
+            const okType = !type || t === type;
+
+            tr.style.display = (okSearch && okType) ? "" : "none";
+          });
+        }
+
+        btnSearch.addEventListener("click", applyFilters);
+        searchInput.addEventListener("keydown", (e) => { if (e.key === "Enter") applyFilters(); });
+
+        btnReset.addEventListener("click", () => {
+          searchInput.value = "";
+          fType.value = "";
+          applyFilters();
+        });
+
+        btnApply.addEventListener("click", applyFilters);
+
+        btnFilterReset.addEventListener("click", () => {
+          fType.value = "";
+        });
+
+        // Coupon targeting (UI only)
+        const targetTabs = document.querySelectorAll(".target-tab");
+        const targetFields = document.querySelectorAll(".target-fields");
+        const targetList = document.getElementById("targetList");
+        const targetCount = document.getElementById("targetCount");
+        const btnAddTarget = document.getElementById("btnAddTarget");
+        const btnClearTargets = document.getElementById("btnClearTargets");
+        const targetPatient = document.getElementById("targetPatient");
+        const targetService = document.getElementById("targetService");
+        const targetDoctor = document.getElementById("targetDoctor");
+        const targetTypeInputs = document.querySelectorAll('input[name="targetType"]');
+
+        const targets = new Map();
+
+        function setTargetType(type) {
+          targetTabs.forEach((tab) => {
+            tab.classList.toggle("active", tab.getAttribute("data-target") === type);
+          });
+          targetFields.forEach((field) => {
+            field.classList.toggle("active", field.getAttribute("data-target") === type);
+          });
+        }
+
+        function renderTargets() {
+          if (!targetList || !targetCount) return;
+          const count = targets.size;
+          targetCount.textContent = count + (count === 1 ? " target" : " targets");
+          if (!count) {
+            targetList.innerHTML = '<div class="target-empty">No targets yet.</div>';
+            return;
+          }
+          targetList.innerHTML = Array.from(targets.values()).map((t) => {
+            return `
+              <div class="target-chip" data-key="${t.key}">
+                <span>${t.label}</span>
+                <button type="button" class="chip-remove" data-key="${t.key}" title="Remove">
+                  <i class="fi fi-rr-cross-small"></i>
+                </button>
+              </div>
+            `;
+          }).join("");
+        }
+
+        function addTarget(type) {
+          let label = "";
+          let key = "";
+
+          if (type === "all") {
+            label = "All Patients";
+            key = "all";
+          } else if (type === "patient") {
+            const name = (targetPatient && targetPatient.value || "").trim();
+            if (!name) return;
+            label = "Patient: " + name;
+            key = "patient:" + name.toLowerCase();
+            targetPatient.value = "";
+          } else if (type === "service") {
+            const value = targetService ? targetService.value : "";
+            if (!value) return;
+            label = "Service: " + value;
+            key = "service:" + value.toLowerCase();
+          } else if (type === "doctor") {
+            const value = targetDoctor ? targetDoctor.value : "";
+            if (!value) return;
+            label = "Doctor: " + value;
+            key = "doctor:" + value.toLowerCase();
+          }
+
+          if (!targets.has(key)) {
+            targets.set(key, { key, label });
+            renderTargets();
+          }
+        }
+
+        if (targetTypeInputs.length) {
+          targetTypeInputs.forEach((input) => {
+            input.addEventListener("change", (e) => setTargetType(e.target.value));
+          });
+          setTargetType("all");
+        }
+
+        if (btnAddTarget) btnAddTarget.addEventListener("click", () => {
+          const selected = document.querySelector('input[name="targetType"]:checked');
+          const type = selected ? selected.value : "all";
+          addTarget(type);
+        });
+
+        if (btnClearTargets) btnClearTargets.addEventListener("click", () => {
+          targets.clear();
+          renderTargets();
+        });
+
+        if (targetList) {
+          targetList.addEventListener("click", (e) => {
+            const btn = e.target.closest(".chip-remove");
+            if (!btn) return;
+            const key = btn.getAttribute("data-key");
+            if (key && targets.has(key)) {
+              targets.delete(key);
+              renderTargets();
+            }
+          });
+        }
+
+        renderTargets();
+
+        // Export placeholder
+        btnExport.addEventListener("click", () => {
+          // TODO: connect real export
+          // build CSV from data attributes + activation
+          const visible = rows.filter(r => r.style.display !== "none");
+          let csv = "No,Coupon Code,Coupon Name,Coupon Type,Applies To,Discount,Minimum Amount,From,To,Activation\n";
+          visible.forEach((r) => {
+            const code = r.getAttribute('data-code') || '';
+            const name = r.getAttribute('data-name') || '';
+            const type = r.getAttribute('data-type') || '';
+            const tds = r.querySelectorAll('td');
+            const appliesTo = (tds[4] && tds[4].textContent.trim()) || '';
+            const discount = (tds[5] && tds[5].textContent.trim()) || '';
+            const minAmount = (tds[6] && tds[6].textContent.trim()) || '';
+            const from = (tds[7] && tds[7].textContent.trim()) || '';
+            const to = (tds[8] && tds[8].textContent.trim()) || '';
+            const toggle = r.querySelector('.coupon-activation-toggle');
+            const activation = toggle && toggle.checked ? 'Active' : 'Inactive';
+            const cells = [code, name, type, appliesTo, discount, minAmount, from, to, activation].map(c => `"${(c||'').toString().replaceAll('"','""')}"`);
+            csv += cells.join(",") + "\n";
+          });
+          const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = "coupons.csv";
+          a.click();
+          URL.revokeObjectURL(url);
+        });
+
+        // Import placeholder
+        importFile.addEventListener("change", () => {
+          // TODO: parse file
+          importFile.value = "";
+        });
+
+        // Delete placeholder
+        document.addEventListener("click", (e) => {
+          const del = e.target.closest('[data-action="delete"]');
+          if (!del) return;
+          e.preventDefault();
+          // TODO: connect backend delete
+        });
+
+        // Activation toggles: persist to localStorage
+        const ACTIVATION_KEY = 'couponActivation';
+        function loadActivationMap() {
+          try { return JSON.parse(localStorage.getItem(ACTIVATION_KEY) || '{}'); } catch (e) { return {}; }
+        }
+        function saveActivationMap(map) { localStorage.setItem(ACTIVATION_KEY, JSON.stringify(map)); }
+
+        const activationMap = loadActivationMap();
+        tbody.querySelectorAll('.coupon-activation-toggle').forEach((el) => {
+          const id = el.dataset.id || el.id;
+          // initial state: data-activated attribute or saved map
+          const tr = el.closest('tr');
+          const attr = tr && tr.getAttribute('data-activated');
+          if (activationMap.hasOwnProperty(id)) {
+            el.checked = !!activationMap[id];
+          } else if (attr !== null) {
+            el.checked = String(attr) === 'true';
+            activationMap[id] = el.checked;
+          }
+          el.addEventListener('change', () => {
+            activationMap[id] = !!el.checked;
+            saveActivationMap(activationMap);
+          });
+        });
+
+        applyFilters();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

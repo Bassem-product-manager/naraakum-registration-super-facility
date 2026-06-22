@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Follow-Up Report</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <link rel="stylesheet" href="../assets/css/patient-followup.css" />
+
+    <style>
+      .preloader.hide,
+      .preloader.preloader-hide {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+    <script>
+      (function () {
+        function hideLoader() {
+          var pre = document.querySelector(".preloader");
+          if (!pre) return;
+          pre.classList.add("hide", "preloader-hide");
+          pre.style.display = "none";
+        }
+
+        window.addEventListener("load", hideLoader);
+        setTimeout(hideLoader, 1200);
+      })();
+    </script>
+
+    <div id="app"></div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/facility-dashboard-shell.js"></script>
+    <script src="../assets/js/patient-followup-data.js"></script>
+    <script src="../assets/js/patient-visit-record.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+  </body>
+</html>

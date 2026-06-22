@@ -1,0 +1,36 @@
+.product-card {
+  display: flex;
+  flex-direction: column;
+  gap: $value-8;
+  border: 0.1rem solid #eee;
+  padding: $value-8;
+  height: 100%;
+  border-radius: $value-8;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  .card-img {
+    border: 0.1rem solid #eee;
+    background-color: #fff;
+    text-align: center;
+    height: 10rem;
+    border-radius: $value-8;
+    padding: $value-8;
+    img {
+      width: auto;
+      height: 100%;
+
+      border-radius: $value-8;
+
+      &:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+}
+
+.no-warp {
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

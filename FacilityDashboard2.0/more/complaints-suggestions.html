@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Complaints & Suggestions</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      /* page-only (no theme change) - improved UI/UX */
+      :root { --accent: #0f8c8c; --muted:#6b7280; }
+      .cs-card { border: 1px solid var(--nk-border, #e6eaef); background: var(--surface-light-50, #fff); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(16,24,40,0.03); }
+      .cs-head { padding: 18px 20px; border-bottom: 1px solid var(--nk-border, #e6eaef); }
+      .cs-head-row { display:flex; align-items:flex-start; justify-content:space-between; gap:14px; flex-wrap:wrap; }
+      .cs-head b { font-size: 16px; letter-spacing: -0.2px; }
+      .cs-body { padding: 18px; }
+      .cs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; align-items: start; }
+      .cs-full { grid-column: 1 / -1; }
+
+      /* inputs */
+      .form-control { height:44px; padding: 10px 12px; border-radius:10px; transition: box-shadow .18s ease, border-color .18s ease; }
+      .cs-body select.form-control:focus, .cs-body .form-control:focus { border-color: var(--accent) !important; box-shadow: 0 6px 20px rgba(15,140,140,0.08) !important; outline: none; }
+
+      .req { color: #ef4444; margin-left: 6px; }
+
+      /* details box */
+      .details-box { border: 1px solid var(--nk-border, #e6eaef); border-radius: 12px; padding: 18px; background: #fff; min-height: 240px; }
+      .details-title { margin: 0 0 12px; font-size: 14px; font-weight: 900; color: #0f1724; }
+      .details-box .form-control { min-height: 200px; resize: vertical; font-size:14px; padding:12px; }
+
+      /* upload */
+      .upload-zone { border: 1px dashed var(--nk-border, #e6eaef); border-radius: 12px; padding: 14px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; transition: background .12s ease, border-color .12s ease, transform .06s ease; }
+      .upload-zone:hover { background: rgba(15, 140, 140, 0.03); border-color: rgba(15, 140, 140, 0.35); transform: translateY(-1px); }
+      .upload-zone.drag-over { background: rgba(15,140,140,0.06); border-color: var(--accent); box-shadow: 0 6px 20px rgba(15,140,140,0.06); }
+      .upload-left b { display: block; font-size: 14px; margin-bottom: 4px; }
+      .upload-left span { font-size: 12px; color: var(--muted); }
+      .upload-badge { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--nk-border, #e6eaef); background: rgba(15, 140, 140, 0.08); color: var(--accent); font-size: 12px; font-weight: 800; white-space: nowrap; }
+
+      .help-text { font-size:12px; color:var(--muted); margin-top:8px; }
+
+      .file-list { margin-top: 12px; display: grid; gap: 10px; }
+      .file-item { border: 1px solid var(--nk-border, #e6eaef); border-radius: 12px; padding: 10px 12px; background: #fff; display: flex; align-items: center; justify-content: space-between; gap: 12px; transition: box-shadow .12s ease, transform .08s ease; }
+      .file-item:hover { box-shadow: 0 6px 18px rgba(16,24,40,0.04); transform: translateY(-3px); }
+      .file-item .name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .file-item .meta { font-size: 12px; color: var(--muted); white-space: nowrap; }
+      .file-remove { border: 0; background: transparent; color: #dc2626; font-weight: 800; cursor: pointer; padding: 6px 8px; border-radius: 10px; }
+      .file-remove:hover { background: rgba(220, 38, 38, 0.06); }
+
+      /* preview thumbnails / pdf */
+      .file-thumb { width: 72px; height: 48px; flex: 0 0 72px; border-radius: 8px; overflow: hidden; margin-right: 12px; background: #f8fafc; display: flex; align-items: center; justify-content: center; }
+      .file-thumb img { width: 100%; height: 100%; object-fit: cover; }
+      .file-pdf { width: 72px; height: 48px; display: flex; align-items: center; justify-content: center; background: #fff5f5; color: #b91c1c; font-weight: 800; border-radius: 8px; margin-right: 12px; border: 1px solid var(--nk-border, #e6eaef); }
+      .file-actions { display:flex; gap:8px; align-items:center; }
+      .view-btn { border: 0; background: transparent; color: var(--accent); font-weight: 800; cursor: pointer; padding: 6px 8px; border-radius: 8px; }
+
+      .cs-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+
+      .shake { animation: shake .4s ease; }
+      @keyframes shake { 0%{transform:translateX(0)}25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)} }
+
+      @media (max-width: 992px) { .cs-grid { grid-template-columns: 1fr; } }
+
+      /* Quick Links Container */
+      .quick-links-section { margin-bottom: 24px; }
+      .quick-links-card { border: 1px solid var(--nk-border, #e6eaef); background: var(--surface-light-50, #fff); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 14px rgba(16,24,40,0.03); }
+      .quick-links-head { padding: 18px 20px; border-bottom: 1px solid var(--nk-border, #e6eaef); }
+      .quick-links-head b { font-size: 16px; letter-spacing: -0.2px; }
+      .quick-links-body { padding: 18px; }
+      .links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+      .link-item { border: 1px solid var(--nk-border, #e6eaef); border-radius: 10px; padding: 14px 12px; background: #fff; text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: all .18s ease; }
+      .link-item:hover { border-color: var(--accent); background: rgba(15, 140, 140, 0.04); box-shadow: 0 6px 20px rgba(15,140,140,0.08); transform: translateY(-2px); }
+      .link-item .icon { font-size: 24px; margin-bottom: 8px; opacity: 0.8; }
+      .link-item .label { font-size: 13px; font-weight: 700; color: #1e293b; line-height: 1.3; }
+      .link-item .sublabel { font-size: 11px; color: var(--muted); margin-top: 4px; }
+      @media (max-width: 1200px) { .links-grid { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 768px) { .links-grid { grid-template-columns: repeat(2, 1fr); } }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+              <a href="../more/submitted-complaints.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Submitted Complaints</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Complaints & Suggestions</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Complaints & Suggestions</li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- concise bilingual definitions -->
+       
+              <!-- Facility definition removed as requested -->
+        
+        </section>
+
+        <!-- Quick Links / Related Pages Container -->
+ 
+        <div class="page-content">
+          <form id="csForm" novalidate>
+            <div class="cs-card">
+              <div class="cs-head">
+                <div class="cs-head-row">
+                  <div>
+                    <b class="fsize-14 semiBold">Complaints & Suggestions</b>
+                    <div class="fsize-12 text-grey" style="margin-top:6px;">
+                      Submit your complaint or suggestion with details and screenshots.
+                    </div>
+                  </div>
+                  <a href="submitted-complaints.html" class="btn btn-primary-revers btn-40">
+                    Submitted Complaints
+                  </a>
+                </div>
+              </div>
+
+              <div class="cs-body">
+                <div class="cs-grid">
+                  <div>
+                    <label class="fsize-12 text-grey">Type of Request (English)<span class="req">*</span></label>
+                    <select id="reqType" class="form-control form-control-32" required aria-label="Type of Request (English)">
+                      <option value="" selected>Select an option</option>
+                      <option>Service Quality</option>
+                      <option>Staff Behavior</option>
+                      <option>Scheduling / Delay</option>
+                      <option>Billing / Payments</option>
+                      <option>Technical Issue</option>
+                      <option>App Feature Suggestion</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Priority</label>
+                    <select id="priority" class="form-control form-control-32" aria-label="Priority">
+                      <option value="Normal" selected>Normal</option>
+                      <option value="High">High</option>
+                      <option value="Urgent">Urgent</option>
+                    </select>
+                  </div>
+
+                  <div class="cs-full">
+                    <div class="details-box">
+                      <p class="details-title">Write details (Arabic or English)</p>
+                      <textarea
+                        id="details"
+                        class="form-control"
+                        rows="5"
+                        placeholder="اكتب التفاصيل بالعربى او بالانجلش..."
+                        required
+                        aria-label="Write details in Arabic or English"
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="cs-full">
+                    <label class="fsize-12 text-grey">Attach Files</label>
+                    <input id="fileInput" type="file" accept="image/png,image/jpeg,application/pdf" style="display:none;" multiple />
+
+                    <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-label="File upload zone">
+                      <div class="upload-left">
+                        <b>Click to upload images or PDFs</b>
+                        <span>PNG/JPG/PDF • You can attach screenshots or a PDF to explain the issue</span>
+                      </div>
+                      <div class="upload-badge" id="uploadBadge">0 Files</div>
+                    </div>
+                    <div class="help-text">You can drag & drop files here or click to browse. Max <b>5 files</b>, PNG/JPG/PDF, <b>10MB</b> each.</div>
+                    <div class="file-list" id="fileList"></div>
+                  </div>
+                </div>
+
+                <div class="cs-actions">
+                  <button type="button" class="btn btn-primary-revers" onclick="history.back()">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const form = document.getElementById("csForm");
+        const fileInput = document.getElementById("fileInput");
+        const uploadZone = document.getElementById("uploadZone");
+        const fileList = document.getElementById("fileList");
+        const badge = document.getElementById("uploadBadge");
+
+        let files = []; // { file: File, url: ObjectURL }
+
+        const MAX_SIZE = 10 * 1024 * 1024; // 10 MB per file
+        const MAX_FILES = 5;
+
+        function syncBadge() {
+          if (files.length === 0) badge.textContent = "No files";
+          else if (files.length === 1) badge.textContent = "1 File";
+          else badge.textContent = files.length + " Files";
+        }
+
+        function humanSize(bytes) {
+          if (bytes < 1024) return bytes + " B";
+          if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + " KB";
+          return Math.round(bytes / 1024 / 1024) + " MB";
+        }
+
+        function clearTempURLs() {
+          files.forEach((it) => { try { URL.revokeObjectURL(it.url); } catch (e) {} });
+        }
+
+        function renderFiles() {
+          fileList.innerHTML = "";
+          files.forEach((item, idx) => {
+            const f = item.file;
+            const url = item.url;
+            const el = document.createElement("div");
+            el.className = "file-item";
+
+            const left = document.createElement("div");
+            left.style.display = "flex";
+            left.style.alignItems = "center";
+            left.style.minWidth = "0";
+
+            const thumbWrap = document.createElement("div");
+            if (f.type === "application/pdf") {
+              thumbWrap.className = "file-pdf";
+              thumbWrap.textContent = "PDF";
+            } else {
+              thumbWrap.className = "file-thumb";
+              const img = document.createElement("img");
+              img.src = url;
+              img.alt = f.name;
+              thumbWrap.appendChild(img);
+            }
+
+            const info = document.createElement("div");
+            info.style.overflow = "hidden";
+            info.style.minWidth = "0";
+            const name = document.createElement("div");
+            name.className = "name";
+            name.textContent = f.name;
+            const meta = document.createElement("div");
+            meta.className = "meta";
+            meta.textContent = humanSize(f.size);
+            info.appendChild(name);
+            info.appendChild(meta);
+
+            left.appendChild(thumbWrap);
+            left.appendChild(info);
+
+            const actions = document.createElement("div");
+            actions.className = "file-actions";
+
+            if (f.type === "application/pdf") {
+              const view = document.createElement("button");
+              view.type = "button";
+              view.className = "view-btn";
+              view.textContent = "View";
+              view.setAttribute("data-idx", idx);
+              view.addEventListener("click", function () { window.open(url, "_blank"); });
+              actions.appendChild(view);
+            }
+
+            const remove = document.createElement("button");
+            remove.type = "button";
+            remove.className = "file-remove";
+            remove.setAttribute("data-idx", idx);
+            remove.textContent = "Remove";
+            remove.addEventListener("click", function () {
+              const i = parseInt(this.getAttribute("data-idx"), 10);
+              if (!Number.isFinite(i)) return;
+              try { URL.revokeObjectURL(files[i].url); } catch (e) {}
+              files.splice(i, 1);
+              renderFiles();
+            });
+            actions.appendChild(remove);
+
+            el.appendChild(left);
+            el.appendChild(actions);
+            fileList.appendChild(el);
+          });
+          syncBadge();
+        }
+
+        function handleSelectedFiles(selected) {
+          if (!selected || !selected.length) return;
+          const incoming = Array.from(selected);
+          for (let f of incoming) {
+            if (!f.type) continue;
+            const okImage = f.type === "image/png" || f.type === "image/jpeg" || f.type.startsWith("image/");
+            const okPdf = f.type === "application/pdf";
+            if (!okImage && !okPdf) continue;
+            if (f.size > MAX_SIZE) { alert('File "' + f.name + '" exceeds 10MB and was skipped.'); continue; }
+            if (files.length >= MAX_FILES) { alert('Maximum of ' + MAX_FILES + ' files allowed. Some files were skipped.'); break; }
+            const url = URL.createObjectURL(f);
+            files.push({ file: f, url });
+          }
+          fileInput.value = "";
+          renderFiles();
+        }
+
+        function openPicker() { fileInput.click(); }
+
+        uploadZone.addEventListener("click", openPicker);
+        uploadZone.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") openPicker(); });
+
+        // Drag & drop
+        uploadZone.addEventListener("dragover", function (e) { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+        uploadZone.addEventListener("dragleave", function (e) { uploadZone.classList.remove('drag-over'); });
+        uploadZone.addEventListener("drop", function (e) {
+          e.preventDefault(); uploadZone.classList.remove('drag-over');
+          const dt = e.dataTransfer; if (!dt) return; handleSelectedFiles(dt.files);
+        });
+
+        fileInput.addEventListener("change", function () { handleSelectedFiles(fileInput.files || []); });
+
+        function complaintSeed() {
+          return [
+            {
+              id: "CMP-2026-000003",
+              reqType: "Service Quality",
+              priority: "High",
+              details: "نقص 4545",
+              status: "In Progress",
+              submittedAt: "2026-06-10T09:24:00.000Z",
+              handledBy: "Platform Admin",
+              attachments: []
+            },
+            {
+              id: "CMP-2026-000002",
+              reqType: "Staff Behavior",
+              priority: "Normal",
+              details: "-",
+              status: "Closed",
+              submittedAt: "2026-06-09T11:15:00.000Z",
+              handledBy: "Platform Admin",
+              attachments: []
+            },
+            {
+              id: "CMP-2026-000001",
+              reqType: "Service Quality",
+              priority: "Normal",
+              details: "Patient reported a billing discrepancy that was resolved after review.",
+              status: "Closed",
+              submittedAt: "2026-06-08T14:45:00.000Z",
+              handledBy: "Unassigned",
+              attachments: []
+            }
+          ];
+        }
+
+        function getComplaints() {
+          try {
+            const raw = localStorage.getItem("naraakumComplaints");
+            if (!raw) return complaintSeed();
+            const parsed = JSON.parse(raw);
+            return Array.isArray(parsed) ? parsed : complaintSeed();
+          } catch (err) {
+            return complaintSeed();
+          }
+        }
+
+        function saveComplaints(items) {
+          localStorage.setItem("naraakumComplaints", JSON.stringify(items));
+        }
+
+        function nextComplaintId(items) {
+          const year = new Date().getFullYear();
+          const max = items.reduce((acc, item) => {
+            const match = String(item.id || "").match(/CMP-\d{4}-(\d+)/);
+            return match ? Math.max(acc, Number(match[1])) : acc;
+          }, 0);
+          return "CMP-" + year + "-" + String(max + 1).padStart(6, "0");
+        }
+
+        form.addEventListener("submit", function (e) {
+          if (!form.checkValidity()) {
+            e.preventDefault(); e.stopPropagation(); form.classList.add("was-validated");
+            // focus the first invalid element and give subtle shake
+            const firstInvalid = form.querySelector(':invalid');
+            if (firstInvalid) {
+              firstInvalid.focus();
+              const parent = firstInvalid.closest('.details-box, .cs-body, .cs-card') || firstInvalid.parentElement;
+              if (parent) { parent.classList.add('shake'); setTimeout(()=> parent.classList.remove('shake'), 450); }
+            }
+            return;
+          }
+          e.preventDefault();
+          const items = getComplaints();
+          const complaint = {
+            id: nextComplaintId(items),
+            reqType: document.getElementById("reqType").value,
+            priority: document.getElementById("priority").value,
+            details: document.getElementById("details").value.trim(),
+            status: "In Progress",
+            submittedAt: new Date().toISOString(),
+            handledBy: "Unassigned",
+            attachments: files.map((it) => ({
+              name: it.file.name,
+              type: it.file.type || "file",
+              size: it.file.size
+            }))
+          };
+          items.unshift(complaint);
+          saveComplaints(items);
+          window.location.href = "submitted-complaints.html";
+        });
+
+        window.addEventListener("beforeunload", function () { clearTempURLs(); });
+
+        syncBadge();
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

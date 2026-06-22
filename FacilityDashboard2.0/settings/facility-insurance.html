@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Insurance</title>
+    <meta name="description" content="Naraakum" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- Start side-menu -->
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+      <!-- End side-menu -->
+
+      <main class="main-page insurance-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Insurance</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page">Facility Settings</li>
+              <li class="breadcrumb-item active" aria-current="page">Insurance</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+
+          <!-- Top operations bar -->
+          <div class="filter-bar filter-bar--compact-search surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between align-items-center">
+              <div class="col">
+                <div class="search-box-group w-100">
+                  <input
+                    id="insuranceSearchInput"
+                    type="text"
+                    class="form-control form-control-32"
+                    placeholder="Search by insurance name / email / phone"
+                  />
+                  <button id="btnInsuranceSearch" type="button" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    id="btnInsuranceReset"
+                    type="button"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#insurance-filter-modal" type="button">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+
+                <button id="btnInsuranceExport" type="button" class="btn btn-primary-revers btn-icon btn-40">
+                  <i class="fi fi-rr-download"></i>
+                  <span>Export</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Insurance table -->
+          <div class="tabel-box-item mt-24 services-table-wrap">
+            <div class="box-body p-12">
+              <div class="table-responsive">
+                <table class="staff-table naraakum-table table-tight insurance-table" id="insuranceTable">
+                  <thead>
+                    <tr>
+                      <th class="col-seq">#</th>
+                      <th>Insurance Company</th>
+                      <th>Billing Email</th>
+                      <th>Billing Phone</th>
+                      <th class="text-center">Actions</th>
+                      <th class="text-center">Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="insuranceTbody"></tbody>
+                </table>
+
+                <div class="table-footer">
+                  <div class="rows-select">
+                    <select id="insuranceRowsPerPage">
+                      <option value="10" selected>10</option>
+                      <option value="25">25</option>
+                      <option value="50">50</option>
+                    </select>
+                    <span class="fsize-12 text-grey">Rows per page</span>
+                  </div>
+
+                  <div class="page-indicator" id="insurancePageIndicator">Page 1 of 1</div>
+
+                  <div class="pager">
+                    <button class="pg-btn" id="insuranceFirstPage" type="button" aria-label="First">
+                      <i class="fi fi-rr-angle-double-small-left"></i>
+                    </button>
+                    <button class="pg-btn" id="insurancePrevPage" type="button" aria-label="Previous">
+                      <i class="fi fi-rr-angle-small-left"></i>
+                    </button>
+
+                    <span class="pg-current" id="insuranceCurrentPageBadge">1</span>
+
+                    <button class="pg-btn" id="insuranceNextPage" type="button" aria-label="Next">
+                      <i class="fi fi-rr-angle-small-right"></i>
+                    </button>
+                    <button class="pg-btn" id="insuranceLastPage" type="button" aria-label="Last">
+                      <i class="fi fi-rr-angle-double-small-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Filter Modal -->
+    <div class="modal fade" id="insurance-filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Filter Insurance</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Status</label>
+                <select id="ifStatus" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="enabled">Enabled</option>
+                  <option value="disabled">Disabled</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">City</label>
+                <select id="ifCity" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="riyadh">Riyadh</option>
+                  <option value="jeddah">Jeddah</option>
+                  <option value="dammam">Dammam</option>
+                </select>
+              </div>
+
+              <div class="col-md-4">
+                <label class="fsize-12 text-grey">Has Billing Contact</label>
+                <select id="ifHasBilling" class="form-control form-control-32">
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-between">
+            <button id="btnInsuranceFilterReset" type="button" class="btn btn-primary-revers">Reset</button>
+            <button id="btnInsuranceApplyFilter" type="button" class="btn btn-primary">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit Contact Modal -->
+    <div class="modal fade" id="insurance-edit-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h5 class="modal-title">Insurance Contact Settings</h5>
+              <div class="fsize-12 text-grey" id="editInsuranceCompany">-</div>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Billing Email</label>
+                <input id="editBillingEmail" type="email" class="form-control form-control-32" placeholder="billing@email.com" />
+              </div>
+
+              <div class="col-md-6">
+                <label class="fsize-12 text-grey">Billing Phone</label>
+                <input id="editBillingPhone" type="text" class="form-control form-control-32" placeholder="05XXXXXXXX" />
+              </div>
+
+              <div class="col-md-6 d-flex align-items-end">
+                <div class="d-flex align-items-center gap-2">
+                  <label class="switch mb-0">
+                    <input id="editInsuranceEnabled" type="checkbox" />
+                    <span class="slider"></span>
+                  </label>
+                  <span class="fsize-12 semiBold">Enabled</span>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label class="fsize-12 text-grey">Notes</label>
+                <textarea id="editBillingNotes" class="form-control" rows="4" placeholder="Add billing notes"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer d-flex justify-content-end gap-2">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button id="btnSaveInsuranceContact" type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const MASTER_KEY = "nk_master_insurance_companies";
+        const SETTINGS_KEY = "nk_facility_insurance_settings";
+        const FACILITY_ID = "FD-123456";
+
+        const MASTER_SEED = [
+          { name: "BMC Insurance Co.", code: "IN-00001", city: "Riyadh" },
+          { name: "Tawuniya", code: "IN-00002", city: "Riyadh" },
+          { name: "Bupa", code: "IN-00003", city: "Jeddah" },
+          { name: "MedGulf", code: "IN-00004", city: "Dammam" },
+          { name: "GIG", code: "IN-00005", city: "Riyadh" },
+        ];
+        const REALISTIC_CONTACTS = {
+          "IN-00001": { contactName: "Abeer Al-Harbi", email: "claims.bmc@insurance.sa", phone: "011-458-2201", notes: "Main billing desk - Riyadh" },
+          "IN-00002": { contactName: "Nasser Al-Qahtani", email: "provider.tawuniya@tawuniya.com.sa", phone: "011-412-7780", notes: "Corporate providers support" },
+          "IN-00003": { contactName: "Maha Al-Suwailem", email: "bupa.providers@bupa.com.sa", phone: "920000456", notes: "Use company code in email subject" },
+          "IN-00004": { contactName: "Faisal Al-Dossary", email: "medgulf.network@medgulf.com.sa", phone: "013-889-1142", notes: "Eastern region follow-up" },
+          "IN-00005": { contactName: "Rana Al-Mutairi", email: "gig.providers@gig.sa", phone: "011-525-9011", notes: "Priority response for preauth" },
+        };
+
+        const tbody = document.getElementById("insuranceTbody");
+        if (!tbody) return;
+
+        const searchInput = document.getElementById("insuranceSearchInput");
+        const btnSearch = document.getElementById("btnInsuranceSearch");
+        const btnReset = document.getElementById("btnInsuranceReset");
+        const btnExport = document.getElementById("btnInsuranceExport");
+
+        const ifStatus = document.getElementById("ifStatus");
+        const ifCity = document.getElementById("ifCity");
+        const ifHasBilling = document.getElementById("ifHasBilling");
+        const btnApplyFilter = document.getElementById("btnInsuranceApplyFilter");
+        const btnFilterReset = document.getElementById("btnInsuranceFilterReset");
+
+        const rowsSelect = document.getElementById("insuranceRowsPerPage");
+        const indicator = document.getElementById("insurancePageIndicator");
+        const currentBadge = document.getElementById("insuranceCurrentPageBadge");
+        const btnFirst = document.getElementById("insuranceFirstPage");
+        const btnPrev = document.getElementById("insurancePrevPage");
+        const btnNext = document.getElementById("insuranceNextPage");
+        const btnLast = document.getElementById("insuranceLastPage");
+
+        const editModalEl = document.getElementById("insurance-edit-modal");
+        const editModal = editModalEl ? new bootstrap.Modal(editModalEl) : null;
+
+        const editInsuranceCompany = document.getElementById("editInsuranceCompany");
+        const editBillingEmail = document.getElementById("editBillingEmail");
+        const editBillingPhone = document.getElementById("editBillingPhone");
+        const editBillingNotes = document.getElementById("editBillingNotes");
+        const editInsuranceEnabled = document.getElementById("editInsuranceEnabled");
+        const btnSaveInsuranceContact = document.getElementById("btnSaveInsuranceContact");
+
+        let masterList = [];
+        let settingsState = { facilityId: FACILITY_ID, items: {} };
+        let filteredRows = [];
+        let currentPage = 1;
+        let currentEditCode = "";
+
+        function safeParse(json, fallback) {
+          try {
+            return JSON.parse(json);
+          } catch (err) {
+            return fallback;
+          }
+        }
+
+        function readStorage(key) {
+          try {
+            return localStorage.getItem(key);
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function writeStorage(key, value) {
+          try {
+            localStorage.setItem(key, value);
+          } catch (err) {
+            // no-op
+          }
+        }
+
+        function normalize(value) {
+          return (value || "").toString().trim().toLowerCase();
+        }
+
+        function cleanField(value) {
+          const text = (value || "").toString().trim();
+          if (!text) return "";
+          if (text === "-") return "";
+          if (/^n\/?a$/i.test(text)) return "";
+          return text;
+        }
+
+        function nowIso() {
+          return new Date().toISOString();
+        }
+
+        function escapeHtml(value) {
+          return (value || "").toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+        function formatUpdatedAt(value) {
+          if (!value) return "-";
+          const date = new Date(value);
+          if (Number.isNaN(date.getTime())) return "-";
+          return date.toLocaleString("en-GB", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        }
+
+        function createDefaultSetting() {
+          return {
+            enabled: true,
+            contactName: "",
+            email: "",
+            phone: "",
+            notes: "",
+            updatedAt: nowIso(),
+          };
+        }
+
+        function seedContactByCode(code) {
+          const c = REALISTIC_CONTACTS[code];
+          if (!c) return createDefaultSetting();
+          return {
+            enabled: true,
+            contactName: c.contactName || "",
+            email: c.email || "",
+            phone: c.phone || "",
+            notes: c.notes || "",
+            updatedAt: nowIso(),
+          };
+        }
+
+        function normalizeSettingItem(item) {
+          const source = item && typeof item === "object" ? item : {};
+          return {
+            enabled: !!source.enabled,
+            contactName: cleanField(source.contactName),
+            email: cleanField(source.email),
+            phone: cleanField(source.phone),
+            notes: cleanField(source.notes),
+            updatedAt: (source.updatedAt || nowIso()).toString(),
+          };
+        }
+
+        function hasBillingContact(item) {
+          return Boolean(normalize(item.email) || normalize(item.phone));
+        }
+
+        function loadMasterList() {
+          const parsed = safeParse(readStorage(MASTER_KEY), null);
+          if (!Array.isArray(parsed) || parsed.length === 0) {
+            writeStorage(MASTER_KEY, JSON.stringify(MASTER_SEED));
+            return [...MASTER_SEED];
+          }
+
+          const cleaned = parsed
+            .filter((entry) => entry && typeof entry === "object")
+            .map((entry) => ({
+              name: (entry.name || "").toString().trim(),
+              code: (entry.code || "").toString().trim().toUpperCase(),
+              city: (entry.city || "").toString().trim(),
+            }))
+            .filter((entry) => entry.name && entry.code);
+
+          if (!cleaned.length) {
+            writeStorage(MASTER_KEY, JSON.stringify(MASTER_SEED));
+            return [...MASTER_SEED];
+          }
+
+          writeStorage(MASTER_KEY, JSON.stringify(cleaned));
+          return cleaned;
+        }
+
+        function loadFacilitySettings() {
+          const parsed = safeParse(readStorage(SETTINGS_KEY), null);
+          const state = parsed && typeof parsed === "object" ? parsed : { facilityId: FACILITY_ID, items: {} };
+
+          if (!state.items || typeof state.items !== "object" || Array.isArray(state.items)) {
+            state.items = {};
+          }
+
+          const normalizedItems = {};
+          Object.keys(state.items).forEach((code) => {
+            normalizedItems[code] = normalizeSettingItem(state.items[code]);
+          });
+
+          masterList.forEach((company) => {
+            const seeded = seedContactByCode(company.code);
+            if (!normalizedItems[company.code]) {
+              normalizedItems[company.code] = seeded;
+              return;
+            }
+
+            const cur = normalizedItems[company.code];
+            normalizedItems[company.code] = normalizeSettingItem({
+              ...cur,
+              contactName: cur.contactName || seeded.contactName,
+              email: cur.email || seeded.email,
+              phone: cur.phone || seeded.phone,
+              notes: cur.notes || seeded.notes,
+            });
+          });
+
+          const normalizedState = { facilityId: FACILITY_ID, items: normalizedItems };
+          writeStorage(SETTINGS_KEY, JSON.stringify(normalizedState));
+          return normalizedState;
+        }
+
+        function persistSettings() {
+          writeStorage(SETTINGS_KEY, JSON.stringify(settingsState));
+        }
+
+        function getRows() {
+          return masterList.map((company) => {
+            const setting = settingsState.items[company.code]
+              ? normalizeSettingItem(settingsState.items[company.code])
+              : createDefaultSetting();
+
+            return {
+              name: company.name,
+              code: company.code,
+              city: company.city,
+              enabled: setting.enabled,
+              contactName: setting.contactName,
+              email: setting.email,
+              phone: setting.phone,
+              notes: setting.notes,
+              updatedAt: setting.updatedAt,
+            };
+          });
+        }
+
+        function matchesSearch(row) {
+          const query = normalize(searchInput ? searchInput.value : "");
+          if (!query) return true;
+          return (
+            normalize(row.name).includes(query) ||
+            normalize(row.email).includes(query) ||
+            normalize(row.phone).includes(query)
+          );
+        }
+
+        function matchesFilters(row) {
+          const status = normalize(ifStatus ? ifStatus.value : "");
+          const city = normalize(ifCity ? ifCity.value : "");
+          const hasContact = normalize(ifHasBilling ? ifHasBilling.value : "");
+
+          if (status === "enabled" && !row.enabled) return false;
+          if (status === "disabled" && row.enabled) return false;
+          if (city && normalize(row.city) !== city) return false;
+
+          const contactFlag = hasBillingContact(row);
+          if (hasContact === "yes" && !contactFlag) return false;
+          if (hasContact === "no" && contactFlag) return false;
+
+          return true;
+        }
+
+        function getRowsPerPage() {
+          const value = parseInt(rowsSelect ? rowsSelect.value : "10", 10);
+          return Number.isFinite(value) && value > 0 ? value : 10;
+        }
+
+        function getTotalPages() {
+          return Math.max(1, Math.ceil(filteredRows.length / getRowsPerPage()));
+        }
+
+        function renderRow(row, seq) {
+          return `
+            <tr>
+              <td>${seq}</td>
+              <td>${escapeHtml(row.name)}</td>
+              <td>${escapeHtml(row.email || "-")}</td>
+              <td>${escapeHtml(row.phone || "-")}</td>
+              <td class="text-center">
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                  <button class="staff-action-icon js-edit-insurance" type="button" data-code="${escapeHtml(row.code)}" title="Edit">
+                    <i class="fi fi-rr-edit"></i>
+                  </button>
+                </div>
+              </td>
+              <td class="text-center">
+                <div class="d-inline-flex align-items-center gap-2">
+                  <label class="switch mb-0">
+                    <input class="insurance-toggle" type="checkbox" data-code="${escapeHtml(row.code)}" ${row.enabled ? "checked" : ""} />
+                    <span class="slider"></span>
+                  </label>
+                  <span class="fsize-12">${row.enabled ? "Enabled" : "Disabled"}</span>
+                </div>
+              </td>
+            </tr>
+          `;
+        }
+
+        function render() {
+          const totalPages = getTotalPages();
+          if (currentPage > totalPages) currentPage = totalPages;
+          if (currentPage < 1) currentPage = 1;
+
+          const pageSize = getRowsPerPage();
+          const start = (currentPage - 1) * pageSize;
+          const pageRows = filteredRows.slice(start, start + pageSize);
+
+          if (!pageRows.length) {
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-grey">No insurance companies found.</td></tr>';
+          } else {
+            tbody.innerHTML = pageRows.map((row, index) => renderRow(row, start + index + 1)).join("");
+          }
+
+          if (indicator) indicator.textContent = `Page ${currentPage} of ${totalPages}`;
+          if (currentBadge) currentBadge.textContent = String(currentPage);
+
+          const disableNav = totalPages === 1;
+          if (btnFirst) btnFirst.disabled = disableNav || currentPage === 1;
+          if (btnPrev) btnPrev.disabled = disableNav || currentPage === 1;
+          if (btnNext) btnNext.disabled = disableNav || currentPage === totalPages;
+          if (btnLast) btnLast.disabled = disableNav || currentPage === totalPages;
+        }
+
+        function applyAll(resetPage) {
+          filteredRows = getRows().filter((row) => matchesSearch(row) && matchesFilters(row));
+          if (resetPage) currentPage = 1;
+          render();
+        }
+
+        function resetFilterFields() {
+          if (ifStatus) ifStatus.value = "";
+          if (ifCity) ifCity.value = "";
+          if (ifHasBilling) ifHasBilling.value = "";
+        }
+
+        function findCompany(code) {
+          return masterList.find((company) => company.code === code) || null;
+        }
+
+        function openEditModal(code) {
+          const company = findCompany(code);
+          if (!company || !editModal) return;
+
+          const item = settingsState.items[code]
+            ? normalizeSettingItem(settingsState.items[code])
+            : createDefaultSetting();
+
+          currentEditCode = code;
+          if (editInsuranceCompany) {
+            editInsuranceCompany.textContent = company.name;
+          }
+          if (editBillingEmail) editBillingEmail.value = item.email;
+          if (editBillingPhone) editBillingPhone.value = item.phone;
+          if (editBillingNotes) editBillingNotes.value = item.notes;
+          if (editInsuranceEnabled) editInsuranceEnabled.checked = item.enabled;
+
+          editModal.show();
+        }
+
+        function updateSetting(code, payload) {
+          const current = settingsState.items[code]
+            ? normalizeSettingItem(settingsState.items[code])
+            : createDefaultSetting();
+
+          settingsState.items[code] = normalizeSettingItem({
+            ...current,
+            ...payload,
+            updatedAt: nowIso(),
+          });
+
+          persistSettings();
+          applyAll(false);
+        }
+
+        function csvEscape(value) {
+          const text = (value || "").toString().replace(/\r?\n/g, " ").trim();
+          if (/[",]/.test(text)) return `"${text.replace(/"/g, '""')}"`;
+          return text;
+        }
+
+        if (btnSearch) btnSearch.addEventListener("click", () => applyAll(true));
+        if (searchInput) searchInput.addEventListener("input", () => applyAll(true));
+
+        if (btnReset)
+          btnReset.addEventListener("click", () => {
+            if (searchInput) searchInput.value = "";
+            resetFilterFields();
+            applyAll(true);
+          });
+
+        if (btnApplyFilter)
+          btnApplyFilter.addEventListener("click", () => {
+            applyAll(true);
+            const modalEl = document.getElementById("insurance-filter-modal");
+            if (modalEl) {
+              bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+            }
+          });
+
+        if (btnFilterReset)
+          btnFilterReset.addEventListener("click", () => {
+            resetFilterFields();
+            applyAll(true);
+          });
+
+        if (rowsSelect)
+          rowsSelect.addEventListener("change", () => {
+            currentPage = 1;
+            render();
+          });
+
+        if (btnFirst) btnFirst.addEventListener("click", () => { currentPage = 1; render(); });
+        if (btnPrev) btnPrev.addEventListener("click", () => { currentPage = Math.max(1, currentPage - 1); render(); });
+        if (btnNext) btnNext.addEventListener("click", () => { currentPage = Math.min(getTotalPages(), currentPage + 1); render(); });
+        if (btnLast) btnLast.addEventListener("click", () => { currentPage = getTotalPages(); render(); });
+
+        tbody.addEventListener("change", (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLInputElement)) return;
+          if (!target.classList.contains("insurance-toggle")) return;
+
+          const code = target.getAttribute("data-code") || "";
+          if (!code) return;
+
+          updateSetting(code, { enabled: target.checked });
+        });
+
+        tbody.addEventListener("click", (event) => {
+          const editBtn = event.target.closest(".js-edit-insurance");
+          if (editBtn) {
+            const code = editBtn.getAttribute("data-code") || "";
+            if (code) openEditModal(code);
+          }
+        });
+
+        if (btnSaveInsuranceContact)
+          btnSaveInsuranceContact.addEventListener("click", () => {
+            if (!currentEditCode) return;
+            if (editBillingEmail && editBillingEmail.value && !editBillingEmail.checkValidity()) {
+              editBillingEmail.reportValidity();
+              return;
+            }
+
+            updateSetting(currentEditCode, {
+              email: editBillingEmail ? editBillingEmail.value : "",
+              phone: editBillingPhone ? editBillingPhone.value : "",
+              notes: editBillingNotes ? editBillingNotes.value : "",
+              enabled: editInsuranceEnabled ? editInsuranceEnabled.checked : true,
+            });
+
+            if (editModal) editModal.hide();
+          });
+
+        if (btnExport)
+          btnExport.addEventListener("click", () => {
+            if (!filteredRows.length) {
+              alert("No insurance records available to export.");
+              return;
+            }
+
+            const headers = [
+              "Insurance Company",
+              "Billing Email",
+              "Billing Phone",
+              "City",
+              "Status",
+              "Notes",
+            ];
+
+            const lines = [headers.map(csvEscape).join(",")];
+            filteredRows.forEach((row) => {
+              lines.push([
+                row.name,
+                row.email,
+                row.phone,
+                row.city,
+                row.enabled ? "Enabled" : "Disabled",
+                row.notes,
+              ].map(csvEscape).join(","));
+            });
+
+            const csv = "\ufeff" + lines.join("\n");
+            const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "facility-insurance.csv";
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+          });
+
+        masterList = loadMasterList();
+        settingsState = loadFacilitySettings();
+        applyAll(true);
+      })();
+    </script>
+<script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>

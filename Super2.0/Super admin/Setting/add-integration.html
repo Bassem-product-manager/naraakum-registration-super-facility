@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum | Add Integration</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+    <style>
+      :root {
+        --api-brand: #0f8c8c;
+        --api-brand-dark: #0b6f6f;
+        --api-brand-soft: rgba(15, 140, 140, 0.12);
+        --api-border: rgba(16, 24, 40, 0.12);
+        --api-muted: #667085;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+      }
+      .ksa-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid rgba(16, 24, 40, 0.1);
+        background: #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 900;
+      }
+      .ksa-clock .tz {
+        color: var(--api-brand);
+        font-size: 11px;
+        padding: 2px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.22);
+        background: rgba(15, 140, 140, 0.06);
+      }
+      .page-card {
+        border: 1px solid var(--api-border);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+        box-shadow: 0 10px 28px rgba(16, 24, 40, 0.06);
+      }
+      .page-card h4 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 900;
+      }
+      .page-card p {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: var(--api-muted);
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .field-wrap {
+        display: grid;
+        gap: 5px;
+      }
+      .field-wrap label {
+        font-size: 12px;
+        font-weight: 700;
+        color: #475467;
+      }
+      .field-wrap .form-control,
+      .field-wrap .form-select {
+        height: 40px;
+        border: 1px solid rgba(16, 24, 40, 0.16);
+        border-radius: 10px;
+      }
+      .field-wrap .form-control:focus,
+      .field-wrap .form-select:focus {
+        border-color: var(--api-brand);
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+      }
+      .field-wrap textarea.form-control {
+        height: auto;
+        min-height: 110px;
+      }
+      .field-wrap.full {
+        grid-column: 1 / -1;
+      }
+      .field-error {
+        min-height: 16px;
+        font-size: 12px;
+        color: #b42318;
+      }
+      .field-error.d-none {
+        display: none;
+      }
+      .toggle-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border: 1px solid rgba(16, 24, 40, 0.08);
+        border-radius: 10px;
+        padding: 9px 12px;
+        background: #fff;
+      }
+      .toggle-item .label {
+        font-size: 13px;
+        font-weight: 700;
+        color: #344054;
+      }
+      .toggle-state {
+        font-size: 12px;
+        font-weight: 800;
+        color: #027a48;
+      }
+      .form-check-input.status-toggle {
+        width: 2.3rem;
+        height: 1.2rem;
+        cursor: pointer;
+        border-color: rgba(16, 24, 40, 0.22);
+        background-color: #f2f4f7;
+      }
+      .form-check-input.status-toggle:checked {
+        background-color: var(--api-brand);
+        border-color: var(--api-brand);
+      }
+      .form-check-input.status-toggle:focus {
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.14);
+        border-color: var(--api-brand);
+      }
+      .alert-inline {
+        display: none;
+        margin-top: 10px;
+        border-radius: 10px;
+        padding: 8px 10px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+      .alert-inline.show {
+        display: block;
+      }
+      .alert-inline.success {
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #027a48;
+      }
+      .alert-inline.error {
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+      .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+      @media (max-width: 992px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body data-menu="menu-settings">
+    <div class="preloader"></div>
+    <div id="full-container">
+      <div id="sidebar-slot" data-base="../"></div>
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn"><i class="fi fi-rr-menu-burger"></i></button>
+            <h2>Add Integration</h2>
+          </div>
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time"><span class="time" id="ksaTime">--:-- --</span><span class="tz">KSA</span></div>
+            <div class="language-box">
+              <a class="active" href="#"><img src="../assets/images/en.png" alt="En" /><span>En</span></a>
+              <a href="#"><img src="../assets/images/ar.jpg" alt="ar" /><span>AR</span></a>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../template.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="#">Settings</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="api-management.html">API Management</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Integration</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="page-card">
+            <div>
+              <h4>New Integration</h4>
+              <p>Create a new provider integration profile and activation state.</p>
+            </div>
+
+            <div id="formMessage" class="alert-inline"></div>
+
+            <div class="form-grid mt-12">
+              <div class="field-wrap">
+                <label for="aiName">Integration Name *</label>
+                <input id="aiName" type="text" class="form-control" placeholder="Enter integration name" />
+                <div id="errName" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="aiCode">Code *</label>
+                <input id="aiCode" type="text" class="form-control" placeholder="Example: PAYT-PMT" />
+                <div id="errCode" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="aiType">Type *</label>
+                <select id="aiType" class="form-select">
+                  <option value="">Select type</option>
+                  <option value="Shipping">Shipping</option>
+                  <option value="Payments">Payments</option>
+                  <option value="Messaging">Messaging</option>
+                  <option value="Lab">Lab</option>
+                  <option value="Other">Other</option>
+                </select>
+                <div id="errType" class="field-error d-none"></div>
+              </div>
+
+              <div id="shippingCompanyWrap" class="field-wrap d-none">
+                <label for="aiShippingCompany">Shipping Company *</label>
+                <select id="aiShippingCompany" class="form-select">
+                  <option value="">Select shipping company</option>
+                </select>
+                <div id="errShippingCompany" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="aiBaseUrl">Base URL *</label>
+                <input id="aiBaseUrl" type="text" class="form-control" placeholder="https://api.example.com/v1" />
+                <div id="errBaseUrl" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="aiAuthMethod">Auth Method *</label>
+                <select id="aiAuthMethod" class="form-select">
+                  <option value="">Select auth method</option>
+                  <option value="OAuth2">OAuth2</option>
+                  <option value="API Key">API Key</option>
+                  <option value="Token">Token</option>
+                  <option value="Basic">Basic</option>
+                </select>
+                <div id="errAuthMethod" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap">
+                <label for="aiEnvironment">Environment *</label>
+                <select id="aiEnvironment" class="form-select">
+                  <option value="">Select environment</option>
+                  <option value="Production">Production</option>
+                  <option value="Sandbox">Sandbox</option>
+                </select>
+                <div id="errEnvironment" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap full">
+                <label for="aiDescription">Description</label>
+                <textarea id="aiDescription" class="form-control" placeholder="Optional description for this integration"></textarea>
+                <div id="errDescription" class="field-error d-none"></div>
+              </div>
+
+              <div class="field-wrap full">
+                <div class="toggle-item">
+                  <span class="label">Set as Active</span>
+                  <div class="d-flex align-items-center gap-2">
+                    <span id="activeState" class="toggle-state">Active</span>
+                    <div class="form-check form-switch m-0">
+                      <input id="aiActive" class="form-check-input status-toggle" type="checkbox" role="switch" checked />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-actions mt-16">
+              <a href="api-management.html" class="btn btn-primary-revers btn-40">Cancel</a>
+              <button id="btnSaveIntegration" type="button" class="btn btn-primary btn-40">Save Integration</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/api-integrations-store.js"></script>
+    <script src="../assets/js/shipping-companies-store.js"></script>
+    <script src="../assets/js/includes.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        var el = document.getElementById("ksaTime");
+        if (!el) return;
+        function tick() {
+          try {
+            var fmt = new Intl.DateTimeFormat("en-US", {
+              timeZone: "Asia/Riyadh",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true
+            });
+            el.textContent = fmt.format(new Date());
+          } catch (e) {
+            el.textContent = new Date().toLocaleTimeString("en-US", { hour12: true });
+          }
+        }
+        tick();
+        setInterval(tick, 1000);
+      })();
+
+      (function () {
+        var store = window.NKApiIntegrationsStore;
+        if (!store) return;
+
+        store.ensureSeedData();
+
+        var nameInput = document.getElementById("aiName");
+        var codeInput = document.getElementById("aiCode");
+        var typeInput = document.getElementById("aiType");
+        var shippingCompanyWrap = document.getElementById("shippingCompanyWrap");
+        var shippingCompanyInput = document.getElementById("aiShippingCompany");
+        var baseUrlInput = document.getElementById("aiBaseUrl");
+        var authMethodInput = document.getElementById("aiAuthMethod");
+        var environmentInput = document.getElementById("aiEnvironment");
+        var descriptionInput = document.getElementById("aiDescription");
+        var activeInput = document.getElementById("aiActive");
+        var activeState = document.getElementById("activeState");
+        var saveBtn = document.getElementById("btnSaveIntegration");
+        var formMessage = document.getElementById("formMessage");
+
+        function setError(id, message) {
+          var node = document.getElementById(id);
+          if (!node) return;
+          node.textContent = message || "";
+          node.classList.toggle("d-none", !message);
+        }
+
+        function clearErrors() {
+          ["errName", "errCode", "errType", "errShippingCompany", "errBaseUrl", "errAuthMethod", "errEnvironment", "errDescription"].forEach(function (id) {
+            setError(id, "");
+          });
+        }
+
+        function setMessage(text, kind) {
+          if (!text) {
+            formMessage.className = "alert-inline";
+            formMessage.textContent = "";
+            return;
+          }
+          formMessage.className = "alert-inline show " + (kind || "error");
+          formMessage.textContent = text;
+        }
+
+        function normalizeCode(value) {
+          return String(value || "")
+            .trim()
+            .toUpperCase();
+        }
+
+        function isValidBaseUrl(value) {
+          return /^https?:\/\/[^\s]+$/i.test(String(value || "").trim());
+        }
+
+        function updateActiveState() {
+          var active = !!activeInput.checked;
+          activeState.textContent = active ? "Active" : "Inactive";
+          activeState.style.color = active ? "#027a48" : "#475467";
+        }
+
+        function populateShippingCompanies() {
+          var shippingStore = window.NKShippingCompaniesStore;
+          if (!shippingStore || !shippingCompanyInput) return;
+          shippingStore.ensureSeedData();
+          var companies = shippingStore.getAll();
+          var options = ['<option value="">Select shipping company</option>'];
+          companies.forEach(function (company) {
+            var code = String(company.code || "").trim();
+            var name = String(company.name || "").trim();
+            if (!code || !name) return;
+            options.push('<option value="' + code + '">' + code + " - " + name + "</option>");
+          });
+          shippingCompanyInput.innerHTML = options.join("");
+        }
+
+        function selectedShippingCompanyName() {
+          if (!shippingCompanyInput) return "";
+          var selected = shippingCompanyInput.options[shippingCompanyInput.selectedIndex];
+          if (!selected) return "";
+          var text = String(selected.textContent || "").trim();
+          var parts = text.split(" - ");
+          return parts.length > 1 ? parts.slice(1).join(" - ").trim() : text;
+        }
+
+        function updateShippingCompanyField() {
+          var isShipping = String(typeInput.value || "").trim() === "Shipping";
+          if (shippingCompanyWrap) {
+            shippingCompanyWrap.classList.toggle("d-none", !isShipping);
+          }
+          if (!isShipping && shippingCompanyInput) {
+            shippingCompanyInput.value = "";
+            setError("errShippingCompany", "");
+          }
+        }
+
+        function validate() {
+          clearErrors();
+          setMessage("");
+
+          var valid = true;
+          var name = String(nameInput.value || "").trim();
+          var code = normalizeCode(codeInput.value);
+          var type = String(typeInput.value || "").trim();
+          var shippingCompany = String(shippingCompanyInput.value || "").trim();
+          var baseUrl = String(baseUrlInput.value || "").trim();
+          var authMethod = String(authMethodInput.value || "").trim();
+          var environment = String(environmentInput.value || "").trim();
+
+          if (!name) {
+            setError("errName", "Integration name is required.");
+            valid = false;
+          }
+
+          if (!code) {
+            setError("errCode", "Code is required.");
+            valid = false;
+          }
+
+          if (code) {
+            var duplicate = store
+              .getAll()
+              .some(function (row) {
+                return String(row.code || "").toUpperCase() === code;
+              });
+            if (duplicate) {
+              setError("errCode", "This code already exists.");
+              valid = false;
+            }
+          }
+
+          if (!type) {
+            setError("errType", "Type is required.");
+            valid = false;
+          }
+
+          if (type === "Shipping" && !shippingCompany) {
+            setError("errShippingCompany", "Shipping company is required.");
+            valid = false;
+          }
+
+          if (!baseUrl) {
+            setError("errBaseUrl", "Base URL is required.");
+            valid = false;
+          } else if (!isValidBaseUrl(baseUrl)) {
+            setError("errBaseUrl", "Base URL must start with http:// or https://");
+            valid = false;
+          }
+
+          if (!authMethod) {
+            setError("errAuthMethod", "Auth method is required.");
+            valid = false;
+          }
+
+          if (!environment) {
+            setError("errEnvironment", "Environment is required.");
+            valid = false;
+          }
+
+          if (valid) {
+            codeInput.value = code;
+          }
+
+          return valid;
+        }
+
+        function saveIntegration() {
+          if (!validate()) {
+            setMessage("Please fix validation errors.", "error");
+            return;
+          }
+
+          var payload = {
+            name: String(nameInput.value || "").trim(),
+            code: normalizeCode(codeInput.value),
+            type: String(typeInput.value || "").trim(),
+            baseUrl: String(baseUrlInput.value || "").trim(),
+            authMethod: String(authMethodInput.value || "").trim(),
+            environment: String(environmentInput.value || "").trim(),
+            description: String(descriptionInput.value || "").trim(),
+            active: !!activeInput.checked
+          };
+
+          if (payload.type === "Shipping") {
+            var selectedCode = String(shippingCompanyInput.value || "").trim();
+            var selectedName = selectedShippingCompanyName();
+            var linkNote = "Linked Shipping Company: " + selectedCode + (selectedName ? " - " + selectedName : "");
+            payload.description = payload.description ? payload.description + "\n" + linkNote : linkNote;
+          }
+
+          var result = store.createIntegration(payload);
+          if (!result || !result.ok) {
+            setMessage((result && result.message) || "Unable to save integration.", "error");
+            return;
+          }
+
+          setMessage("Integration saved successfully.", "success");
+          window.location.href = "api-management.html?saved=1&id=" + encodeURIComponent(result.integration.id);
+        }
+
+        activeInput.addEventListener("change", updateActiveState);
+        codeInput.addEventListener("input", function () {
+          codeInput.value = normalizeCode(codeInput.value).replace(/\s+/g, "");
+        });
+        typeInput.addEventListener("change", updateShippingCompanyField);
+        saveBtn.addEventListener("click", saveIntegration);
+
+        populateShippingCompanies();
+        updateActiveState();
+        updateShippingCompanyField();
+      })();
+    </script>
+  </body>
+</html>

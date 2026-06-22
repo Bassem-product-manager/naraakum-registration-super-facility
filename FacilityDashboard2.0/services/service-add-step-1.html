@@ -1,0 +1,1684 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Add Service (Step 1)</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;height:64px;border-radius:16px;border:1px solid rgba(15,140,140,.18);
+        background:#fff;padding:6px;object-fit:contain;display:block;margin:8px auto 10px;
+      }
+      .facility-line{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+      .facility-mini-logo{
+        width:22px;height:22px;border-radius:8px;border:1px solid rgba(15,140,140,.18);
+        background:#fff;padding:3px;object-fit:contain;flex:0 0 22px;
+      }
+      .facility-name{font-weight:900;line-height:1;margin:0;}
+
+      /* ==== KSA Clock ==== */
+      .ksa-clock{
+        display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);background:#fff;border-radius:12px;
+        font-weight:900;font-size:12px;color:#101828;white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);font-weight:900;font-size:11px;padding:2px 8px;border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      .switch-account-item{display:flex;align-items:center;gap:10px;}
+      .switch-account-item i{color:var(--nk-green);}
+
+      .service-meta-line{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+      .pill{
+        display:inline-flex;align-items:center;gap:6px;
+        padding:4px 10px;border-radius:999px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        font-size:12px;
+        color:#344054;
+        font-weight:700;
+      }
+      .pill i{color:var(--nk-green);}
+      .cursor-pointer{cursor:pointer;}
+      .modal .table td{vertical-align:middle;}
+      .muted-hint{color:#667085;font-size:13px;margin-top:6px;}
+
+      /* =========================================================
+         ✅ Modal: Provider Level Pricing (General vs Specialist + Consultant)
+      ========================================================= */
+      .pricing-box{
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        padding:12px;
+      }
+      .pricing-option{
+        display:flex;
+        gap:10px;
+        padding:10px;
+        border-radius:10px;
+        border:1px solid rgba(16,24,40,.08);
+        background:rgba(15,140,140,.03);
+        position:relative;
+      }
+      .pricing-option + .pricing-option{ margin-top:10px; }
+      .pricing-option input{ margin-top:3px; }
+      .pricing-option .ttl{ font-weight:900; color:#101828; }
+      .pricing-option .sub{ color:#667085; font-size:12px; margin:2px 0 0; line-height:1.2; }
+      .pricing-saved{
+        position:absolute;
+        top:8px;
+        right:10px;
+        width:22px;
+        height:22px;
+        border-radius:50%;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        background:var(--nk-green);
+        color:#fff;
+        font-size:12px;
+      }
+      .pricing-option.saved .pricing-saved{ display:inline-flex; }
+      .pricing-lock{
+        position:absolute;
+        top:8px;
+        right:38px;
+        width:22px;
+        height:22px;
+        border-radius:50%;
+        display:none;
+        align-items:center;
+        justify-content:center;
+        background:#f2f4f7;
+        color:#667085;
+        font-size:12px;
+        border:1px solid rgba(16,24,40,.10);
+      }
+      .pricing-option.locked{
+        opacity:.7;
+        background:#f7f8f9;
+        cursor:not-allowed;
+      }
+      .pricing-option.locked .pricing-lock{ display:inline-flex; }
+
+      .price-wrap{ margin-top:10px; }
+      .price-wrap.hidden{ display:none; }
+      .price-label-row{
+        display:flex; align-items:center; justify-content:space-between; gap:10px;
+      }
+      .tiny-note{ font-size:12px; color:#667085; margin-top:6px; }
+
+      .tag{
+        display:inline-flex;align-items:center;
+        padding:2px 8px;border-radius:999px;
+        font-size:11px;font-weight:900;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+        color:var(--nk-green);
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+      <!-- ===================== ASIDE ===================== -->
+      <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services" class="active">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link active">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <!-- ===================== MAIN ===================== -->
+      <main class="main-page">
+        <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Add Service</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <!-- breadcrumb -->
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Service</li>
+            </ol>
+          </nav>
+        </div>
+
+        <!-- ===================== CONTENT ===================== -->
+        <div class="page-content">
+          <!-- filter/search bar -->
+          <div class="filter-bar surface-light-50 p-12 radius-8">
+            <div class="row g-3 justify-content-between">
+              <div class="col-auto">
+                <div class="search-box-group w-100">
+                  <input
+                    type="text"
+                    id="serviceSearch"
+                    class="form-control form-control-32"
+                    placeholder="Search by service / specialty"
+                  />
+                  <button type="button" id="btnSearch" class="btn btn-primary btn-32">
+                    <i class="fi fi-rr-search"></i>
+                  </button>
+                  <button
+                    type="button"
+                    id="btnReset"
+                    class="btn btn-primary-revers btn-32"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-title="Reset"
+                    data-bs-custom-class="custom-tooltip"
+                  >
+                    <i class="fi fi-rr-rotate-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="col-auto d-flex gap-2">
+                <button class="btn btn-outline-primary btn-icon btn-40" data-bs-toggle="modal" data-bs-target="#filter-modal">
+                  <i class="fi fi-rr-bars-filter"></i>
+                  <span>Filter</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- main services tabs (radio) -->
+          <div class="custom-radio-group mt-16 scrollable-container" id="mainServicesTabs">
+            <!-- dynamic -->
+          </div>
+
+          <!-- cards -->
+          <div class="cards-container mt-20">
+            <div class="d-flex justify-content-between align-items-center gap-2 flex-wrap">
+              <h3 class="fsize-18 mb-12 semiBold" id="listTitle">All services (0)</h3>
+              <div class="service-meta-line">
+                <span class="pill"><i class="fi fi-rr-info"></i> Price is saved only after clicking <b>Add Service</b></span>
+                <span class="pill"><i class="fi fi-rr-shield-check"></i> Details appear for Nursing/Caregiver/Lab</span>
+              </div>
+            </div>
+
+            <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3" id="servicesGrid">
+              <!-- dynamic -->
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- ===================== ADD MODAL ===================== -->
+    <div
+      class="modal fade"
+      id="addServiceModal"
+      tabindex="-1"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <form id="addServiceForm" action="javascript:void(0);">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div>
+                <h1 class="modal-title fs-5 mb-1" id="modalTitle">Service</h1>
+                <p class="fsize-12 text-grey mb-0" id="modalSubtitle">—</p>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="row">
+                <!-- details -->
+                <div class="col-md-7">
+                  <div class="table-responsive-md">
+                    <table class="table table-bordered" style="background-color:#fafafa">
+                      <tbody id="modalDetailsTable">
+                        <!-- dynamic -->
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <button
+                    class="btn btn-secondary"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#MoreInfo"
+                    aria-expanded="false"
+                    aria-controls="MoreInfo"
+                    id="btnMoreInfo"
+                  >
+                    More info
+                  </button>
+
+                  <div class="collapse" id="MoreInfo">
+                    <div class="accordion mt-12" id="serviceMoreInfo">
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-1">
+                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-1" aria-expanded="true">
+                            Service Details
+                          </button>
+                        </h2>
+                        <div id="collapse-1" class="accordion-collapse collapse show" aria-labelledby="heading-1" data-bs-parent="#serviceMoreInfo">
+                          <div class="accordion-body">
+                            <p class="pb-12" id="moreInfoDetails">—</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-2">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-2" aria-expanded="false">
+                            Requirements
+                          </button>
+                        </h2>
+                        <div id="collapse-2" class="accordion-collapse collapse" aria-labelledby="heading-2" data-bs-parent="#serviceMoreInfo">
+                          <div class="accordion-body">
+                            <p class="pb-12" id="moreInfoReq">—</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading-3">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-3" aria-expanded="false">
+                            Notes
+                          </button>
+                        </h2>
+                        <div id="collapse-3" class="accordion-collapse collapse" aria-labelledby="heading-3" data-bs-parent="#serviceMoreInfo">
+                          <div class="accordion-body">
+                            <p class="pb-12" id="moreInfoNotes">—</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- price -->
+                <div class="col-md-5">
+                  <div class="row g-3">
+
+                    <!-- ✅ Provider level pricing (only for doctor-specialty services) -->
+                    <div class="col-12" id="doctorPricingBox" style="display:none;">
+                      <div class="pricing-box">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <b class="fsize-14 semiBold">Provider Level Pricing</b>
+                          <span class="tag">Doctors only</span>
+                        </div>
+                        <p class="tiny-note mb-10">Choose one pricing scope.</p>
+
+                        <label class="pricing-option">
+                          <input type="radio" name="doctorScope" value="general" id="scopeGeneral" />
+                          <div>
+                            <div class="ttl">General Doctors</div>
+                          </div>
+                          <span class="pricing-lock"><i class="fi fi-rr-lock"></i></span>
+                          <span class="pricing-saved"><i class="fi fi-rr-check"></i></span>
+                        </label>
+
+                        <label class="pricing-option">
+                          <input type="radio" name="doctorScope" value="specialist" id="scopeSpecialist" />
+                          <div>
+                            <div class="ttl">Specialists</div>
+                          </div>
+                          <span class="pricing-lock"><i class="fi fi-rr-lock"></i></span>
+                          <span class="pricing-saved"><i class="fi fi-rr-check"></i></span>
+                        </label>
+
+                        <label class="pricing-option">
+                          <input type="radio" name="doctorScope" value="consultant" id="scopeConsultant" />
+                          <div>
+                            <div class="ttl">Consultant Price</div>
+                          </div>
+                          <span class="pricing-lock"><i class="fi fi-rr-lock"></i></span>
+                          <span class="pricing-saved"><i class="fi fi-rr-check"></i></span>
+                        </label>
+                      </div>
+                    </div>
+
+                    <!-- ✅ Prices -->
+                    <div class="col-12 mb-12">
+                      <!-- General price (used for non-doctor services OR for General Doctors scope) -->
+                      <div class="price-wrap" id="wrapGeneralPrice">
+                        <label class="form-label fsize-16 semiBold" id="generalPriceLabel">Price (SAR)</label>
+                        <input
+                          type="number"
+                          id="servicePrice"
+                          class="form-control form-control-44"
+                          placeholder="0.0"
+                          min="0"
+                          step="0.01"
+                        />
+                        <p class="muted-hint" id="generalHint">
+                          The price will be saved only when you click <b>Add Service</b>.
+                        </p>
+                      </div>
+
+                      <!-- Specialist price -->
+                      <div class="price-wrap hidden" id="wrapSpecialistPrice">
+                        <label class="form-label fsize-16 semiBold">Specialists Price (SAR)</label>
+                        <input
+                          type="number"
+                          id="specialistPrice"
+                          class="form-control form-control-44"
+                          placeholder="0.0"
+                          min="0"
+                          step="0.01"
+                        />
+                        <p class="muted-hint">This unified price will cover <b>all specialists</b>.</p>
+                      </div>
+
+                      <!-- Consultant price -->
+                      <div class="price-wrap hidden" id="wrapConsultantOnlyPrice">
+                        <label class="form-label fsize-16 semiBold">Consultant Price (SAR)</label>
+                        <input
+                          type="number"
+                          id="consultantOnlyPrice"
+                          class="form-control form-control-44"
+                          placeholder="0.0"
+                          min="0"
+                          step="0.01"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="d-flex gap-2">
+                        <button type="button" id="btnSavePrice" class="btn btn-secondary btn-44 btn-icon w-100 d-none" disabled>
+                          <i class="fi fi-rr-check"></i>
+                          <span>Save Price</span>
+                        </button>
+                        <button type="submit" id="btnAddService" class="btn btn-primary btn-44 btn-icon w-100" disabled>
+                          <i class="fi fi-rr-plus-small"></i>
+                          <span>Add Service</span>
+                        </button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div><!-- /row -->
+            </div><!-- /modal-body -->
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ✅ Next step modal -->
+    <div class="modal fade" id="nextStepModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="modal-title fs-6 mb-1">Service added</h1>
+              <p class="fsize-12 text-grey mb-0">You can now customize per-doctor prices if needed.</p>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="surface-light-50 radius-8 p-12">
+              <p class="fsize-14 mb-1"><b>Saved:</b> <span id="savedSummary">—</span></p>
+              <p class="fsize-12 text-grey mb-0">
+                Custom Price lets you override specific doctors (e.g., more experienced doctor) without affecting the unified level price.
+              </p>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light btn-40" data-bs-dismiss="modal">Add Another</button>
+            <a href="../services/custom-price.html" id="btnGoCustom" class="btn btn-primary btn-40">Go to Custom Price</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== FILTER MODAL ===================== -->
+    <div class="modal fade" id="filter-modal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <form id="filterForm" action="javascript:void(0);">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fsize-16">Filter</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+              <div class="row g-2">
+                <div class="col-12">
+                  <label class="form-label">Main Service</label>
+                  <select class="form-select form-select-40" id="filterMainService">
+                    <!-- dynamic -->
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Type</label>
+                  <select class="form-select form-select-40" id="filterType">
+                    <option value="" selected>All</option>
+                    <option value="specialty">Specialty (Medical)</option>
+                    <option value="subservice">Sub-service</option>
+                  </select>
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">Unit</label>
+                  <select class="form-select form-select-40" id="filterUnit">
+                    <option value="" selected>All</option>
+                    <option value="session">Session</option>
+                    <option value="visit">Visit</option>
+                    <option value="test">Test</option>
+                    <option value="scan">Scan</option>
+                    <option value="package">Package</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light btn-40" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary btn-40">Show Results</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!--Scripts----------------------------------------->
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+    <script src="../assets/js/scrollableContainer.js"></script>
+    <script src="../assets/js/singleFileUpload.js"></script>
+
+    <!-- ✅ KSA Clock script (12-hour AM/PM) -->
+    <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>
+
+    <!-- Page Logic -->
+    <script>
+      /* =========================
+         Data
+      ========================= */
+      const MAIN = [
+        {
+          id:"remote",
+          name:"Remote Consultation",
+          icon:"fi-rr-video-camera",
+          type:"specialty",
+          items:[
+            mkItem("remote-cardio","Cardiology","Session","specialty",
+              {duration:"15–30 min", availability:"Online", includes:"Doctor consultation + e-prescription (if applicable)",
+               details:"Online medical consultation with a specialist.",
+               requirements:"Stable internet + patient history if available",
+               notes:"Emergency cases should be directed to ER."}),
+            mkItem("remote-derma","Dermatology","Session","specialty",
+              {duration:"15–30 min", availability:"Online", includes:"Consultation + follow-up instructions",
+               details:"Skin / hair / nail consultation online.",
+               requirements:"Clear photos if needed",
+               notes:"May require physical visit based on condition."}),
+            mkItem("remote-peds","Pediatrics","Session","specialty",
+              {duration:"15–30 min", availability:"Online", includes:"Consultation + guidance",
+               details:"Child health consultation with pediatric specialist.",
+               requirements:"Guardian presence",
+               notes:"For severe symptoms, go to ER."}),
+            mkItem("remote-psy","Psychiatry","Session","specialty",
+              {duration:"30–45 min", availability:"Online", includes:"Assessment + plan",
+               details:"Mental health consultation online.",
+               requirements:"Quiet private place",
+               notes:"Not for crisis emergencies."}),
+          ]
+        },
+        {
+          id:"doctor_visit",
+          name:"Doctor Visit",
+          icon:"fi-rr-stethoscope",
+          type:"specialty",
+          items:[
+            mkItem("dv-internal","Internal Medicine","Visit","specialty",
+              {duration:"30–45 min", availability:"Home visit", includes:"Doctor assessment + basic examination",
+               details:"Doctor home visit for internal medicine cases.",
+               requirements:"Provide address + patient basics",
+               notes:"Additional procedures billed separately."}),
+            mkItem("dv-geriatric","Geriatrics","Visit","specialty",
+              {duration:"30–60 min", availability:"Home visit", includes:"Elderly assessment + care plan",
+               details:"Home visit specialized for elderly patients.",
+               requirements:"Caregiver presence recommended",
+               notes:"May coordinate with Nursing/Caregiver services."}),
+            mkItem("dv-ortho","Orthopedics","Visit","specialty",
+              {duration:"30–45 min", availability:"Home visit", includes:"Musculoskeletal examination",
+               details:"Orthopedic evaluation at home.",
+               requirements:"Recent imaging if any",
+               notes:"Radiology may be required."}),
+            mkItem("dv-ent","ENT","Visit","specialty",
+              {duration:"30–45 min", availability:"Home visit", includes:"ENT assessment",
+               details:"Ear / Nose / Throat visit at home.",
+               requirements:"Symptoms history",
+               notes:"Some cases require clinic equipment."}),
+          ]
+        },
+        {
+          id:"nursing",
+          name:"Nursing Visit",
+          icon:"fi-rr-heart-rate",
+          type:"subservice",
+          items:[
+            mkItem("nrs-vitals","Vitals Check","Visit","subservice",
+              {duration:"20–30 min", availability:"Home visit", includes:"BP + Temp + Pulse + O2",
+               details:"Basic nursing assessment and vital signs recording.",
+               requirements:"Patient resting 5 minutes before measurement",
+               notes:"Report is shared to facility dashboard."}),
+            mkItem("nrs-injection","Injection (IM/SC)","Visit","subservice",
+              {duration:"15–25 min", availability:"Home visit", includes:"Medication administration + safety check",
+               details:"Nurse administers injection as per prescription.",
+               requirements:"Valid prescription + medication available",
+               notes:"IV injections require separate service."}),
+            mkItem("nrs-wound","Wound Dressing","Visit","subservice",
+              {duration:"30–45 min", availability:"Home visit", includes:"Cleaning + dressing change",
+               details:"Professional wound care and dressing.",
+               requirements:"Sterile supplies (or request add-on)",
+               notes:"Complex wounds may need physician supervision."}),
+            mkItem("nrs-catheter","Catheter Care","Visit","subservice",
+              {duration:"30–45 min", availability:"Home visit", includes:"Catheter change/care + infection prevention",
+               details:"Urinary catheter care by qualified nurse.",
+               requirements:"Patient consent + sterile environment",
+               notes:"Emergency symptoms require ER."}),
+          ]
+        },
+        {
+          id:"hemo",
+          name:"Hemodialysis",
+          icon:"fi-rr-droplet",
+          type:"subservice",
+          items:[
+            mkItem("hemo-session","Home Hemodialysis Session","Session","subservice",
+              {duration:"3–5 hours", availability:"Home", includes:"Dialysis session + monitoring",
+               details:"Home dialysis service with trained team.",
+               requirements:"Machine readiness + patient eligibility",
+               notes:"Scheduling depends on team availability."}),
+            mkItem("hemo-followup","Dialysis Follow-up Visit","Visit","subservice",
+              {duration:"30–60 min", availability:"Home", includes:"Vitals + access check",
+               details:"Follow-up for dialysis patients.",
+               requirements:"Recent labs if available",
+               notes:"May request lab analysis add-on."}),
+          ]
+        },
+        {
+          id:"caregiver",
+          name:"Caregiver",
+          icon:"fi-rr-user-care",
+          type:"subservice",
+          items:[
+            mkItem("cg-basic8","Caregiver - 8 Hours","Package","subservice",
+              {duration:"8 hours", availability:"Home", includes:"Basic support + companionship + mobility assistance",
+               details:"Day-shift caregiver service.",
+               requirements:"Define tasks + patient condition",
+               notes:"Medical procedures are not included (use Nursing Visit)."}),
+            mkItem("cg-basic12","Caregiver - 12 Hours","Package","subservice",
+              {duration:"12 hours", availability:"Home", includes:"Extended support + meal assistance + hygiene support",
+               details:"Extended caregiver shift.",
+               requirements:"Safe home environment",
+               notes:"Overnight requires separate package."}),
+            mkItem("cg-overnight","Caregiver - Overnight","Package","subservice",
+              {duration:"10–12 hours", availability:"Home", includes:"Night supervision + basic support",
+               details:"Overnight caregiver package.",
+               requirements:"Provide resting space for caregiver",
+               notes:"Emergency escalation protocol applies."}),
+            mkItem("cg-elderly","Elderly Assistance","Visit","subservice",
+              {duration:"1–2 hours", availability:"Home", includes:"Mobility + daily routines assistance",
+               details:"Short visit for elderly assistance needs.",
+               requirements:"Task list",
+               notes:"Combine with Doctor Visit for assessment."}),
+          ]
+        },
+        {
+          id:"lab",
+          name:"Laboratory Analysis",
+          icon:"fi-rr-test-tube",
+          type:"subservice",
+          items:[
+            mkItem("lab-cbc","CBC (Complete Blood Count)","Test","subservice",
+              {duration:"10–15 min", availability:"Home sample collection", includes:"Sample + lab report",
+               details:"Blood test for CBC with home collection.",
+               requirements:"Patient ID + fasting not required",
+               notes:"Results time depends on lab capacity."}),
+            mkItem("lab-glucose","Fasting Blood Sugar","Test","subservice",
+              {duration:"10–15 min", availability:"Home sample collection", includes:"Sample + report",
+               details:"FBS test with home collection.",
+               requirements:"8–10 hours fasting",
+               notes:"Water allowed during fasting."}),
+            mkItem("lab-lipid","Lipid Profile","Test","subservice",
+              {duration:"10–15 min", availability:"Home sample collection", includes:"Sample + report",
+               details:"Cholesterol panel with home collection.",
+               requirements:"10–12 hours fasting",
+               notes:"Avoid fatty meals previous day."}),
+            mkItem("lab-thyroid","Thyroid Function (TSH/T3/T4)","Test","subservice",
+              {duration:"10–15 min", availability:"Home sample collection", includes:"Sample + report",
+               details:"Thyroid tests with home collection.",
+               requirements:"No fasting required (unless ordered)",
+               notes:"Share current medications if any."}),
+          ]
+        },
+        {
+          id:"physio",
+          name:"Physiotherapy",
+          icon:"fi-rr-person-walking",
+          type:"subservice",
+          items:[
+            mkItem("pt-ortho","Orthopedic Rehab Session","Session","subservice",
+              {duration:"45–60 min", availability:"Home visit", includes:"Assessment + exercises + plan",
+               details:"Physio session for orthopedic rehabilitation.",
+               requirements:"Comfortable space",
+               notes:"Follow-up recommended weekly."}),
+            mkItem("pt-neuro","Neuro Rehab Session","Session","subservice",
+              {duration:"45–60 min", availability:"Home visit", includes:"Neuro assessment + plan",
+               details:"Physio for neurological rehabilitation.",
+               requirements:"Caregiver support recommended",
+               notes:"Program depends on patient condition."}),
+          ]
+        },
+        {
+          id:"radio",
+          name:"Radiology",
+          icon:"fi-rr-x-ray",
+          type:"subservice",
+          items:[
+            mkItem("rad-xray","Portable X-Ray","Scan","subservice",
+              {duration:"20–40 min", availability:"Home", includes:"Imaging + report",
+               details:"Portable X-ray imaging at home.",
+               requirements:"Suitable space for equipment",
+               notes:"Some cases may require facility imaging."}),
+            mkItem("rad-us","Ultrasound (US)","Scan","subservice",
+              {duration:"20–40 min", availability:"Home", includes:"Scan + report",
+               details:"Home ultrasound scan by specialist.",
+               requirements:"Preparation depends on type",
+               notes:"Confirm fasting/filled bladder when needed."}),
+          ]
+        },
+      ];
+
+      function mkItem(id, title, unitLabel, itemType, extra){
+        return {
+          id,
+          title,
+          unit: (unitLabel || "Service"),
+          itemType,               // specialty | subservice
+          ...extra
+        };
+      }
+
+      /* =========================
+         State
+      ========================= */
+      let state = {
+        activeMain: "all",
+        q: "",
+        filter: { main:"", type:"", unit:"" },
+        selected: null,
+        selectedMain: null,
+        savedScopes: { specialist:false, consultant:false }
+      };
+
+      /* =========================
+         Helpers
+      ========================= */
+      function flattenItems(){
+        const all = [];
+        MAIN.forEach(m=>{
+          m.items.forEach(it=>{
+            all.push({
+              ...it,
+              mainId:m.id,
+              mainName:m.name
+            });
+          });
+        });
+        return all;
+      }
+
+      function applyFilters(items){
+        let out = items.slice();
+        if(state.activeMain !== "all") out = out.filter(x => x.mainId === state.activeMain);
+        if(state.filter.main) out = out.filter(x => x.mainId === state.filter.main);
+        if(state.filter.type) out = out.filter(x => x.itemType === state.filter.type);
+        if(state.filter.unit) out = out.filter(x => (x.unit||"").toLowerCase() === state.filter.unit.toLowerCase());
+
+        const q = (state.q || "").trim().toLowerCase();
+        if(q){
+          out = out.filter(x =>
+            (x.title||"").toLowerCase().includes(q) ||
+            (x.mainName||"").toLowerCase().includes(q)
+          );
+        }
+        return out;
+      }
+
+      function setTitle(count){
+        const mainLabel = state.activeMain === "all"
+          ? "All services"
+          : (MAIN.find(x=>x.id===state.activeMain)?.name || "Services");
+
+        document.getElementById("listTitle").textContent = `${mainLabel} (${count})`;
+      }
+
+      function escapeHtml(str){
+        return (str||"").replace(/[&<>"']/g, s => ({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+        }[s]));
+      }
+
+      function isDoctorService(main, item){
+        // ✅ doctor pricing applies only to medical specialties (doctor services)
+        // Doctor Visit is treated as general pricing (no levels)
+        if(main?.id === "doctor_visit") return false;
+        return item?.itemType === "specialty";
+      }
+
+      function money(v){
+        const n = parseFloat(v || "0");
+        if(!(n > 0)) return "—";
+        return `${n.toFixed(2)} SAR`;
+      }
+
+      /* =========================
+         Render Tabs
+      ========================= */
+      function renderTabs(){
+        const tabs = document.getElementById("mainServicesTabs");
+        tabs.innerHTML = "";
+
+        tabs.insertAdjacentHTML("beforeend", `
+          <input type="radio" class="btn-check" name="mainTabs" id="tab-all" autocomplete="off" ${state.activeMain==="all"?"checked":""} />
+          <label class="custom-radio-btn" for="tab-all">All services</label>
+        `);
+
+        MAIN.forEach(m=>{
+          const id = `tab-${m.id}`;
+          tabs.insertAdjacentHTML("beforeend", `
+            <input type="radio" class="btn-check" name="mainTabs" id="${id}" autocomplete="off" ${state.activeMain===m.id?"checked":""} />
+            <label class="custom-radio-btn" for="${id}">${m.name}</label>
+          `);
+        });
+
+        tabs.addEventListener("change", (e)=>{
+          const t = e.target;
+          if(!t || !t.id) return;
+          if(t.id === "tab-all") state.activeMain = "all";
+          else state.activeMain = t.id.replace("tab-","");
+          renderGrid();
+        }, { once:false });
+      }
+
+      /* =========================
+         Render Grid (Cards) ✅ no big icons
+      ========================= */
+      function renderGrid(){
+        const grid = document.getElementById("servicesGrid");
+        const all = flattenItems();
+        const list = applyFilters(all);
+
+        setTitle(list.length);
+        grid.innerHTML = "";
+
+        if(!list.length){
+          grid.innerHTML = `
+            <div class="col-12">
+              <div class="surface-light-50 radius-8 p-16">
+                <b class="fsize-14">No results</b>
+                <p class="fsize-12 text-grey mb-0">Try changing filters or search terms.</p>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        list.forEach(item=>{
+          const card = `
+            <div class="col">
+              <div class="item-bank-card service-card">
+                <div class="card-body cursor-pointer" data-open="${item.id}">
+                  <p class="fsize-12 text-brand">${escapeHtml(item.mainName)}</p>
+                  <h1 class="fsize-16 semiBold mb-1">${escapeHtml(item.title)}</h1>
+                </div>
+
+                <div class="card-footer">
+                  <button type="button" class="btn btn-40 btn-secondary w-100 btn-icon" data-add="${item.id}">
+                    <i class="fi fi-br-plus"></i>
+                    <span class="bold">Add</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+          grid.insertAdjacentHTML("beforeend", card);
+        });
+
+        grid.querySelectorAll("[data-add]").forEach(btn=>{
+          btn.addEventListener("click", ()=> openAddModal(btn.getAttribute("data-add")));
+        });
+        grid.querySelectorAll("[data-open]").forEach(box=>{
+          box.addEventListener("click", ()=> openAddModal(box.getAttribute("data-open")));
+        });
+      }
+
+      /* =========================
+         Modal Fill
+      ========================= */
+      const addModalEl = document.getElementById("addServiceModal");
+      const addModal = addModalEl ? new bootstrap.Modal(addModalEl) : null;
+
+      const nextModalEl = document.getElementById("nextStepModal");
+      const nextModal = nextModalEl ? new bootstrap.Modal(nextModalEl) : null;
+
+      function findById(id){
+        for(const m of MAIN){
+          const it = m.items.find(x=>x.id===id);
+          if(it) return { main:m, item:it };
+        }
+        return null;
+      }
+
+      function row(k,v){
+        return `<tr><td width="36%">${escapeHtml(k)}</td><td>${escapeHtml(v)}</td></tr>`;
+      }
+
+      function openAddModal(itemId){
+        const found = findById(itemId);
+        if(!found) return;
+
+        const { main, item } = found;
+        state.selected = item;
+        state.selectedMain = main;
+
+        // title/subtitle
+        document.getElementById("modalTitle").textContent = item.title;
+        document.getElementById("modalSubtitle").textContent =
+          `${main.name} • ${item.itemType === "specialty" ? "Medical Specialty" : "Sub-service"}`;
+
+        // details table
+        const rows = [];
+        rows.push(row("Main Service", main.name));
+        rows.push(row(item.itemType === "specialty" ? "Specialty" : "Sub-service", item.title));
+        rows.push(row("Unit", item.unit || "Service"));
+        rows.push(row("Duration", item.duration || "—"));
+        rows.push(row("Availability", item.availability || "—"));
+        rows.push(row("Includes", item.includes || "—"));
+
+        if(["nursing","caregiver","lab"].includes(main.id)){
+          rows.push(row("Process", "Request → Scheduling → Home visit/sample → Report"));
+          rows.push(row("Quality", "Trained staff + documented report"));
+        }
+
+        document.getElementById("modalDetailsTable").innerHTML = rows.join("");
+
+        // accordion
+        document.getElementById("moreInfoDetails").textContent = item.details || "—";
+        document.getElementById("moreInfoReq").textContent = item.requirements || "—";
+        document.getElementById("moreInfoNotes").textContent = item.notes || "—";
+
+        // summary (optional preview box)
+        const selectedSummaryEl = document.getElementById("selectedSummary");
+        if(selectedSummaryEl){
+          selectedSummaryEl.textContent = `${main.name} → ${item.title}`;
+        }
+
+        // reset price inputs
+        resetPricingUI();
+
+        // show doctor pricing box only for doctor services (specialty)
+        const doctorBox = document.getElementById("doctorPricingBox");
+        const isDoc = isDoctorService(main, item);
+
+        doctorBox.style.display = isDoc ? "block" : "none";
+
+        if(isDoc){
+          // default to Specialist scope (more logical for medical specialty)
+          document.getElementById("scopeSpecialist").checked = true;
+          document.getElementById("scopeGeneral").checked = false;
+        }
+
+        updatePricingUI();
+
+        addModal && addModal.show();
+      }
+
+      /* =========================
+         Pricing UI logic
+      ========================= */
+      const addBtn = document.getElementById("btnAddService");
+      const saveBtn = document.getElementById("btnSavePrice");
+
+      const wrapGeneral = document.getElementById("wrapGeneralPrice");
+      const wrapSpec = document.getElementById("wrapSpecialistPrice");
+      const wrapConsultantOnly = document.getElementById("wrapConsultantOnlyPrice");
+
+      const generalInput = document.getElementById("servicePrice");
+      const specialistInput = document.getElementById("specialistPrice");
+      const consultantOnlyInput = document.getElementById("consultantOnlyPrice");
+
+      function getDoctorScope(){
+        const isDocVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        if(!isDocVisible) return "none";
+        const checked = document.querySelector('input[name="doctorScope"]:checked');
+        return checked ? checked.value : "general";
+      }
+
+      function setLocked(input, locked){
+        if(!input) return;
+        input.disabled = !!locked;
+        const label = input.closest(".pricing-option");
+        if(label) label.classList.toggle("locked", !!locked);
+      }
+
+      function applyLocks(){
+        const generalRadio = document.getElementById("scopeGeneral");
+        const specialistRadio = document.getElementById("scopeSpecialist");
+        const consultantRadio = document.getElementById("scopeConsultant");
+
+        const lockGeneral = state.savedScopes.specialist || state.savedScopes.consultant;
+
+        setLocked(generalRadio, lockGeneral);
+        setLocked(specialistRadio, false);
+        setLocked(consultantRadio, false);
+      }
+
+      function applySaved(){
+        const options = document.querySelectorAll("#doctorPricingBox .pricing-option");
+        options.forEach(opt => opt.classList.remove("saved"));
+        if(state.savedScopes.specialist){
+          const input = document.getElementById("scopeSpecialist");
+          const label = input ? input.closest(".pricing-option") : null;
+          if(label) label.classList.add("saved");
+        }
+        if(state.savedScopes.consultant){
+          const input = document.getElementById("scopeConsultant");
+          const label = input ? input.closest(".pricing-option") : null;
+          if(label) label.classList.add("saved");
+        }
+      }
+
+      function toggleSaveButton(show){
+        if(!saveBtn) return;
+        saveBtn.classList.toggle("d-none", !show);
+      }
+
+      function resetPricingUI(){
+        generalInput.value = "";
+        specialistInput.value = "";
+        consultantOnlyInput.value = "";
+        state.savedScopes = { specialist:false, consultant:false };
+        applyLocks();
+        applySaved();
+        addBtn.disabled = true;
+        if(saveBtn) saveBtn.disabled = true;
+      }
+
+      function updatePricingUI(){
+        const isDocVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        const scope = getDoctorScope();
+        applyLocks();
+        applySaved();
+
+        // Non-doctor services => single price only
+        if(!isDocVisible){
+          wrapGeneral.classList.remove("hidden");
+          wrapSpec.classList.add("hidden");
+          wrapConsultantOnly.classList.add("hidden");
+          document.getElementById("generalPriceLabel").textContent = "Price (SAR)";
+          document.getElementById("generalHint").innerHTML = `The price will be saved only when you click <b>Add Service</b>.`;
+          toggleSaveButton(false);
+          validateAdd();
+          return;
+        }
+
+        // Doctor services
+        if(scope === "general"){
+          // ✅ only one price, no specialist/consultant
+          wrapGeneral.classList.remove("hidden");
+          wrapSpec.classList.add("hidden");
+          wrapConsultantOnly.classList.add("hidden");
+
+          document.getElementById("generalPriceLabel").textContent = "General Doctors Price (SAR)";
+          document.getElementById("generalHint").innerHTML = `The price will be saved only when you click <b>Add Service</b>.`;
+
+          // clear others
+          specialistInput.value = "";
+          consultantOnlyInput.value = "";
+
+        } else if(scope === "specialist") {
+          // Specialist scope
+          wrapGeneral.classList.add("hidden");
+          wrapSpec.classList.remove("hidden");
+          wrapConsultantOnly.classList.add("hidden");
+
+          // in specialist scope, general/consultant price not used
+          generalInput.value = "";
+          consultantOnlyInput.value = "";
+        } else {
+          // Consultant scope
+          wrapGeneral.classList.add("hidden");
+          wrapSpec.classList.add("hidden");
+          wrapConsultantOnly.classList.remove("hidden");
+
+          // in consultant scope, general/specialist price not used
+          generalInput.value = "";
+          specialistInput.value = "";
+        }
+
+        toggleSaveButton(scope === "specialist" || scope === "consultant");
+        validateAdd();
+        updateSelectedSummaryPreview();
+      }
+
+      function validateAdd(){
+        const isDocVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        const scope = getDoctorScope();
+
+        if(!isDocVisible){
+          const v = parseFloat(generalInput.value || "0");
+          addBtn.disabled = !(v > 0);
+          if(saveBtn) saveBtn.disabled = true;
+          updateSelectedSummaryPreview();
+          return;
+        }
+
+        if(scope === "general"){
+          const v = parseFloat(generalInput.value || "0");
+          addBtn.disabled = !(v > 0);
+        } else if(scope === "specialist") {
+          const sp = parseFloat(specialistInput.value || "0");
+          addBtn.disabled = !(sp > 0);
+        } else if(scope === "consultant") {
+          const cp = parseFloat(consultantOnlyInput.value || "0");
+          addBtn.disabled = !(cp > 0);
+        } else {
+          addBtn.disabled = true;
+        }
+        if(saveBtn){
+          const allowSave = isDocVisible && (scope === "specialist" || scope === "consultant");
+          saveBtn.disabled = !allowSave || addBtn.disabled;
+        }
+
+        updateSelectedSummaryPreview();
+      }
+
+      function updateSelectedSummaryPreview(){
+        const mainName = state.selectedMain?.name || "Service";
+        const itemName = state.selected?.title || "Item";
+        const isDocVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        const scope = getDoctorScope();
+
+        let pricingTxt = "";
+
+        if(!isDocVisible){
+          pricingTxt = `Price: ${money(generalInput.value)}`;
+        } else if(scope === "general"){
+          pricingTxt = `Scope: General Doctors • Price: ${money(generalInput.value)}`;
+        } else if(scope === "specialist") {
+          pricingTxt = `Scope: Specialists • Price: ${money(specialistInput.value)}`;
+        } else if(scope === "consultant") {
+          pricingTxt = `Scope: Consultant • Price: ${money(consultantOnlyInput.value)}`;
+        }
+
+        const selectedSummaryEl = document.getElementById("selectedSummary");
+        if(!selectedSummaryEl) return;
+        selectedSummaryEl.textContent = `${mainName} → ${itemName} • ${pricingTxt}`;
+      }
+
+      function markSavedScope(scope){
+        if(scope === "specialist") state.savedScopes.specialist = true;
+        if(scope === "consultant") state.savedScopes.consultant = true;
+        applyLocks();
+        applySaved();
+      }
+
+      // radio events
+      document.getElementById("scopeGeneral").addEventListener("change", updatePricingUI);
+      document.getElementById("scopeSpecialist").addEventListener("change", updatePricingUI);
+      document.getElementById("scopeConsultant").addEventListener("change", updatePricingUI);
+
+      // inputs events
+      generalInput.addEventListener("input", validateAdd);
+      specialistInput.addEventListener("input", ()=>{
+        validateAdd();
+        autoSaveScope("specialist");
+      });
+      consultantOnlyInput.addEventListener("input", ()=>{
+        validateAdd();
+        autoSaveScope("consultant");
+      });
+
+      /* =========================
+         Search / Reset / Filter
+      ========================= */
+      function readSearch(){
+        state.q = (document.getElementById("serviceSearch").value || "");
+        renderGrid();
+      }
+
+      document.getElementById("btnSearch").addEventListener("click", readSearch);
+      document.getElementById("serviceSearch").addEventListener("keydown", (e)=>{
+        if(e.key === "Enter"){ e.preventDefault(); readSearch(); }
+      });
+
+      document.getElementById("btnReset").addEventListener("click", ()=>{
+        state.q = "";
+        state.activeMain = "all";
+        state.filter = { main:"", type:"", unit:"" };
+        document.getElementById("serviceSearch").value = "";
+        document.getElementById("filterMainService").value = "";
+        document.getElementById("filterType").value = "";
+        document.getElementById("filterUnit").value = "";
+        renderTabs();
+        renderGrid();
+      });
+
+      function renderFilterOptions(){
+        const sel = document.getElementById("filterMainService");
+        sel.innerHTML = `<option value="" selected>All</option>`;
+        MAIN.forEach(m=>{
+          sel.insertAdjacentHTML("beforeend", `<option value="${m.id}">${m.name}</option>`);
+        });
+      }
+
+      document.getElementById("filterForm").addEventListener("submit", ()=>{
+        state.filter.main = document.getElementById("filterMainService").value || "";
+        state.filter.type = document.getElementById("filterType").value || "";
+        state.filter.unit = document.getElementById("filterUnit").value || "";
+        renderGrid();
+        const modalEl = document.getElementById("filter-modal");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal && modal.hide();
+      });
+
+      /* =========================
+         Save (Prototype) + Next step
+      ========================= */
+      function readSavedList(){
+        try{ return JSON.parse(localStorage.getItem("nk_added_services") || "[]"); }
+        catch(e){ return []; }
+      }
+      function writeSavedList(list){
+        localStorage.setItem("nk_added_services", JSON.stringify(list || []));
+      }
+
+      function buildCustomPriceUrl(payload){
+        const qs = new URLSearchParams();
+        qs.set("serviceId", payload.serviceId);
+        qs.set("mainId", payload.mainId);
+        qs.set("scope", payload.pricing?.scope || "standard");
+        qs.set("serviceName", payload.serviceName);
+        // open custom price with a search hint
+        qs.set("q", payload.serviceName);
+        return `../services/custom-price.html?${qs.toString()}`;
+      }
+
+      function buildPayload(){
+        const main = state.selectedMain;
+        const item = state.selected;
+        if(!main || !item) return null;
+
+        const docVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        const scope = getDoctorScope();
+
+        let pricing = null;
+
+        if(!docVisible){
+          const p = parseFloat(generalInput.value || "0");
+          if(!(p > 0)) return null;
+          pricing = { scope:"standard", price:p };
+        } else if(scope === "general"){
+          const p = parseFloat(generalInput.value || "0");
+          if(!(p > 0)) return null;
+          pricing = { scope:"general", generalDoctorsPrice:p };
+        } else if(scope === "specialist") {
+          const sp = parseFloat(specialistInput.value || "0");
+          if(!(sp > 0)) return null;
+          pricing = { scope:"specialist", specialistsPrice: sp };
+        } else if(scope === "consultant") {
+          const cp = parseFloat(consultantOnlyInput.value || "0");
+          if(!(cp > 0)) return null;
+          pricing = { scope:"consultant", consultantsPrice: cp };
+        } else {
+          return null;
+        }
+
+        return {
+          serviceId: item.id,
+          serviceName: item.title,
+          itemType: item.itemType,
+          unit: item.unit || "Service",
+          mainId: main.id,
+          mainName: main.name,
+          pricing,
+          createdAt: new Date().toISOString()
+        };
+      }
+
+      function savePayload(payload){
+        // prototype save
+        const list = readSavedList();
+        // upsert by serviceId + scope (so you can add general version or specialist version independently)
+        const idx = list.findIndex(x => x.serviceId === payload.serviceId && (x.pricing?.scope === payload.pricing?.scope));
+        if(idx >= 0) list[idx] = payload;
+        else list.push(payload);
+        writeSavedList(list);
+      }
+
+      function saveCurrentPrice(){
+        const payload = buildPayload();
+        if(!payload) return null;
+        savePayload(payload);
+        return payload;
+      }
+
+      function autoSaveScope(scope){
+        const isDocVisible = document.getElementById("doctorPricingBox").style.display !== "none";
+        if(!isDocVisible) return;
+        if(scope !== "specialist" && scope !== "consultant") return;
+        if(getDoctorScope() !== scope) return;
+        const payload = saveCurrentPrice();
+        if(!payload) return;
+        markSavedScope(scope);
+      }
+
+      document.getElementById("addServiceForm").addEventListener("submit", (e)=>{
+        e.preventDefault();
+        if(addBtn.disabled) return;
+        const payload = saveCurrentPrice();
+        if(!payload) return;
+        window.location.href = "../services/services.html";
+      });
+
+      if(saveBtn){
+        saveBtn.addEventListener("click", ()=>{
+          if(saveBtn.disabled) return;
+          const payload = saveCurrentPrice();
+          if(!payload) return;
+          const scope = payload.pricing?.scope;
+          if(scope === "specialist" || scope === "consultant"){
+            markSavedScope(scope);
+          }
+        });
+      }
+
+      /* =========================
+         Init
+      ========================= */
+      (function init(){
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+          return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        renderTabs();
+        renderFilterOptions();
+        renderGrid();
+      })();
+    </script>
+  </body>
+</html>

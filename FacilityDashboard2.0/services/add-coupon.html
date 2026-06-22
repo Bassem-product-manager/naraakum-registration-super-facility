@@ -1,0 +1,1977 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Naraakum - Add Coupon</title>
+    <meta name="description" content="Naraakum" />
+    <link rel="apple-touch-icon" sizes="180x180" href="../assets/images/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/images/favicon-16x16.png" />
+    <link rel="manifest" href="../assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="../assets/css/MainStyle.css" />
+
+    <style>
+      /* page-only layout */
+      .ac-card {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: var(--surface-light-50, #fff);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .ac-head {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--nk-border, #e6eaef);
+      }
+      .ac-body {
+        padding: 16px;
+      }
+      .ac-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px 16px;
+      }
+      .ac-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      .ac-summary {
+        display: grid;
+        gap: 12px;
+        position: sticky;
+        top: 92px;
+      }
+      .summary-card {
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: #fff;
+        border-radius: 12px;
+        padding: 12px 14px;
+      }
+      .summary-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .summary-head b {
+        font-size: 13px;
+      }
+      .summary-pill {
+        font-size: 11px;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        background: rgba(0, 0, 0, 0.04);
+        color: rgba(0, 0, 0, 0.7);
+        white-space: nowrap;
+      }
+      .summary-pill.good {
+        color: #0f8c8c;
+        border-color: rgba(15, 140, 140, 0.35);
+        background: rgba(15, 140, 140, 0.08);
+      }
+      .summary-pill.warn {
+        color: #b45309;
+        border-color: rgba(245, 158, 11, 0.35);
+        background: rgba(245, 158, 11, 0.12);
+      }
+      .summary-pill.risk {
+        color: #b91c1c;
+        border-color: rgba(220, 38, 38, 0.35);
+        background: rgba(220, 38, 38, 0.12);
+      }
+      .summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 12px;
+        margin-bottom: 8px;
+      }
+      .summary-row b {
+        font-weight: 700;
+        color: #101828;
+        text-align: right;
+      }
+      .summary-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 6px;
+      }
+      .summary-chip {
+        font-size: 11px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        background: rgba(15, 140, 140, 0.08);
+        color: #0f8c8c;
+      }
+      .summary-muted {
+        font-size: 11px;
+        color: #6b7280;
+        margin-top: 8px;
+      }
+      .summary-list {
+        margin: 8px 0 0;
+        padding-left: 16px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .summary-list li {
+        margin: 4px 0;
+      }
+      .ac-section {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .section-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .section-head b {
+        font-size: 13px;
+      }
+      .section-sub {
+        display: block;
+        font-size: 11px;
+        color: #6b7280;
+        margin-top: 4px;
+      }
+      .ac-grid-inner {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px 12px;
+      }
+      .field-inline {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .field-inline .form-control {
+        flex: 1;
+      }
+      #btnGenCode {
+        background: var(--nk-green, #0f8c8c);
+        color: #fff;
+        border: 1px solid rgba(15, 140, 140, 0.35);
+        border-radius: 10px;
+        font-weight: 700;
+        padding: 0 14px;
+        min-width: 110px;
+        box-shadow: 0 6px 14px rgba(15, 140, 140, 0.18);
+      }
+      #btnGenCode:hover {
+        background: #0d7f7f;
+      }
+      #btnGenCode:active {
+        transform: translateY(1px);
+      }
+      #btnGenCode:focus {
+        box-shadow: 0 0 0 3px rgba(15, 140, 140, 0.2);
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .ac-full {
+        grid-column: 1 / -1;
+      }
+      .req {
+        color: #ef4444;
+        margin-left: 4px;
+      }
+
+      /* Activation toggle (simple, consistent) */
+      .act-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        background: #fff;
+      }
+      .act-left b {
+        display: block;
+        font-size: 14px;
+      }
+      .act-left span {
+        display: block;
+        font-size: 12px;
+        color: #6b7280;
+        margin-top: 4px;
+      }
+      .nk-toggle {
+        width: 42px;
+        height: 24px;
+        border-radius: 999px;
+        border: 1px solid rgba(0, 0, 0, 0.14);
+        background: rgba(0, 0, 0, 0.08);
+        position: relative;
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+      .nk-toggle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 3px;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        border-radius: 999px;
+        background: #fff;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+        transition: all 0.18s ease;
+      }
+      .nk-toggle.on {
+        background: rgba(15, 140, 140, 0.22);
+        border-color: rgba(15, 140, 140, 0.35);
+      }
+      .nk-toggle.on::after {
+        left: calc(100% - 21px);
+        background: var(--nk-green, #0f8c8c);
+      }
+
+      /* Coupon Targeting */
+      .ac-targeting {
+        margin-top: 16px;
+        padding: 14px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        background: #fff;
+      }
+      .target-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .target-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      .target-sub {
+        margin: 4px 0 0;
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .target-count {
+        font-size: 12px;
+        color: #0f8c8c;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        border-radius: 999px;
+        padding: 4px 10px;
+        white-space: nowrap;
+      }
+      .target-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .target-side {
+        margin-top: 12px;
+      }
+      .target-side.hidden {
+        display: none;
+      }
+      .target-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 6px;
+      }
+      .target-tab {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        background: #f8fafc;
+        font-size: 12px;
+        cursor: pointer;
+        user-select: none;
+      }
+      .target-tab input {
+        display: none;
+      }
+      .target-tab.active {
+        border-color: rgba(15, 140, 140, 0.45);
+        background: rgba(15, 140, 140, 0.08);
+        color: var(--nk-green, #0f8c8c);
+        font-weight: 600;
+      }
+      .target-fields {
+        display: none;
+        margin-top: 12px;
+      }
+      .target-fields.active {
+        display: block;
+      }
+      .target-hint {
+        padding: 10px 12px;
+        font-size: 12px;
+        color: #0f8c8c;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px dashed rgba(15, 140, 140, 0.25);
+        border-radius: 10px;
+      }
+      .target-input-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .target-input-row .form-control {
+        flex: 1;
+      }
+      .target-input-row input[readonly] {
+        background: #f8fafc;
+        cursor: pointer;
+      }
+      .target-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .target-filters .span-all {
+        grid-column: 1 / -1;
+      }
+      .target-filters .form-control {
+        height: 32px;
+      }
+      .target-note {
+        margin-top: 6px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+      .target-meta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: 6px;
+        font-size: 11px;
+        color: #0f8c8c;
+        font-weight: 600;
+      }
+      .target-side-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+      .target-error {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #ef4444;
+      }
+      .target-list {
+        min-height: 72px;
+        max-height: 220px;
+        overflow: auto;
+        border: 1px dashed var(--nk-border, #e6eaef);
+        border-radius: 10px;
+        padding: 10px;
+        background: #fafafa;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .target-empty {
+        font-size: 12px;
+        color: #9ca3af;
+      }
+      .target-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .target-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        color: #0f8c8c;
+      }
+      .target-remove {
+        border: 0;
+        background: transparent;
+        color: #ef4444;
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+      }
+      .target-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+      .target-actions.hidden {
+        display: none;
+      }
+      .picker-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .picker-panel {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 12px;
+        padding: 12px;
+        background: #fff;
+      }
+      .picker-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .picker-filters .span-all {
+        grid-column: 1 / -1;
+      }
+      .picker-meta {
+        font-size: 11px;
+        color: #0f8c8c;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .picker-list {
+        display: grid;
+        gap: 8px;
+        max-height: 320px;
+        overflow: auto;
+        padding-right: 4px;
+      }
+      .picker-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 8px 10px;
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 10px;
+        background: #fafafa;
+        font-size: 12px;
+        cursor: pointer;
+      }
+      .picker-title {
+        font-weight: 600;
+        color: #101828;
+      }
+      .picker-sub {
+        font-size: 11px;
+        color: #6b7280;
+        margin-top: 2px;
+      }
+      .picker-empty {
+        font-size: 12px;
+        color: #9ca3af;
+        text-align: center;
+        padding: 18px 0;
+      }
+      .picker-selected {
+        display: grid;
+        gap: 8px;
+      }
+      .picker-selected-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .picker-selected-list .picker-empty {
+        width: 100%;
+      }
+      .picker-group {
+        border: 1px solid var(--nk-border, #e6eaef);
+        border-radius: 10px;
+        overflow: hidden;
+        background: #fff;
+      }
+      .picker-group-head {
+        width: 100%;
+        border: 0;
+        background: #f8fafc;
+        padding: 8px 10px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 56px 18px;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        color: #101828;
+        cursor: pointer;
+      }
+      .picker-group-head .count {
+        font-size: 11px;
+        color: #0f8c8c;
+        font-weight: 700;
+        width: 40px;
+        height: 22px;
+        padding: 0 8px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.25);
+        justify-self: center;
+      }
+      .picker-group-toggle {
+        font-size: 14px;
+        color: #94a3b8;
+        transition: transform 0.2s ease;
+        justify-self: end;
+      }
+      .picker-group-body {
+        display: none;
+        padding: 8px;
+        border-top: 1px solid var(--nk-border, #e6eaef);
+      }
+      .picker-group.open .picker-group-body {
+        display: grid;
+        gap: 8px;
+      }
+      .picker-group.open .picker-group-toggle {
+        transform: rotate(90deg);
+      }
+      .picker-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(15, 140, 140, 0.08);
+        border: 1px solid rgba(15, 140, 140, 0.2);
+        color: #0f8c8c;
+      }
+      .picker-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 992px) {
+        .ac-grid {
+          grid-template-columns: 1fr;
+        }
+        .ac-grid-inner {
+          grid-template-columns: 1fr;
+        }
+        .picker-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>
+      <style>
+      /* Shared Header/Sidebar */
+      :root { --nk-green:#0f8c8c; }
+
+      /* ==== Sidebar logo area (BMC) ==== */
+      .side-menu-logo .hospital-logo-big{
+        width:64px;
+        height:64px;
+        border-radius:16px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:6px;
+        object-fit:contain;
+        display:block;
+        margin:8px auto 10px;
+      }
+      .facility-line{
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:10px;
+        margin-top:6px;
+      }
+      .facility-mini-logo{
+        width:22px;
+        height:22px;
+        border-radius:8px;
+        border:1px solid rgba(15,140,140,.18);
+        background:#fff;
+        padding:3px;
+        object-fit:contain;
+        flex:0 0 22px;
+      }
+      .facility-name{
+        font-weight:900;
+        line-height:1;
+        margin:0;
+      }
+
+      /* ==== KSA Clock next to notifications ==== */
+      .ksa-clock{
+        display:inline-flex;
+        align-items:center;
+        gap:8px;
+        height:34px;
+        padding:0 10px;
+        border:1px solid rgba(16,24,40,.10);
+        background:#fff;
+        border-radius:12px;
+        font-weight:900;
+        font-size:12px;
+        color:#101828;
+        white-space:nowrap;
+      }
+      .ksa-clock .tz{
+        color:var(--nk-green);
+        font-weight:900;
+        font-size:11px;
+        padding:2px 8px;
+        border-radius:999px;
+        border:1px solid rgba(15,140,140,.22);
+        background:rgba(15,140,140,.06);
+      }
+      .ksa-clock .time{letter-spacing:.2px;}
+
+      /* Switch account row styling */
+      .switch-account-item{
+        display:flex;
+        align-items:center;
+        gap:10px;
+      }
+      .switch-account-item i{color:var(--nk-green);}
+          .header-branch-select-wrap{position:relative;min-width:168px;}
+      .header-branch-select-wrap:before{content:"";position:absolute;left:12px;top:50%;width:8px;height:8px;border-radius:999px;background:#0f8c8c;transform:translateY(-50%);pointer-events:none;}
+      .header-branch-select{width:100%;height:36px;padding:0 34px 0 28px;border:1px solid rgba(15,140,140,.22);border-radius:12px;background:#fff;color:#101828;font-size:13px;font-weight:900;outline:0;cursor:pointer;box-shadow:none;}
+      .header-branch-select:hover{background:rgba(15,140,140,.04);border-color:rgba(15,140,140,.36);}
+      .header-branch-select:focus{border-color:#0f8c8c;box-shadow:0 0 0 3px rgba(15,140,140,.12);}    </style>  </head>
+
+  <body>
+    <div class="preloader"></div>
+
+    <div id="full-container">
+                        <aside class="side-menu">
+        <div class="side-menu-logo">
+          <img src="../assets/images/logo.svg" alt="Naraakum" />
+
+          <div class="facility-line">
+            <img class="facility-mini-logo" src="../assets/images/logo.svg" alt="BMC Logo" />
+            <p class="text-grey fsize-12 facility-name">BMC Hospital</p>
+          </div>
+
+          <p class="text-grey fsize-12">ID : FD-123456</p>
+        </div>
+
+        <ul class="side-menu-list" style="flex: 1; display: flex; flex-direction: column">
+          <li>
+            <a href="../index.html" class="menu-list-item" id="menu-home"><span>Home</span></a>
+          </li>
+
+          <li id="menu-orders">
+            <a class="menu-list-item">
+              <span>Order Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../orders/orders-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Orders List</span>
+              </a>
+              <a href="../orders/facility-insurance-requests.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance Queue</span>
+              </a>
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-staff">
+            <a class="menu-list-item">
+              <span>Staff Management</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../staff/staff-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff List</span>
+              </a>
+              <a href="../staff/ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Ratings</span>
+              </a>
+              <a href="../staff/performance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Performance</span>
+              </a>
+              <a href="../staff/provider-add.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Provider</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-services">
+            <a class="menu-list-item">
+              <span>Services &amp; Packages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../services/services-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Main Services</span>
+              </a>
+              <a href="../services/services.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Services</span>
+              </a>
+              <a href="../services/facility-packages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Packages</span>
+              </a>
+              <a href="../services/custom-price.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Custom Price</span>
+              </a>
+              <a href="../services/coupons.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Coupons</span>
+              </a>
+              <a href="../services/service-add-step-1.html" class="add-provider-link">
+                <span class="plus-icon">+</span>
+                <span>Add Service</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-calendar">
+            <a class="menu-list-item">
+              <span>Calendar</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../calendar/branch-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branch Calendar</span>
+              </a>
+              <a href="../calendar/staff-calendar.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Calendar</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-patients">
+            <a class="menu-list-item">
+              <span>Patients</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../patients/patients-list.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patients List</span>
+              </a>
+              <a href="../patients/patient-ratings.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Ratings</span>
+              </a>
+              <a href="../patients/patient-monitoring.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Monitoring</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-messages">
+            <a class="menu-list-item">
+              <span>Messages</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../messages/messages.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>All Messages</span>
+              </a>
+              <a href="../messages/messages-staff.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Staff Messages</span>
+              </a>
+              <a href="../messages/messages-patients.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Patient Messages</span>
+              </a>
+              <a href="../messages/messages-system.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>System Messages</span>
+              </a>
+            </div>
+          </li>
+
+          <li>
+            <a href="../tracking/tracking.html" class="menu-list-item" id="menu-tracking"><span>Tracking</span></a>
+          </li>
+
+          <li id="menu-payments">
+            <a class="menu-list-item">
+              <span>Payments</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../payments/transaction-orders.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Transaction Orders</span>
+              </a>
+              <a href="../payments/deposits.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Deposits</span>
+              </a>
+              <a href="../payments/tax-invoices.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Tax Invoices</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-settings">
+            <a class="menu-list-item">
+              <span>Facility Settings</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../settings/facility-information.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Facility Information</span>
+              </a>
+              <a href="../settings/branches.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Branches</span>
+              </a>
+              <a href="../settings/facility-insurance.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Insurance</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-admin">
+            <a class="menu-list-item">
+              <span>Admin</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../admin/admins.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Admins</span>
+              </a>
+              <a href="../admin/roles-permissions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Roles &amp; Permissions</span>
+              </a>
+            </div>
+          </li>
+
+          <li id="menu-more">
+            <a class="menu-list-item">
+              <span>More</span>
+              <i class="fi fi-rr-caret-down"></i>
+            </a>
+            <div class="sub-list">
+              <a href="../more/terms.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Terms and Conditions</span>
+              </a>
+              <a href="../more/complaints-suggestions.html">
+                <i class="fi fi-rr-angle-small-right"></i>
+                <span>Complaints &amp; Suggestions</span>
+              </a>
+            </div>
+          </li>
+
+          <li style="margin-top: auto">
+            <a href="../auth/logout.html" class="menu-list-item logout-link" id="menu-logout"><span>Log Out</span></a>
+          </li>
+        </ul>
+      </aside>
+
+      <main class="main-page">
+                                <header class="page-header">
+          <div class="page-name">
+            <button type="button" id="open-menu-btn">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <h2>Add Coupon</h2>
+          </div>
+
+          <div class="member-side d-flex align-items-center gap-2">
+            <div class="Orders notifcation-box dropdown">
+              <div class="notifcation-icon" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                Notifications
+                <span class="fsize-12 surface-secondary-400">13</span>
+              </div>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li class="dropdown-item d-flex justify-content-between align-items-center">
+                  <span class="fsize-14 text-grey">Type</span>
+                  <span class="fsize-14 text-grey">Details</span>
+                </li>
+                <li class="dropdown-item">
+                  <a href="../orders/orders-list.html" class="d-flex justify-content-between align-items-center gap-2">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="fi fi-rr-shopping-bag"></i>
+                      <span class="fsize-14 semiBold">New Order</span>
+                      <span class="fsize-12 surface-secondary-400">BR03-OR-00012</span>
+                    </span>
+                    <span class="fsize-12 text-grey">30/08/2025 • 210.00 SAR</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a href="../messages/messages-system.html" class="dropdown-item text-center fsize-14 semiBold">View All Notifications</a>
+                </li>
+              </ul>
+            </div>
+
+                        <div class="header-branch-select-wrap">
+              <select class="header-branch-select" aria-label="Select branch">
+                <option value="Main Branch" selected>Main Branch</option>
+                <option value="Branch 1">Branch 1</option>
+                <option value="Branch 2">Branch 2</option>
+              </select>
+            </div>
+            <div class="ksa-clock" id="ksaClock" title="Saudi Arabia Time">
+              <span class="time" id="ksaTime">--:-- --</span>
+              <span class="tz">KSA</span>
+            </div>
+
+            <div class="language-box">
+              <a class="active" href="#">
+                <img src="../assets/images/en.png" alt="En" />
+                <span>En</span>
+              </a>
+              <a href="#">
+                <img src="../assets/images/ar.jpg" alt="ar" />
+                <span>AR</span>
+              </a>
+            </div>
+
+            <div class="user dropdown">
+              <figure class="avatar dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+                <img src="../assets/images/avatar.svg" alt="avatar" />
+              </figure>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="p-12 pb-0">
+                    <b class="fsize-14 semiBold">Sror Rashad</b>
+                    <p class="fsize-12 text-grey">Admin / Facility Dashboard</p>
+                  </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li>
+                  <a class="dropdown-item fsize-14" href="../admin/admins.html">Edit Profile</a>
+                </li>
+                <li>
+                  <a class="dropdown-item fsize-14 switch-account-item" href="../auth/switch-account.html">
+                    <i class="fi fi-rr-refresh"></i>
+                    <span>Switch Account</span>
+                  </a>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li><a class="dropdown-item text-red fsize-14" href="../auth/logout.html">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </header>
+
+        <div class="page-root">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" aria-current="page"><a href="../index.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="coupons.html">Coupons</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Add Coupon</li>
+            </ol>
+          </nav>
+        </div>
+
+        <div class="page-content">
+          <div class="ac-layout">
+            <div class="ac-card ac-main">
+            <div class="ac-head">
+              <b class="fsize-14 semiBold">Coupon Details</b>
+            </div>
+
+            <div class="ac-body">
+              <form id="addCouponForm" novalidate>
+                <div class="ac-grid">
+                  <div>
+                    <label class="fsize-12 text-grey">Coupon Name (Arabic)<span class="req">*</span></label>
+                    <input id="couponNameAr" class="form-control form-control-32" dir="rtl" style="text-align:right;" placeholder="اسم الكوبون" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Coupon Name (English)<span class="req">*</span></label>
+                    <input id="couponNameEn" class="form-control form-control-32" placeholder="Coupon Name" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Coupon Type<span class="req">*</span></label>
+                    <select id="couponType" class="form-control form-control-32" required>
+                      <option value="" selected>Select an option</option>
+                      <option value="Percentage">Percentage</option>
+                      <option value="Fixed">Fixed</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Minimum Amount<span class="req">*</span></label>
+                    <input id="minAmount" type="number" class="form-control form-control-32" placeholder="Minimum Amount" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Discount<span class="req">*</span></label>
+                    <input id="discount" type="text" class="form-control form-control-32" placeholder="Discount" required />
+                    <div class="fsize-12 text-grey" id="discountHint" style="margin-top:6px;">Example: 15% or 50 SAR</div>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">Coupon Code<span class="req">*</span></label>
+                    <div class="field-inline">
+                      <input id="couponCode" type="text" class="form-control form-control-32" placeholder="Auto generate or type" required />
+                      <button id="btnGenCode" type="button" class="btn btn-primary-revers btn-32">Generate</button>
+                    </div>
+                    <div class="fsize-12 text-grey" style="margin-top:6px;">Customers will use this code at checkout.</div>
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">From<span class="req">*</span></label>
+                    <input id="fromDate" type="date" class="form-control form-control-32" required />
+                  </div>
+
+                  <div>
+                    <label class="fsize-12 text-grey">To<span class="req">*</span></label>
+                    <input id="toDate" type="date" class="form-control form-control-32" required />
+                  </div>
+
+                  <div class="ac-full">
+                    <div class="act-row">
+                      <div class="act-left">
+                        <b>Activation</b>
+                        <span>Enable/Disable this coupon</span>
+                      </div>
+                      <div class="nk-toggle on" id="toggleActive"></div>
+                    </div>
+                    <input type="hidden" id="activeValue" value="1" />
+                  </div>
+                </div>
+
+                <div class="ac-targeting">
+                  <div class="target-head">
+                    <div>
+                      <p class="target-title">Coupon Targeting</p>
+                      <p class="target-sub">Apply coupons to specific patients, services, or doctors.</p>
+                    </div>
+                    <span class="target-count" id="targetCount">All Patients</span>
+                  </div>
+
+                  <div class="target-grid single" id="targetGrid">
+                    <div>
+                      <label class="fsize-12 text-grey">Target Type</label>
+                      <div class="target-tabs" id="targetTabs">
+                        <label class="target-tab active" data-target="all">
+                          <input type="radio" name="targetType" value="all" checked />
+                          <span>All Patients</span>
+                        </label>
+                        <label class="target-tab" data-target="patient">
+                          <input type="radio" name="targetType" value="patient" />
+                          <span>Patient</span>
+                        </label>
+                        <label class="target-tab" data-target="service">
+                          <input type="radio" name="targetType" value="service" />
+                          <span>Service</span>
+                        </label>
+                        <label class="target-tab" data-target="doctor">
+                          <input type="radio" name="targetType" value="doctor" />
+                          <span>Doctor</span>
+                        </label>
+                      </div>
+
+                      <div class="target-fields active" data-target="all">
+                        <div class="target-hint">This coupon is available to all patients.</div>
+                      </div>
+
+                      <div class="target-fields" data-target="patient">
+                        <label class="fsize-12 text-grey">Patient ID</label>
+                        <div class="target-input-row">
+                          <input id="targetPatientInput" type="text" class="form-control form-control-32" placeholder="Enter patient ID (e.g., PT-000123)" />
+                        </div>
+                        <div class="target-note">Use patient ID to restrict coupon usage to specific patients.</div>
+                      </div>
+
+                      <div class="target-fields" data-target="service">
+                        <label class="fsize-12 text-grey">Service</label>
+                        <div class="target-input-row">
+                          <input id="servicePickerInput" type="text" class="form-control form-control-32" placeholder="Select service" readonly />
+                          <button id="btnOpenServiceModal" type="button" class="btn btn-primary-revers btn-32">Browse</button>
+                        </div>
+                        <div class="target-note">Select one or more services from your catalog.</div>
+                      </div>
+
+                      <div class="target-fields" data-target="doctor">
+                        <label class="fsize-12 text-grey">Doctor</label>
+                        <div class="target-input-row">
+                          <input id="doctorPickerInput" type="text" class="form-control form-control-32" placeholder="Select doctor" readonly />
+                          <button id="btnOpenDoctorModal" type="button" class="btn btn-primary-revers btn-32">Browse</button>
+                        </div>
+                        <div class="target-note">Select one or more doctors from your staff list.</div>
+                      </div>
+
+                      <div class="target-error" id="targetError"></div>
+                    </div>
+
+                    <div class="target-side hidden" id="targetSide">
+                      <div class="target-side-head">
+                        <label class="fsize-12 text-grey">Selected Targets</label>
+                        <span class="target-meta" id="targetSideMeta">0 selected</span>
+                      </div>
+                      <div class="target-list" id="targetList">
+                        <div class="target-empty">No targets yet.</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <input type="hidden" id="targetTypeValue" value="all" />
+                  <input type="hidden" id="targetIdsValue" value="" />
+                  <div class="target-actions hidden" id="targetActions">
+                    <button id="btnAddTarget" type="button" class="btn btn-primary btn-32">Add Target</button>
+                    <button id="btnClearTargets" type="button" class="btn btn-primary-revers btn-32">Clear</button>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-16">
+                  <a href="coupons.html" class="btn btn-primary-revers">Cancel</a>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+            
+          </div>
+        </div>
+      </main>
+
+      <!-- Service Picker Modal -->
+      <div class="modal fade" id="servicePickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Services</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="picker-grid">
+                <div class="picker-panel">
+                  <div class="picker-filters">
+                    <input id="serviceModalSearch" type="text" class="form-control form-control-32 span-all" placeholder="Search service or specialization" />
+                    <select id="serviceModalBranch" class="form-control form-control-32">
+                      <option value="">All Branches</option>
+                    </select>
+                  </div>
+                  <div class="picker-meta" id="serviceModalMeta">0 results</div>
+                  <div class="picker-list" id="serviceModalList"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="btnServiceModalClear" type="button" class="btn btn-primary-revers">Clear</button>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="btnServiceModalApply" type="button" class="btn btn-primary">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Doctor Picker Modal -->
+      <div class="modal fade" id="doctorPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Select Doctors</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="picker-grid">
+                <div class="picker-panel">
+                  <div class="picker-filters">
+                    <input id="doctorModalSearch" type="text" class="form-control form-control-32 span-all" placeholder="Search doctor name" />
+                    <select id="doctorModalSpec" class="form-control form-control-32">
+                      <option value="">All Specializations</option>
+                    </select>
+                    <select id="doctorModalBranch" class="form-control form-control-32">
+                      <option value="">All Branches</option>
+                    </select>
+                  </div>
+                  <div class="picker-meta" id="doctorModalMeta">0 results</div>
+                  <div class="picker-list" id="doctorModalList"></div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button id="btnDoctorModalClear" type="button" class="btn btn-primary-revers">Clear</button>
+              <div class="d-flex gap-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="btnDoctorModalApply" type="button" class="btn btn-primary">Apply</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/jquery-3.4.1.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/adminSideMenu.js"></script>
+
+    <script>
+      (function () {
+        const form = document.getElementById("addCouponForm");
+        const toggle = document.getElementById("toggleActive");
+        const activeValue = document.getElementById("activeValue");
+        const couponNameAr = document.getElementById("couponNameAr");
+        const couponNameEn = document.getElementById("couponNameEn");
+        const couponCode = document.getElementById("couponCode");
+        const btnGenCode = document.getElementById("btnGenCode");
+        const couponType = document.getElementById("couponType");
+        const minAmount = document.getElementById("minAmount");
+        const discountInput = document.getElementById("discount");
+        const discountHint = document.getElementById("discountHint");
+        const fromDate = document.getElementById("fromDate");
+        const toDate = document.getElementById("toDate");
+        const targetTabs = document.querySelectorAll("#targetTabs .target-tab");
+        const targetGrid = document.getElementById("targetGrid");
+        const targetSide = document.getElementById("targetSide");
+        const targetAllField = document.querySelector('.target-fields[data-target="all"]');
+        const targetPatientField = document.querySelector('.target-fields[data-target="patient"]');
+        const targetServiceField = document.querySelector('.target-fields[data-target="service"]');
+        const targetDoctorField = document.querySelector('.target-fields[data-target="doctor"]');
+        const targetPatientInput = document.getElementById("targetPatientInput");
+        const servicePickerInput = document.getElementById("servicePickerInput");
+        const doctorPickerInput = document.getElementById("doctorPickerInput");
+        const btnOpenServiceModal = document.getElementById("btnOpenServiceModal");
+        const btnOpenDoctorModal = document.getElementById("btnOpenDoctorModal");
+        const serviceModalEl = document.getElementById("servicePickerModal");
+        const doctorModalEl = document.getElementById("doctorPickerModal");
+        const serviceModal = serviceModalEl ? new bootstrap.Modal(serviceModalEl) : null;
+        const doctorModal = doctorModalEl ? new bootstrap.Modal(doctorModalEl) : null;
+        const serviceModalSearch = document.getElementById("serviceModalSearch");
+        const serviceModalBranch = document.getElementById("serviceModalBranch");
+        const serviceModalList = document.getElementById("serviceModalList");
+        const serviceModalMeta = document.getElementById("serviceModalMeta");
+        const btnServiceModalClear = document.getElementById("btnServiceModalClear");
+        const btnServiceModalApply = document.getElementById("btnServiceModalApply");
+        const doctorModalSearch = document.getElementById("doctorModalSearch");
+        const doctorModalSpec = document.getElementById("doctorModalSpec");
+        const doctorModalBranch = document.getElementById("doctorModalBranch");
+        const doctorModalList = document.getElementById("doctorModalList");
+        const doctorModalMeta = document.getElementById("doctorModalMeta");
+        const btnDoctorModalClear = document.getElementById("btnDoctorModalClear");
+        const btnDoctorModalApply = document.getElementById("btnDoctorModalApply");
+        const targetList = document.getElementById("targetList");
+        const targetCount = document.getElementById("targetCount");
+        const targetSideMeta = document.getElementById("targetSideMeta");
+        const targetError = document.getElementById("targetError");
+        const targetTypeValue = document.getElementById("targetTypeValue");
+        const targetIdsValue = document.getElementById("targetIdsValue");
+        const btnAddTarget = document.getElementById("btnAddTarget");
+        const btnClearTargets = document.getElementById("btnClearTargets");
+        const targetActions = document.getElementById("targetActions");
+        const summaryStatus = document.getElementById("summaryStatus");
+        const summaryName = document.getElementById("summaryName");
+        const summaryCode = document.getElementById("summaryCode");
+        const summaryType = document.getElementById("summaryType");
+        const summaryDiscount = document.getElementById("summaryDiscount");
+        const summaryMin = document.getElementById("summaryMin");
+        const summaryDates = document.getElementById("summaryDates");
+        const summaryActive = document.getElementById("summaryActive");
+        const summaryTargetCount = document.getElementById("summaryTargetCount");
+        const summaryTargetType = document.getElementById("summaryTargetType");
+        const summaryTargets = document.getElementById("summaryTargets");
+        const summaryTargetHint = document.getElementById("summaryTargetHint");
+        const summaryImpactOrders = document.getElementById("summaryImpactOrders");
+        const summaryImpactValue = document.getElementById("summaryImpactValue");
+        const summaryImpactLevel = document.getElementById("summaryImpactLevel");
+        const targetMeta = {
+          patient: { prefix: "Patient" },
+          service: { prefix: "Service" },
+          doctor: { prefix: "Doctor" },
+        };
+        let currentTargetType = "all";
+        let targets = [];
+        let serviceModalSelection = [];
+        let doctorModalSelection = [];
+        const branches = ["Main Branch", "North Branch", "West Branch"];
+        const services = [
+          { id: "SRV-0001", name: "Consultation", main: "Remote Consultation", specialization: "Cardiology", branch: "Main Branch", active: true },
+          { id: "SRV-0002", name: "Home Visit", main: "Doctor Visit", specialization: "Family Medicine", branch: "Main Branch", active: true },
+          { id: "SRV-0003", name: "Radiology", main: "Radiology", specialization: "X-Ray", branch: "North Branch", active: true },
+          { id: "SRV-0004", name: "Laboratory", main: "Laboratory Analysis", specialization: "Pathology", branch: "West Branch", active: true },
+          { id: "SRV-0005", name: "Physiotherapy", main: "Physiotherapy", specialization: "Orthopedics", branch: "North Branch", active: true },
+          { id: "SRV-0006", name: "Dermatology", main: "Doctor Visit", specialization: "Skin Care", branch: "Main Branch", active: true },
+        ];
+        const doctors = [
+          { id: "DR-0007", name: "Dr. Ahmed Ali", specialization: "Cardiology", branch: "Main Branch" },
+          { id: "DR-0011", name: "Dr. Mohamed", specialization: "Family Medicine", branch: "Main Branch" },
+          { id: "DR-0015", name: "Dr. Sarah", specialization: "Radiology", branch: "North Branch" },
+          { id: "DR-0018", name: "Dr. Kareem", specialization: "Orthopedics", branch: "North Branch" },
+          { id: "DR-0020", name: "Dr. Lina", specialization: "Dermatology", branch: "West Branch" },
+          { id: "DR-0022", name: "Dr. Walled", specialization: "Pathology", branch: "West Branch" },
+        ];
+        const serviceLabelMap = new Map(services.map((s) => [
+          s.id,
+          `${s.name} • ${s.specialization} (${s.branch})`,
+        ]));
+        const doctorLabelMap = new Map(doctors.map((d) => [
+          d.id,
+          `${d.name} • ${d.specialization} (${d.branch})`,
+        ]));
+
+        function formatNumber(value) {
+          if (value === null || value === undefined || value === "") return "--";
+          const n = Number(value);
+          if (Number.isNaN(n)) return "--";
+          return n.toLocaleString("en-US");
+        }
+
+        function formatCurrency(value) {
+          const n = Number(value);
+          if (Number.isNaN(n)) return "--";
+          return formatNumber(n) + " SAR";
+        }
+
+        function formatDateLabel(value) {
+          if (!value) return "--";
+          const d = new Date(value);
+          if (Number.isNaN(d.getTime())) return "--";
+          return d.toLocaleDateString("en-US", { month: "short", day: "2-digit", year: "numeric" });
+        }
+
+        function parseDiscount() {
+          const raw = (discountInput && discountInput.value ? discountInput.value : "").trim();
+          if (!raw) return { type: couponType.value || "", value: null, label: "--" };
+          const numeric = parseFloat(raw.replace(/[^0-9.]/g, ""));
+          if (Number.isNaN(numeric)) return { type: couponType.value || "", value: null, label: "--" };
+          let type = couponType.value || (raw.includes("%") ? "Percentage" : "Fixed");
+          if (type === "Percentage") {
+            return { type, value: numeric, label: `${numeric}%` };
+          }
+          return { type: "Fixed", value: numeric, label: formatCurrency(numeric) };
+        }
+
+        function updateDiscountHint() {
+          if (!discountHint) return;
+          if (couponType.value === "Percentage") {
+            discountHint.textContent = "Example: 15%";
+          } else if (couponType.value === "Fixed") {
+            discountHint.textContent = "Example: 50 SAR";
+          } else {
+            discountHint.textContent = "Example: 15% or 50 SAR";
+          }
+        }
+
+        function estimateOrders() {
+          if (currentTargetType === "all") return 120;
+          if (targets.length === 0) return 0;
+          if (currentTargetType === "patient") return targets.length;
+          if (currentTargetType === "service") return targets.length * 18;
+          if (currentTargetType === "doctor") return targets.length * 12;
+          return targets.length;
+        }
+
+        function setPillState(el, state) {
+          if (!el) return;
+          el.classList.remove("good", "warn", "risk");
+          if (state) el.classList.add(state);
+        }
+
+        function updateTargetPreview() {
+          if (summaryTargetCount) {
+            summaryTargetCount.textContent = currentTargetType === "all" ? "All" : String(targets.length || 0);
+          }
+          if (summaryTargetType) {
+            summaryTargetType.textContent = currentTargetType === "all"
+              ? "All Patients"
+              : (currentTargetType === "patient" ? "Patient" : currentTargetType === "service" ? "Service" : "Doctor");
+          }
+          if (!summaryTargets || !summaryTargetHint) return;
+          summaryTargets.innerHTML = "";
+          if (currentTargetType === "all") {
+            summaryTargetHint.textContent = "Applies to all patients.";
+            return;
+          }
+          if (targets.length === 0) {
+            summaryTargetHint.textContent = "No targets added yet.";
+            return;
+          }
+          summaryTargetHint.textContent = "Selected targets are listed below.";
+          const maxPreview = 3;
+          const list = targets.slice(0, maxPreview);
+          list.forEach((id) => {
+            const chip = document.createElement("span");
+            chip.className = "summary-chip";
+            let label = id;
+            if (currentTargetType === "service") label = serviceLabelMap.get(id) || id;
+            if (currentTargetType === "doctor") label = doctorLabelMap.get(id) || id;
+            chip.textContent = label;
+            summaryTargets.appendChild(chip);
+          });
+          if (targets.length > maxPreview) {
+            const more = document.createElement("span");
+            more.className = "summary-chip";
+            more.textContent = `+${targets.length - maxPreview} more`;
+            summaryTargets.appendChild(more);
+          }
+        }
+
+        function updateImpactPreview(discountInfo) {
+          const estOrders = estimateOrders();
+          if (summaryImpactOrders) summaryImpactOrders.textContent = estOrders ? formatNumber(estOrders) : "--";
+          if (summaryImpactValue) summaryImpactValue.textContent = discountInfo.label || "--";
+
+          let state = "good";
+          let label = "Estimate";
+          if (discountInfo.type === "Percentage" && discountInfo.value >= 40) {
+            label = "High";
+            state = "risk";
+          } else if (discountInfo.value) {
+            label = "Medium";
+            state = "warn";
+          }
+          if (summaryImpactLevel) summaryImpactLevel.textContent = label;
+          setPillState(summaryImpactLevel, state);
+        }
+
+        function updateSummary() {
+          const discountInfo = parseDiscount();
+          const name = (couponNameEn && couponNameEn.value.trim()) || (couponNameAr && couponNameAr.value.trim()) || "--";
+          if (summaryName) summaryName.textContent = name;
+          if (summaryCode) summaryCode.textContent = (couponCode && couponCode.value.trim()) || "--";
+          if (summaryType) summaryType.textContent = couponType.value || "--";
+          if (summaryDiscount) summaryDiscount.textContent = discountInfo.label || "--";
+          if (summaryMin) summaryMin.textContent = minAmount.value ? formatCurrency(minAmount.value) : "None";
+          if (summaryDates) {
+            const fromLabel = formatDateLabel(fromDate.value);
+            const toLabel = formatDateLabel(toDate.value);
+            summaryDates.textContent = (fromLabel === "--" && toLabel === "--") ? "--" : `${fromLabel} - ${toLabel}`;
+          }
+          if (summaryActive) summaryActive.textContent = toggle.classList.contains("on") ? "Active" : "Inactive";
+
+          const requiredReady = name !== "--" && couponType.value && discountInfo.value && fromDate.value && toDate.value && couponCode.value;
+          let statusLabel = requiredReady ? "Ready" : "Draft";
+          let statusState = requiredReady ? "good" : "warn";
+          if (!toggle.classList.contains("on")) {
+            statusLabel = "Paused";
+            statusState = "risk";
+          }
+          if (summaryStatus) summaryStatus.textContent = statusLabel;
+          setPillState(summaryStatus, statusState);
+
+          updateTargetPreview();
+          updateImpactPreview(discountInfo);
+        }
+
+        function updateAddTargetState() {
+          if (!btnAddTarget) return;
+          const isPatient = currentTargetType === "patient";
+          btnAddTarget.classList.toggle("d-none", !isPatient);
+          btnAddTarget.textContent = "Add Patient";
+          if (!isPatient) {
+            btnAddTarget.disabled = false;
+            return;
+          }
+          btnAddTarget.disabled = !targetPatientInput.value.trim();
+        }
+
+        function generateCouponCode() {
+          if (!couponCode) return;
+          const baseName = (couponNameEn && couponNameEn.value.trim())
+            ? couponNameEn.value.trim().replace(/\s+/g, "").slice(0, 4).toUpperCase()
+            : "NRK";
+          const rand = Math.floor(1000 + Math.random() * 9000);
+          couponCode.value = `${baseName}-${rand}`;
+          updateSummary();
+        }
+
+        function setToggle(on) {
+          if (on) toggle.classList.add("on");
+          else toggle.classList.remove("on");
+          activeValue.value = on ? "1" : "0";
+          updateSummary();
+        }
+
+        function populateSelect(select, items, placeholder) {
+          if (!select) return;
+          const opts = items.map((item) => {
+            return `<option value="${item.value}">${item.label}</option>`;
+          }).join("");
+          select.innerHTML = `<option value="">${placeholder}</option>${opts}`;
+        }
+
+        function initFilters() {
+          const branchItems = branches.map((b) => ({ value: b, label: b }));
+          populateSelect(serviceModalBranch, branchItems, "All Branches");
+          populateSelect(doctorModalBranch, branchItems, "All Branches");
+
+          const specSet = Array.from(new Set(doctors.map((d) => d.specialization))).sort();
+          const specItems = specSet.map((s) => ({ value: s, label: s }));
+          populateSelect(doctorModalSpec, specItems, "All Specializations");
+        }
+
+        function formatSelectionLabel(list, labelMap) {
+          if (!list || list.length === 0) return "";
+          const first = labelMap.get(list[0]) || list[0];
+          if (list.length === 1) return first;
+          return `${first} +${list.length - 1}`;
+        }
+
+        function updatePickerInputs() {
+          if (servicePickerInput) {
+            servicePickerInput.value = currentTargetType === "service"
+              ? formatSelectionLabel(targets, serviceLabelMap)
+              : "";
+          }
+          if (doctorPickerInput) {
+            doctorPickerInput.value = currentTargetType === "doctor"
+              ? formatSelectionLabel(targets, doctorLabelMap)
+              : "";
+          }
+        }
+
+        function updateServiceOptions() {
+          if (!serviceModalList) return;
+          const branch = serviceModalBranch ? serviceModalBranch.value : "";
+          const query = serviceModalSearch ? serviceModalSearch.value.trim().toLowerCase() : "";
+          const filtered = services.filter((s) => {
+            if (s.active === false) return false;
+            const inBranch = !branch || s.branch === branch;
+            if (!inBranch) return false;
+            if (!query) return true;
+            const hay = `${s.name} ${s.main || ""} ${s.specialization} ${s.branch}`.toLowerCase();
+            return hay.includes(query);
+          });
+          const grouped = filtered.reduce((acc, s) => {
+            const key = s.main || "Other Services";
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(s);
+            return acc;
+          }, {});
+
+          const groupNames = Object.keys(grouped).sort();
+
+          serviceModalList.innerHTML = "";
+          if (groupNames.length === 0) {
+            serviceModalList.innerHTML = '<div class="picker-empty">No services found.</div>';
+          } else {
+            const autoOpen = query || groupNames.length === 1;
+            groupNames.forEach((main) => {
+              const group = document.createElement("div");
+              group.className = "picker-group";
+              if (autoOpen) group.classList.add("open");
+
+              const head = document.createElement("button");
+              head.type = "button";
+              head.className = "picker-group-head";
+              head.innerHTML = `<span>${main}</span><span class="count">${grouped[main].length}</span><span class="picker-group-toggle">›</span>`;
+
+              const body = document.createElement("div");
+              body.className = "picker-group-body";
+
+              grouped[main].forEach((s) => {
+                const item = document.createElement("label");
+                item.className = "picker-item";
+
+                const info = document.createElement("div");
+                const title = document.createElement("div");
+                title.className = "picker-title";
+                title.textContent = s.name;
+                const sub = document.createElement("div");
+                sub.className = "picker-sub";
+                sub.textContent = `${s.specialization} • ${s.branch}`;
+                info.appendChild(title);
+                info.appendChild(sub);
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.className = "picker-check service-check";
+                checkbox.value = s.id;
+                checkbox.checked = serviceModalSelection.includes(s.id);
+
+                item.appendChild(info);
+                item.appendChild(checkbox);
+                body.appendChild(item);
+              });
+
+              head.addEventListener("click", () => {
+                group.classList.toggle("open");
+              });
+
+              group.appendChild(head);
+              group.appendChild(body);
+              serviceModalList.appendChild(group);
+            });
+          }
+
+          if (serviceModalMeta) {
+            serviceModalMeta.textContent = `${filtered.length} result${filtered.length === 1 ? "" : "s"}`;
+          }
+        }
+
+        function updateDoctorOptions() {
+          if (!doctorModalList) return;
+          const branch = doctorModalBranch ? doctorModalBranch.value : "";
+          const spec = doctorModalSpec ? doctorModalSpec.value : "";
+          const query = doctorModalSearch ? doctorModalSearch.value.trim().toLowerCase() : "";
+          const filtered = doctors.filter((d) => {
+            const inFilters = (!branch || d.branch === branch) && (!spec || d.specialization === spec);
+            if (!inFilters) return false;
+            if (!query) return true;
+            const hay = `${d.name} ${d.specialization} ${d.branch}`.toLowerCase();
+            return hay.includes(query);
+          });
+
+          doctorModalList.innerHTML = "";
+          if (filtered.length === 0) {
+            doctorModalList.innerHTML = '<div class="picker-empty">No doctors found.</div>';
+          } else {
+            filtered.forEach((d) => {
+              const item = document.createElement("label");
+              item.className = "picker-item";
+
+              const info = document.createElement("div");
+              const title = document.createElement("div");
+              title.className = "picker-title";
+              title.textContent = d.name;
+              const sub = document.createElement("div");
+              sub.className = "picker-sub";
+              sub.textContent = `${d.specialization} • ${d.branch}`;
+              info.appendChild(title);
+              info.appendChild(sub);
+
+              const checkbox = document.createElement("input");
+              checkbox.type = "checkbox";
+              checkbox.className = "picker-check doctor-check";
+              checkbox.value = d.id;
+              checkbox.checked = doctorModalSelection.includes(d.id);
+
+              item.appendChild(info);
+              item.appendChild(checkbox);
+              doctorModalList.appendChild(item);
+            });
+          }
+
+          if (doctorModalMeta) {
+            doctorModalMeta.textContent = `${filtered.length} result${filtered.length === 1 ? "" : "s"}`;
+          }
+        }
+
+        function openServiceModal() {
+          if (!serviceModal) return;
+          serviceModalSelection = currentTargetType === "service" ? [...targets] : [];
+          targetError.textContent = "";
+          updateServiceOptions();
+          serviceModal.show();
+        }
+
+        function openDoctorModal() {
+          if (!doctorModal) return;
+          doctorModalSelection = currentTargetType === "doctor" ? [...targets] : [];
+          targetError.textContent = "";
+          updateDoctorOptions();
+          doctorModal.show();
+        }
+
+        function applyServiceSelection() {
+          targets = [...serviceModalSelection];
+          targetError.textContent = "";
+          renderTargets();
+          if (serviceModal) serviceModal.hide();
+        }
+
+        function applyDoctorSelection() {
+          targets = [...doctorModalSelection];
+          targetError.textContent = "";
+          renderTargets();
+          if (doctorModal) doctorModal.hide();
+        }
+
+        function clearServiceSelection() {
+          serviceModalSelection = [];
+          updateServiceOptions();
+        }
+
+        function clearDoctorSelection() {
+          doctorModalSelection = [];
+          updateDoctorOptions();
+        }
+
+        function renderTargets() {
+          targetList.innerHTML = "";
+          if (targets.length === 0) {
+            targetList.innerHTML = '<div class="target-empty">No targets yet.</div>';
+          } else {
+            targets.forEach((id) => {
+              const item = document.createElement("div");
+              item.className = "target-item";
+
+              const chip = document.createElement("span");
+              chip.className = "target-chip";
+              let label = id;
+              if (currentTargetType === "service") label = serviceLabelMap.get(id) || id;
+              if (currentTargetType === "doctor") label = doctorLabelMap.get(id) || id;
+              chip.textContent = `${targetMeta[currentTargetType].prefix}: ${label}`;
+
+              const removeBtn = document.createElement("button");
+              removeBtn.type = "button";
+              removeBtn.className = "target-remove";
+              removeBtn.setAttribute("aria-label", "Remove");
+              removeBtn.textContent = "x";
+              removeBtn.addEventListener("click", () => {
+                targets = targets.filter((t) => t !== id);
+                renderTargets();
+              });
+
+              item.appendChild(chip);
+              item.appendChild(removeBtn);
+              targetList.appendChild(item);
+            });
+          }
+
+          targetCount.textContent = currentTargetType === "all"
+            ? "All Patients"
+            : `${targets.length} target${targets.length === 1 ? "" : "s"}`;
+          targetIdsValue.value = targets.join(",");
+          if (targetSideMeta) {
+            targetSideMeta.textContent = currentTargetType === "all"
+              ? "All patients"
+              : `${targets.length} selected`;
+          }
+          if (btnClearTargets) {
+            btnClearTargets.disabled = currentTargetType === "all" || targets.length === 0;
+          }
+          updateAddTargetState();
+          updatePickerInputs();
+          updateSummary();
+        }
+
+        function setTargetType(type) {
+          currentTargetType = type;
+          targetTypeValue.value = type;
+          targetTabs.forEach((tab) => {
+            const isActive = tab.dataset.target === type;
+            tab.classList.toggle("active", isActive);
+            tab.querySelector("input").checked = isActive;
+          });
+
+          const isAll = type === "all";
+          targetAllField.classList.toggle("active", isAll);
+          targetPatientField.classList.toggle("active", type === "patient");
+          targetServiceField.classList.toggle("active", type === "service");
+          targetDoctorField.classList.toggle("active", type === "doctor");
+          targetSide.classList.toggle("hidden", isAll);
+          targetGrid.classList.toggle("single", isAll);
+          targetActions.classList.toggle("hidden", isAll);
+          targetError.textContent = "";
+          targets = [];
+          renderTargets();
+
+          if (!isAll) {
+            if (type === "patient") targetPatientInput.value = "";
+            if (type === "service") updateServiceOptions();
+            if (type === "doctor") updateDoctorOptions();
+          }
+        }
+
+        function addTarget() {
+          if (currentTargetType === "all") return;
+          if (currentTargetType === "service") {
+            openServiceModal();
+            return;
+          }
+          if (currentTargetType === "doctor") {
+            openDoctorModal();
+            return;
+          }
+          const value = targetPatientInput.value.trim();
+          if (!value) {
+            targetError.textContent = "Select a target to add.";
+            return;
+          }
+          if (targets.includes(value)) {
+            targetError.textContent = "This ID is already added.";
+            return;
+          }
+          targets.push(value);
+          targetPatientInput.value = "";
+          targetError.textContent = "";
+          renderTargets();
+        }
+
+        toggle.addEventListener("click", () => {
+          setToggle(!toggle.classList.contains("on"));
+        });
+
+        targetTabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            setTargetType(tab.dataset.target);
+          });
+        });
+
+        btnAddTarget.addEventListener("click", addTarget);
+        targetPatientInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addTarget();
+          }
+        });
+        targetPatientInput.addEventListener("input", () => {
+          updateAddTargetState();
+          updateSummary();
+        });
+        btnClearTargets.addEventListener("click", () => {
+          targets = [];
+          targetError.textContent = "";
+          renderTargets();
+        });
+
+        if (btnGenCode) {
+          btnGenCode.addEventListener("click", generateCouponCode);
+        }
+        if (couponType) {
+          couponType.addEventListener("change", () => {
+            updateDiscountHint();
+            updateSummary();
+          });
+        }
+        if (discountInput) discountInput.addEventListener("input", updateSummary);
+        if (minAmount) minAmount.addEventListener("input", updateSummary);
+        if (fromDate) fromDate.addEventListener("change", updateSummary);
+        if (toDate) toDate.addEventListener("change", updateSummary);
+        if (couponNameAr) couponNameAr.addEventListener("input", updateSummary);
+        if (couponNameEn) couponNameEn.addEventListener("input", updateSummary);
+        if (couponCode) couponCode.addEventListener("input", updateSummary);
+
+        if (btnOpenServiceModal) btnOpenServiceModal.addEventListener("click", openServiceModal);
+        if (btnOpenDoctorModal) btnOpenDoctorModal.addEventListener("click", openDoctorModal);
+        if (servicePickerInput) servicePickerInput.addEventListener("click", openServiceModal);
+        if (doctorPickerInput) doctorPickerInput.addEventListener("click", openDoctorModal);
+
+        if (serviceModalList) {
+          serviceModalList.addEventListener("change", (e) => {
+            const cb = e.target;
+            if (!(cb instanceof HTMLInputElement)) return;
+            if (!cb.classList.contains("service-check")) return;
+            if (cb.checked) {
+              if (!serviceModalSelection.includes(cb.value)) serviceModalSelection.push(cb.value);
+            } else {
+              serviceModalSelection = serviceModalSelection.filter((id) => id !== cb.value);
+            }
+          });
+        }
+
+        if (doctorModalList) {
+          doctorModalList.addEventListener("change", (e) => {
+            const cb = e.target;
+            if (!(cb instanceof HTMLInputElement)) return;
+            if (!cb.classList.contains("doctor-check")) return;
+            if (cb.checked) {
+              if (!doctorModalSelection.includes(cb.value)) doctorModalSelection.push(cb.value);
+            } else {
+              doctorModalSelection = doctorModalSelection.filter((id) => id !== cb.value);
+            }
+          });
+        }
+
+        if (serviceModalSearch) serviceModalSearch.addEventListener("input", updateServiceOptions);
+        if (serviceModalBranch) serviceModalBranch.addEventListener("change", updateServiceOptions);
+        if (doctorModalSearch) doctorModalSearch.addEventListener("input", updateDoctorOptions);
+        if (doctorModalSpec) doctorModalSpec.addEventListener("change", updateDoctorOptions);
+        if (doctorModalBranch) doctorModalBranch.addEventListener("change", updateDoctorOptions);
+        if (btnServiceModalApply) btnServiceModalApply.addEventListener("click", applyServiceSelection);
+        if (btnDoctorModalApply) btnDoctorModalApply.addEventListener("click", applyDoctorSelection);
+        if (btnServiceModalClear) btnServiceModalClear.addEventListener("click", clearServiceSelection);
+        if (btnDoctorModalClear) btnDoctorModalClear.addEventListener("click", clearDoctorSelection);
+
+        initFilters();
+        updateServiceOptions();
+        updateDoctorOptions();
+        updateDiscountHint();
+        updateAddTargetState();
+        updatePickerInputs();
+        updateSummary();
+
+        form.addEventListener("submit", function (e) {
+          if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+            form.classList.add("was-validated");
+            return;
+          }
+          if (targetTypeValue.value !== "all" && targets.length === 0) {
+            e.preventDefault();
+            e.stopPropagation();
+            targetError.textContent = "Add at least one target.";
+            return;
+          }
+          e.preventDefault();
+          // TODO: connect backend (payload includes activeValue)
+          window.location.href = "coupons.html";
+        });
+      })();
+    </script>
+      <script>
+      (function(){
+        const el = document.getElementById("ksaTime");
+        if(!el) return;
+
+        function tick(){
+          try{
+            const fmt = new Intl.DateTimeFormat("en-US",{
+              timeZone:"Asia/Riyadh",
+              hour:"2-digit",
+              minute:"2-digit",
+              second:"2-digit",
+              hour12:true
+            });
+            el.textContent = fmt.format(new Date());
+          }catch(e){
+            el.textContent = new Date().toLocaleTimeString("en-US", {hour12:true});
+          }
+        }
+
+        tick();
+        setInterval(tick, 1000);
+      })();
+    </script>  </body>
+</html>
