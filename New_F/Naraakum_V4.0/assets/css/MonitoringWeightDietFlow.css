@@ -1,0 +1,338 @@
+.package-overview-card,
+.task-board-card {
+  background: #fff;
+  border: 1px solid #e5efef;
+  border-radius: 24px;
+  box-shadow: 0 18px 48px rgba(26, 77, 78, 0.08);
+}
+
+.package-head,
+.task-board-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.package-kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #eff8f8;
+  color: #239ea0;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.package-head h3,
+.task-board-head h3 {
+  margin: 12px 0 8px;
+  color: #0d2f30;
+  font-size: 1.625rem;
+  font-weight: 800;
+}
+
+.package-head p,
+.task-board-head p {
+  margin: 0;
+  max-width: 520px;
+  color: #6f7e7f;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.package-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.package-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #e8f6f6;
+  color: #239ea0;
+  font-size: 0.925rem;
+  font-weight: 700;
+}
+
+.package-pill.is-accent {
+  background: #fff3e8;
+  color: #ff7a00;
+}
+
+.package-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.package-detail-item {
+  padding: 16px 18px;
+  border: 1px solid #edf3f3;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
+}
+
+.package-detail-item span {
+  display: block;
+  margin-bottom: 8px;
+  color: #7c8a8b;
+  font-size: 0.875rem;
+}
+
+.package-detail-item strong {
+  display: block;
+  color: #162425;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.package-detail-item.is-highlight strong {
+  color: #ff7a00;
+}
+
+.task-state-group {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.task-state-block {
+  padding: 16px;
+  border-radius: 20px;
+  background: #f7fbfb;
+  border: 1px solid #e7eeee;
+}
+
+.task-state-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 14px;
+}
+
+.task-state-head h4 {
+  margin: 0;
+  color: #193233;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.task-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #d9f1f1;
+  color: #239ea0;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.patient-task-list {
+  display: grid;
+  gap: 12px;
+}
+
+.patient-task-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e4eeee;
+}
+
+.patient-task-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.task-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: #eff8f8;
+  flex-shrink: 0;
+}
+
+.task-icon-wrap img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.task-copy h5 {
+  margin: 0 0 6px;
+  color: #162425;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.task-copy p {
+  margin: 0;
+  color: #768586;
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+
+.task-action-slot {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.completed-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #def5e8;
+  color: #0f8a53;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.patient-task-item.is-done {
+  border-color: #cdeedc;
+  background: #f7fffb;
+}
+
+.empty-tasks {
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px dashed #d2e2e2;
+  background: #fff;
+  color: #7d8b8c;
+  text-align: center;
+  font-size: 0.92rem;
+}
+
+.device-sync-note {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #fff3e8;
+  color: #ff7a00;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.upgrade-package-list {
+  display: grid;
+  gap: 12px;
+}
+
+.upgrade-package-card {
+  padding: 18px;
+  border-radius: 20px;
+  border: 1px solid #e7efef;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbfb 100%);
+}
+
+.upgrade-package-card h4 {
+  margin: 0 0 8px;
+  color: #102b2c;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.upgrade-package-card p {
+  margin: 0 0 12px;
+  color: #6f7e7f;
+  font-size: 0.9rem;
+  line-height: 1.8;
+}
+
+.upgrade-package-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.upgrade-package-meta span {
+  color: #239ea0;
+  font-size: 0.94rem;
+  font-weight: 800;
+}
+
+.sidebar-package-box .package-head h3,
+.sidebar-task-box .task-board-head h3 {
+  font-size: 1.35rem;
+}
+
+.sidebar-package-box .package-head p,
+.sidebar-task-box .task-board-head p {
+  font-size: 0.88rem;
+}
+
+.sidebar-package-box .package-detail-grid {
+  margin-top: 18px;
+}
+
+.sidebar-package-box .package-actions {
+  margin-bottom: 8px;
+}
+
+.sidebar-package-box .package-actions .btn {
+  width: 100%;
+}
+
+.sidebar-task-box .task-state-group {
+  margin-top: 18px;
+}
+
+.sidebar-task-box .task-state-head {
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 991.98px) {
+  .package-detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 767.98px) {
+  .patient-task-item {
+    flex-direction: column;
+  }
+
+  .task-action-slot {
+    width: 100%;
+  }
+
+  .task-action-slot .btn,
+  .task-action-slot .completed-badge {
+    width: 100%;
+  }
+}

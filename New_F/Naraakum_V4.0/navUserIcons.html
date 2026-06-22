@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة الخدمات الصحية | رعاية صحية منزلية | نرعاكم</title>
+    <meta name="description" content="Naraakum" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+  </head>
+  <body>
+    <!-- Preloader Overlay -->
+    <div class="preloader"></div>
+    <!-- Start Navigation -->
+    <nav class="StickyNavigation" id="mainNav">
+      <div class="container">
+        <!-- Nav Side -->
+        <div class="navSide">
+          <!-- Logo Box -->
+          <div class="logoBox">
+            <button class="btn btn-secondary btn-icon btn-40 open-side-menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <a href="index.html" class="logo">
+              <img
+                class="logoIcon"
+                src="assets/images/logoIcon.svg"
+                alt="نرعاكم"
+              />
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+          </div>
+
+          <!-- Links Box -->
+          <div class="linksBox">
+            <a href="index.html" class="sideLogo">
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+
+            <ul>
+              <li><a href="#">الرئيسية</a></li>
+              <li><a href="#">الخدمات الطبية</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  مقدمو الرعاية
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">الأطباء/ الأخصائيون</a></li>
+                  <li><a href="#">المؤسسات الصحية</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#">الأسئلة الشائعة</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  عن نرعاكم
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">من نحن؟</a></li>
+                  <li><a href="#">المدونة</a></li>
+                  <li><a href="#">اخبار الشركة</a></li>
+                  <li><a href="#">اتصل بنا</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="buttonsBox">
+              <a href="#" class="btn btn-outline-primary btn-36">
+                انضم كمقدم خدمة
+              </a>
+              <button class="btn btn-light btn-36 btn-icon lang-btn">
+                <img src="assets/images/ar.jpg" alt="arabic" />
+                <span>السعودية</span>
+                <i class="fi fi-rr-caret-down text-grey"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Side Box -->
+        <div class="userSide">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary btn-40 btn-icon dropdown-toggle login-dropdown-btn"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="fi fi-sr-user"></i>
+
+              <span>تسجيل <i>الدخول</i></span>
+            </button>
+            <div class="dropdown-menu">ddd</div>
+          </div>
+          <div class="userOptionsIcons">
+            <button
+              class="user-cart-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#cart-Modal"
+            >
+              <span>4</span>
+              <i
+                class="fi fi-sr-shopping-cart"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="السلة"
+              ></i>
+            </button>
+            <button
+              class="user-notifcation-icon d-none d-sm-block"
+              data-bs-toggle="modal"
+              data-bs-target="#notifications-Modal"
+            >
+              <!-- <span>2</span> -->
+              <i
+                class="fi fi-sr-bell"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="الاشعارات"
+              ></i>
+            </button>
+            <a
+              href="user_messages.html"
+              class="user-notifcation-icon d-none d-sm-block"
+            >
+              <!-- <span>2</span> -->
+              <i
+                class="fi fi-sr-messages"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="المحادثات"
+              ></i>
+            </a>
+            <button
+              class="user-notifcation-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#My-appointments-Modal"
+            >
+              <span>2</span>
+              <i
+                class="fi fi-sr-calendar-clock"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="مواعيدي"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-backdrop"></div>
+    </nav>
+    <span class="navClear"></span>
+    <!-- End Navigation -->
+
+    <!-- Hero Section -->
+    <section class="HeroSection">
+      <div class="layers">
+        <!--Hero First Layer------------------------------------------------->
+        <div id="HeroFirstLayer" class="active-layer">
+          <div class="container">
+            <article class="HeroSectionTitle">
+              <h1>نرعاكم للخدمات الطبية والرعاية المنزلية</h1>
+              <p>
+                استمتع بخدمات رعاية منزلية متكاملة توفر لك الوقت وتزيد راحتَك.
+              </p>
+            </article>
+
+            <div class="ServicesCarousel owl-theme owl-carousel mt-56">
+              <!-- Card Item -->
+              <div class="HeroServicesCard onlineConsultationBG">
+                <div class="cardTextContent">
+                  <h1 data-bs-toggle="modal" data-bs-target="#specialtyModal">
+                    استشارة عن بعد
+                  </h1>
+                  <p data-bs-toggle="modal" data-bs-target="#specialtyModal">
+                    استشارات طبية عن بعد في جميع التخصصات الصحية
+                  </p>
+                  <button class="btn btn-outline-primary btn-28">
+                    <i class="fi fi-rr-play-circle"></i>
+                    <span>شرح الخدمة</span>
+                  </button>
+                </div>
+                <div
+                  class="cardImage"
+                  data-bs-toggle="modal"
+                  data-bs-target="#specialtyModal"
+                >
+                  <div class="imgBox">
+                    <img
+                      src="assets/images/onlineConsultation.svg"
+                      alt="online Consultation"
+                    />
+                  </div>
+                  <span>
+                    <i class="btn btn-28">احجز موعدك</i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Item -->
+              <div class="HeroServicesCard HomeVisitsBG">
+                <div class="cardTextContent">
+                  <h1 data-target="HomeVisitsLayer">الرعاية المنزلية</h1>
+                  <p data-target="HomeVisitsLayer">
+                    خدمات طبية تُقدم لك فى منزلك بكل سهولة وراحة
+                  </p>
+                  <button class="btn btn-outline-primary btn-28">
+                    <i class="fi fi-rr-play-circle"></i>
+                    <span>شرح الخدمة</span>
+                  </button>
+                </div>
+                <div class="cardImage" data-target="HomeVisitsLayer">
+                  <div class="imgBox">
+                    <img src="assets/images/HomeVisits.svg" alt="HomeVisits" />
+                  </div>
+                  <span>
+                    <i class="btn btn-28">عرض الخدمات</i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Card Item -->
+              <div class="HeroServicesCard MonitoringBG">
+                <div class="cardTextContent">
+                  <h1 data-target="MonitoringLayer">المراقبة عن بعد</h1>
+                  <p data-target="MonitoringLayer">
+                    رصد للمؤشرات الحيوية مع تنبيه مبكر وتدخل علاجي فوري.
+                  </p>
+                  <button class="btn btn-outline-primary btn-28">
+                    <i class="fi fi-rr-play-circle"></i>
+                    <span>شرح الخدمة</span>
+                  </button>
+                </div>
+                <div class="cardImage" data-target="MonitoringLayer">
+                  <div class="imgBox">
+                    <img
+                      src="assets/images/Monitoring.svg"
+                      alt="online Consultation"
+                    />
+                  </div>
+                  <span>
+                    <i class="btn btn-28">اشترك الأن</i>
+                  </span>
+                </div>
+              </div>
+
+              <!-- Cards column -->
+              <div class="CardsColumn">
+                <!-- SM card -->
+                <div class="SmallCard labCardBG">
+                  <div class="cardImage">
+                    <img
+                      src="assets/images/labAnalysis.svg"
+                      alt="تحاليلك فى بيتك"
+                    />
+                  </div>
+                  <div class="cardContent">
+                    <h1>تحاليلك فى بيتك</h1>
+                    <p>تحاليلك بكل سهولة وراحة</p>
+                  </div>
+                </div>
+
+                <!-- SM card -->
+                <div class="SmallCard PharmaciesCardBG">
+                  <div class="cardImage">
+                    <img
+                      src="assets/images/pharmacies.svg"
+                      alt="توصيل الدواء
+                    "
+                    />
+                  </div>
+                  <div class="cardContent">
+                    <h1>توصيل الدواء</h1>
+                    <p>من الصيدلية إلى بابك</p>
+                  </div>
+                </div>
+
+                <!-- SM card -->
+                <div class="SmallCard clinicVisitCardBG">
+                  <div class="cardImage">
+                    <img
+                      src="assets/images/clinicVisit.svg"
+                      alt="استشر طبيبك بالعيادة"
+                    />
+                  </div>
+                  <div class="cardContent">
+                    <h1>استشر طبيبك بالعيادة</h1>
+                    <p>احجز موعدك في العيادة</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Home Visits Layer ----------------------------------------------->
+        <div id="HomeVisitsLayer">
+          <div class="small-container">
+            <div class="container">
+              <div class="HeroLayerBar">
+                <h1>خدمات الرعاية المنزلية</h1>
+                <button
+                  class="btn backBtn"
+                  data-target="HeroFirstLayer"
+                ></button>
+              </div>
+
+              <!-- Location bar -->
+              <!-- <div class="currentLocationBar">
+                <p>إختر الخدمة</p>
+                <div></div>
+              </div> -->
+
+              <!-- Home Visits Carousel -->
+              <div class="HomeVisitsCarousel owl-theme owl-carousel">
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="DoctorVisitBG">
+                        <img
+                          src="assets/images/Doctor'sVisit.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">زيارة طبيب</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="NursingVisitBG">
+                        <img
+                          src="assets/images/NursingVisit.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">زيارة تمريض</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="caregiverBG">
+                        <img
+                          src="assets/images/caregiver.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">المرافق الصحي</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="PhysicalTherapyBG">
+                        <img
+                          src="assets/images/PhysicalTherapy.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">العلاج الطبيعي</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="HomeDialysisBG">
+                        <img
+                          src="assets/images/HomeDialysis.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">غسيل الكلى المنزلي</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Item -->
+                <div class="item">
+                  <div class="visitsTypeCard">
+                    <div class="cardHead">
+                      <a href="#" class="LaboratoryTestsBG">
+                        <img
+                          src="assets/images/LaboratoryTests.png"
+                          alt="Doctor'sVisit"
+                        />
+                      </a>
+                    </div>
+                    <div class="cardBody">
+                      <a href="#">التحاليل المخبرية</a>
+                      <p>
+                        تبدأ من
+                        <span>299</span>
+                        <i class="icon-saudi_riyal"></i>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monitoring Layer ------------------------------------------------>
+        <div id="MonitoringLayer">
+          <div class="small-container">
+            <div class="container">
+              <div class="HeroLayerBar">
+                <h1>المراقبة عن بعد</h1>
+                <button
+                  class="btn backBtn"
+                  data-target="HeroFirstLayer"
+                ></button>
+              </div>
+
+              <div class="monitoringInfoBox">
+                <div class="videoBox">
+                  <img src="assets/images/MonitoringVideoCover.png" alt="" />
+                  <span class="Overlay">
+                    <span>
+                      <i class="fi fi-tr-play-circle"></i>
+                    </span>
+                  </span>
+                </div>
+                <div class="textBox">
+                  <h1>خدمة مراقبة ذكية وشاملة</h1>
+                  <p>
+                    حل ذكي لمتابعة مستوى السكر، ضغط الدم، والمؤشرات الحيوية
+                    الأخرى على مدار الساعة، مع إمكانية التنبؤ المبكر بالمخاطر
+                    الصحية وتقديم تدخل علاجي دقيق في الوقت المناسب.
+                  </p>
+                  <a href="#" class="btn btn-outline-primary btn-icon btn-48">
+                    <span>إستمرار</span>
+                    <i class="fi fi-rr-arrow-small-left"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specialties Section -->
+    <section class="SpecialtiesSection small-container">
+      <div class="container">
+        <h2 class="fsize-28 text-center bold">تصفح الأطباء حسب التخصص</h2>
+        <div class="items-search-bar">
+          <span>
+            <input
+              class="form-control"
+              type="text"
+              id="searchInput"
+              placeholder="بحث عن التخصص"
+              onkeyup="filterItems()"
+            />
+          </span>
+        </div>
+
+        <div
+          class="specialties-container insideContent"
+          id="specialties-container"
+        >
+          <ul id="specialties-list">
+            <li>
+              <a href="#" class="specialty-item">
+                <span>
+                  <img
+                    src="assets/images/General_Medicine.svg"
+                    alt="General_Medicine"
+                  />
+                </span>
+                <p>الطب العام</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dentistry.svg" alt="Dentistry"
+                /></span>
+                <p>طب الاسنان</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Cardiology.svg" alt="Cardiology"
+                /></span>
+                <p>القلب</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Neurology.svg" alt="Neurology"
+                /></span>
+                <p>المخ والاعصاب</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Ear_Nose.svg" alt="Ear_Nose"
+                /></span>
+                <p>انف واذن وحنجرة</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Urology.svg" alt="Urology"
+                /></span>
+                <p>المسالك البولية</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Orthopedics.svg" alt="Orthopedics"
+                /></span>
+                <p>طب العظام</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img
+                    src="assets/images/Ophthalmology.svg"
+                    alt="Ophthalmology"
+                /></span>
+                <p>طب العيون</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img
+                    src="assets/images/Digestive_System.svg"
+                    alt="Digestive_System"
+                /></span>
+                <p>الجهاز الهضمي</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span><img src="assets/images/Kidney.svg" alt="Kidney" /></span>
+                <p>الكلي</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Pulmonary.svg" alt="Pulmonary"
+                /></span>
+                <p>الصدرية</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Pediatrics.svg" alt="Pediatrics"
+                /></span>
+                <p>طب الاطفال</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Obstetrics.svg" alt="Obstetrics"
+                /></span>
+                <p>النساء والولادة</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Psychiatry.svg" alt="Psychiatry"
+                /></span>
+                <p>الطب النفسي</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>الجلدية والتجميل</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>-----</p>
+              </a>
+            </li>
+
+            <li>
+              <a href="#" class="specialty-item">
+                <span
+                  ><img src="assets/images/Dermatology.svg" alt="Dermatology"
+                /></span>
+                <p>end</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="show-more-items">
+          <div id="more-specialties-btn">
+            <span>عرض الكل</span>
+            <i class="fi fi-sr-angle-down"></i>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Home Visits Section -->
+    <section class="HomeVisitsSection small-container">
+      <div class="container">
+        <!-- section Head -->
+        <div class="sectionHead">
+          <div class="video-side">
+            <video loop muted autoplay="autoplay" playsinline>
+              <source src="assets/video/naraakum_intro.mp4" type="video/mp4" />
+            </video>
+            <div class="video-side-overlay"></div>
+          </div>
+          <article>
+            <h1>نرعاك فى بيتك</h1>
+            <p>استمتع بخدمات رعاية منزلية متكاملة</p>
+            <a href="#" class="btn btn-44">اكتشف المزيد</a>
+          </article>
+        </div>
+        <!-- section Body -->
+        <div class="sectionBody mt-64">
+          <div
+            class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-2 color-cards-group"
+          >
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="DoctorVisitBG">
+                    <img
+                      src="assets/images/Doctor'sVisit.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">زيارة طبيب</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="NursingVisitBG">
+                    <img
+                      src="assets/images/NursingVisit.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">زيارة تمريض</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="caregiverBG">
+                    <img
+                      src="assets/images/caregiver.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">المرافق الصحي</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="PhysicalTherapyBG">
+                    <img
+                      src="assets/images/PhysicalTherapy.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">العلاج الطبيعي</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="HomeDialysisBG">
+                    <img
+                      src="assets/images/HomeDialysis.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">غسيل الكلى المنزلي</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="item col">
+              <div class="visitsTypeCard">
+                <div class="cardHead">
+                  <a href="#" class="LaboratoryTestsBG">
+                    <img
+                      src="assets/images/LaboratoryTests.png"
+                      alt="Doctor'sVisit"
+                    />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">التحاليل المخبرية</a>
+                  <p>
+                    تبدأ من
+                    <span>299</span>
+                    <i class="icon-saudi_riyal"></i>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="FeaturesSection small-container">
+      <div class="container">
+        <!-- section Head -->
+        <div class="sectionHead">
+          <h1>لماذا نرعاكم؟</h1>
+          <p>
+            نرعاكم هي منصة مرخصة ومعتمدة، تهدف إلى راحة المريض وتحرص على وقته.
+          </p>
+        </div>
+
+        <!-- section Body -->
+        <div class="sectionBody mt-64">
+          <div class="row row-cols-2 row-cols-md-4 g-4">
+            <!-- Card Item -->
+            <div class="col">
+              <div class="FeaturesCard">
+                <div class="cardHead">
+                  <i class="fi fi-tr-badget-check-alt"></i>
+                </div>
+                <div class="cardBody">
+                  <h2>أطباء ومراكز معتمدون</h2>
+                  <p>
+                    نخبة من الاستشاريين والأخصائيين بمراكز معتمدة ذوو خبرة مهنية
+                    لسنوات عديدة.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="col">
+              <div class="FeaturesCard">
+                <div class="cardHead">
+                  <i class="fi fi-tr-phone-24h"></i>
+                </div>
+                <div class="cardBody">
+                  <h2>خدمة عملاء 24/7</h2>
+                  <p>
+                    نوفر خدمة عملاء على مدى 24 ساعة لـ 7 أيام لضمان تقديم مساعدة
+                    للمريض.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="col">
+              <div class="FeaturesCard">
+                <div class="cardHead">
+                  <i class="fi fi-tr-user-experience"></i>
+                </div>
+                <div class="cardBody">
+                  <h2>تقييمات حقيقية من المرضى</h2>
+                  <p>تجارب وآراء موثوقة من عملاءنا لمساعدتك في اتخاذ القرار.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="col">
+              <div class="FeaturesCard">
+                <div class="cardHead">
+                  <i class="fi fi-tr-snap"></i>
+                </div>
+                <div class="cardBody">
+                  <h2>سهولة الاستخدام</h2>
+                  <p>
+                    وفرنا لكم منصة سهلة الاستخدام لطلب خدماتكم بكل راحة ومرونة.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- App download Section -->
+    <section class="AppDownloadSection small-container">
+      <div class="container">
+        <div class="AppDownloadCard">
+          <!-- Text Side -->
+          <div class="text-side">
+            <img src="assets/images/logo-ico-img.png" alt="Naraakum" />
+            <h2>حمّل تطبيق نرعاكم</h2>
+            <p>
+              اطلب خدماتك أو باقات الرعاية الصحية المنزلية بكل سهولة عن طريق
+              التطبيق.
+            </p>
+          </div>
+          <!-- AppMockup -->
+          <div class="AppMockup"></div>
+          <!-- Icons side -->
+          <div class="iconsSide">
+            <div class="QR">
+              <img src="assets/images/qrcode.png" alt="qr" />
+              <p>امسح الكود</p>
+            </div>
+            <div class="links">
+              <a href="#" class="btn btn-52 btn-icon btn-light">
+                <span>App Store</span>
+                <img src="assets/images/appStore.svg" alt="App Store" />
+              </a>
+              <a href="#" class="btn btn-52 btn-icon btn-light">
+                <span>Google Paly</span>
+                <img src="assets/images/googlePlayLogo.svg" alt="Google Paly" />
+              </a>
+              <a href="#" class="btn btn-52 btn-icon btn-light">
+                <span>App Gallery</span>
+                <img src="assets/images/AppGallery.svg" alt="App Store" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="BlogSection small-container">
+      <div class="container">
+        <!-- section Head -->
+        <div class="sectionHead">
+          <h1>مدونة نرعاكم</h1>
+          <p>
+            كل ما يهمك عن الرعاية المنزلية ونصائح طبية موثوقة لصحتك وصحة عائلتك.
+          </p>
+        </div>
+
+        <!-- section Body -->
+        <div class="sectionBody mt-64">
+          <div class="bolgCarousel owl-theme owl-carousel">
+            <!-- Card Item -->
+            <div class="blogCard">
+              <div class="cardHead">
+                <a href="#">
+                  <img src="assets/images/blog-img-1.png" alt="نرعاكم" />
+                </a>
+              </div>
+              <div class="cardBody">
+                <a href="#">اكتشف كـل ما تحتـاج معـرفته عـن أمراض القلب</a>
+                <p>10 يناير 2025</p>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="blogCard">
+              <div class="cardHead">
+                <a href="#">
+                  <img src="assets/images/blog-img-2.png" alt="نرعاكم" />
+                </a>
+              </div>
+              <div class="cardBody">
+                <a href="#">اكتشف كـل ما تحتـاج معـرفته عـن أمراض القلب</a>
+                <p>10 يناير 2025</p>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="blogCard">
+              <div class="cardHead">
+                <a href="#">
+                  <img src="assets/images/blog-img-3.png" alt="نرعاكم" />
+                </a>
+              </div>
+              <div class="cardBody">
+                <a href="#">اكتشف كـل ما تحتـاج معـرفته عـن أمراض القلب</a>
+                <p>10 يناير 2025</p>
+              </div>
+            </div>
+
+            <!-- Card Item -->
+            <div class="blogCard">
+              <div class="cardHead">
+                <a href="#">
+                  <img src="assets/images/blog-img-4.png" alt="نرعاكم" />
+                </a>
+              </div>
+              <div class="cardBody">
+                <a href="#">اكتشف كـل ما تحتـاج معـرفته عـن أمراض القلب</a>
+                <p>10 يناير 2025</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sectionFooter text-center mt-28">
+          <a href="#" class="btn btn-44 btn-primary">عرض كل المقالات</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Footer -->
+    <footer class="MainFooter">
+      <div class="container">
+        <!-- Footer Header -->
+        <div class="row">
+          <!-- Logo Box -->
+          <div class="col-lg-3 justify-content-center">
+            <div class="logoBox">
+              <a href="#">
+                <img src="assets/images/footerLogo.svg" alt="نرعاكم" />
+                <span>نرعاكم للرعاية الطبية المنزلية</span>
+              </a>
+              <div class="social-media-icons">
+                <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                <a href="#"><i class="fi fi-brands-tik-tok"></i></a>
+                <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                <a href="#"><i class="fi fi-brands-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Links -->
+          <div class="col-lg">
+            <div class="row">
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>نرعاكم</h2>
+                  <a href="#">من نحن؟</a>
+                  <a href="#">أخبار الشركة</a>
+                  <a href="#">المدونة</a>
+                  <a href="#">اتصل بنا</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>الاعضاء</h2>
+                  <a href="#">تسجيل العملاء</a>
+                  <a href="#">اطباء/مؤسسات</a>
+                  <a href="#">الأسئلة الشائعة</a>
+                  <a href="#">الخدمات الطبية</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>السياسات</h2>
+                  <a href="#">سياسة الخصوصية</a>
+                  <a href="#">سياسة الألغاء</a>
+                  <a href="#">الشروط والاحكام</a>
+                  <a href="#">حقوق المريض</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Join card -->
+          <div class="col-lg-3">
+            <div class="footerJoinCard">
+              <div class="cardContent">
+                <a href="#">إنضم كمقدم خدمة صحية</a>
+                <p>متاح للأطباء والمؤسسات الصحية</p>
+                <a href="#" class="btn btn-primary btn-36">إنضم الأن!</a>
+              </div>
+              <a href="#" class="cardImage">
+                <img
+                  src="assets/images/joinProviderIcon.svg"
+                  alt="إنضم كمقدم خدمة صحية"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer Certificates  -->
+        <div class="footerCertificateCard">
+          <div class="cardContent">
+            <div class="CertificateSide">
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/vat-verfied.png" alt="الرقم الضريبي" />
+                <figcaption>
+                  <i>الرقم الضريبي</i>
+                  <span>0000000000000</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/Ministry.png" alt="السجل التجارى" />
+                <figcaption>
+                  <i>السجل التجارى</i>
+                  <span>1010810544</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/saudi.png" alt="موثوق لدي" />
+                <figcaption>
+                  <i>موثوق لدي</i>
+                  <span>المركز السعودى للاعمال</span>
+                </figcaption>
+              </figure>
+            </div>
+            <div class="paymentSide">
+              <p>طرق الدفع والمعاملات</p>
+              <div class="paymentsIcons">
+                <img src="assets/images/Pay_Visa.png" alt="Visa" />
+                <img src="assets/images/Pay_applePay.png" alt="applePay" />
+                <img src="assets/images/Pay_Mastercard.png" alt="Mastercard" />
+                <img src="assets/images/Pay_Mada.png" alt="Mada" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer CopyRights -->
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-auto">
+            <p class="fsize-14 text-white text-center text-md-start">
+              حقوق النشر © 2025 | شركة نرعاكم | كل الحقوق محفوظة
+            </p>
+          </div>
+          <div class="col-md-auto">
+            <div class="footerStoreIcons">
+              <a href="#">
+                <img src="assets/images/AppStore.png" alt="AppStore" />
+              </a>
+              <a href="#">
+                <img src="assets/images/GooglePlay.png" alt="GooglePlay" />
+              </a>
+              <a href="#">
+                <img src="assets/images/AppGallery.png" alt="AppGallery" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--All Modals**************************************************************** -->
+
+    <!-- specialtyModal -->
+    <div
+      class="modal fade"
+      id="specialtyModal"
+      tabindex="-1"
+      aria-labelledby="specialtyModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm bottom-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="specialtyModalLabel">
+              إستشارة عن بعد
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h2 class="fsize-14 bold text-center mb-12">إختر التخصص الطبي</h2>
+
+            <!-- Search input -->
+            <div class="items-search-bar">
+              <span>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="specialty-search"
+                  placeholder="بحث عن التخصص"
+                />
+              </span>
+            </div>
+
+            <!-- Specialties list -->
+            <ul id="Modal-specialties-list">
+              <li>
+                <input type="radio" name="specialty" id="sp1" hidden />
+                <label for="sp1">
+                  <div class="specialty-item">
+                    <span>
+                      <img
+                        src="assets/images/General_Medicine.svg"
+                        alt="General_Medicine"
+                      />
+                    </span>
+                    <p>الطب العام</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp2" hidden />
+                <label for="sp2">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Dentistry.svg" alt="Dentistry"
+                    /></span>
+                    <p>طب الاسنان</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp3" hidden />
+                <label for="sp3">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Cardiology.svg" alt="Cardiology"
+                    /></span>
+                    <p>القلب</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp4" hidden />
+                <label for="sp4">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Neurology.svg" alt="Neurology"
+                    /></span>
+                    <p>المخ والاعصاب</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp5" hidden />
+                <label for="sp5">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Ear_Nose.svg" alt="Ear_Nose"
+                    /></span>
+                    <p>انف واذن وحنجرة</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp6" hidden />
+                <label for="sp6">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Urology.svg" alt="Urology"
+                    /></span>
+                    <p>المسالك البولية</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp7" hidden />
+                <label for="sp7">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Orthopedics.svg"
+                        alt="Orthopedics"
+                    /></span>
+                    <p>طب العظام</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp8" hidden />
+                <label for="sp8">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Ophthalmology.svg"
+                        alt="Ophthalmology"
+                    /></span>
+                    <p>طب العيون</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp9" hidden />
+                <label for="sp9">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Digestive_System.svg"
+                        alt="Digestive_System"
+                    /></span>
+                    <p>الجهاز الهضمي</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp10" hidden />
+                <label for="sp10">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Kidney.svg" alt="Kidney"
+                    /></span>
+                    <p>الكلي</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp11" hidden />
+                <label for="sp11">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Pulmonary.svg" alt="Pulmonary"
+                    /></span>
+                    <p>الصدرية</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp12" hidden />
+                <label for="sp12">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Pediatrics.svg" alt="Pediatrics"
+                    /></span>
+                    <p>طب الاطفال</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp13" hidden />
+                <label for="sp13">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Obstetrics.svg" alt="Obstetrics"
+                    /></span>
+                    <p>النساء والولادة</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp14" hidden />
+                <label for="sp14">
+                  <div class="specialty-item">
+                    <span
+                      ><img src="assets/images/Psychiatry.svg" alt="Psychiatry"
+                    /></span>
+                    <p>الطب النفسي</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp15" hidden />
+                <label for="sp15">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>الجلدية والتجميل</p>
+                  </div>
+                </label>
+              </li>
+
+              <!-- العناصر التي تحتوي على ----- -->
+              <li>
+                <input type="radio" name="specialty" id="sp16" hidden />
+                <label for="sp16">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp17" hidden />
+                <label for="sp17">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp18" hidden />
+                <label for="sp18">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp19" hidden />
+                <label for="sp19">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp20" hidden />
+                <label for="sp20">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp21" hidden />
+                <label for="sp21">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp22" hidden />
+                <label for="sp22">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp23" hidden />
+                <label for="sp23">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp24" hidden />
+                <label for="sp24">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp25" hidden />
+                <label for="sp25">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp26" hidden />
+                <label for="sp26">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>-----</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="specialty" id="sp27" hidden />
+                <label for="sp27">
+                  <div class="specialty-item">
+                    <span
+                      ><img
+                        src="assets/images/Dermatology.svg"
+                        alt="Dermatology"
+                    /></span>
+                    <p>end</p>
+                  </div>
+                </label>
+              </li>
+            </ul>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary btn-40 w-100"
+              data-name="submit-specialty"
+            >
+              عرض الأطباء
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Scripts**************************************************************** -->
+    <!-- Bootstrap ---------->
+    <script src="assets/js/Libraries/Bootstrap/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/Libraries/Bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Preloader ---------->
+    <script src="assets/js/Components/Preloader.js"></script>
+    <!-- StickyNavigation --->
+    <script src="assets/js/Components/StickyNavigation.js"></script>
+    <!-- OwlCarousel -------->
+    <script src="assets/js/Libraries/OwlCarousel/owlCarousel.min.js"></script>
+    <script src="assets/js/Libraries/OwlCarousel/owlCarouselOptions.js"></script>
+    <!-- SpecialtiesFilter -->
+    <script src="assets/js/Components/HomePage/SpecialtiesFilter.js"></script>
+    <!-- SpecialtiesFilter -->
+    <script src="assets/js/Components/HomePage/HeroSectionLayers.js"></script>
+    <!-- ModalSpecialtiesFilter -->
+    <script src="assets/js/Components/Modals/ModalSpecialtiesFilter.js"></script>
+  </body>
+</html>

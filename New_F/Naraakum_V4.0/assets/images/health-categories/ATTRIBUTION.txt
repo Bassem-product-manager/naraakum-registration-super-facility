@@ -1,0 +1,22 @@
+Storyset illustrations used in the health categories section
+
+Source: https://storyset.com/
+Style family: Amico
+License summary observed on the source pages: free for personal and commercial use with attribution
+
+Files and source pages:
+- men-health-amico.svg
+  Story page: https://storyset.com/illustration/doctor/amico
+  Direct SVG: https://stories.freepiklabs.com/storage/4479/doctor-amico_Mesa-de-trabajo-1.svg
+
+- women-health-amico.svg
+  Story page: https://storyset.com/illustration/gynecology-consultation/amico
+  Direct SVG: https://stories.freepiklabs.com/storage/26420/Gynecology-Consultation_Mesa-de-trabajo-1.svg
+
+- children-health-amico.svg
+  Story page: https://storyset.com/illustration/children/amico
+  Direct SVG: https://stories.freepiklabs.com/storage/6224/Children-(1)_Mesa-de-trabajo-1.svg
+
+- senior-health-amico.svg
+  Story page: https://storyset.com/illustration/active-elderly-people/amico
+  Direct SVG: https://stories.freepiklabs.com/storage/17152/Active-Elderly-People_Mesa-de-trabajo-1.svg

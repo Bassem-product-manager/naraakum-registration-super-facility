@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة الخدمات الصحية | رعاية صحية منزلية | نرعاكم</title>
+    <meta name="description" content="Naraakum" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+  </head>
+  <body>
+    <!-- Preloader Overlay -->
+    <div class="preloader"></div>
+    <!-- Start Navigation -->
+    <nav class="StickyNavigation" id="mainNav">
+      <div class="container">
+        <!-- Nav Side -->
+        <div class="navSide">
+          <!-- Logo Box -->
+          <div class="logoBox">
+            <button class="btn btn-secondary btn-icon btn-40 open-side-menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <a href="index.html" class="logo">
+              <img
+                class="logoIcon"
+                src="assets/images/logoIcon.svg"
+                alt="نرعاكم"
+              />
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+          </div>
+
+          <!-- Links Box -->
+          <div class="linksBox">
+            <a href="index.html" class="sideLogo">
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+
+            <ul>
+              <li><a href="index.html">الرئيسية</a></li>
+              <li><a href="#">الخدمات الطبية</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  مقدمو الرعاية
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">الأطباء/ الأخصائيون</a></li>
+                  <li><a href="#">المؤسسات الصحية</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#">الأسئلة الشائعة</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  عن نرعاكم
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">من نحن؟</a></li>
+                  <li><a href="#">المدونة</a></li>
+                  <li><a href="#">اخبار الشركة</a></li>
+                  <li><a href="#">اتصل بنا</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="buttonsBox">
+              <a href="#" class="btn btn-outline-primary btn-36">
+                انضم كمقدم خدمة
+              </a>
+              <button
+                class="btn btn-light btn-36 btn-icon lang-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#countryModal"
+              >
+                <img src="assets/images/ar.jpg" alt="arabic" />
+                <span>السعودية</span>
+                <i class="fi fi-rr-caret-down text-grey"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Side Box -->
+        <div class="userSide">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary btn-40 btn-icon dropdown-toggle login-dropdown-btn"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              data-bs-auto-close="outsideeee"
+            >
+              <i class="fi fi-sr-user"></i>
+
+              <span>تسجيل <i>الدخول</i></span>
+            </button>
+            <div class="dropdown-menu">
+              <div class="login-dropdown">
+                <p class="fsize-14 text-center mb-12">تسجيل الدخول كـ</p>
+                <div class="loginTypes">
+                  <!-- Login item -->
+                  <button
+                    class="btn loginTypeItem userColor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#LoginModal"
+                  >
+                    <img
+                      src="assets/images/loginUserIcon.svg"
+                      alt="طالب خدمة"
+                    />
+                    <span>طالب خدمة</span>
+                  </button>
+                  <!-- Login item -->
+                  <a href="#" class="loginTypeItem providerColor">
+                    <img
+                      src="assets/images/loginProviderIcon.svg"
+                      alt="مقدم خدمة"
+                    />
+                    <span>مقدم خدمة</span>
+                  </a>
+                </div>
+                <a href="#" class="joinLink">انضم كطالب خدمة</a>
+                <a href="#" class="joinLink">انضم كمقدم خدمة</a>
+              </div>
+            </div>
+          </div>
+          <div class="userOptionsIcons">
+            <button
+              class="user-cart-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#MainCartModal"
+            >
+              <span>4</span>
+              <i
+                class="fi fi-sr-shopping-cart"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="السلة"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-backdrop"></div>
+    </nav>
+    <span class="navClear"></span>
+    <!-- End Navigation -->
+
+    <!--Breadcrumb -->
+    <header class="Breadcrumb">
+      <div class="container">
+        <!-- Title -->
+        <div class="row justify-content-between">
+          <div class="col-auto">
+            <div class="pagetitle">
+              <a href="OrderSummary.html" class="btn btn-40 btn-icon">
+                <i class="fi fi-rr-arrow-small-right"></i>
+              </a>
+              <h2>الدفع</h2>
+            </div>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="btn btn-40 btn-icon text-white help-btn">
+              <i class="fi fi-rr-interrogation"></i>
+              <span>محتاج مساعده؟</span>
+            </a>
+          </div>
+        </div>
+        <!-- flowSteps -->
+        <div class="flowSteps">
+          <!-- item -->
+          <div class="stepItem done">
+            <span>1</span>
+            <p>تحديد الخدمة</p>
+          </div>
+          <i class="line"></i>
+          <!-- item -->
+          <div class="stepItem done">
+            <span>2</span>
+            <p>مقدمو الرعاية</p>
+          </div>
+          <i class="line"></i>
+          <!-- item -->
+          <div class="stepItem done">
+            <span>3</span>
+            <p>ملخص الطلب</p>
+          </div>
+          <i class="line"></i>
+          <!-- item -->
+          <div class="stepItem active">
+            <span>4</span>
+            <p>الدفع</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Page Container -->
+    <main class="insideMainPage">
+      <div class="container relativeConatiner">
+        <div class="whiteBox">
+          <div class="row">
+            <div class="col-4">1</div>
+            <div class="col-8">1</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Main Footer -->
+    <footer class="MainFooter">
+      <div class="container">
+        <!-- Footer Header -->
+        <div class="row">
+          <!-- Logo Box -->
+          <div class="col-lg-3 justify-content-center">
+            <div class="logoBox">
+              <a href="#">
+                <img src="assets/images/footerLogo.svg" alt="نرعاكم" />
+                <span>نرعاكم للرعاية الطبية المنزلية</span>
+              </a>
+              <div class="social-media-icons">
+                <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                <a href="#"><i class="fi fi-brands-tik-tok"></i></a>
+                <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                <a href="#"><i class="fi fi-brands-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Links -->
+          <div class="col-lg">
+            <div class="row">
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>نرعاكم</h2>
+                  <a href="#">من نحن؟</a>
+                  <a href="#">أخبار الشركة</a>
+                  <a href="#">المدونة</a>
+                  <a href="#">اتصل بنا</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>الاعضاء</h2>
+                  <a href="#">تسجيل العملاء</a>
+                  <a href="#">اطباء/مؤسسات</a>
+                  <a href="#">الأسئلة الشائعة</a>
+                  <a href="#">الخدمات الطبية</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>السياسات</h2>
+                  <a href="#">سياسة الخصوصية</a>
+                  <a href="#">سياسة الألغاء</a>
+                  <a href="#">الشروط والاحكام</a>
+                  <a href="#">حقوق المريض</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Join card -->
+          <div class="col-lg-3">
+            <div class="footerJoinCard">
+              <div class="cardContent">
+                <a href="#">انضم كمقدم خدمة صحية</a>
+                <p>متاح للأطباء والمؤسسات الصحية</p>
+                <a href="#" class="btn btn-primary btn-36">انضم الأن!</a>
+              </div>
+              <a href="#" class="cardImage">
+                <img
+                  src="assets/images/joinProviderIcon.svg"
+                  alt="انضم كمقدم خدمة صحية"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer Certificates  -->
+        <div class="footerCertificateCard">
+          <div class="cardContent">
+            <div class="CertificateSide">
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/vat-verfied.png" alt="الرقم الضريبي" />
+                <figcaption>
+                  <i>الرقم الضريبي</i>
+                  <span>0000000000000</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/Ministry.png" alt="السجل التجارى" />
+                <figcaption>
+                  <i>السجل التجارى</i>
+                  <span>1010810544</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/saudi.png" alt="موثوق لدي" />
+                <figcaption>
+                  <i>موثوق لدي</i>
+                  <span>المركز السعودى للاعمال</span>
+                </figcaption>
+              </figure>
+            </div>
+            <div class="paymentSide">
+              <p>طرق الدفع والمعاملات</p>
+              <div class="paymentsIcons">
+                <img src="assets/images/Pay_Visa.png" alt="Visa" />
+                <img src="assets/images/Pay_applePay.png" alt="applePay" />
+                <img src="assets/images/Pay_Mastercard.png" alt="Mastercard" />
+                <img src="assets/images/Pay_Mada.png" alt="Mada" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer CopyRights -->
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-auto">
+            <p class="fsize-14 text-white text-center text-md-start">
+              حقوق النشر © 2025 | شركة نرعاكم | كل الحقوق محفوظة
+            </p>
+          </div>
+          <div class="col-md-auto">
+            <div class="footerStoreIcons">
+              <a href="#">
+                <img src="assets/images/AppStore.png" alt="AppStore" />
+              </a>
+              <a href="#">
+                <img src="assets/images/GooglePlay.png" alt="GooglePlay" />
+              </a>
+              <a href="#">
+                <img src="assets/images/AppGallery.png" alt="AppGallery" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--All Modals**************************************************************** -->
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="LoginModal"
+      tabindex="-1"
+      aria-labelledby="LoginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="LoginModalLabel">تسجيل الدخول</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="loginModalBody">
+              <form action="">
+                <p class="fsize-14 text-grey">تسجيل الدخول بواسطة</p>
+                <ul
+                  class="nav nav-pills login-tabs"
+                  id="pills-tab"
+                  role="tablist"
+                >
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active w-100"
+                      id="pills-mobile-number-tab"
+                      data-bs-target="#pills-mobile-number"
+                      aria-controls="pills-mobile-number"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="true"
+                    >
+                      رقم الجوال
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="pills-email-address-tab"
+                      data-bs-target="#pills-email-address"
+                      aria-controls="pills-email-address"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="false"
+                    >
+                      البريد الإلكتروني
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content mt-28" id="pills-tabContent">
+                  <div
+                    id="pills-mobile-number"
+                    aria-labelledby="pills-mobile-number-tab"
+                    class="tab-pane fade show active"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder="00 000 0000"
+                          type="tel"
+                          class="form-control form-control-44 phone-input"
+                          id="phone"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-mobile-number-->
+                  <div
+                    id="pills-email-address"
+                    aria-labelledby="pills-email-address-tab"
+                    class="tab-pane fade"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder=" البريد الإلكتروني"
+                          type="email"
+                          class="form-control form-control-44"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe2"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe2"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-email-address-->
+                </div>
+              </form>
+              <div class="OR"><span>او</span></div>
+
+              <div class="loginWithSocial">
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/google.svg" alt="google" />
+                  <span>الاستمرار بواسطة جوجل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/apple.svg" alt="Apple" />
+                  <span>الاستمرار بواسطة أبل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/facebook.svg" alt="facebook" />
+                  <span>الاستمرار بواسطة فيسبوك</span>
+                </a>
+              </div>
+
+              <a
+                href="create-account-1.html"
+                class="fsize-14 semiBold mt-24 text-center d-block text-brand"
+              >
+                <span class="text-grey">ليس لديك حساب؟</span>
+                انضم كطالب خدمة
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country Modal -->
+    <div
+      class="modal fade"
+      id="countryModal"
+      tabindex="-1"
+      aria-labelledby="countryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm bottom-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="countryModalLabel">
+              اختيار الدولة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <h2 class="fsize-14 bold text-center mb-12">اختر الدولة</h2>
+
+            <!-- Countries list -->
+            <ul id="Modal-countries-list">
+              <li>
+                <input type="radio" name="country" id="cn1" hidden checked />
+                <label for="cn1">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_SA.png" alt="sa"
+                    /></span>
+                    <p>السعودية (ر.س)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn2" hidden />
+                <label for="cn2">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_UAE.png" alt="UAE"
+                    /></span>
+                    <p>الأمارات (د.ا)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn3" hidden />
+                <label for="cn3">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_EG.png" alt="eg"
+                    /></span>
+                    <p>مصر (ج.م)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn4" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_KW.png" alt="kw"
+                    /></span>
+                    <p>الكويت (د.ك)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn5" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_QA.png" alt="qa"
+                    /></span>
+                    <p>قطر (ر.ق)</p>
+                  </div>
+                </label>
+              </li>
+              <li>
+                <input type="radio" name="country" id="cn6" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_jz.png" alt="jz"
+                    /></span>
+                    <p>الجزائر (د.ج)</p>
+                  </div>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary btn-40 w-100"
+              data-name="submit-country"
+            >
+              تطبيق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Select patient Modal-->
+    <div
+      class="modal fade"
+      id="SelectPatientModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="SelectPatientModalLabel">
+              المستفيد من الخدمة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <ul class="nav nav-pills mb-20" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="pills-home-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-home"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-home"
+                  aria-selected="true"
+                >
+                  قائمة المستفيدين
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-profile-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-profile"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-profile"
+                  aria-selected="false"
+                >
+                  إضافة مستفيد جديد
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="pills-tabContent">
+              <!-- Tab 1 -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-home"
+                role="tabpanel"
+                aria-labelledby="pills-home-tab"
+                tabindex="0"
+              >
+                <form>
+                  <!-- PatientItem -->
+                  <div class="PatientItem mt-12">
+                    <label class="radio-item">
+                      <input type="radio" name="PatientItems" id="" checked />
+                      <div class="custom-radio">
+                        <div>
+                          <figure>
+                            <figcaption>
+                              <p class="bold fsize-14">سرور محمد رشاد</p>
+                              <span> نفسي - ذكر - 34 عام </span>
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <!-- PatientItem -->
+                  <div class="PatientItem mt-12">
+                    <label class="radio-item">
+                      <input type="radio" name="PatientItems" id="" />
+                      <div class="custom-radio">
+                        <div>
+                          <figure>
+                            <figcaption>
+                              <p class="bold fsize-14">احمد عبدالحليم</p>
+                              <span> الخال - ذكر - 44 عام </span>
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <!-- PatientItem -->
+                  <div class="PatientItem mt-12">
+                    <label class="radio-item">
+                      <input type="radio" name="PatientItems" id="" />
+                      <div class="custom-radio">
+                        <div>
+                          <figure>
+                            <figcaption>
+                              <p class="bold fsize-14">مصطفي احمد على</p>
+                              <span> صديق - ذكر - 34 عام </span>
+                            </figcaption>
+                          </figure>
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Tab 2 -->
+              <div
+                class="tab-pane fade"
+                id="pills-profile"
+                role="tabpanel"
+                aria-labelledby="pills-profile-tab"
+                tabindex="0"
+              >
+                <form>
+                  <div class="row g-2 gy-4">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >الاسم بالكامل
+                        <i class="text-grey"> (باللغة العربية)</i>
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control form-control-44"
+                        placeholder="ادخل الاسم"
+                      />
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">صلة القرابة </label>
+                      <select class="form-select form-select-44">
+                        <option value="">اختر صلة القرابة</option>
+                        <option value="1">أب</option>
+                        <option value="2">الأم</option>
+                        <option value="3">ابن</option>
+                        <option value="4">زوجة</option>
+                        <option value="5">بنت</option>
+                        <option value="6">صديق</option>
+                        <option value="8">أخ</option>
+                        <option value="9">أخت</option>
+                      </select>
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">تاريخ الميلاد </label>
+                      <div class="datepickerInput">
+                        <input
+                          type="text"
+                          class="datepicker form-control form-control-44"
+                          placeholder="--/--/----"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الجنس </label>
+                      <select class="form-select form-select-44">
+                        <option>ذكر</option>
+                        <option>انثى</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الوزن / كغم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الطول /سم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Patient Complaint Modal-->
+    <div
+      class="modal fade"
+      id="PatientComplaintModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="PatientComplaintModalLabel">
+              اضافة الشكوى المرضية (إختيارى)
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-12">
+                  <label class="form-label"> صف شكواك كتابة </label>
+                  <textarea
+                    class="form-control fsize-14"
+                    rows="3"
+                    placeholder="صف شكواك"
+                  ></textarea>
+
+                  <div class="OR"><span>او</span></div>
+                </div>
+
+                <div class="col-12 mt-24">
+                  <label class="form-label"> صف شكواك بالتسجيل الصوتي </label>
+
+                  <div class="voice-record-container">
+                    <audio src="" id="audioElement" controls></audio>
+                    <p id="isRecording">
+                      جارى التسجيل ..
+                      <img
+                        src="assets/images/record_animation.gif"
+                        alt="record"
+                      />
+                    </p>
+                    <div class="audio-buttons">
+                      <button type="button" class="btn" id="startRecording">
+                        <i class="fi fi-sr-microphone"></i>
+                        <span>بدء التسجيل</span>
+                      </button>
+                      <button type="button" class="btn" id="playRecording">
+                        <i class="fi fi-sr-play"></i>
+                        <span>استماع</span>
+                      </button>
+                      <button type="button" class="btn" id="stopRecording">
+                        <i class="fi fi-sr-stop"></i>
+                        <span>إيقاف</span>
+                      </button>
+                      <button type="button" class="btn" id="removeRecording">
+                        <i class="fi fi-sr-trash"></i>
+                        <span>حذف</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              إلغاء
+            </button>
+            <button class="btn btn-primary btn-44" data-bs-dismiss="modal">
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Upload Prescription Modal-->
+    <div
+      class="modal fade"
+      id="UploadPrescriptionModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="UploadPrescriptionModalLabel">
+              إرفاق صورة الوصفة الطبية
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div
+              class="attachments-box p-0"
+              style="box-shadow: none !important"
+            >
+              <label class="attachments-label p-8" for="fileInput">
+                <i class="fi fi-rr-upload"></i>
+                <p>إرفاق صورة الوصفة الطبية</p>
+                <span>يمكنك اضافة ملف او اكثر </span>
+
+                <input type="file" id="fileInput" multiple />
+              </label>
+
+              <div class="file-list" id="fileList"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              إلغاء
+            </button>
+            <button class="btn btn-primary btn-44" data-bs-dismiss="modal">
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- package Info Modal  -->
+    <div
+      class="modal fade"
+      id="PackageInfoModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="PackageInfoModalLabel">
+              تفاصيل الباقة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <h3 class="fsize-14 bold mb-2">عن الباقة</h3>
+            <p class="fsize-14 mb-12">
+              يتمثل دور طاقمنا الطبى في مساعدة الأفراد الذين يحتاجون إلى عناية
+              طبية ولكنهم قد يواجهون صعوبة في الوصول إلى إعدادات الرعاية الصحية
+            </p>
+
+            <h3 class="fsize-14 bold mb-2 mt-16">المهمام المشمولة</h3>
+            <div class="p-12 surface-light-300 radius-12">
+              <ul class="p-20 pt-0 pb-0">
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مساعدة المريض في الأنشطة اليومية ، مثل الاستحمام وارتداء
+                  الملابس
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مراقبة العلامات الحيوية للمريض والإبلاغ عن أي تغييرات للطبيب
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  إعطاء الأدوية بالفم كما هو موصوف من قبل الطبيب
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مرافقة المريض الي مواعيده الطبية
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  العناية بأنبوب التغذية والتنفس
+                </li>
+              </ul>
+            </div>
+
+            <h3 class="fsize-14 bold mb-2 mt-16">الشروط</h3>
+            <div class="p-12 surface-orange-50 radius-12">
+              <ul class="p-20 pt-0 pb-0">
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يلتزم العميل بتوفير غرفة خاصة للمرافقة الصحية ومهيئة لها
+                  بالكامل.
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يحق للعميل استبدال المرافقة الصحية في حال حدوث اي تقصير منها
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يلتزم العميل بإعطاء المرافقة الصحية يوم اجازه اسبوعياً ويكون
+                  اليوم باتفاق ما بين الطرفين.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              خروج
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Scripts**************************************************************** -->
+    <!-- Bootstrap ---------->
+    <script src="assets/js/Libraries/Bootstrap/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/Libraries/Bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Preloader ---------->
+    <script src="assets/js/Components/Preloader.js"></script>
+    <!-- StickyNavigation --->
+    <script src="assets/js/Components/StickyNavigation.js"></script>
+    <!-- Countries Modal -->
+    <script src="assets/js/Components/Modals/CountriesModal.js"></script>
+    <!-- PhoneNumber -->
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flags.js"></script>
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flagsOptions.js"></script>
+    <!-- showPassword -->
+    <script src="assets/js/Libraries/Forms/showPassword.js"></script>
+    <!-- OwlCarousel -------->
+    <script src="assets/js/Libraries/OwlCarousel/owlCarousel.min.js"></script>
+    <script src="assets/js/Libraries/OwlCarousel/owlCarouselOptions.js"></script>
+    <!-- Fav Icon -------->
+    <script src="assets/js/Components/FavIcon.js"></script>
+    <!-- Login Wizard -------->
+    <script src="assets/js/Components/OrderSummaryLoginWizard.js"></script>
+    <!-- digit input -------->
+    <script src="assets/js/Libraries/Forms/digit-input.js"></script>
+    <!-- DatePicker -->
+    <script src="assets/js/Libraries/Forms/DatePicker/datepicker.min.js"></script>
+    <script src="assets/js/Libraries/Forms/DatePicker/datepickerOptions.js"></script>
+    <!-- Voice Record -->
+    <script src="assets/js/Components/VoiceRecord.js"></script>
+    <!-- Prescription File -------->
+    <script src="assets/js/Libraries/Forms/FileUpload/PrescriptionFile.js"></script>
+  </body>
+</html>

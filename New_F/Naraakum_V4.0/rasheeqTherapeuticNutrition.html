@@ -1,0 +1,706 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>رشيق للتغذية العلاجية | نرعاكم</title>
+    <meta
+      name="description"
+      content="صفحة رشيق للتغذية العلاجية من نرعاكم: خطط كيتو، منتجات مختارة، ومحتوى صحي يساعدك على الالتزام."
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+  </head>
+  <body class="RasheeqLandingPage">
+    <div class="preloader"></div>
+
+    <nav class="StickyNavigation" id="mainNav">
+      <div class="container">
+        <!-- Nav Side -->
+        <div class="navSide">
+          <!-- Logo Box -->
+          <div class="logoBox">
+            <button class="btn btn-secondary btn-icon btn-40 open-side-menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <a href="index.html" class="logo">
+              <img
+                class="logoIcon"
+                src="assets/images/logoIcon.svg"
+                alt="نرعاكم"
+              />
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+          </div>
+
+          <!-- Links Box -->
+          <div class="linksBox">
+            <a href="index.html" class="sideLogo">
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+
+            <ul>
+              <li><a href="index.html">الرئيسية</a></li>
+              <li><a href="#">الخدمات الطبية</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  مقدمو الرعاية
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">الأطباء/ الأخصائيون</a></li>
+                  <li><a href="#">المؤسسات الصحية</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#">الأسئلة الشائعة</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  عن نرعاكم
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">من نحن؟</a></li>
+                  <li><a href="#">المدونة</a></li>
+                  <li><a href="#">اخبار الشركة</a></li>
+                  <li><a href="#">اتصل بنا</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="buttonsBox">
+              <a
+                href="providerRegistration.html"
+                class="btn btn-outline-primary btn-36"
+              >
+                انضم كمقدم خدمة
+              </a>
+              <button
+                class="btn btn-light btn-36 btn-icon lang-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#countryModal"
+              >
+                <img src="assets/images/ar.jpg" alt="arabic" />
+                <span>السعودية</span>
+                <i class="fi fi-rr-caret-down text-grey"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Side Box -->
+        <div class="userSide">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary btn-40 btn-icon dropdown-toggle login-dropdown-btn"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              data-bs-auto-close="outsideeee"
+            >
+              <i class="fi fi-sr-user"></i>
+
+              <span>تسجيل <i>الدخول</i></span>
+            </button>
+            <div class="dropdown-menu">
+              <div class="login-dropdown">
+                <p class="fsize-14 text-center mb-12">تسجيل الدخول كـ</p>
+                <div class="loginTypes">
+                  <!-- Login item -->
+                  <a
+                    href="clientRegistration.html"
+                    class="btn loginTypeItem userColor"
+                  >
+                    <img
+                      src="assets/images/loginUserIcon.svg"
+                      alt="طالب خدمة"
+                    />
+                    <span>طالب خدمة</span>
+                  </a>
+                  <!-- Login item -->
+                  <a
+                    href="providerLogin.html"
+                    class="loginTypeItem providerColor"
+                  >
+                    <img
+                      src="assets/images/loginProviderIcon.svg"
+                      alt="مقدم خدمة"
+                    />
+                    <span>مقدم خدمة</span>
+                  </a>
+                </div>
+                <a href="clientRegistration.html" class="joinLink"
+                  >انضم كطالب خدمة</a
+                >
+                <a href="providerRegistration.html" class="joinLink"
+                  >انضم كمقدم خدمة</a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="userOptionsIcons">
+            <button
+              class="user-cart-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#MainCartModal"
+            >
+              <span>4</span>
+              <i
+                class="fi fi-sr-shopping-cart"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="السلة"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-backdrop"></div>
+    </nav>
+    <span class="navClear"></span>
+
+    <main>
+      <section class="RasheeqHeroSection">
+        <div class="container">
+          <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+              <div class="RasheeqHeroContent">
+                <span class="RasheeqHeroLabel">رشيق للتغذية العلاجية</span>
+                <h1>خطط غذائية علاجية ذكية تناسب احتياجك الصحي</h1>
+                <p>
+                  خدمة متخصصة تساعدك على اختيار الخطة الغذائية المناسبة لك، مع محتوى
+                  توعوي ومنتجات كيتو مدروسة لتجربة صحية أسهل وأكثر التزامًا.
+                </p>
+                <div class="RasheeqHeroActions">
+                  <a href="#plans" class="btn btn-primary btn-44">اختر باكدجك</a>
+                  <a href="#service-overview" class="btn btn-outline-primary btn-44"
+                    >تعرف على الخدمة</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <img
+                class="RasheeqHeroRawImage"
+                src="_hero_food_green_yellow_v2.png"
+                alt="نمط حياة صحي وتغذية علاجية"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="service-overview" class="RasheeqSection surface-primary-50">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>كيف تساعدك خدمة رشيق؟</h2>
+            <p>
+              نمنحك تجربة متكاملة تجمع بين الباكدج المناسبة، المنتجات المناسبة، والمحتوى
+              الذي يدعم استمراريتك.
+            </p>
+          </div>
+
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+              <article class="RasheeqValueCard">
+                <i class="fi fi-rr-clipboard-list-check"></i>
+                <h3>اختر الباكدج المناسبة</h3>
+                <p>توصيات واضحة حسب هدفك الصحي ونمط حياتك اليومي.</p>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqValueCard">
+                <i class="fi fi-rr-shopping-bag"></i>
+                <h3>تسوق منتجات مختارة</h3>
+                <p>منتجات كيتو منتقاة بعناية لدعم نظامك الغذائي.</p>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqValueCard">
+                <i class="fi fi-rr-user-md"></i>
+                <h3>استشارة مع أخصائي تغذية</h3>
+                <p>تواصل مع دكتور تغذية لتقييم حالتك ووضع توصيات علاجية مناسبة.</p>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="plans" class="RasheeqSection">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>اختر الباكدج التي تناسب أهدافك</h2>
+            <p>باكدجات مرنة بتدرج واضح لتبدأ بسهولة وتكمل بثبات.</p>
+          </div>
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+            <div class="col">
+              <article class="RasheeqPlanCard">
+                <span class="RasheeqBadge">مناسبة للمبتدئين</span>
+                <h3>باكدج البداية</h3>
+                <p>انطلاق عملي لمن يريد الدخول في النظام بشكل تدريجي.</p>
+                <ul class="RasheeqBenefits">
+                  <li>جدول أسبوعي مبسط</li>
+                  <li>قائمة مشتريات واضحة</li>
+                  <li>متابعة أهداف أساسية</li>
+                </ul>
+                <a href="#final-cta" class="btn btn-outline-primary btn-36">اختر هذه الباكدج</a>
+              </article>
+            </div>
+
+            <div class="col">
+              <article class="RasheeqPlanCard is-featured">
+                <span class="RasheeqBadge">الأكثر طلبًا</span>
+                <h3>باكدج التوازن</h3>
+                <p>باكدج متوازنة لمن يريد نتائج مستمرة بأسلوب قابل للتطبيق.</p>
+                <ul class="RasheeqBenefits">
+                  <li>وجبات متنوعة</li>
+                  <li>توجيه أسبوعي عملي</li>
+                  <li>مرونة مع جدول العمل</li>
+                </ul>
+                <a href="#final-cta" class="btn btn-outline-primary btn-36">اختر هذه الباكدج</a>
+              </article>
+            </div>
+
+            <div class="col">
+              <article class="RasheeqPlanCard">
+                <span class="RasheeqBadge">مناسبة لخسارة الوزن</span>
+                <h3>باكدج الالتزام</h3>
+                <p>تركيز أعلى على الثبات والانضباط مع خطوات يومية واضحة.</p>
+                <ul class="RasheeqBenefits">
+                  <li>خطة وجبات دقيقة</li>
+                  <li>مؤشرات التزام أسبوعية</li>
+                  <li>توصيات تصحيحية مستمرة</li>
+                </ul>
+                <a href="#final-cta" class="btn btn-outline-primary btn-36">اختر هذه الباكدج</a>
+              </article>
+            </div>
+
+            <div class="col">
+              <article class="RasheeqPlanCard">
+                <span class="RasheeqBadge">نمط حياة مشغول</span>
+                <h3>باكدج المتابعة المكثفة</h3>
+                <p>لمن يحتاج متابعة أقرب وتعديلات أسرع حسب تطور الحالة.</p>
+                <ul class="RasheeqBenefits">
+                  <li>متابعة دورية أكثر</li>
+                  <li>خطط بديلة سريعة</li>
+                  <li>دعم التزام مستمر</li>
+                </ul>
+                <a href="#final-cta" class="btn btn-outline-primary btn-36">اختر هذه الباكدج</a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" class="RasheeqSection surface-secondary-1">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>منتجات مختارة تدعم نظامك الغذائي</h2>
+            <p>اختيارات عملية ومناسبة لروتينك اليومي بدون تعقيد.</p>
+          </div>
+
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            <div class="col">
+              <article class="RasheeqProductCard">
+                <div class="cardImage">
+                  <img src="assets/images/rasheeq/keto-food-1.jpg" alt="وجبة كيتو صحية" />
+                </div>
+                <div class="cardBody">
+                  <h3>وجبة خفيفة منخفضة الكربوهيدرات</h3>
+                  <p>اختيار مناسب بين الوجبات للحفاظ على خطتك.</p>
+                  <a href="#final-cta" class="btn btn-light btn-36">عرض المنتج</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqProductCard">
+                <div class="cardImage">
+                  <img src="assets/images/rasheeq/keto-food-2.jpg" alt="سلطة كيتو طازجة" />
+                </div>
+                <div class="cardBody">
+                  <h3>بديل سكر مناسب للكيتو</h3>
+                  <p>يدعم نظامك الغذائي بطعم متوازن وسهل الاستخدام.</p>
+                  <a href="#final-cta" class="btn btn-light btn-36">عرض المنتج</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqProductCard">
+                <div class="cardImage">
+                  <img src="assets/images/rasheeq/keto-food-3.jpg" alt="وجبة متوازنة للكيتو" />
+                </div>
+                <div class="cardBody">
+                  <h3>مزيج وجبات جاهز</h3>
+                  <p>حل عملي للأيام المزدحمة مع الحفاظ على التزامك.</p>
+                  <a href="#final-cta" class="btn btn-light btn-36">عرض المنتج</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqProductCard">
+                <div class="cardImage">
+                  <img src="assets/images/rasheeq/keto-food-4.jpg" alt="طبق صحي داعم للكيتو" />
+                </div>
+                <div class="cardBody">
+                  <h3>مكمل داعم للتوازن الغذائي</h3>
+                  <p>اختيار مكمّل يساعدك على الاستمرار ضمن روتينك.</p>
+                  <a href="#final-cta" class="btn btn-light btn-36">عرض المنتج</a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="blog" class="RasheeqSection">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>محتوى صحي يساعدك على الاستمرار</h2>
+            <p>مقالات عملية تساعدك على الفهم والالتزام خطوة بخطوة.</p>
+          </div>
+
+          <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 g-4">
+            <div class="col">
+              <article class="blogCard">
+                <div class="cardHead">
+                  <a href="#">
+                    <img src="assets/images/blog-img-1.png" alt="كيف تبدأ نظام الكيتو" />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">كيف تبدأ نظام الكيتو بطريقة صحية؟</a>
+                  <p>خطوات بسيطة لتبدأ بدون ارتباك.</p>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="blogCard">
+                <div class="cardHead">
+                  <a href="#">
+                    <img src="assets/images/blog-img-2.png" alt="أخطاء شائعة في الكيتو" />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">أخطاء شائعة في الأنظمة منخفضة الكربوهيدرات</a>
+                  <p>تجنب الأخطاء الأكثر تكرارًا من البداية.</p>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="blogCard">
+                <div class="cardHead">
+                  <a href="#">
+                    <img src="assets/images/blog-img-3.png" alt="أفكار وجبات صحية سريعة" />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">أفكار وجبات صحية سريعة</a>
+                  <p>خيارات يومية مختصرة تناسب الوقت المحدود.</p>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="blogCard">
+                <div class="cardHead">
+                  <a href="#">
+                    <img src="assets/images/blog-img-4.png" alt="الالتزام الغذائي" />
+                  </a>
+                </div>
+                <div class="cardBody">
+                  <a href="#">كيف تحافظ على التزامك الغذائي؟</a>
+                  <p>نصائح عملية للاستمرار وتقليل التراجع.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="RasheeqSection surface-primary-50">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>احجز مع أطباء التغذية</h2>
+            <p>فريق مختص يساعدك بخطة مناسبة لحالتك الصحية ونمط حياتك اليومي.</p>
+          </div>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-4">
+            <div class="col">
+              <article class="RasheeqDoctorCard">
+                <figure class="doctorImage">
+                  <img src="assets/images/rasheeq/nutrition-doctor-1.jpg" alt="دكتور تغذية 1" />
+                </figure>
+                <div class="doctorBody">
+                  <h3>د. سارة أحمد</h3>
+                  <p>أخصائية تغذية علاجية</p>
+                  <a href="#final-cta" class="btn btn-outline-primary btn-36">احجز الآن</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqDoctorCard">
+                <figure class="doctorImage">
+                  <img src="assets/images/rasheeq/nutrition-doctor-3.jpg" alt="دكتور تغذية 2" />
+                </figure>
+                <div class="doctorBody">
+                  <h3>د. محمد علي</h3>
+                  <p>استشاري تغذية وسمنة</p>
+                  <a href="#final-cta" class="btn btn-outline-primary btn-36">احجز الآن</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqDoctorCard">
+                <figure class="doctorImage">
+                  <img src="assets/images/rasheeq/nutrition-doctor-2.jpg" alt="دكتور تغذية 3" />
+                </figure>
+                <div class="doctorBody">
+                  <h3>د. ريم خالد</h3>
+                  <p>أخصائية تغذية علاجية</p>
+                  <a href="#final-cta" class="btn btn-outline-primary btn-36">احجز الآن</a>
+                </div>
+              </article>
+            </div>
+            <div class="col">
+              <article class="RasheeqDoctorCard">
+                <figure class="doctorImage">
+                  <img src="assets/images/rasheeq/nutrition-doctor-4.jpg" alt="دكتور تغذية 4" />
+                </figure>
+                <div class="doctorBody">
+                  <h3>د. خالد ناصر</h3>
+                  <p>متابعة تغذية للسكري</p>
+                  <a href="#final-cta" class="btn btn-outline-primary btn-36">احجز الآن</a>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="faq" class="RasheeqSection">
+        <div class="container">
+          <div class="RasheeqSectionHead">
+            <h2>الأسئلة الشائعة</h2>
+          </div>
+          <div class="accordion RasheeqFaq" id="RasheeqFaqAccordion">
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeadingOne">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseOne"
+                  aria-expanded="true"
+                  aria-controls="faqCollapseOne"
+                >
+                  هل خدمة رشيق مناسبة للمبتدئين؟
+                </button>
+              </h3>
+              <div
+                id="faqCollapseOne"
+                class="accordion-collapse collapse show"
+                aria-labelledby="faqHeadingOne"
+                data-bs-parent="#RasheeqFaqAccordion"
+              >
+                <div class="accordion-body">
+                  نعم، تبدأ الخطة بتوجيه تدريجي واضح وتوصيات عملية تساعدك على البدء
+                  بدون تعقيد.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeadingTwo">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseTwo"
+                  aria-expanded="false"
+                  aria-controls="faqCollapseTwo"
+                >
+                  هل يمكن تعديل الباكدج حسب نمط حياتي؟
+                </button>
+              </h3>
+              <div
+                id="faqCollapseTwo"
+                class="accordion-collapse collapse"
+                aria-labelledby="faqHeadingTwo"
+                data-bs-parent="#RasheeqFaqAccordion"
+              >
+                <div class="accordion-body">
+                  نعم، يمكن اختيار باكدج مناسبة لروتينك اليومي مع بدائل عملية للحفاظ
+                  على الاستمرارية.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeadingThree">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseThree"
+                  aria-expanded="false"
+                  aria-controls="faqCollapseThree"
+                >
+                  هل المنتجات مرتبطة فقط بباكدجات الكيتو؟
+                </button>
+              </h3>
+              <div
+                id="faqCollapseThree"
+                class="accordion-collapse collapse"
+                aria-labelledby="faqHeadingThree"
+                data-bs-parent="#RasheeqFaqAccordion"
+              >
+                <div class="accordion-body">
+                  المنتجات مختارة لدعم النظام الغذائي العلاجي عمومًا، مع تركيز على
+                  احتياجات الكيتو.
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h3 class="accordion-header" id="faqHeadingFour">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#faqCollapseFour"
+                  aria-expanded="false"
+                  aria-controls="faqCollapseFour"
+                >
+                  كيف أبدأ الآن؟
+                </button>
+              </h3>
+              <div
+                id="faqCollapseFour"
+                class="accordion-collapse collapse"
+                aria-labelledby="faqHeadingFour"
+                data-bs-parent="#RasheeqFaqAccordion"
+              >
+                <div class="accordion-body">
+                  ابدأ باختيار الباكدج المناسبة من قسم الباكدجات، ثم انتقل للخطوة التالية
+                  عبر زر البدء في نهاية الصفحة.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="final-cta" class="RasheeqSection">
+        <div class="container">
+          <div class="RasheeqFinalCTA">
+            <div class="row align-items-center g-4">
+              <div class="col-lg-8">
+                <div class="RasheeqFinalContent">
+                  <h2>ابدأ رحلتك الغذائية الآن</h2>
+                  <p>
+                    اختر الباكدج المناسبة لك أو تصفح المنتجات المختارة وابدأ بخطوة صحية
+                    أبسط.
+                  </p>
+                  <div class="RasheeqHeroActions">
+                    <a href="#plans" class="btn btn-primary btn-44">اشترك في باكدج</a>
+                    <a href="#products" class="btn btn-light btn-44">تسوق المنتجات</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4">
+                <div class="RasheeqFinalHighlights">
+                  <div class="highlightItem">
+                    <i class="fi fi-rr-clipboard-list-check"></i>
+                    <span>اختر الباكدج المناسبة لحالتك</span>
+                  </div>
+                  <div class="highlightItem">
+                    <i class="fi fi-rr-shopping-bag"></i>
+                    <span>تسوّق خيارات غذائية صحية</span>
+                  </div>
+                  <div class="highlightItem">
+                    <i class="fi fi-rr-user-md"></i>
+                    <span>احجز مع دكتور تغذية بسهولة</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="MainFooter">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-3">
+            <div class="logoBox">
+              <a href="index.html">
+                <img src="assets/images/footerLogo.svg" alt="نرعاكم" />
+                <span>رشيق للتغذية العلاجية ضمن منظومة نرعاكم</span>
+              </a>
+              <div class="social-media-icons">
+                <a href="#" aria-label="facebook"><i class="fi fi-brands-facebook"></i></a>
+                <a href="#" aria-label="instagram"><i class="fi fi-brands-instagram"></i></a>
+                <a href="#" aria-label="youtube"><i class="fi fi-brands-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg">
+            <div class="row">
+              <div class="col">
+                <div class="footList">
+                  <h2>روابط سريعة</h2>
+                  <a href="index.html">الرئيسية</a>
+                  <a href="#service-overview">الخدمة</a>
+                  <a href="#plans">باكدجات الكيتو</a>
+                  <a href="#products">منتجات الكيتو</a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="footList">
+                  <h2>المحتوى</h2>
+                  <a href="#blog">المدونة</a>
+                  <a href="#faq">الأسئلة الشائعة</a>
+                  <a href="#final-cta">ابدأ الآن</a>
+                </div>
+              </div>
+              <div class="col">
+                <div class="footList">
+                  <h2>السياسات</h2>
+                  <a href="#">سياسة الخصوصية</a>
+                  <a href="#">الشروط والأحكام</a>
+                  <a href="#">تواصل معنا</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="assets/js/Libraries/Bootstrap/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/Libraries/Bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/Components/Preloader.js"></script>
+    <script src="assets/js/Components/StickyNavigation.js"></script>
+  </body>
+</html>

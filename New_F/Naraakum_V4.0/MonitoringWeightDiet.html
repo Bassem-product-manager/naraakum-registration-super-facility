@@ -1,0 +1,5452 @@
+﻿﻿<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة الخدمات الصحية | رعاية صحية منزلية | نرعاكم</title>
+    <meta name="description" content="Naraakum" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+    <style>
+      /* Normalize monitoring tabs size for both buttons and links */
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link {
+        color: #666 !important;
+        font-size: 1rem;
+        padding: calc(var(--base-value) * 0.5) calc(var(--base-value) * 0.375);
+        border-color: transparent !important;
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link > span {
+        display: flex;
+        gap: calc(var(--base-value) * 0.5);
+        min-width: calc(var(--base-value) * 10.875);
+        height: calc(var(--base-value) * 2.75);
+        align-items: center;
+        justify-content: center;
+        background-color: #eff5f5;
+        padding: calc(var(--base-value) * 0.375) calc(var(--base-value) * 0.625);
+        border-radius: calc(var(--base-value) * 0.5);
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link > span img {
+        width: calc(var(--base-value) * 2);
+        height: calc(var(--base-value) * 2);
+        object-fit: contain;
+        flex-shrink: 0;
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link:hover {
+        border-color: transparent !important;
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link:hover > span {
+        color: #239ea0;
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link.active,
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link[aria-selected="true"] {
+        color: #239ea0 !important;
+        border: 1px solid #ddd !important;
+        border-bottom: 1px solid #fff !important;
+      }
+
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link.active > span,
+      .MonitoringTabs .nav-tabs .nav-item > .nav-link[aria-selected="true"] > span {
+        background-color: #fff;
+      }
+
+      .weight-days-filter .btn.btn-outline-primary {
+        color: #239ea0 !important;
+        border-color: #239ea0 !important;
+        background-color: #fff !important;
+      }
+
+      .weight-days-filter .btn.btn-outline-primary:hover,
+      .weight-days-filter .btn-check:checked + .btn.btn-outline-primary,
+      .weight-days-filter .btn-check:active + .btn.btn-outline-primary,
+      .weight-days-filter .btn.btn-outline-primary.active {
+        color: #fff !important;
+        border-color: #239ea0 !important;
+        background-color: #239ea0 !important;
+      }
+
+      .weight-days-filter .btn-check:focus + .btn.btn-outline-primary,
+      .weight-days-filter .btn.btn-outline-primary:focus {
+        box-shadow: 0 0 0 0.15rem rgba(35, 158, 160, 0.2) !important;
+      }
+
+      .weight-days-filter .btn.btn-outline-primary {
+        min-width: 96px;
+        text-align: center;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+
+      #summaryPieChart {
+        background-color: #fff !important;
+      }
+
+      .weight-indicator-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(var(--base-value) * 0.5);
+        justify-content: center;
+        margin-bottom: calc(var(--base-value) * 0.875);
+      }
+
+      .weight-indicator-pill {
+        border: 1px solid #dceeee;
+        background: #fff;
+        color: #536767;
+        border-radius: 999px;
+        min-height: calc(var(--base-value) * 2.5);
+        padding: calc(var(--base-value) * 0.375) calc(var(--base-value) * 0.875);
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .weight-indicator-pill.active {
+        color: #fff;
+        background: #239ea0;
+        border-color: #239ea0;
+      }
+
+      .weight-chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: calc(var(--base-value) * 0.5);
+        justify-content: center;
+        margin: calc(var(--base-value) * 0.75) 0;
+      }
+
+      .weight-chart-legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: calc(var(--base-value) * 0.375);
+        border: 1px solid #edf4f4;
+        border-radius: 999px;
+        padding: calc(var(--base-value) * 0.25) calc(var(--base-value) * 0.625);
+        color: #536767;
+        background: #fff;
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+
+      .weight-chart-legend i {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+
+      .weight-manual-state {
+        border: 1px dashed #b8dede;
+        background: #f7fcfc;
+        border-radius: calc(var(--base-value) * 0.875);
+        padding: calc(var(--base-value) * 1);
+        text-align: center;
+        margin-top: calc(var(--base-value) * 0.75);
+      }
+
+      .weight-meal-table-card {
+        border: 1px solid #e5eeee;
+        border-radius: calc(var(--base-value) * 0.875);
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .weight-meal-row {
+        display: grid;
+        grid-template-columns: 145px 1fr auto;
+        gap: calc(var(--base-value) * 0.75);
+        align-items: center;
+        padding: calc(var(--base-value) * 0.75);
+        border-bottom: 1px solid #edf4f4;
+      }
+
+      .weight-meal-row:last-child {
+        border-bottom: 0;
+      }
+
+      .weight-meal-slot b,
+      .weight-meal-main b {
+        display: block;
+        color: #1f2f2f;
+        font-size: 0.95rem;
+      }
+
+      .weight-meal-slot span,
+      .weight-meal-main span {
+        display: block;
+        color: #7a8a8a;
+        font-size: 0.82rem;
+        margin-top: 2px;
+      }
+
+      .weight-meal-main {
+        display: flex;
+        align-items: center;
+        gap: calc(var(--base-value) * 0.75);
+        min-width: 0;
+      }
+
+      .weight-meal-image {
+        width: calc(var(--base-value) * 4);
+        height: calc(var(--base-value) * 4);
+        border-radius: calc(var(--base-value) * 0.625);
+        object-fit: cover;
+        flex-shrink: 0;
+        background: #eef5f5;
+      }
+
+      .weight-meal-title {
+        min-width: 0;
+      }
+
+      .weight-meal-title b,
+      .weight-meal-title span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .weight-meal-note {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: calc(var(--base-value) * 0.25) calc(var(--base-value) * 0.625);
+        background: #eef8f8;
+        color: #239ea0;
+        font-size: 0.78rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .measurement-indicator-choice.d-none,
+      .measurement-condition-block.d-none,
+      .measurement-note-block.d-none {
+        display: none !important;
+      }
+
+      .deviceItem .deviceData img.weight-device-img {
+        width: 56px;
+        height: 56px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: #f7fbfb;
+        padding: 5px;
+      }
+
+      .user-notifcation-icon {
+        position: relative;
+      }
+
+      .user-notifcation-icon .notification-bell-dot {
+        position: absolute !important;
+        top: 31px !important;
+        right: auto !important;
+        left: 50% !important;
+        width: 9px !important;
+        height: 9px !important;
+        min-width: 9px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        background: #d71920 !important;
+        border: 2px solid #ffffff !important;
+        color: transparent !important;
+        font-size: 0 !important;
+        line-height: 0 !important;
+        transform: translateX(-50%) !important;
+        box-shadow: 0 0 0 0 rgba(215, 25, 32, 0.65);
+        animation: notificationGlow 1.4s ease-out infinite;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      @keyframes notificationGlow {
+        0% {
+          box-shadow: 0 0 0 0 rgba(215, 25, 32, 0.65);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(215, 25, 32, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(215, 25, 32, 0);
+        }
+      }
+
+      .notification-item.notification-action {
+        position: relative;
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid #ddd;
+        background: transparent;
+        text-align: inherit;
+        cursor: pointer;
+      }
+
+      .notification-item.notification-action:hover {
+        background: #f8fcfc;
+      }
+
+      .notification-unread-dot {
+        position: absolute;
+        top: 18px;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c62828;
+      }
+
+      .notification-session-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .session-request-summary {
+        border: 1px solid #dbeeee;
+        border-radius: 14px;
+        background: #f8fcfc;
+        padding: 14px;
+      }
+
+      .session-slot-option {
+        display: block;
+        height: 100%;
+        border: 1px solid #dbeeee;
+        border-radius: 12px;
+        padding: 12px;
+        cursor: pointer;
+        background: #fff;
+        transition: all 0.2s ease;
+      }
+
+      .btn-check:checked + .session-slot-option {
+        border-color: #239ea0;
+        background: #e9f5f6;
+      }
+
+      .next-session-card {
+        border: 1px solid #dbeeee;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .next-session-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #edf4f4;
+      }
+
+      .next-session-title {
+        margin: 0 0 4px;
+        color: #1b3637;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .next-session-doctor {
+        display: block;
+        color: #239ea0;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .next-session-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: #e9f5f6;
+        color: #239ea0;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .next-session-badge.is-urgent {
+        background: #fde8e8;
+        color: #b42318;
+      }
+
+      .next-session-timebox {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin: 12px 0;
+      }
+
+      .next-session-timebox .item {
+        min-height: 76px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #f8fcfc;
+      }
+
+      .next-session-timebox span {
+        display: block;
+        margin-bottom: 6px;
+        color: #666;
+        font-size: 13px;
+      }
+
+      .next-session-timebox strong {
+        display: block;
+        color: #111;
+        font-size: 15px;
+        line-height: 1.5;
+        word-break: keep-all;
+      }
+
+      @media screen and (max-width: 767.98px) {
+        .next-session-timebox,
+        .weight-history-detail-grid,
+        .weight-history-toggle {
+          grid-template-columns: 1fr;
+        }
+
+        .weight-history-intro {
+          flex-direction: column;
+        }
+      }
+
+      .next-session-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .next-session-request-state {
+        margin-top: 12px;
+        padding: 10px;
+        border-radius: 10px;
+        background: #fff8ea;
+        color: #7a530b;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .session-day-tabs {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .session-day-option {
+        display: block;
+        border: 1px solid #dbeeee;
+        border-radius: 12px;
+        padding: 10px 8px;
+        cursor: pointer;
+        background: #fff;
+        text-align: center;
+        transition: all 0.2s ease;
+      }
+
+      .btn-check:checked + .session-day-option {
+        border-color: #239ea0;
+        background: #e9f5f6;
+      }
+
+      .session-day-option strong,
+      .session-day-option span {
+        display: block;
+      }
+
+      .session-slots-panel.d-none {
+        display: none !important;
+      }
+
+      @media screen and (max-width: 575.98px) {
+        .session-day-tabs {
+          grid-template-columns: 1fr;
+        }
+
+        .next-session-timebox {
+          grid-template-columns: 1fr;
+        }
+
+        .weight-meal-row {
+          grid-template-columns: 1fr;
+        }
+
+        .weight-meal-title b,
+        .weight-meal-title span {
+          white-space: normal;
+        }
+      }
+
+      /* Keep right sidebar in normal document flow (no sticky/fixed overlap on footer) */
+      @media screen and (min-width: 992px) {
+        .insideMainPage .whiteBox > .row {
+          align-items: flex-start !important;
+        }
+
+        .insideMainPage .whiteBox > .row > aside.col-12.col-lg-4.col-xl-3,
+        .insideMainPage .whiteBox > .row > aside.col-12.col-lg-4.col-xl-3 > .surface-light-300 {
+          position: static !important;
+          align-self: flex-start !important;
+          height: auto !important;
+          min-height: auto !important;
+          top: auto !important;
+          bottom: auto !important;
+          left: auto !important;
+          right: auto !important;
+          transform: none !important;
+          z-index: auto !important;
+        }
+
+        #PatientInfoCollapse {
+          display: block !important;
+          height: auto !important;
+          overflow: visible !important;
+        }
+      }
+
+      .remote-package-card {
+        border: 1px solid #dceeee;
+        border-radius: calc(var(--base-value) * 0.875);
+        background: linear-gradient(180deg, #ffffff 0%, #f7fcfc 100%);
+        padding: calc(var(--base-value) * 0.875);
+      }
+
+      .remote-package-head {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: calc(var(--base-value) * 0.5);
+        margin-bottom: calc(var(--base-value) * 0.625);
+      }
+
+      .remote-package-badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: calc(var(--base-value) * 0.25) calc(var(--base-value) * 0.625);
+        font-size: 0.78rem;
+        font-weight: 500;
+        line-height: 1.4;
+        background: #eef8f8;
+        color: #4f6767;
+        border: 1px solid #dceeee;
+      }
+
+      .remote-package-card h4 {
+        margin: 0 0 calc(var(--base-value) * 0.375);
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1f2f2f;
+      }
+
+      .remote-package-card p {
+        margin: 0 0 calc(var(--base-value) * 0.75);
+        color: #627474;
+        font-size: 0.86rem;
+        line-height: 1.8;
+      }
+
+      .remote-package-plan {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: calc(var(--base-value) * 0.5);
+        border: 1px dashed #cfe6e6;
+        border-radius: calc(var(--base-value) * 0.625);
+        background: #fbffff;
+        padding: calc(var(--base-value) * 0.625);
+        margin-bottom: calc(var(--base-value) * 0.625);
+      }
+
+      .remote-package-plan span,
+      .remote-package-stat span {
+        color: #778787;
+        font-size: 0.78rem;
+      }
+
+      .remote-package-plan strong,
+      .remote-package-stat strong {
+        color: #1f2f2f;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .remote-package-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: calc(var(--base-value) * 0.5);
+        margin-bottom: calc(var(--base-value) * 0.75);
+      }
+
+      .remote-package-stat {
+        background: #f4fbfb;
+        border: 1px solid #e3f0f0;
+        border-radius: calc(var(--base-value) * 0.625);
+        padding: calc(var(--base-value) * 0.625);
+      }
+
+      .remote-package-stat span,
+      .remote-package-stat strong {
+        display: block;
+      }
+
+      .remote-package-stat strong.is-warning {
+        color: #e06f2f;
+      }
+
+      .remote-package-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .remote-package-actions .btn {
+        min-height: 36px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .weight-plan-history-btn {
+        gap: 6px;
+        justify-content: center;
+        white-space: nowrap;
+      }
+
+      .weight-plan-history-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 22px;
+        height: 22px;
+        flex: 0 0 22px;
+        border-radius: 999px;
+        background: #239ea0;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .patient-tasks-card {
+        border: 1px solid #dceeee;
+        border-radius: calc(var(--base-value) * 1);
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbfb 100%);
+        padding: calc(var(--base-value) * 0.875);
+      }
+
+      .patient-task-badge.is-new {
+        background: #ebf8f8;
+        color: #239ea0;
+      }
+
+      .patient-task-badge.is-progress {
+        background: #fff4e9;
+        color: #d17a24;
+      }
+
+      .patient-task-badge.is-note {
+        background: #f1f5ff;
+        color: #5b6ca8;
+      }
+
+      .weight-history-modal .modal-dialog {
+        max-width: 920px;
+      }
+
+      .weight-history-intro {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px;
+        border: 1px solid #d8ebe7;
+        border-radius: 14px;
+        background: #f8fcfc;
+        margin-bottom: 14px;
+      }
+
+      .weight-history-intro p {
+        color: #617575;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .weight-history-timeline {
+        position: relative;
+        display: grid;
+        gap: 10px;
+        padding-right: 18px;
+      }
+
+      .weight-history-timeline::before {
+        content: "";
+        position: absolute;
+        right: 5px;
+        top: 8px;
+        bottom: 8px;
+        width: 2px;
+        background: linear-gradient(180deg, #9ad7d3 0%, #dff2ef 100%);
+      }
+
+      .weight-history-event {
+        position: relative;
+        border: 1px solid #d8ebe7;
+        border-radius: 14px;
+        background: #fbfffe;
+        overflow: hidden;
+      }
+
+      .weight-history-event::before {
+        content: "";
+        position: absolute;
+        right: -17px;
+        top: 21px;
+        width: 11px;
+        height: 11px;
+        border-radius: 999px;
+        border: 3px solid #fff;
+        background: #239ea0;
+        box-shadow: 0 0 0 1px #9dd3ce;
+      }
+
+      .weight-history-toggle {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        gap: 12px;
+        align-items: center;
+        border: 0;
+        background: transparent;
+        padding: 14px 16px;
+        text-align: right;
+      }
+
+      .weight-history-toggle h6 {
+        margin: 8px 0 0;
+        color: #102f30;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .weight-history-date {
+        color: #627474;
+        font-size: 13px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .weight-history-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        padding: 4px 10px;
+        background: #e7f7f5;
+        color: #0f8889;
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .weight-history-tag.meal {
+        background: #fff3dc;
+        color: #b46a00;
+      }
+
+      .weight-history-tag.request {
+        background: #edf2ff;
+        color: #3762db;
+      }
+
+      .weight-history-tag.target {
+        background: #e8f8ef;
+        color: #138a4b;
+      }
+
+      .weight-history-body {
+        display: none;
+        border-top: 1px solid #e5f0f0;
+        padding: 14px 16px 16px;
+        background: #fff;
+      }
+
+      .weight-history-event.is-open .weight-history-body {
+        display: block;
+      }
+
+      .weight-history-event.is-open .weight-history-toggle i {
+        transform: rotate(180deg);
+      }
+
+      .weight-history-detail-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .weight-history-detail-card {
+        border: 1px solid #e5f0f0;
+        border-radius: 12px;
+        background: #f8fcfc;
+        padding: 10px;
+      }
+
+      .weight-history-detail-card span {
+        display: block;
+        color: #6b7b7b;
+        font-size: 12px;
+        margin-bottom: 5px;
+      }
+
+      .weight-history-detail-card b {
+        display: block;
+        color: #102f30;
+        font-size: 14px;
+        font-weight: 800;
+        line-height: 1.6;
+      }
+
+      .weight-history-doctor {
+        margin: 12px 0 0;
+        color: #627474;
+        font-size: 13px;
+      }
+
+      .patient-task-list {
+        display: grid;
+        gap: calc(var(--base-value) * 0.75);
+      }
+
+      .patient-task-card {
+        width: 100%;
+        display: block;
+        padding: calc(var(--base-value) * 0.8);
+        border: 1px solid #e1eded;
+        border-radius: calc(var(--base-value) * 0.875);
+        background: #ffffff;
+        text-align: right;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .patient-task-card:hover {
+        transform: translateY(-2px);
+        border-color: #bfe1e1;
+        box-shadow: 0 16px 30px rgba(24, 85, 86, 0.08);
+      }
+
+      .patient-task-card-content {
+        display: block;
+        min-width: 0;
+      }
+
+      .patient-task-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: calc(var(--base-value) * 0.625);
+        margin-bottom: 8px;
+      }
+
+      .patient-task-card-title {
+        margin: 0;
+        color: #173536;
+        font-size: 0.82rem;
+        font-weight: 500;
+        line-height: 1.85;
+      }
+
+      .patient-task-card-subtitle {
+        display: block;
+        margin: 0;
+        color: #76898a;
+        font-size: 0.71rem;
+        line-height: 1.9;
+      }
+
+      .patient-task-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 0 calc(var(--base-value) * 0.55);
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        white-space: nowrap;
+      }
+
+      .task-details-modal .modal-dialog {
+        max-width: 700px;
+      }
+
+      .task-details-modal .modal-content {
+        border: 0;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: 0 28px 60px rgba(12, 53, 54, 0.16);
+      }
+
+      .task-details-modal .modal-header,
+      .task-details-modal .modal-body,
+      .task-details-modal .modal-footer {
+        background: #eff8f8;
+      }
+
+      .task-details-modal .modal-header {
+        border-bottom: 0;
+        padding: 24px 26px 0;
+      }
+
+      .task-details-modal .modal-title {
+        color: #173536;
+        font-size: 0.96rem;
+        font-weight: 500;
+      }
+
+      .task-details-modal .modal-body {
+        padding: 14px 26px 24px;
+      }
+
+      .task-details-modal .modal-footer {
+        border-top: 0;
+        padding: 0 26px 26px;
+        gap: 12px;
+      }
+
+      .task-modal-card {
+        border: 1px solid #dceeee;
+        border-radius: 24px;
+        background: #ffffff;
+        padding: 20px;
+      }
+
+      .task-modal-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 18px;
+      }
+
+      .task-modal-identity {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .task-modal-icon {
+        width: 58px;
+        height: 58px;
+        border-radius: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .task-modal-icon svg {
+        width: 28px;
+        height: 28px;
+      }
+
+      .task-modal-icon.is-new {
+        background: #effaf9;
+        color: #239ea0;
+      }
+
+      .task-modal-icon.is-progress {
+        background: #fff6ec;
+        color: #d17a24;
+      }
+
+      .task-modal-icon.is-note {
+        background: #f3f6ff;
+        color: #5b6ca8;
+      }
+
+      .task-modal-title {
+        margin: 0 0 6px;
+        color: #173536;
+        font-size: 0.9rem;
+        font-weight: 500;
+        line-height: 1.7;
+      }
+
+      .task-modal-subtitle {
+        margin: 0;
+        color: #718586;
+        font-size: 0.76rem;
+        line-height: 1.9;
+      }
+
+      .task-modal-meta-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 18px;
+      }
+
+      .task-modal-meta {
+        padding: 14px 16px;
+        border: 1px solid #e4eeee;
+        border-radius: 18px;
+        background: #f8fbfb;
+      }
+
+      .task-modal-meta span {
+        display: block;
+        margin-bottom: 6px;
+        color: #7a8d8e;
+        font-size: 0.74rem;
+      }
+
+      .task-modal-meta strong {
+        display: block;
+        color: #173536;
+        font-size: 0.84rem;
+        font-weight: 500;
+      }
+
+      .task-modal-copy {
+        margin-bottom: 18px;
+        color: #637677;
+        font-size: 0.78rem;
+        line-height: 1.95;
+      }
+
+      .task-modal-block {
+        border: 1px dashed #d8e8e8;
+        border-radius: 18px;
+        background: #fbfefe;
+        padding: 16px;
+      }
+
+      .task-modal-block-title {
+        margin: 0 0 8px;
+        color: #173536;
+        font-size: 0.82rem;
+        font-weight: 500;
+      }
+
+      .task-modal-block-copy {
+        margin: 0 0 14px;
+        color: #718586;
+        font-size: 0.75rem;
+        line-height: 1.9;
+      }
+
+      .task-modal-file-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .task-modal-note textarea {
+        min-height: 120px;
+        resize: vertical;
+        border-radius: 18px;
+        border-color: #d8e8e8;
+        padding: 14px 16px;
+      }
+
+      @media (max-width: 575px) {
+        .patient-task-card-top,
+        .task-modal-identity,
+        .task-modal-file-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .task-modal-meta-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .upgrade-package-modal .modal-dialog {
+        max-width: 1320px;
+      }
+
+      .upgrade-package-modal .modal-content {
+        border: 0;
+        border-radius: 28px;
+        overflow: hidden;
+      }
+
+      .upgrade-package-modal .modal-header,
+      .upgrade-package-modal .modal-body {
+        background: #eaf7f7;
+      }
+
+      .upgrade-package-modal .modal-header {
+        border-bottom: 0;
+        padding: 24px 28px 0;
+      }
+
+      .upgrade-package-modal .modal-title {
+        font-size: 1.35rem;
+        font-weight: 600;
+        color: #173536;
+      }
+
+      .upgrade-package-modal .modal-body {
+        padding: 8px 28px 28px;
+      }
+
+      .upgrade-package-intro {
+        margin: 0 0 18px;
+        color: #617374;
+        font-size: 0.95rem;
+        line-height: 1.9;
+      }
+
+      .upgrade-package-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .upgrade-package-card {
+        display: flex;
+        flex-direction: column;
+        min-height: 100%;
+        border: 1px solid #d6ebeb;
+        border-radius: 24px;
+        background: #fff;
+        padding: 24px 22px 22px;
+        box-shadow: 0 16px 40px rgba(28, 84, 84, 0.06);
+      }
+
+      .upgrade-package-card.is-featured {
+        border-color: #23a4a5;
+        box-shadow: 0 20px 42px rgba(35, 158, 160, 0.14);
+      }
+
+      .upgrade-package-card h4 {
+        margin: 0 0 10px;
+        color: #239ea0;
+        font-size: 1.08rem;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      .upgrade-package-card p {
+        margin: 0 0 18px;
+        color: #5f7172;
+        font-size: 0.9rem;
+        line-height: 1.9;
+        min-height: 68px;
+      }
+
+      .upgrade-package-tag-wrap {
+        min-height: 38px;
+        margin-bottom: 16px;
+      }
+
+      .upgrade-package-tag {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 36px;
+        padding: 0 16px;
+        border-radius: 999px;
+        background: #edf8f2;
+        color: #4f9168;
+        font-size: 0.83rem;
+        font-weight: 500;
+      }
+
+      .upgrade-package-card.is-featured .upgrade-package-tag {
+        background: #239ea0;
+        color: #fff;
+      }
+
+      .upgrade-package-points {
+        margin: 0 0 22px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .upgrade-package-points li {
+        position: relative;
+        padding-right: 16px;
+        margin-bottom: 10px;
+        color: #476465;
+        font-size: 0.93rem;
+        line-height: 1.8;
+      }
+
+      .upgrade-package-points li::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        right: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #23a4a5;
+      }
+
+      .upgrade-package-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: auto;
+      }
+
+      .upgrade-package-price {
+        color: #173536;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .upgrade-package-footer .btn {
+        min-width: 100%;
+      }
+
+      .upgrade-package-card.is-featured .btn-outline-primary {
+        color: #fff !important;
+        background: #239ea0 !important;
+        border-color: #239ea0 !important;
+      }
+
+      @media (max-width: 1199px) {
+        .upgrade-package-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 767px) {
+        .upgrade-package-modal .modal-header,
+        .upgrade-package-modal .modal-body {
+          padding-left: 16px;
+          padding-right: 16px;
+        }
+
+        .upgrade-package-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Preloader Overlay -->
+    <div class="preloader"></div>
+    <!-- Start Navigation -->
+    <nav class="StickyNavigation" id="mainNav">
+      <div class="container">
+        <!-- Nav Side -->
+        <div class="navSide">
+          <!-- Logo Box -->
+          <div class="logoBox">
+            <button class="btn btn-secondary btn-icon btn-40 open-side-menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <a href="index.html" class="logo">
+              <img
+                class="logoIcon"
+                src="assets/images/logoIcon.svg"
+                alt="نرعاكم"
+              />
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+          </div>
+
+          <!-- Links Box -->
+          <div class="linksBox">
+            <a href="index.html" class="sideLogo">
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+
+            <ul>
+              <li><a href="index.html">الرئيسية</a></li>
+              <li><a href="#">الخدمات الطبية</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  مقدمو الرعاية
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">الأطباء/ الأخصائيون</a></li>
+                  <li><a href="#">المؤسسات الصحية</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#">الأسئلة الشائعة</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  عن نرعاكم
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">من نحن؟</a></li>
+                  <li><a href="#">المدونة</a></li>
+                  <li><a href="#">اخبار الشركة</a></li>
+                  <li><a href="#">اتصل بنا</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="buttonsBox">
+              <a href="#" class="btn btn-outline-primary btn-36">
+                انضم كمقدم خدمة
+              </a>
+              <button
+                class="btn btn-light btn-36 btn-icon lang-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#countryModal"
+              >
+                <img src="assets/images/ar.jpg" alt="arabic" />
+                <span>السعودية</span>
+                <i class="fi fi-rr-caret-down text-grey"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Side Box   -->
+        <div class="userSide">
+          <button
+            class="btn p-4 navUserAvatar"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#userSettingsModal"
+            aria-controls="offcanvasExample"
+          >
+            <img
+              src="assets/images/userAvatar.svg"
+              alt="حسابي"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              data-bs-title="إعدادات الحساب"
+            />
+          </button>
+
+          <div class="userOptionsIcons">
+            <button
+              class="user-notifcation-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#UpcomingAppointmentModal"
+            >
+              <span>2</span>
+              <i
+                class="fi fi-sr-calendar-clock"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="مواعيدي"
+              ></i>
+            </button>
+
+            <button
+              class="user-notifcation-icon d-none d-sm-block"
+              data-bs-toggle="modal"
+              data-bs-target="#notifications-Modal"
+            >
+              <span>2</span>
+              <span class="notification-bell-dot"></span>
+              <i
+                class="fi fi-sr-bell"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="الاشعارات"
+              ></i>
+            </button>
+
+            <a
+              href="chats.html"
+              class="user-notifcation-icon d-none d-sm-block"
+            >
+              <!-- <span>2</span> -->
+              <i
+                class="fi fi-sr-messages"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="المحادثات"
+              ></i>
+            </a>
+
+            <button
+              class="user-cart-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#MainCartModal"
+            >
+              <span>4</span>
+              <i
+                class="fi fi-sr-shopping-cart"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="السلة"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-backdrop"></div>
+    </nav>
+    <span class="navClear"></span>
+    <!-- End Navigation -->
+
+    <!--Breadcrumb -->
+    <header class="Breadcrumb">
+      <div class="container">
+        <!-- Title -->
+        <div class="row justify-content-between">
+          <div class="col-auto">
+            <div class="pagetitle">
+              <a href="MonitoringStep_1.html" class="btn btn-40 btn-icon">
+                <i class="fi fi-rr-arrow-small-right"></i>
+              </a>
+              <h2>الوزن / النظام الغذائي</h2>
+            </div>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="btn btn-40 btn-icon text-white help-btn">
+              <i class="fi fi-rr-interrogation"></i>
+              <span>محتاج مساعده؟</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Page Container -->
+    <main class="insideMainPage">
+      <div class="container relativeConatiner">
+        <div class="whiteBox p-10">
+          <div class="row g-4">
+            <!-- Patient info Side -->
+            <aside class="col-12 col-lg-4 col-xl-3">
+              <div class="h-100 surface-light-300 radius-12 p-12">
+                <div
+                  class="d-flex d-lg-none justify-content-between"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#PatientInfoCollapse"
+                  aria-expanded="false"
+                  aria-controls="PatientInfoCollapse"
+                >
+                  <h3 class="fsize-18 bold">مرحبا، سرور رشاد</h3>
+                  <i class="fi fi-rr-caret-down"></i>
+                </div>
+
+                <div id="PatientInfoCollapse" class="collapse show mt-24">
+                  <!-- box Item -->
+                  <div class="boxItem mb-24">
+                    <div class="row justify-content-between">
+                      <div class="col-auto">
+                        <h3 class="fsize-16 bold mb-12">المستفيد من الخدمة</h3>
+                      </div>
+                      <div class="col-auto">
+                        <button
+                          class="btn p-0 text-brand fsize-24 border-0"
+                          data-bs-toggle="modal"
+                          data-bs-target="#SelectPatientModal"
+                        >
+                          <i
+                            class="fi fi-sr-pen-circle text-brand"
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="bottom"
+                            data-bs-title="تغيير المستفيد"
+                          ></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="boxBody surface-white p-12 radius-12">
+                      <table class="table fsize-14">
+                        <tbody>
+                          <tr>
+                            <td>الاسم</td>
+                            <td>سرور محمد رشاد جادالله</td>
+                          </tr>
+
+                          <tr>
+                            <td>صلة القرابة</td>
+                            <td>نفسي</td>
+                          </tr>
+                          <tr>
+                            <td>الجنس</td>
+                            <td>ذكر - 34 عام</td>
+                          </tr>
+                          <tr>
+                            <td>الوزن</td>
+                            <td>80 كغم</td>
+                          </tr>
+                          <tr>
+                            <td>الطول</td>
+                            <td>177 سم</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button
+                        class="btn btn-outline-primary btn-36"
+                        data-bs-toggle="modal"
+                        data-bs-target="#EditPatientDataModal"
+                      >
+                        تعديل البيانات
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- box Item -->
+                  <div class="boxItem mb-24">
+                    <div class="row justify-content-between">
+                      <div class="col-auto">
+                        <h3 class="fsize-16 bold mb-12">الجلسة القادمة</h3>
+                      </div>
+                    </div>
+                    <div class="boxBody next-session-card p-12 radius-12">
+                      <div class="next-session-head">
+                        <div>
+                          <p class="next-session-title">متابعة الوزن والنظام الغذائي</p>
+                          <span class="next-session-doctor">د. رياض حماد المالكي</span>
+                        </div>
+                      </div>
+
+                      <div class="next-session-timebox">
+                        <div class="item">
+                          <span>الموعد</span>
+                          <strong data-next-session-date>الأحد - 12/05/2026</strong>
+                        </div>
+                        <div class="item">
+                          <span>التوقيت</span>
+                          <strong data-next-session-time>04:30 م - 04:50 م</strong>
+                        </div>
+                        <div class="item">
+                          <span>نوع الجلسة</span>
+                          <strong>جلسة عن بعد</strong>
+                        </div>
+                        <div class="item">
+                          <span>المتبقي</span>
+                          <strong>بعد 3 أيام</strong>
+                        </div>
+                      </div>
+
+                      <div class="next-session-actions">
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-40 w-100"
+                          data-open-session-change
+                        >
+                          طلب تغيير الموعد
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-primary btn-40 w-100"
+                          data-open-next-session
+                        >
+                          عرض تفاصيل الجلسة
+                        </button>
+                      </div>
+
+                      <div class="next-session-request-state d-none" data-next-session-request-state>
+                        تم إرسال طلب تغيير الموعد إلى د. رياض. الموعد المطلوب:
+                        <strong data-next-session-requested-date>اليوم</strong>
+                        <strong data-next-session-requested-time>05:15 م</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- box Item -->
+                  <div class="boxItem mb-24">
+                    <div class="row justify-content-between">
+                      <div class="col-auto">
+                        <h3 class="fsize-16 mb-12">باقة المراقبة عن بُعد</h3>
+                      </div>
+                    </div>
+                    <div class="boxBody surface-white p-12 radius-12">
+                      <div class="remote-package-card">
+                        <div class="remote-package-head">
+                          <span class="remote-package-badge">باقة مجانية</span>
+                        </div>
+                        <h4>تفاصيل الباكدج</h4>
+                        <p>
+                          متابعة غذائية لمسار الوزن مع مراجعة الوجبات
+                          والاستشارات خلال مدة الاشتراك.
+                        </p>
+                        <div class="remote-package-plan">
+                          <span>نوع الباكدج</span>
+                          <strong>خسارة الوزن</strong>
+                        </div>
+                        <div class="remote-package-grid">
+                          <div class="remote-package-stat">
+                            <span>مدة الباقة</span>
+                            <strong>15/12</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>الجلسات</span>
+                            <strong>3/4</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>عدد الوجبات</span>
+                            <strong>يوم كامل</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>السعر</span>
+                            <strong>320 ريال</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>تاريخ الطلب</span>
+                            <strong>06/04/2023</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>تاريخ البدء</span>
+                            <strong>06/04/2023</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>تاريخ الانتهاء</span>
+                            <strong>06/04/2023</strong>
+                          </div>
+                          <div class="remote-package-stat">
+                            <span>يبقى لديك</span>
+                            <strong class="is-warning">5 أيام</strong>
+                          </div>
+                        </div>
+                        <div class="remote-package-actions">
+                          <button
+                            type="button"
+                            class="btn btn-outline-primary btn-36 btn-icon weight-plan-history-btn w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#WeightPlanHistoryModal"
+                          >
+                            <i class="fi fi-rr-time-past"></i>
+                            <span>سجل تغييرات الخطة</span>
+                            <b class="weight-plan-history-count">4</b>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-primary btn-36 w-100"
+                            data-bs-toggle="modal"
+                            data-bs-target="#UpgradePackageModal"
+                          >
+                            ترقية الباكدج
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- box Item -->
+                  <div class="boxItem mb-24">
+                    <div class="row justify-content-between">
+                      <div class="col-auto">
+                        <h3 class="fsize-16 mb-12">المهام المطلوبة</h3>
+                      </div>
+                    </div>
+                    <div class="boxBody surface-white p-12 radius-12">
+                      <div class="patient-tasks-card">
+                        <div class="patient-task-list">
+                          <button
+                            type="button"
+                            class="patient-task-card"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PatientTaskModalOne"
+                          >
+                            <span class="patient-task-card-content">
+                              <span class="patient-task-card-top">
+                                <span class="patient-task-card-title">إضافة قياس الوزن اليوم</span>
+                                <span class="patient-task-badge is-new">جديدة</span>
+                              </span>
+                              <span class="patient-task-card-subtitle">
+                                افتح المهمة وسجل القراءة المطلوبة مباشرة.
+                              </span>
+                            </span>
+                          </button>
+
+                          <button
+                            type="button"
+                            class="patient-task-card"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PatientTaskModalTwo"
+                          >
+                            <span class="patient-task-card-content">
+                              <span class="patient-task-card-top">
+                                <span class="patient-task-card-title">إضافة نسبة الدهون</span>
+                                <span class="patient-task-badge is-progress">مطلوب</span>
+                              </span>
+                              <span class="patient-task-card-subtitle">
+                                افتح المهمة وسجل قراءة الدهون من الميزان أو التقرير.
+                              </span>
+                            </span>
+                          </button>
+
+                          <button
+                            type="button"
+                            class="patient-task-card"
+                            data-bs-toggle="modal"
+                            data-bs-target="#PatientTaskModalThree"
+                          >
+                            <span class="patient-task-card-content">
+                              <span class="patient-task-card-top">
+                                <span class="patient-task-card-title">تقرير الالتزام بالوجبات</span>
+                                <span class="patient-task-badge is-progress">مطلوب</span>
+                              </span>
+                              <span class="patient-task-card-subtitle">
+                                افتح المهمة وارفع تقرير الالتزام أو صورة المتابعة.
+                              </span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Meal reminders removed: meals are shown in the package schedule. -->
+
+                  <!-- Weekly reports removed from weight package sidebar. -->
+
+                  <!-- Suggested meals removed: meal schedule is now the source of truth. -->
+              </div>
+            </aside>
+
+            <!-- Monitoring Dashbord Side -->
+            <aside class="MonitoringDashbord col-12 col-lg-8 col-xl-9">
+              <!-- Tabs items -->
+              <div class="MonitoringTabs">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <a
+                      class="nav-link"
+                      id="BloodSugar-link"
+                      href="./MonitoringStep_2.html"
+                      role="button"
+                      aria-label="سكر الدم"
+                    >
+                      <span>
+                        <img
+                          src="assets/images/Blood-sugar.svg"
+                          alt="سكر الدم"
+                        />
+                        <i>سكر الدم</i>
+                      </span>
+                    </a>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      data-bs-toggle="tab"
+                      data-bs-target="#BloodPressure-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="BloodPressure-tab-pane"
+                      aria-selected="false"
+                    >
+                      <span>
+                        <img
+                          src="assets/images/Blood-pressure.svg"
+                          alt="ضغط الدم"
+                        />
+                        <i>ضغط الدم</i>
+                      </span>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active"
+                      id="Diet-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#BloodSugar-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="BloodSugar-tab-pane"
+                      aria-selected="true"
+                    >
+                      <span>
+                        <img
+                          src="assets/images/Diet.svg"
+                          alt="الوزن / النظام الغذائي"
+                        />
+                        <i>الوزن / النظام الغذائي</i>
+                      </span>
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link"
+                      id="PhysicalActivity-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#PhysicalActivity-tab-pane"
+                      type="button"
+                      role="tab"
+                      aria-controls="PhysicalActivity-tab-pane"
+                      aria-selected="false"
+                    >
+                      <span>
+                        <img
+                          src="assets/images/Physical-activity.svg"
+                          alt="النشاط البدني"
+                        />
+                        <i>النشاط البدني</i>
+                      </span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      class="btn add-tab-btn"
+                      data-bs-toggle="modal"
+                      data-bs-target="#MonitoringTypeModal"
+                    >
+                      <i class="fi fi-rr-plus-small"></i>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              <!-- Tabs Content -->
+              <div class="tab-content">
+                <!-- BloodSugar Tab ================================ -->
+                <div
+                  class="tab-pane fade show active"
+                  id="BloodSugar-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="Diet-tab"
+                  tabindex="0"
+                >
+                                    <!-- Alerts -->
+                  <div class="monitoringAlerts">
+                    <div
+                      class="alert alert-success p-0 mt-36 mb-24"
+                      role="alert"
+                    >
+                      <b>تنبيه</b> / تقدمك ممتاز، استمر على الخطة الغذائية الحالية.
+                    </div>
+                  </div>
+
+                  <!-- Indicator -->
+                  <div class="row g-4">
+                    <div class="col-lg-8">
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <div class="CurrentReadingBox Normal-Level">
+                            <p class="fsize-16 text-grey">الوزن الحالي</p>
+                            <span>
+                              <b class="fsize-48 bold">84.6</b>
+                              <p class="fsize-16">كجم</p>
+                            </span>
+                            <p class="fsize-14 text-grey">آخر تحديث منذ 3 ساعات</p>
+                          </div>
+                        </div>
+
+                        <div class="col-md-8">
+                          <div class="row g-2">
+                            <div class="col-6">
+                              <div class="IndicatorSettingsBox">
+                                <p class="fsize-14 text-grey">نوع الباكدج</p>
+                                <p class="fsize-16 semiBold">خسارة الوزن</p>
+                              </div>
+                            </div>
+
+                            <div class="col-6">
+                              <div class="IndicatorSettingsBox">
+                                <p class="fsize-14 text-grey">الوزن المستهدف</p>
+                                <p class="fsize-16 semiBold">75 كجم</p>
+                              </div>
+                            </div>
+
+                            <div class="col-6">
+                              <div class="IndicatorSettingsBox">
+                                <p class="fsize-14 text-grey">المتبقي للوصول للهدف</p>
+                                <p class="fsize-16 semiBold">9.6 كجم</p>
+                              </div>
+                            </div>
+
+                            <div class="col-6">
+                              <div class="IndicatorSettingsBox">
+                                <p class="fsize-14 text-grey">معدل التغير</p>
+                                <p class="fsize-16 semiBold">-0.8 كجم خلال 7 أيام</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="d-flex justify-content-between">
+                        <p class="fsize-16 text-brand">أجهزة قياس الوزن</p>
+                        <p class="fsize-14 text-grey">Smart Scale</p>
+                      </div>
+                      <div class="devicesBox">
+                        <!-- item -->
+                        <div class="deviceItem">
+                          <div class="deviceData">
+                            <img
+                              class="weight-device-img"
+                              src="assets/images/devices/smart-body-scale.jpg"
+                              alt="smart-scale"
+                            />
+                            <span>
+                              <p class="fsize-14 text-grey">ميزان ذكي</p>
+                              <h3 class="fsize-16 semiBold">
+                                Smart Body Scale
+                              </h3>
+                            </span>
+                          </div>
+                          <div class="d-flex flex-column">
+                            <span class="badge text-bg-success">متصل</span>
+                            <button
+                              type="button"
+                              class="btn fsize-14 btn-link text-red"
+                            >
+                              حذف
+                            </button>
+                          </div>
+                        </div>
+
+                        <!-- item -->
+                        <div class="deviceItem">
+                          <div class="deviceData">
+                            <img
+                              class="weight-device-img"
+                              src="assets/images/devices/huawei-scale-3-wifi-bluetooth.png"
+                              alt="huawei-scale-3-wifi-and-bluetooth-dual-connection"
+                            />
+                            <span>
+                              <p class="fsize-14 text-grey">تحليل مكونات الجسم</p>
+                              <h3 class="fsize-16 semiBold">
+                                لا يوجد جهاز متصل
+                              </h3>
+                            </span>
+                          </div>
+                          <div>
+                            <button
+                              class="btn add-tab-btn"
+                              data-bs-toggle="modal"
+                              data-bs-target="#CGMSmartDeviceModal"
+                            >
+                              <i
+                                class="fi fi-rr-plus-small"
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-title="ربط جهاز قياس الوزن"
+                              ></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Weight chart -->
+                  <div class="chartBox mt-36">
+                    <div class="chartBoxBar mb-12">
+                      <p class="fsize-16 semiBold">مخطط مؤشرات الوزن</p>
+                      <button
+                        type="button"
+                        class="btn btn-light btn-36 btn-icon add-reading-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addSugarRecordModal"
+                        id="weight-add-measurement-btn"
+                      >
+                        <i class="fi fi-sr-pen-circle"></i>
+                        <span>إضافة قياس</span>
+                      </button>
+                    </div>
+
+                    <div class="weight-indicator-toolbar" id="weight-indicator-tabs"></div>
+
+                    <div
+                      style="
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 10px;
+                      "
+                    >
+                      <label class="fsize-14 semiBold">مؤشرات الوزن / التاريخ</label>
+
+                      <span class="datepickerInput">
+                        <input
+                          type="text"
+                          class="datepicker form-control form-control-36"
+                          id="weight-chart-date-picker"
+                          placeholder="--/--/----"
+                        />
+                      </span>
+                    </div>
+
+                    <div class="weight-chart-legend" id="weight-chart-legend"></div>
+                    <div id="weightTrendChart"></div>
+                    <div class="weight-manual-state d-none" id="weight-manual-state">
+                      <p class="fsize-16 semiBold mb-2" id="weight-manual-title">
+                        لا توجد قراءة لهذا المؤشر
+                      </p>
+                      <p class="fsize-14 text-grey mb-3" id="weight-manual-copy">
+                        أضف القراءة يدوياً حتى تظهر في المخطط.
+                      </p>
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-40"
+                        id="weight-manual-add-btn"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addSugarRecordModal"
+                      >
+                        التحديث اليدوي
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Meal schedule -->
+                  <div class="chartBox mt-36">
+                    <div class="chartBoxBar mb-12">
+                      <p class="fsize-16 semiBold">جدول الوجبات</p>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mb-12 weight-days-filter" dir="rtl" id="meal-mode-tabs">
+                      <button type="button" class="btn btn-outline-primary rounded-pill px-4 btn-36 active" data-meal-mode="today">اليوم</button>
+                      <button type="button" class="btn btn-outline-primary rounded-pill px-4 btn-36" data-meal-mode="week">الأسبوع</button>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 justify-content-center mb-12 weight-days-filter d-none" dir="rtl" id="meal-week-days"></div>
+                    <div class="weight-meal-table-card" id="meal-schedule-table"></div>
+                  </div>
+
+                  <!-- Summary -->
+                  <div class="Summary mb-24">
+                    <div class="chartBoxBar mb-24 mt-20">
+                      <p class="fsize-16 semiBold">ملخص التقدم في الوزن</p>
+                    </div>
+                    <div class="row g-3">
+                      <div class="pieChartSide col-md-7">
+                        <div class="d-flex gap-2 weight-days-filter" dir="rtl">
+                          <input type="radio" class="btn-check" name="days" id="day7" autocomplete="off" checked />
+                          <label class="btn btn-outline-primary rounded-pill px-4 btn-36" for="day7">7 أيام</label>
+
+                          <input type="radio" class="btn-check" name="days" id="day30" autocomplete="off" />
+                          <label class="btn btn-outline-primary rounded-pill px-4 btn-36" for="day30">30 يوم</label>
+
+                          <input type="radio" class="btn-check" name="days" id="day90" autocomplete="off" />
+                          <label class="btn btn-outline-primary rounded-pill px-4 btn-36" for="day90">90 يوم</label>
+
+                          <input type="radio" class="btn-check" name="days" id="day180" autocomplete="off" />
+                          <label class="btn btn-outline-primary rounded-pill px-4 btn-36" for="day180">180 يوم</label>
+                        </div>
+
+                        <div class="row align-items-center mt-24">
+                          <div class="col-sm-4">
+                            <div id="summaryPieChart"></div>
+                          </div>
+                          <div class="col-sm-8">
+                            <div class="stats">
+                              <div class="item small">
+                                <span class="title">نسبة الإنجاز نحو الهدف</span>
+                                <span class="value low" id="progressValue"></span>
+                              </div>
+                              <div class="item small">
+                                <span class="title">الوزن المرجعي الحالي</span>
+                                <span class="value normal" id="referenceWeightValue"></span>
+                              </div>
+                              <div class="item small">
+                                <span class="title">معدل التغير</span>
+                                <span class="value high" id="weightChangeValue"></span>
+                              </div>
+
+                              <hr />
+
+                              <div class="item small">
+                                <span class="title">المتبقي للوصول للهدف</span>
+                                <span class="value" id="remainingGoalValue"></span>
+                              </div>
+                              <div class="item small">
+                                <span class="title">الالتزام بالخطة</span>
+                                <span class="value" id="adherenceValue"></span>
+                              </div>
+                              <div class="item small">
+                                <span class="title">عدد القياسات</span>
+                                <span class="value" id="measurementsValue"></span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <button type="button" class="btn btn-light btn-40">تحميل التقرير PDF</button>
+                      </div>
+
+                      <div class="summaryNote col-md-5">
+                        <div
+                          class="h-100 surface-light-300 radius-12 p-12 text-center d-flex flex-column gap-2 justify-content-center align-items-center"
+                        >
+                          <h3 class="normal fsize-18 bold mt-24">تقدم جيد</h3>
+
+                          <p class="fsize-14 text-grey mt-8">
+                            انخفض وزنك بمعدل 0.8 كجم خلال آخر 7 أيام مع التزام جيد بالخطة الغذائية.
+                          </p>
+                          <p class="fsize-14 mt-20">
+                            اشترك في باقة المتابعة الغذائية عن بُعد مع أخصائي مختص.
+                          </p>
+                          <a href="#" class="btn btn-primary btn-40 mb-20">عرض الأطباء</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <!-- BloodPressure Tab ================================ -->
+                <div
+                  class="tab-pane fade"
+                  id="BloodPressure-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="BloodPressure-tab"
+                  tabindex="0"
+                >
+                  BloodPressure
+                </div>
+
+                <!-- PhysicalActivity Tab ============================== -->
+                <div
+                  class="tab-pane fade"
+                  id="PhysicalActivity-tab-pane"
+                  role="tabpanel"
+                  aria-labelledby="PhysicalActivity-tab"
+                  tabindex="0"
+                >
+                  PhysicalActivity
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Main Footer -->
+    <footer class="MainFooter">
+      <div class="container">
+        <!-- Footer Header -->
+        <div class="row">
+          <!-- Logo Box -->
+          <div class="col-lg-3 justify-content-center">
+            <div class="logoBox">
+              <a href="#">
+                <img src="assets/images/footerLogo.svg" alt="نرعاكم" />
+                <span>نرعاكم للرعاية الطبية المنزلية</span>
+              </a>
+              <div class="social-media-icons">
+                <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                <a href="#"><i class="fi fi-brands-tik-tok"></i></a>
+                <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                <a href="#"><i class="fi fi-brands-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Links -->
+          <div class="col-lg">
+            <div class="row">
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>نرعاكم</h2>
+                  <a href="#">من نحن؟</a>
+                  <a href="#">أخبار الشركة</a>
+                  <a href="#">المدونة</a>
+                  <a href="#">اتصل بنا</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>الاعضاء</h2>
+                  <a href="#">تسجيل العملاء</a>
+                  <a href="#">اطباء/مؤسسات</a>
+                  <a href="#">الأسئلة الشائعة</a>
+                  <a href="#">الخدمات الطبية</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>السياسات</h2>
+                  <a href="#">سياسة الخصوصية</a>
+                  <a href="#">سياسة الألغاء</a>
+                  <a href="#">الشروط والاحكام</a>
+                  <a href="#">حقوق المريض</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Join card -->
+          <div class="col-lg-3">
+            <div class="footerJoinCard">
+              <div class="cardContent">
+                <a href="#">انضم كمقدم خدمة صحية</a>
+                <p>متاح للأطباء والمؤسسات الصحية</p>
+                <a href="#" class="btn btn-primary btn-36">انضم الأن!</a>
+              </div>
+              <a href="#" class="cardImage">
+                <img
+                  src="assets/images/joinProviderIcon.svg"
+                  alt="انضم كمقدم خدمة صحية"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer Certificates  -->
+        <div class="footerCertificateCard">
+          <div class="cardContent">
+            <div class="CertificateSide">
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/vat-verfied.png" alt="الرقم الضريبي" />
+                <figcaption>
+                  <i>الرقم الضريبي</i>
+                  <span>0000000000000</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/Ministry.png" alt="السجل التجارى" />
+                <figcaption>
+                  <i>السجل التجارى</i>
+                  <span>1010810544</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/saudi.png" alt="موثوق لدي" />
+                <figcaption>
+                  <i>موثوق لدي</i>
+                  <span>المركز السعودى للاعمال</span>
+                </figcaption>
+              </figure>
+            </div>
+            <div class="paymentSide">
+              <p>طرق الدفع والمعاملات</p>
+              <div class="paymentsIcons">
+                <img src="assets/images/Pay_Visa.png" alt="Visa" />
+                <img src="assets/images/Pay_applePay.png" alt="applePay" />
+                <img src="assets/images/Pay_Mastercard.png" alt="Mastercard" />
+                <img src="assets/images/Pay_Mada.png" alt="Mada" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer CopyRights -->
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-auto">
+            <p class="fsize-14 text-white text-center text-md-start">
+              حقوق النشر © 2025 | شركة نرعاكم | كل الحقوق محفوظة
+            </p>
+          </div>
+          <div class="col-md-auto">
+            <div class="footerStoreIcons">
+              <a href="#">
+                <img src="assets/images/AppStore.png" alt="AppStore" />
+              </a>
+              <a href="#">
+                <img src="assets/images/GooglePlay.png" alt="GooglePlay" />
+              </a>
+              <a href="#">
+                <img src="assets/images/AppGallery.png" alt="AppGallery" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--All Modals**************************************************************** -->
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="LoginModal"
+      tabindex="-1"
+      aria-labelledby="LoginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="LoginModalLabel">تسجيل الدخول</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="loginModalBody">
+              <form action="">
+                <p class="fsize-14 text-grey">تسجيل الدخول بواسطة</p>
+                <ul
+                  class="nav nav-pills login-tabs"
+                  id="pills-tab"
+                  role="tablist"
+                >
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active w-100"
+                      id="pills-mobile-number-tab"
+                      data-bs-target="#pills-mobile-number"
+                      aria-controls="pills-mobile-number"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="true"
+                    >
+                      رقم الجوال
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="pills-email-address-tab"
+                      data-bs-target="#pills-email-address"
+                      aria-controls="pills-email-address"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="false"
+                    >
+                      البريد الإلكتروني
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content mt-28" id="pills-tabContent">
+                  <div
+                    id="pills-mobile-number"
+                    aria-labelledby="pills-mobile-number-tab"
+                    class="tab-pane fade show active"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder="00 000 0000"
+                          type="tel"
+                          class="form-control form-control-44 phone-input"
+                          id="phone"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-mobile-number-->
+                  <div
+                    id="pills-email-address"
+                    aria-labelledby="pills-email-address-tab"
+                    class="tab-pane fade"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder=" البريد الإلكتروني"
+                          type="email"
+                          class="form-control form-control-44"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe2"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe2"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-email-address-->
+                </div>
+              </form>
+              <div class="OR"><span>او</span></div>
+
+              <div class="loginWithSocial">
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/google.svg" alt="google" />
+                  <span>الاستمرار بواسطة جوجل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/apple.svg" alt="Apple" />
+                  <span>الاستمرار بواسطة أبل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/facebook.svg" alt="facebook" />
+                  <span>الاستمرار بواسطة فيسبوك</span>
+                </a>
+              </div>
+
+              <a
+                href="create-account-1.html"
+                class="fsize-14 semiBold mt-24 text-center d-block text-brand"
+              >
+                <span class="text-grey">ليس لديك حساب؟</span>
+                انضم كطالب خدمة
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country Modal -->
+    <div
+      class="modal fade"
+      id="countryModal"
+      tabindex="-1"
+      aria-labelledby="countryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm bottom-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="countryModalLabel">
+              اختيار الدولة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <h2 class="fsize-14 bold text-center mb-12">اختر الدولة</h2>
+
+            <!-- Countries list -->
+            <ul id="Modal-countries-list">
+              <li>
+                <input type="radio" name="country" id="cn1" hidden checked />
+                <label for="cn1">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_SA.png" alt="sa"
+                    /></span>
+                    <p>السعودية (ر.س)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn2" hidden />
+                <label for="cn2">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_UAE.png" alt="UAE"
+                    /></span>
+                    <p>الأمارات (د.ا)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn3" hidden />
+                <label for="cn3">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_EG.png" alt="eg"
+                    /></span>
+                    <p>مصر (ج.م)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn4" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_KW.png" alt="kw"
+                    /></span>
+                    <p>الكويت (د.ك)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn5" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_QA.png" alt="qa"
+                    /></span>
+                    <p>قطر (ر.ق)</p>
+                  </div>
+                </label>
+              </li>
+              <li>
+                <input type="radio" name="country" id="cn6" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_jz.png" alt="jz"
+                    /></span>
+                    <p>الجزائر (د.ج)</p>
+                  </div>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary btn-40 w-100"
+              data-name="submit-country"
+            >
+              تطبيق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Cart Modal  -->
+    <div class="modal fade" id="MainCartModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="MainCartModalLabel">السلة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body p-0">
+            <div
+              class="servicesCart StickyCartBox"
+              style="
+                position: static !important ;
+                margin: 0px !important ;
+                border-radius: 0;
+              "
+            >
+              <div class="boxBody">
+                <!-- Cart Item -->
+                <div class="cartItem">
+                  <!-- Provider -->
+                  <div class="serviceProvider">
+                    <p>صيدلية صحة</p>
+                    <span> 10 أغسطس ، 08:30 م</span>
+                  </div>
+
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- shipping -->
+                  <div class="shippingCompany">
+                    <img src="assets/images/aramex.png" alt="aramex" />
+                    <div>
+                      <p>شحن ارامكس - التوصيل : اليوم</p>
+                      <span class="fsize-14 semiBold">20.00</span>
+                      <i class="icon-saudi_riyal text-grey"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Cart Item -->
+                <div class="cartItem">
+                  <!-- Provider -->
+                  <div class="serviceProvider">
+                    <p>صيدلية صحة</p>
+                    <span> 10 أغسطس ، 08:30 م</span>
+                  </div>
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- shipping -->
+                  <div class="shippingCompany">
+                    <img src="assets/images/aramex.png" alt="aramex" />
+                    <div>
+                      <p>شحن ارامكس - التوصيل : اليوم</p>
+                      <span class="fsize-14 semiBold">20.00</span>
+                      <i class="icon-saudi_riyal text-grey"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Box Footer -->
+              <div class="boxFooter">
+                <div class="priceList">
+                  <div class="priceItem">
+                    <p>اجمالي الخدمات</p>
+                    <p>
+                      <span class="fsize-16">430.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>رسوم الشحن</p>
+                    <p>
+                      <span class="fsize-16">20.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>الضريبة (%15)</p>
+                    <p>
+                      <span class="fsize-16">00.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>المجموع</p>
+                    <p>
+                      <span class="fsize-16 bold">450.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إلغاء
+            </button>
+
+            <a href="OrderSummary.html" class="btn btn-primary btn-40">
+              إتمام الطلب
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- user settings modal -->
+    <div
+      class="offcanvas offcanvas-end"
+      tabindex="-1"
+      id="userSettingsModal"
+      aria-labelledby="userSettingsModalLabel"
+    >
+      <div class="offcanvas-header surface-primary-500">
+        <h5
+          class="offcanvas-title fsize-16 text-white"
+          id="userSettingsModalLabel"
+        >
+          إعدادات الحساب
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body surface-light-400">
+        <!-- Box Item -->
+        <div class="settingsUserAvatarBox mb-20">
+          <img src="assets/images/userAvatar.svg" alt="سرور رشاد" />
+          <div>
+            <span class="fsize-14 text-grey">مرحباً</span>
+            <h3 class="fsize-16 bold">سرور رشاد</h3>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-calendar text-brand"></i>
+            <span>مواعيدي</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a
+              href="home-visits-appointments.html"
+              class="btn btn-light btn-40 w-100"
+            >
+              <span>مواعيد الزيارات المنزلية</span>
+              <span class="d-flex">
+                <span class="badge rounded-pill bg-danger">4</span>
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a
+              href="online-consultations-appointments.html"
+              class="btn btn-light btn-40 w-100"
+            >
+              <span>مواعيد الاستشارات عن بُعد</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a
+              href="clinic-visits-appointments.html"
+              class="btn btn-light btn-40 w-100"
+            >
+              <span>مواعيد زيارة العيادات</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-capsules text-brand"></i>
+            <span>مشتريات الصيدلية</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a href="pharmacy-orders.html" class="btn btn-light btn-40 w-100">
+              <span>طلبات الشحن / الاستلام من الفرع</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="pharmacy-returns.html" class="btn btn-light btn-40 w-100">
+              <span>المرتجعات</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-calendar-check text-brand"></i>
+            <span>الحجوزات المستلمة</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a
+              href="doctor-suggested-bookings.html"
+              class="btn btn-light btn-40 w-100"
+            >
+              <span>الحجوزات المقترحة من الأطباء</span>
+              <span class="d-flex">
+                <span class="badge rounded-pill bg-danger">1</span>
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-pulse text-brand"></i>
+            <span>المراقبة عن بعد</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a href="MonitoringStep_2.html" class="btn btn-light btn-40 w-100">
+              <span>الوزن / النظام الغذائي </span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-receipt text-brand"></i>
+            <span>الفواتير</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a href="orders-invoices.html" class="btn btn-light btn-40 w-100">
+              <span>فواتير الطلبات</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="wallet-balance.html" class="btn btn-light btn-40 w-100">
+              <p>
+                رصيد المحفظة
+                <span class="fsize-16 text-brand">0.00</span>
+                <i class="icon-saudi_riyal fsize-20 text-grey"></i>
+              </p>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Box Item -->
+        <div class="BoxItem mb-20">
+          <h3 class="bold fsize-16 mb-16 d-flex gap-2">
+            <i class="fi fi-rr-circle-user text-brand"></i>
+            <span>حسابي</span>
+          </h3>
+          <div class="btn-group-vertical userSettingsList w-100" role="group">
+            <a href="my-addresses.html" class="btn btn-light btn-40 w-100">
+              <span>عناويني</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="beneficiaries.html" class="btn btn-light btn-40 w-100">
+              <span>المستفيدين</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="chats.html" class="btn btn-light btn-40 w-100">
+              <span>المحادثات</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="favorites.html" class="btn btn-light btn-40 w-100">
+              <span>مفضلتي</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="my-reviews.html" class="btn btn-light btn-40 w-100">
+              <span>تقيماتي</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="edit-profile.html" class="btn btn-light btn-40 w-100">
+              <span>تعديل بياناتي</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+
+            <a href="delete-account.html" class="btn btn-light btn-40 w-100">
+              <span>حذف الحساب</span>
+              <span class="d-flex">
+                <i
+                  class="fi fi-rr-angle-small-left fsize-14 bold text-grey"
+                ></i>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <button class="btn btn-outline-danger btn-40">تسجيل الخروج</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upcoming appointment Modal  -->
+    <div
+      class="modal fade"
+      id="UpcomingAppointmentModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="UpcomingAppointmentModalLabel">
+              مواعيدي القادمة (2)
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body p-12 surface-secondary-50">
+            <!-- appointment Box Item -->
+            <div
+              class="appointmentBox serviceSummaryRow p-12 mb-24 radius-8"
+              style="background-color: #fff"
+            >
+              <div class="row justify-content-between align-items-center mb-16">
+                <div class="col-auto">
+                  <h3 class="fsize-16 bold">زيارة طبيب</h3>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-outline-danger btn-28">
+                    إلغاء الحجز
+                  </button>
+                </div>
+              </div>
+
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>التخصص</td>
+                    <td>مسالك بولية</td>
+                  </tr>
+                  <tr>
+                    <td>تاريخ الحجز</td>
+                    <td>الثلاثاء - 23/07/2025</td>
+                  </tr>
+                  <tr>
+                    <td>التوقيت</td>
+                    <td>07:00 مساءً</td>
+                  </tr>
+                  <tr>
+                    <td>المدة</td>
+                    <td>50 دقيقة</td>
+                  </tr>
+
+                  <tr>
+                    <td>مقدم الخدمة</td>
+                    <td>
+                      <a href="#">سرور محمد رشاد - استشاري - مسالك بولية </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="orderStatusBar mt-12">
+                <p class="fsize-14 text-brand">حالة الطلب</p>
+                <p class="bold fsize-14">الممارس الصحي في طريقه اليك</p>
+              </div>
+
+              <a
+                href="trackingMap.html"
+                target="_blank"
+                class="btn btn-primary btn-40 btn-icon w-100 mt-20"
+              >
+                <img
+                  src="assets/images/traking-icon.svg"
+                  alt="تتبع وصول المعالج"
+                />
+                <span>تتبع وصول المعالج</span>
+              </a>
+            </div>
+
+            <!-- appointment Box Item -->
+            <div
+              class="appointmentBox serviceSummaryRow p-12 mb-24 radius-8"
+              style="background-color: #fff"
+            >
+              <div class="row justify-content-between align-items-center mb-16">
+                <div class="col-auto">
+                  <h3 class="fsize-16 bold">إستشارة عن بعد</h3>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-outline-danger btn-28">
+                    إلغاء الحجز
+                  </button>
+                </div>
+              </div>
+
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>التخصص</td>
+                    <td>مسالك بولية</td>
+                  </tr>
+                  <tr>
+                    <td>تاريخ الحجز</td>
+                    <td>الثلاثاء - 23/07/2025</td>
+                  </tr>
+                  <tr>
+                    <td>التوقيت</td>
+                    <td>من 07:00 مساءً الى 07:30 مساءً</td>
+                  </tr>
+                  <tr>
+                    <td>مدة الجلسة</td>
+                    <td>30 دقيقة - مكالمة فيديو</td>
+                  </tr>
+
+                  <tr>
+                    <td>مقدم الخدمة</td>
+                    <td>
+                      <a href="#">عائشه محمد عسيري - استشاري - مسالك بولية </a>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>لغة التواصل</td>
+                    <td>العربية , English</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="orderStatusBar mt-12">
+                <p class="fsize-14 text-brand">حالة الطلب</p>
+                <p class="bold fsize-14">الاستشارة قيد التنفيذ</p>
+              </div>
+
+              <button
+                class="btn btn-success btn-40 btn-icon w-100 mt-20"
+                data-bs-toggle="modal"
+                data-bs-target="#start-call-Modal"
+              >
+                <i class="fi fi-sr-phone-call"></i>
+                <span>بدء الاتصال</span>
+              </button>
+            </div>
+
+            <!-- appointment Box Item -->
+            <div
+              class="appointmentBox serviceSummaryRow p-12 mb-24 radius-8"
+              style="background-color: #fff"
+            >
+              <div class="row justify-content-between align-items-center mb-16">
+                <div class="col-auto">
+                  <h3 class="fsize-16 bold">استشر طبيبك في العيادة</h3>
+                </div>
+                <div class="col-auto">
+                  <button class="btn btn-outline-danger btn-28">
+                    إلغاء الحجز
+                  </button>
+                </div>
+              </div>
+
+              <table class="table table-bordered">
+                <tbody>
+                  <tr>
+                    <td>التخصص</td>
+                    <td>مسالك بولية</td>
+                  </tr>
+                  <tr>
+                    <td>تاريخ الحجز</td>
+                    <td>الثلاثاء - 23/07/2025</td>
+                  </tr>
+                  <tr>
+                    <td>عنوان العيادة</td>
+                    <td>
+                      طريق الامام مخرج ٩ تقاطع خالد بن الوليد ..
+                      <a
+                        href="https://maps.app.goo.gl/GNUgm8Ub1FYZ5tdt5"
+                        class="bold text-brand"
+                        target="_blank"
+                        >الخريطة</a
+                      >
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td>التوقيت</td>
+                    <td>07:00 مساءً</td>
+                  </tr>
+                  <tr>
+                    <td>المدة</td>
+                    <td>50 دقيقة</td>
+                  </tr>
+
+                  <tr>
+                    <td>مقدم الخدمة</td>
+                    <td>
+                      <a href="#">سرور محمد رشاد - استشاري - مسالك بولية </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="orderStatusBar mt-12">
+                <p class="fsize-14 text-brand">حالة الطلب</p>
+                <p class="bold fsize-14">الاستشارة بالعيادة قيد التنفيذ</p>
+              </div>
+
+              <a
+                href="https://maps.app.goo.gl/GNUgm8Ub1FYZ5tdt5"
+                target="_blank"
+                class="btn btn-primary btn-40 btn-icon w-100 mt-20"
+              >
+                <i class="fi fi-sr-marker"></i>
+                <span>موقع العيادة</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              خروج
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- start-call-Modal  -->
+    <div
+      id="start-call-Modal"
+      class="modal fade"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="overflow: hidden">
+          <div class="modal-body p-0">
+            <div class="upcaming-call-box">
+              <figure>
+                <img src="assets/images/avatar.svg" alt="" />
+                <figcaption>د/ عبدالرحمن جارى الاتصال ..</figcaption>
+              </figure>
+              <div class="row g-3">
+                <div class="col-12">
+                  <button
+                    class="btn btn-danger btn-44 btn-icon w-100"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <i class="fi fi-sr-call-missed"></i>
+                    <span>الغاء</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- upcaming-call-modal -->
+    <div
+      id="upcaming-call-modal"
+      class="modal fade"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="staticBackdropLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="overflow: hidden">
+          <div class="modal-body p-0">
+            <div class="upcaming-call-box">
+              <figure>
+                <img src="assets/images/avatar.svg" alt="" />
+                <figcaption>د/ عبدالرحمن يتصل بك ..</figcaption>
+              </figure>
+              <div class="row g-3">
+                <div class="col-6">
+                  <button
+                    type="button"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                    class="btn btn-success w-100 btn-44 btn-icon"
+                  >
+                    <i class="fi fi-sr-phone-call"></i>
+                    <span>قبول</span>
+                  </button>
+                </div>
+                <div class="col-6">
+                  <button
+                    class="btn btn-44 btn-icon btn-danger w-100"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <i class="fi fi-sr-call-missed"></i>
+                    <span>رفض</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Start notifcations Modal-->
+    <div
+      class="modal fade"
+      id="notifications-Modal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header modal-head-title">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">الاشعارات</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <button
+              type="button"
+              class="notification-item notification-action"
+              data-open-session-request
+            >
+              <span class="notification-unread-dot"></span>
+              <div class="notification-item__icon">
+                <i class="fi fi-sr-calendar-clock"></i>
+              </div>
+              <div class="notification-item__content">
+                <h6>طلب جلسة عاجلة من د. رياض حماد</h6>
+                <p>
+                  طلب الطبيب حجز جلسة متابعة عاجلة بسبب زيادة ملحوظة في الوزن.
+                  يرجى مراجعة الطلب وتأكيد الموعد المناسب.
+                </p>
+                <div class="notification-session-meta">
+                  <span class="badge text-bg-danger">عاجلة</span>
+                  <span class="badge text-bg-light">20 دقيقة</span>
+                  <span class="badge text-bg-light">جلسة عن بعد</span>
+                </div>
+              </div>
+            </button>
+            <!-- /notification-item -->
+            <button
+              type="button"
+              class="notification-item notification-action"
+              data-open-session-request
+            >
+              <span class="notification-unread-dot"></span>
+              <div class="notification-item__icon">
+                <i class="fi fi-sr-calendar-clock"></i>
+              </div>
+              <div class="notification-item__content">
+                <h6>تذكير بالجلسة القادمة مع د. رياض حماد</h6>
+                <p>
+                  لديك جلسة متابعة وزن ونظام غذائي يوم الأحد الساعة 04:30 م.
+                  يمكنك طلب تغيير الموعد من صفحة المتابعة.
+                </p>
+                <div class="notification-session-meta">
+                  <span class="badge text-bg-success">مؤكدة</span>
+                  <span class="badge text-bg-light">20 دقيقة</span>
+                  <span class="badge text-bg-light">جلسة عن بعد</span>
+                </div>
+              </div>
+            </button>
+            <!-- /notification-item -->
+            <div class="notification-item">
+              <div class="notification-item__icon">
+                <i class="fi fi-sr-bell"></i>
+              </div>
+              <div class="notification-item__content">
+                <h6>تم تلقي الخدمة بنجاح ، طلب رقم 1236</h6>
+                <p>
+                  يمهنا رائيك لتحسين خدمتنا بإستمرار قم بالإجابة على الإستبيان
+                  التالي
+                </p>
+                <a href="#" class="btn btn-primary btn-sm"> بدء الإستبيان </a>
+              </div>
+            </div>
+            <!-- /notification-item -->
+            <div class="notification-item">
+              <div class="notification-item__icon">
+                <i class="fi fi-sr-bell"></i>
+              </div>
+              <div class="notification-item__content">
+                <h6>تم تلقي الخدمة بنجاح ، طلب رقم 1236</h6>
+                <p>
+                  يمهنا رائيك لتحسين خدمتنا بإستمرار قم بالإجابة على الإستبيان
+                  التالي
+                </p>
+              </div>
+            </div>
+            <!-- /notification-item -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End notifcations Modal  -->
+
+    <!-- Session request response Modal -->
+    <div
+      class="modal fade"
+      id="SessionRequestResponseModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">تفاصيل الجلسة القادمة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="session-request-summary mb-16">
+              <div class="d-flex justify-content-between gap-3 flex-wrap mb-12">
+                <div>
+                  <p class="fsize-14 text-grey mb-1">الطبيب</p>
+                  <h3 class="fsize-16 semiBold mb-0">د. رياض حماد المالكي</h3>
+                </div>
+                <span class="badge text-bg-danger align-self-start">عاجلة</span>
+              </div>
+              <p class="fsize-14 text-grey mb-0">
+                هذه هي الجلسة التالية ضمن باقة متابعة الوزن والنظام الغذائي.
+                يمكنك طلب تغيير الموعد وسيتم إرسال الطلب للطبيب للموافقة.
+              </p>
+            </div>
+
+            <div class="row g-2 mb-16">
+              <div class="col-6">
+                <div class="surface-light-300 p-12 radius-12 h-100">
+                  <p class="fsize-14 text-grey mb-1">موعد الجلسة</p>
+                  <h4 class="fsize-16 semiBold mb-0">الأحد - 12/05/2026</h4>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="surface-light-300 p-12 radius-12 h-100">
+                  <p class="fsize-14 text-grey mb-1">التوقيت</p>
+                  <h4 class="fsize-16 semiBold mb-0">04:30 م - 04:50 م</h4>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="surface-light-300 p-12 radius-12 h-100">
+                  <p class="fsize-14 text-grey mb-1">نوع الجلسة</p>
+                  <h4 class="fsize-16 semiBold mb-0">جلسة عن بعد</h4>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="surface-light-300 p-12 radius-12 h-100">
+                  <p class="fsize-14 text-grey mb-1">مدة الجلسة</p>
+                  <h4 class="fsize-16 semiBold mb-0">20 دقيقة</h4>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-primary btn-40"
+              id="session-change-date-btn"
+            >
+              طلب تغيير الموعد
+            </button>
+            <button type="button" class="btn btn-primary btn-40" data-bs-dismiss="modal">
+              إغلاق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session alternative dates Modal -->
+    <div
+      class="modal fade"
+      id="SessionAlternativeDatesModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">طلب تغيير موعد الجلسة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="session-request-summary mb-16">
+              <div class="d-flex justify-content-between gap-3 flex-wrap">
+                <div>
+                  <p class="fsize-14 text-grey mb-1">الجلسة الحالية</p>
+                  <h3 class="fsize-16 semiBold mb-0">
+                    الأحد - 12/05/2026، 04:30 م
+                  </h3>
+                </div>
+                <span class="next-session-badge">د. رياض حماد المالكي</span>
+              </div>
+            </div>
+            <p class="fsize-14 text-grey mb-16">
+              اختر من المواعيد المتاحة للدكتور. بعد الإرسال سيظهر الطلب في
+              الصفحة بحالة قيد المراجعة حتى يتم تأكيده.
+            </p>
+            <div class="session-day-tabs" id="session-day-tabs">
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayToday"
+                  data-session-day="today"
+                  checked
+                />
+                <label class="session-day-option" for="sessionDayToday">
+                  <strong class="fsize-16 mb-1">اليوم</strong>
+                  <span class="fsize-14 text-grey">3</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDaySunday"
+                  data-session-day="sunday"
+                />
+                <label class="session-day-option" for="sessionDaySunday">
+                  <strong class="fsize-16 mb-1">الأحد</strong>
+                  <span class="fsize-14 text-grey">2</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayMonday"
+                  data-session-day="monday"
+                />
+                <label class="session-day-option" for="sessionDayMonday">
+                  <strong class="fsize-16 mb-1">الاثنين</strong>
+                  <span class="fsize-14 text-grey">4</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayTuesday"
+                  data-session-day="tuesday"
+                />
+                <label class="session-day-option" for="sessionDayTuesday">
+                  <strong class="fsize-16 mb-1">الثلاثاء</strong>
+                  <span class="fsize-14 text-grey">1</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayWednesday"
+                  data-session-day="wednesday"
+                />
+                <label class="session-day-option" for="sessionDayWednesday">
+                  <strong class="fsize-16 mb-1">الأربعاء</strong>
+                  <span class="fsize-14 text-grey">3</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayThursday"
+                  data-session-day="thursday"
+                />
+                <label class="session-day-option" for="sessionDayThursday">
+                  <strong class="fsize-16 mb-1">الخميس</strong>
+                  <span class="fsize-14 text-grey">2</span>
+                </label>
+              </div>
+              <div>
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="sessionAlternativeDay"
+                  id="sessionDayFriday"
+                  data-session-day="friday"
+                />
+                <label class="session-day-option" for="sessionDayFriday">
+                  <strong class="fsize-16 mb-1">الجمعة</strong>
+                  <span class="fsize-14 text-grey">4</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="session-slots-panel" data-session-slots="today">
+              <p class="fsize-14 text-grey mb-10">مواعيد اليوم المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionTodayOne"
+                    checked
+                  />
+                  <label class="session-slot-option" for="sessionTodayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">اليوم</span>
+                    <strong class="d-block fsize-16">05:15 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionTodayTwo"
+                  />
+                  <label class="session-slot-option" for="sessionTodayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">اليوم</span>
+                    <strong class="d-block fsize-16">07:00 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionTodayThree"
+                  />
+                  <label class="session-slot-option" for="sessionTodayThree">
+                    <span class="d-block fsize-14 text-grey mb-1">اليوم</span>
+                    <strong class="d-block fsize-16">09:30 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="sunday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الأحد المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionSundayOne"
+                  />
+                  <label class="session-slot-option" for="sessionSundayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الأحد</span>
+                    <strong class="d-block fsize-16">11:00 ص</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionSundayTwo"
+                  />
+                  <label class="session-slot-option" for="sessionSundayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">الأحد</span>
+                    <strong class="d-block fsize-16">04:00 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="monday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الاثنين المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-3">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionMondayOne"
+                  />
+                  <label class="session-slot-option" for="sessionMondayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الاثنين</span>
+                    <strong class="d-block fsize-16">10:30 ص</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionMondayTwo"
+                  />
+                  <label class="session-slot-option" for="sessionMondayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">الاثنين</span>
+                    <strong class="d-block fsize-16">01:00 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionMondayThree"
+                  />
+                  <label class="session-slot-option" for="sessionMondayThree">
+                    <span class="d-block fsize-14 text-grey mb-1">الاثنين</span>
+                    <strong class="d-block fsize-16">03:30 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionMondayFour"
+                  />
+                  <label class="session-slot-option" for="sessionMondayFour">
+                    <span class="d-block fsize-14 text-grey mb-1">الاثنين</span>
+                    <strong class="d-block fsize-16">08:00 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="tuesday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الثلاثاء المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <input
+                    type="radio"
+                    class="btn-check"
+                    name="sessionAlternativeSlot"
+                    id="sessionTuesdayOne"
+                  />
+                  <label class="session-slot-option" for="sessionTuesdayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الثلاثاء</span>
+                    <strong class="d-block fsize-16">06:00 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="wednesday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الأربعاء المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionWednesdayOne" />
+                  <label class="session-slot-option" for="sessionWednesdayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الأربعاء</span>
+                    <strong class="d-block fsize-16">12:30 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionWednesdayTwo" />
+                  <label class="session-slot-option" for="sessionWednesdayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">الأربعاء</span>
+                    <strong class="d-block fsize-16">03:00 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionWednesdayThree" />
+                  <label class="session-slot-option" for="sessionWednesdayThree">
+                    <span class="d-block fsize-14 text-grey mb-1">الأربعاء</span>
+                    <strong class="d-block fsize-16">07:30 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="thursday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الخميس المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-4">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionThursdayOne" />
+                  <label class="session-slot-option" for="sessionThursdayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الخميس</span>
+                    <strong class="d-block fsize-16">01:30 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-4">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionThursdayTwo" />
+                  <label class="session-slot-option" for="sessionThursdayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">الخميس</span>
+                    <strong class="d-block fsize-16">06:45 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div class="session-slots-panel d-none" data-session-slots="friday">
+              <p class="fsize-14 text-grey mb-10">مواعيد الجمعة المتاحة</p>
+              <div class="row g-2">
+                <div class="col-6 col-md-3">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionFridayOne" />
+                  <label class="session-slot-option" for="sessionFridayOne">
+                    <span class="d-block fsize-14 text-grey mb-1">الجمعة</span>
+                    <strong class="d-block fsize-16">10:00 ص</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionFridayTwo" />
+                  <label class="session-slot-option" for="sessionFridayTwo">
+                    <span class="d-block fsize-14 text-grey mb-1">الجمعة</span>
+                    <strong class="d-block fsize-16">02:00 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionFridayThree" />
+                  <label class="session-slot-option" for="sessionFridayThree">
+                    <span class="d-block fsize-14 text-grey mb-1">الجمعة</span>
+                    <strong class="d-block fsize-16">05:00 م</strong>
+                  </label>
+                </div>
+                <div class="col-6 col-md-3">
+                  <input type="radio" class="btn-check" name="sessionAlternativeSlot" id="sessionFridayFour" />
+                  <label class="session-slot-option" for="sessionFridayFour">
+                    <span class="d-block fsize-14 text-grey mb-1">الجمعة</span>
+                    <strong class="d-block fsize-16">09:00 م</strong>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              رجوع
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-40"
+              id="send-session-change-request"
+              data-bs-dismiss="modal"
+            >
+              إرسال طلب التعديل
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Select patient Modal-->
+    <div
+      class="modal fade"
+      id="SelectPatientModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="SelectPatientModalLabel">
+              المستفيد من الخدمة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <ul class="nav nav-pills mb-20" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="pills-PatientsList-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-PatientsList"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-PatientsList"
+                  aria-selected="true"
+                >
+                  قائمة المستفيدين
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-AddNewPatient-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-AddNewPatient"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-AddNewPatient"
+                  aria-selected="false"
+                >
+                  إضافة مستفيد جديد
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="pills-tabContent">
+              <!-- Tab 1 -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-PatientsList"
+                role="tabpanel"
+                aria-labelledby="pills-PatientsList-tab"
+                tabindex="0"
+              >
+                <form>
+                  <p class="fsize-14 bold">
+                    اختر أحد المستفيدين المسجلين سابقًا
+                  </p>
+                  <div
+                    class="PatientsListContainer pl-12"
+                    style="max-height: 25rem; overflow: auto"
+                  >
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" checked />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">سرور محمد رشاد</p>
+                                <span> نفسي - ذكر - 34 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">احمد عبدالحليم</p>
+                                <span> الخال - ذكر - 44 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">مصطفي احمد على</p>
+                                <span> صديق - ذكر - 34 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Tab 2 -->
+              <div
+                class="tab-pane fade"
+                id="pills-AddNewPatient"
+                role="tabpanel"
+                aria-labelledby="pills-AddNewPatient-tab"
+                tabindex="0"
+              >
+                <form>
+                  <div class="row g-2 gy-4">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >الاسم بالكامل
+                        <i class="text-grey"> (باللغة العربية)</i>
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control form-control-44"
+                        placeholder="ادخل الاسم"
+                      />
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">صلة القرابة </label>
+                      <select class="form-select form-select-44">
+                        <option value="">اختر صلة القرابة</option>
+                        <option value="1">أب</option>
+                        <option value="2">الأم</option>
+                        <option value="3">ابن</option>
+                        <option value="4">زوجة</option>
+                        <option value="5">بنت</option>
+                        <option value="6">صديق</option>
+                        <option value="8">أخ</option>
+                        <option value="9">أخت</option>
+                      </select>
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">تاريخ الميلاد </label>
+                      <div class="datepickerInput">
+                        <input
+                          type="text"
+                          class="datepicker form-control form-control-44"
+                          placeholder="--/--/----"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الجنس </label>
+                      <select class="form-select form-select-44">
+                        <option>ذكر</option>
+                        <option>انثى</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الوزن / كغم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الطول /سم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--EditPatientDataModal-->
+    <div
+      class="modal fade"
+      id="EditPatientDataModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="editPatientDataModalLabel">
+              تعديل بيانات المستفيد
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+              <div class="row g-2 gy-4">
+                <div class="col-12">
+                  <label class="form-label"
+                    >الاسم بالكامل
+                    <i class="text-grey"> (باللغة العربية)</i>
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    class="form-control form-control-44"
+                    placeholder="ادخل الاسم"
+                  />
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label">صلة القرابة </label>
+                  <select class="form-select form-select-44">
+                    <option value="">اختر صلة القرابة</option>
+                    <option value="1">أب</option>
+                    <option value="2">الأم</option>
+                    <option value="3">ابن</option>
+                    <option value="4">زوجة</option>
+                    <option value="5">بنت</option>
+                    <option value="6">صديق</option>
+                    <option value="8">أخ</option>
+                    <option value="9">أخت</option>
+                  </select>
+                </div>
+
+                <div class="col-6">
+                  <label class="form-label">تاريخ الميلاد </label>
+                  <div class="datepickerInput">
+                    <input
+                      type="text"
+                      class="datepicker form-control form-control-44"
+                      placeholder="--/--/----"
+                    />
+                  </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">الجنس </label>
+                  <select class="form-select form-select-44">
+                    <option>ذكر</option>
+                    <option>انثى</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">الوزن / كغم </label>
+                  <input
+                    type="number"
+                    class="form-control form-control-44"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">الطول /سم </label>
+                  <input
+                    type="number"
+                    class="form-control form-control-44"
+                    placeholder="0"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Tab Footer -->
+              <div class="tab-footer modal-footer mt-40 p-0">
+                <button
+                  type="button"
+                  class="btn btn-light btn-40 mt-12"
+                  data-bs-dismiss="modal"
+                >
+                  إلغاء
+                </button>
+
+                <button type="button" class="btn btn-primary btn-40 mt-12">
+                  حفظ
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- patient task modals -->
+    <div
+      class="modal fade task-details-modal"
+      id="PatientTaskModalOne"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">تفاصيل المهمة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="task-modal-card">
+              <div class="task-modal-head">
+                <div class="task-modal-identity">
+                  <span class="task-modal-icon is-new">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M7 7h10M7 12h10M7 17h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M5 4.8h14a1.2 1.2 0 0 1 1.2 1.2v12A1.2 1.2 0 0 1 19 19.2H5A1.2 1.2 0 0 1 3.8 18V6A1.2 1.2 0 0 1 5 4.8Z" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M8 3.8v2M16 3.8v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="task-modal-title">إضافة قياس الوزن اليوم</p>
+                    <p class="task-modal-subtitle">
+                      يمكنك تسجيل القراءة يدويًا أو رفع ملف يوضح قراءة الميزان
+                      لو كانت محفوظة كتقرير أو صورة.
+                    </p>
+                  </div>
+                </div>
+                <span class="patient-task-badge is-new">جديدة</span>
+              </div>
+
+              <div class="task-modal-meta-grid">
+                <div class="task-modal-meta">
+                  <span>اليوم</span>
+                  <strong>اليوم</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>نوع المهمة</span>
+                  <strong>قياس يومي</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>طرق التسليم</span>
+                  <strong>تحديث يدوي أو ملف</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>الحالة</span>
+                  <strong>بانتظار القياس</strong>
+                </div>
+              </div>
+
+              <p class="task-modal-copy">
+                افتح التحديث اليدوي لتسجيل الوزن مباشرة في المخطط، أو ارفع
+                صورة/ملف PDF من الميزان إذا كان القياس صادرًا من جهاز أو تقرير.
+              </p>
+
+              <div class="task-modal-block">
+                <p class="task-modal-block-title">رفع ملف القياس</p>
+                <p class="task-modal-block-copy">
+                  أرفق صورة شاشة القياس أو ملف PDF يحتوي على قراءة اليوم.
+                </p>
+                <div class="task-modal-file-row">
+                  <label class="btn btn-outline-primary btn-40 mb-0">
+                    إرفاق ملف
+                    <input type="file" accept=".pdf,image/png,image/jpeg" hidden />
+                  </label>
+                  <span class="patient-task-card-meta">
+                    <span>PNG / JPG / PDF</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إغلاق
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-40">
+              إرسال الملف
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-40"
+              data-open-measurement="weight"
+              data-bs-toggle="modal"
+              data-bs-target="#addSugarRecordModal"
+            >
+              التحديث اليدوي
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade task-details-modal"
+      id="PatientTaskModalTwo"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">تفاصيل المهمة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="task-modal-card">
+              <div class="task-modal-head">
+                <div class="task-modal-identity">
+                  <span class="task-modal-icon is-progress">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M12 21a9 9 0 1 0-9-9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M5 5v4H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="task-modal-title">إضافة نسبة الدهون</p>
+                    <p class="task-modal-subtitle">
+                      أدخل نسبة الدهون يدويًا أو ارفع تقرير تحليل مكونات الجسم
+                      ليتم حفظ القراءة ضمن المتابعة.
+                    </p>
+                  </div>
+                </div>
+                <span class="patient-task-badge is-progress">مطلوب</span>
+              </div>
+
+              <div class="task-modal-meta-grid">
+                <div class="task-modal-meta">
+                  <span>اليوم</span>
+                  <strong>اليوم</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>نوع المهمة</span>
+                  <strong>قياس دهون</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>طرق التسليم</span>
+                  <strong>تحديث يدوي أو PDF</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>الحالة</span>
+                  <strong>بانتظار القراءة</strong>
+                </div>
+              </div>
+
+              <p class="task-modal-copy">
+                لو لديك قراءة مباشرة من الميزان افتح التحديث اليدوي وسجل النسبة.
+                ولو القراءة موجودة في تقرير، ارفع ملف PDF أو صورة التقرير.
+              </p>
+
+              <div class="task-modal-block">
+                <p class="task-modal-block-title">رفع تقرير نسبة الدهون</p>
+                <p class="task-modal-block-copy">
+                  ارفع تقرير تحليل مكونات الجسم أو صورة واضحة من شاشة الميزان.
+                </p>
+                <div class="task-modal-file-row">
+                  <label class="btn btn-outline-primary btn-40 mb-0">
+                    إرفاق ملف
+                    <input type="file" accept=".pdf,image/png,image/jpeg" hidden />
+                  </label>
+                  <span class="patient-task-card-meta">
+                    <span>PNG / JPG / PDF</span>
+                  </span>
+                </div>
+              </div>
+
+              <div class="task-modal-block mt-16">
+                <p class="task-modal-block-title">ملاحظة اختيارية</p>
+                <p class="task-modal-block-copy mb-0">
+                  يمكنك كتابة مصدر القياس أو اسم الجهاز داخل نموذج التحديث اليدوي.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إغلاق
+            </button>
+            <button type="button" class="btn btn-outline-primary btn-40">
+              إرسال الملف
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-40"
+              data-open-measurement="bodyFat"
+              data-bs-toggle="modal"
+              data-bs-target="#addSugarRecordModal"
+            >
+              التحديث اليدوي
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade task-details-modal"
+      id="PatientTaskModalThree"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">تفاصيل المهمة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="task-modal-card">
+              <div class="task-modal-head">
+                <div class="task-modal-identity">
+                  <span class="task-modal-icon is-note">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                      <path d="M7 8h10M7 12h10M7 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M6 4.8h12A1.2 1.2 0 0 1 19.2 6v12A1.2 1.2 0 0 1 18 19.2H6A1.2 1.2 0 0 1 4.8 18V6A1.2 1.2 0 0 1 6 4.8Z" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                  </span>
+                  <div>
+                    <p class="task-modal-title">تقرير الالتزام بالوجبات</p>
+                    <p class="task-modal-subtitle">
+                      ارفع ملفًا يوضح الالتزام بالوجبات أو صورة من المتابعة حتى
+                      يتم مراجعته مع الخطة.
+                    </p>
+                  </div>
+                </div>
+                <span class="patient-task-badge is-progress">مطلوب</span>
+              </div>
+
+              <div class="task-modal-meta-grid">
+                <div class="task-modal-meta">
+                  <span>اليوم</span>
+                  <strong>اليوم</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>مدة المهمة</span>
+                  <strong>حتى نهاية اليوم</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>طرق التسليم</span>
+                  <strong>رفع ملف</strong>
+                </div>
+                <div class="task-modal-meta">
+                  <span>الحالة</span>
+                  <strong>بانتظار الملف</strong>
+                </div>
+              </div>
+
+              <p class="task-modal-copy">
+                المطلوب رفع صورة أو PDF يوضح الالتزام أو أي متابعة مرتبطة
+                بالوجبات خلال الفترة المطلوبة.
+              </p>
+
+              <div class="task-modal-block">
+                <p class="task-modal-block-title">رفع ملف الالتزام</p>
+                <p class="task-modal-block-copy">
+                  أرفق ملف PDF أو صورة واضحة للمتابعة.
+                </p>
+                <div class="task-modal-file-row">
+                  <label class="btn btn-outline-primary btn-40 mb-0">
+                    إرفاق ملف
+                    <input type="file" accept=".pdf,image/png,image/jpeg" hidden />
+                  </label>
+                  <span class="patient-task-card-meta">
+                    <span>PNG / JPG / PDF</span>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إغلاق
+            </button>
+            <button type="button" class="btn btn-primary btn-40">
+              إرسال الملف
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MonitoringTypeModal Modal  -->
+    <div
+      class="modal fade"
+      id="MonitoringTypeModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="MainCartModalLabel">
+              حدد نوع المراقبة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body p-0 surface-light-300">
+            <div class="surface-light-300 p-20 radius-12">
+              <p class="fsize-16 mb-16">ارغب فى متابعة مستوى :</p>
+
+              <div class="row g-3">
+                <!-- monitoring-type-item -->
+                <div class="col-6">
+                  <label class="monitoring-type-item">
+                    <input type="checkbox" />
+                    <div class="control-content">
+                      <img
+                        src="assets/images/Diet.svg"
+                        alt="الوزن / النظام الغذائي"
+                      />
+                      <h3>الوزن / النظام الغذائي</h3>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- monitoring-type-item -->
+                <div class="col-6">
+                  <label class="monitoring-type-item">
+                    <input type="checkbox" />
+                    <div class="control-content">
+                      <img
+                        src="assets/images/Blood-pressure.svg"
+                        alt="ضغط الدم"
+                      />
+                      <h3>ضغط الدم</h3>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- monitoring-type-item -->
+                <div class="col-6">
+                  <label class="monitoring-type-item">
+                    <input type="checkbox" />
+                    <div class="control-content">
+                      <img src="assets/images/Diet.svg" alt="الوزن / النظام الغذائي" />
+                      <h3>الوزن / النظام الغذائي</h3>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- monitoring-type-item -->
+                <div class="col-6">
+                  <label class="monitoring-type-item">
+                    <input type="checkbox" />
+                    <div class="control-content">
+                      <img
+                        src="assets/images/Physical-activity.svg"
+                        alt="Physical-activity"
+                      />
+                      <h3>النشاط البدني</h3>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إلغاء
+            </button>
+
+            <button class="btn btn-primary btn-40">حفظ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- addMeasurementModal  -->
+    <div
+      class="modal fade"
+      id="addSugarRecordModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm-2">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addSugarRecordModalLabel">
+              إضافة قياس
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form id="weight-measurement-form">
+            <div class="modal-body text-center">
+              <p class="fw-semibold mb-3" id="measurement-instruction">
+                أدخل القراءة الحالية
+              </p>
+
+              <div
+                class="surface-light-300 p-16 radius-12 mb-12 measurement-indicator-choice d-none"
+                id="measurement-indicator-choice"
+              >
+                <p class="fw-semibold mb-3 fsize-16">اختر المؤشر</p>
+                <select
+                  class="form-select form-select-44"
+                  id="measurement-indicator-select"
+                ></select>
+              </div>
+
+              <div
+                class="reading-box mx-auto d-flex flex-column justify-content-center align-items-center mb-4"
+              >
+                <input
+                  type="number"
+                  step="0.1"
+                  class="reading-input"
+                  id="measurement-value-input"
+                  placeholder="--"
+                  value=""
+                />
+                <span class="text-muted" id="measurement-unit-label">كجم</span>
+              </div>
+
+              <div class="surface-light-300 p-16 radius-12 mb-12">
+                <p class="fw-semibold mb-3 fsize-16">متى تم تسجيل القياس؟</p>
+                <div class="row justify-content-center g-2">
+                  <div class="col-6">
+                    <span class="datepickerInput">
+                      <input
+                        type="text"
+                        class="datepicker form-control form-control-40"
+                        id="measurement-date-input"
+                        placeholder="--/--/----"
+                      />
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    <input
+                      type="time"
+                      class="form-control form-control-40 w-100"
+                      id="measurement-time-input"
+                      value="08:00"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="surface-light-300 p-16 radius-12 mb-12 measurement-condition-block"
+                id="measurement-condition-block"
+              >
+                <div class="d-flex justify-content-center flex-column">
+                  <p class="fw-semibold mb-3 fsize-16">ظروف القياس</p>
+                  <div class="d-flex flex-wrap gap-2 mb-2 justify-content-center">
+                    <input type="radio" class="btn-check" name="weightTime" id="morningWeight" checked />
+                    <label class="meal-btn" for="morningWeight">صباحًا</label>
+
+                    <input type="radio" class="btn-check" name="weightTime" id="afterMealWeight" />
+                    <label class="meal-btn" for="afterMealWeight">بعد وجبة</label>
+
+                    <input type="radio" class="btn-check" name="weightTime" id="nightWeight" />
+                    <label class="meal-btn" for="nightWeight">مساءً</label>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="surface-light-300 p-16 radius-12 mb-12 measurement-note-block d-none"
+                id="measurement-note-block"
+              >
+                <p class="fw-semibold mb-3 fsize-16">ملاحظة اختيارية</p>
+                <textarea
+                  class="form-control"
+                  id="measurement-note-input"
+                  rows="3"
+                  placeholder="اكتب أي ملاحظة عن مصدر القياس"
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-light btn-40"
+                data-bs-dismiss="modal"
+              >
+                إلغاء
+              </button>
+
+              <button class="btn btn-primary btn-40" type="submit">حفظ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- MealIngredientsModal  -->
+    <div
+      class="modal fade"
+      id="MealIngredientsModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm-2">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="mealIngredientsModalLabel">
+              مكونات الوجبة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="surface-light-300 p-16 radius-12">
+              <p class="fw-semibold mb-1 fsize-16" id="meal-ingredients-title">
+                الوجبة
+              </p>
+              <p class="fsize-14 text-grey mb-12" id="meal-ingredients-time">
+                موعد الوجبة
+              </p>
+              <ul class="mb-0 fsize-14" id="meal-ingredients-list"></ul>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إغلاق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CGMSmartDeviceModal  -->
+    <div
+      class="modal fade"
+      id="CGMSmartDeviceModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="CGMSmartDeviceModalLabel">
+              ربط جهاز قياس الوزن
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <p class="fsize-14 text-grey mb-0">
+              يمكنك ربط الميزان الذكي أو جهاز تحليل مكونات الجسم لإرسال قراءات
+              الوزن والمؤشرات تلقائياً إلى لوحة المتابعة.
+            </p>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إلغاء
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WeightPlanHistoryModal  -->
+    <div
+      class="modal fade weight-history-modal"
+      id="WeightPlanHistoryModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div>
+              <h1 class="modal-title fs-5">سجل تغييرات خطة الوزن والنظام الغذائي</h1>
+              <p class="fsize-14 text-grey mb-0">
+                كل تحديث يوضح ما الذي تغير في الخطة، والسبب، والطبيب المسؤول عن القرار.
+              </p>
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div class="weight-history-intro">
+              <div>
+                <h3 class="fsize-18 semiBold mb-1">متابعة الوزن والوجبات</h3>
+                <p class="mb-0">
+                  آخر التغييرات المعتمدة على خطة الوزن، الوجبات، القياسات، ومواعيد
+                  المتابعة داخل نفس الباقة.
+                </p>
+              </div>
+              <span class="next-session-badge">4 تحديثات</span>
+            </div>
+
+            <div class="weight-history-timeline">
+              <article class="weight-history-event is-open">
+                <button class="weight-history-toggle" type="button" aria-expanded="true">
+                  <span>
+                    <span class="weight-history-tag target">تحديث الهدف</span>
+                    <h6>تعديل الوزن المستهدف بعد مراجعة آخر القياسات</h6>
+                  </span>
+                  <span class="weight-history-date">04/05/2026</span>
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <div class="weight-history-body">
+                  <div class="weight-history-detail-grid">
+                    <div class="weight-history-detail-card">
+                      <span>قبل التعديل</span>
+                      <b>78 كجم</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>بعد التعديل</span>
+                      <b>75 كجم</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>السبب</span>
+                      <b>تحسن معدل النزول وثبات الالتزام خلال آخر أسبوع</b>
+                    </div>
+                  </div>
+                  <p class="weight-history-doctor">الطبيب المسؤول: <b>د. رياض حماد المالكي</b></p>
+                </div>
+              </article>
+
+              <article class="weight-history-event">
+                <button class="weight-history-toggle" type="button" aria-expanded="false">
+                  <span>
+                    <span class="weight-history-tag meal">تحديث وجبة</span>
+                    <h6>تعديل وجبة العشاء لتقليل السعرات المسائية</h6>
+                  </span>
+                  <span class="weight-history-date">03/05/2026</span>
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <div class="weight-history-body">
+                  <div class="weight-history-detail-grid">
+                    <div class="weight-history-detail-card">
+                      <span>قبل التعديل</span>
+                      <b>وجبة عشاء 650 سعرة</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>بعد التعديل</span>
+                      <b>وجبة عشاء 480 سعرة مع بروتين أعلى</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>السبب</span>
+                      <b>ارتفاع السعرات في نهاية اليوم أثر على معدل النزول</b>
+                    </div>
+                  </div>
+                  <p class="weight-history-doctor">الطبيب المسؤول: <b>د. رياض حماد المالكي</b></p>
+                </div>
+              </article>
+
+              <article class="weight-history-event">
+                <button class="weight-history-toggle" type="button" aria-expanded="false">
+                  <span>
+                    <span class="weight-history-tag request">طلب قياس</span>
+                    <h6>طلب تسجيل قياس الوزن صباحاً لمدة 7 أيام</h6>
+                  </span>
+                  <span class="weight-history-date">02/05/2026</span>
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <div class="weight-history-body">
+                  <div class="weight-history-detail-grid">
+                    <div class="weight-history-detail-card">
+                      <span>المطلوب</span>
+                      <b>إضافة قياس وزن يومي بعد الاستيقاظ</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>المدة</span>
+                      <b>7 أيام متتالية</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>السبب</span>
+                      <b>قياس الاتجاه الحقيقي بعيداً عن تذبذب السوائل</b>
+                    </div>
+                  </div>
+                  <p class="weight-history-doctor">الطبيب المسؤول: <b>د. رياض حماد المالكي</b></p>
+                </div>
+              </article>
+
+              <article class="weight-history-event">
+                <button class="weight-history-toggle" type="button" aria-expanded="false">
+                  <span>
+                    <span class="weight-history-tag">تحديث الخطة</span>
+                    <h6>ترقية متابعة الوجبات إلى مراجعة أسبوعية أدق</h6>
+                  </span>
+                  <span class="weight-history-date">01/05/2026</span>
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <div class="weight-history-body">
+                  <div class="weight-history-detail-grid">
+                    <div class="weight-history-detail-card">
+                      <span>قبل التعديل</span>
+                      <b>مراجعة عامة للوجبات</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>بعد التعديل</span>
+                      <b>مراجعة أسبوعية للوجبات والصور</b>
+                    </div>
+                    <div class="weight-history-detail-card">
+                      <span>السبب</span>
+                      <b>الحاجة لتصحيح أسرع عند ظهور ثبات في الوزن</b>
+                    </div>
+                  </div>
+                  <p class="weight-history-doctor">الطبيب المسؤول: <b>د. رياض حماد المالكي</b></p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade upgrade-package-modal"
+      id="UpgradePackageModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">ترقية الباكدج</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p class="upgrade-package-intro">
+              اختر الباكدج المناسبة لك، وسيتم تحديث الوجبات والمتابعة
+              والاستشارات داخل نفس المسار بعد الترقية.
+            </p>
+
+            <div class="upgrade-package-grid">
+              <div class="upgrade-package-card">
+                <div class="upgrade-package-tag-wrap">
+                  <span class="upgrade-package-tag">مناسبة للمبتدئين</span>
+                </div>
+                <h4>باكدج البداية</h4>
+                <p>
+                  انطلاق عملي لمن يريد الدخول في النظام بشكل تدريجي مع متابعة
+                  سهلة وواضحة.
+                </p>
+                <ul class="upgrade-package-points">
+                  <li>جدول أسبوعي مبسط</li>
+                  <li>قائمة وجبات يوم كامل</li>
+                  <li>استشارة تعريفية أولى</li>
+                </ul>
+                <div class="upgrade-package-footer">
+                  <button type="button" class="btn btn-outline-primary btn-40">
+                    اختر هذه الباكدج
+                  </button>
+                </div>
+              </div>
+
+              <div class="upgrade-package-card is-featured">
+                <div class="upgrade-package-tag-wrap">
+                  <span class="upgrade-package-tag">الأكثر طلبًا</span>
+                </div>
+                <h4>باكدج التوازن</h4>
+                <p>
+                  باكدج متوازنة لمن يريد نتائج مستمرة بأسلوب عملي قابل للتطبيق
+                  داخل يومه.
+                </p>
+                <ul class="upgrade-package-points">
+                  <li>وجبات متنوعة</li>
+                  <li>توجيه أسبوعي عملي</li>
+                  <li>مرونة مع جدول العمل</li>
+                </ul>
+                <div class="upgrade-package-footer">
+                  <button type="button" class="btn btn-outline-primary btn-40">
+                    اختر هذه الباكدج
+                  </button>
+                </div>
+              </div>
+
+              <div class="upgrade-package-card">
+                <div class="upgrade-package-tag-wrap">
+                  <span class="upgrade-package-tag">مناسبة لخسارة الوزن</span>
+                </div>
+                <h4>باكدج الالتزام</h4>
+                <p>
+                  تركيز أعلى على الثبات والانضباط مع خطوات يومية واضحة
+                  ومتابعة أسبوعية أدق.
+                </p>
+                <ul class="upgrade-package-points">
+                  <li>خطة وجبات دقيقة</li>
+                  <li>مؤشرات التزام أسبوعية</li>
+                  <li>توصيات تصحيحية مستمرة</li>
+                </ul>
+                <div class="upgrade-package-footer">
+                  <button type="button" class="btn btn-outline-primary btn-40">
+                    اختر هذه الباكدج
+                  </button>
+                </div>
+              </div>
+
+              <div class="upgrade-package-card">
+                <div class="upgrade-package-tag-wrap">
+                  <span class="upgrade-package-tag">نمط حياة مشغول</span>
+                </div>
+                <h4>باكدج المتابعة المكثفة</h4>
+                <p>
+                  لمن يحتاج متابعة أقرب وتعديلات أسرع حسب تطور الحالة مع دعم
+                  يومي أكبر.
+                </p>
+                <ul class="upgrade-package-points">
+                  <li>متابعة دورية أكثر</li>
+                  <li>تعديلات أسرع على الخطة</li>
+                  <li>دعم مستمر طوال الباقة</li>
+                </ul>
+                <div class="upgrade-package-footer">
+                  <button type="button" class="btn btn-outline-primary btn-40">
+                    اختر هذه الباكدج
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- MedicationRemindersModal  -->
+    <div
+      class="modal fade"
+      id="MedicationRemindersModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm-2">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="MedicationRemindersModalLabel">
+              إضافة تذكير للوجبات
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form>
+            <div class="modal-body">
+              <div class="surface-light-300 p-12 radius-12">
+                <div class="row g-3">
+                  <div class="col-md-8">
+                    <label class="form-label">اسم الوجبة</label>
+                    <input
+                      type="text"
+                      class="form-control form-control-40"
+                      placeholder="مثال: وجبة الإفطار"
+                      required
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">عدد المرات يوميًا</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="6"
+                      class="form-control form-control-40"
+                      placeholder="1"
+                    />
+                  </div>
+                </div>
+
+                <div id="doseTimesContainer" class="mt-2 row g-3">
+                  <div class="col-12">
+                    <label class="form-label">وقت التذكير</label>
+                    <input type="time" class="form-control form-control-40" value="08:00" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="surface-light-300 p-12 radius-12 mt-12">
+                <p class="text-brand fsize-16 mb-8 semiBold">ملاحظات إضافية</p>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="beforeMealPrep" />
+                  <label class="form-check-label fsize-16" for="beforeMealPrep">تحضير الوجبة مسبقًا</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="drinkWater" />
+                  <label class="form-check-label fsize-16" for="drinkWater">تذكير بشرب الماء</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-light btn-40"
+                data-bs-dismiss="modal"
+              >
+                إلغاء
+              </button>
+
+              <button class="btn btn-primary btn-40">حفظ</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Scripts **************************************************************-->
+    <!-- Bootstrap ---------->
+    <script src="assets/js/Libraries/Bootstrap/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/Libraries/Bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Preloader ---------->
+    <script src="assets/js/Components/Preloader.js"></script>
+    <!-- StickyNavigation --->
+    <script src="assets/js/Components/StickyNavigation.js"></script>
+    <!-- Countries Modal -->
+    <script src="assets/js/Components/Modals/CountriesModal.js"></script>
+    <!-- PhoneNumber -->
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flags.js"></script>
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flagsOptions.js"></script>
+    <!-- showPassword -->
+    <script src="assets/js/Libraries/Forms/showPassword.js"></script>
+    <!-- DatePicker -->
+    <script src="assets/js/Libraries/Forms/DatePicker/datepicker.min.js"></script>
+    <script src="assets/js/Libraries/Forms/DatePicker/datepickerOptions.js"></script>
+    <!-- OwlCarousel -------->
+    <script src="assets/js/Libraries/OwlCarousel/owlCarousel.min.js"></script>
+    <script src="assets/js/Libraries/OwlCarousel/owlCarouselOptions.js"></script>
+
+    <!-- Monitoring Charts -->
+    <script src="assets/js/Libraries/Forms/Charts/chartLib.js"></script>
+    <script src="assets/js/Libraries/Forms/Charts/weightTrendChart.js"></script>
+    <script src="assets/js/Libraries/Forms/Charts/weightProgressSummaryChart.js"></script>
+
+    <!-- PatientInfoCollapse -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const collapseElement = document.getElementById("PatientInfoCollapse");
+        if (!collapseElement || typeof bootstrap === "undefined" || !bootstrap.Collapse) {
+          return;
+        }
+
+        const bsCollapse = new bootstrap.Collapse(collapseElement, {
+          toggle: false,
+        });
+
+        function handleCollapse() {
+          if (window.innerWidth >= 992) {
+            bsCollapse.show(); // Desktop
+          } else {
+            bsCollapse.hide(); // Mobile
+          }
+        }
+
+        handleCollapse();
+        window.addEventListener("resize", handleCollapse);
+      });
+    </script>
+
+    <script>
+      function initNextSessionControls() {
+        const sessionNotifications = document.querySelectorAll("[data-open-session-request]");
+        const nextSessionButtons = document.querySelectorAll("[data-open-next-session]");
+        const sessionChangeButtons = document.querySelectorAll("[data-open-session-change]");
+        const notificationsModal = document.getElementById("notifications-Modal");
+        const sessionModal = document.getElementById("SessionRequestResponseModal");
+        const alternativeDatesModal = document.getElementById("SessionAlternativeDatesModal");
+        const changeDateButton = document.getElementById("session-change-date-btn");
+        const sendChangeRequestButton = document.getElementById("send-session-change-request");
+        const dayTabs = document.getElementById("session-day-tabs");
+        const nextSessionStatus = document.querySelector("[data-next-session-status]");
+        const nextSessionRequestState = document.querySelector("[data-next-session-request-state]");
+        const requestedDate = document.querySelector("[data-next-session-requested-date]");
+        const requestedTime = document.querySelector("[data-next-session-requested-time]");
+
+        if (!sessionModal || !window.bootstrap) {
+          return;
+        }
+
+        document.querySelectorAll(".weight-history-toggle").forEach((button) => {
+          button.addEventListener("click", function () {
+            const eventCard = button.closest(".weight-history-event");
+            const isOpen = eventCard?.classList.toggle("is-open");
+            button.setAttribute("aria-expanded", isOpen ? "true" : "false");
+          });
+        });
+
+        function showModal(modalElement) {
+          if (!modalElement) return;
+          bootstrap.Modal.getOrCreateInstance(modalElement).show();
+        }
+
+        function openAlternativeDatesFromSession() {
+          if (!alternativeDatesModal) return;
+
+          const currentModal = bootstrap.Modal.getOrCreateInstance(sessionModal);
+          const nextModal = bootstrap.Modal.getOrCreateInstance(alternativeDatesModal);
+
+          sessionModal.addEventListener(
+            "hidden.bs.modal",
+            function () {
+              nextModal.show();
+            },
+            { once: true }
+          );
+
+          currentModal.hide();
+        }
+
+        if (sessionNotifications.length && notificationsModal) {
+          sessionNotifications.forEach((sessionNotification) => {
+            sessionNotification.addEventListener("click", function () {
+              const currentModal = bootstrap.Modal.getOrCreateInstance(notificationsModal);
+              const nextModal = bootstrap.Modal.getOrCreateInstance(sessionModal);
+
+              notificationsModal.addEventListener(
+                "hidden.bs.modal",
+                function () {
+                  nextModal.show();
+                },
+                { once: true }
+              );
+
+              currentModal.hide();
+            });
+          });
+        }
+
+        nextSessionButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            showModal(sessionModal);
+          });
+        });
+
+        sessionChangeButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            showModal(alternativeDatesModal);
+          });
+        });
+
+        changeDateButton?.addEventListener("click", openAlternativeDatesFromSession);
+
+        sendChangeRequestButton?.addEventListener("click", function () {
+          const selectedSlot = document.querySelector('input[name="sessionAlternativeSlot"]:checked');
+          const selectedLabel = selectedSlot
+            ? document.querySelector(`label[for="${selectedSlot.id}"]`)
+            : null;
+          const selectedDay = selectedLabel?.querySelector("span")?.textContent.trim() || "الموعد المختار";
+          const selectedTime = selectedLabel?.querySelector("strong")?.textContent.trim() || "";
+
+          if (nextSessionStatus) {
+            nextSessionStatus.textContent = "تغيير قيد المراجعة";
+            nextSessionStatus.style.background = "#fff8ea";
+            nextSessionStatus.style.color = "#7a530b";
+          }
+          if (requestedDate) requestedDate.textContent = selectedDay;
+          if (requestedTime) requestedTime.textContent = selectedTime;
+          nextSessionRequestState?.classList.remove("d-none");
+        });
+
+        dayTabs?.addEventListener("change", function (event) {
+          const selectedDay = event.target?.getAttribute("data-session-day");
+          if (!selectedDay) return;
+
+          document.querySelectorAll("[data-session-slots]").forEach((panel) => {
+            const isActive = panel.getAttribute("data-session-slots") === selectedDay;
+            panel.classList.toggle("d-none", !isActive);
+            if (isActive) {
+              const firstSlot = panel.querySelector('input[name="sessionAlternativeSlot"]');
+              if (firstSlot) firstSlot.checked = true;
+            }
+          });
+        });
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initNextSessionControls);
+      } else {
+        initNextSessionControls();
+      }
+    </script>
+
+  </body>
+</html>
+

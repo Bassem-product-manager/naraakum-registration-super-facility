@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="70 70 420 240" role="img" aria-labelledby="title desc">
+  <title id="title">Fruit Plate Illustration</title>
+  <desc id="desc">A colorful fruit plate with orange slices, kiwi, berries, and watermelon.</desc>
+  <defs>
+    <linearGradient id="plateRim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e8efeb"/>
+    </linearGradient>
+    <linearGradient id="plateCore" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8faf8"/>
+      <stop offset="1" stop-color="#edf4ef"/>
+    </linearGradient>
+    <radialGradient id="orangeSlice" cx="50%" cy="50%" r="55%">
+      <stop offset="0" stop-color="#ffd878"/>
+      <stop offset="1" stop-color="#f3a33b"/>
+    </radialGradient>
+    <radialGradient id="kiwiSlice" cx="50%" cy="50%" r="55%">
+      <stop offset="0" stop-color="#ccf28e"/>
+      <stop offset="1" stop-color="#69b746"/>
+    </radialGradient>
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="7" stdDeviation="8" flood-color="#0a3f2f" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+
+  <ellipse cx="280" cy="304" rx="210" ry="24" fill="#dbe7db"/>
+
+  <g filter="url(#softShadow)">
+    <circle cx="280" cy="188" r="94" fill="url(#plateRim)"/>
+    <circle cx="280" cy="188" r="78" fill="url(#plateCore)"/>
+    <circle cx="280" cy="188" r="78" fill="none" stroke="#d6ded9" stroke-width="3"/>
+
+    <!-- Watermelon -->
+    <g transform="translate(204 154)">
+      <path d="M0 52c24-34 76-34 100 0-29 14-70 14-100 0z" fill="#3aa85e"/>
+      <path d="M6 50c21-29 67-29 88 0-25 11-62 11-88 0z" fill="#f5f2df"/>
+      <path d="M12 48c19-24 57-24 76 0-22 9-54 9-76 0z" fill="#ef5a5f"/>
+      <circle cx="33" cy="40" r="2.2" fill="#2e2e2e"/>
+      <circle cx="47" cy="34" r="2.2" fill="#2e2e2e"/>
+      <circle cx="61" cy="40" r="2.2" fill="#2e2e2e"/>
+      <circle cx="74" cy="35" r="2.2" fill="#2e2e2e"/>
+    </g>
+
+    <!-- Orange slices -->
+    <g>
+      <circle cx="228" cy="221" r="20" fill="url(#orangeSlice)"/>
+      <circle cx="228" cy="221" r="14" fill="#ffe39d"/>
+      <path d="M228 207v28M214 221h28M218 211l20 20M238 211l-20 20" stroke="#f2b04f" stroke-width="2.4"/>
+    </g>
+    <g>
+      <circle cx="338" cy="219" r="19" fill="url(#orangeSlice)"/>
+      <circle cx="338" cy="219" r="13" fill="#ffe39d"/>
+      <path d="M338 206v26M325 219h26M329 210l18 18M347 210l-18 18" stroke="#f2b04f" stroke-width="2.2"/>
+    </g>
+
+    <!-- Kiwi -->
+    <g>
+      <circle cx="287" cy="233" r="19" fill="url(#kiwiSlice)"/>
+      <circle cx="287" cy="233" r="10" fill="#edf9ce"/>
+      <circle cx="287" cy="233" r="3.5" fill="#f4fff0"/>
+      <circle cx="287" cy="219" r="1.5" fill="#2f2f2f"/>
+      <circle cx="298" cy="224" r="1.5" fill="#2f2f2f"/>
+      <circle cx="301" cy="236" r="1.5" fill="#2f2f2f"/>
+      <circle cx="292" cy="246" r="1.5" fill="#2f2f2f"/>
+      <circle cx="280" cy="247" r="1.5" fill="#2f2f2f"/>
+      <circle cx="272" cy="237" r="1.5" fill="#2f2f2f"/>
+      <circle cx="273" cy="225" r="1.5" fill="#2f2f2f"/>
+    </g>
+
+    <!-- Berries -->
+    <g>
+      <circle cx="256" cy="196" r="8" fill="#8d4bc9"/>
+      <circle cx="266" cy="203" r="8" fill="#7643b5"/>
+      <circle cx="246" cy="204" r="8" fill="#9a58d6"/>
+      <circle cx="258" cy="212" r="8" fill="#6f3da7"/>
+      <path d="M252 187c4-6 8-7 12-2" stroke="#57a843" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </g>
+
+    <!-- Apple -->
+    <g>
+      <circle cx="320" cy="175" r="18" fill="#e34d4d"/>
+      <circle cx="329" cy="175" r="16" fill="#dc4040"/>
+      <ellipse cx="326" cy="170" rx="6" ry="3" fill="#f58d8d" opacity=".6"/>
+      <path d="M321 154c2-7 7-11 13-11-3 5-5 10-5 15" stroke="#6a4322" stroke-width="3" stroke-linecap="round" fill="none"/>
+      <path d="M330 145c7-5 14-4 19 2-8 3-14 3-19-2z" fill="#6bbd4d"/>
+    </g>
+  </g>
+
+  <!-- Fork and spoon -->
+  <g transform="translate(148 122)" filter="url(#softShadow)">
+    <rect x="0" y="0" width="10" height="96" rx="5" fill="#c3d2cd"/>
+    <rect x="2" y="-12" width="2" height="16" rx="1" fill="#c3d2cd"/>
+    <rect x="5" y="-12" width="2" height="16" rx="1" fill="#c3d2cd"/>
+    <rect x="8" y="-12" width="2" height="16" rx="1" fill="#c3d2cd"/>
+  </g>
+  <g transform="translate(402 122)" filter="url(#softShadow)">
+    <rect x="0" y="20" width="10" height="76" rx="5" fill="#c3d2cd"/>
+    <ellipse cx="5" cy="12" rx="10" ry="13" fill="#c3d2cd"/>
+    <ellipse cx="5" cy="12" rx="6" ry="8" fill="#d8e2df"/>
+  </g>
+
+  <path d="M178 101c10-8 21-9 32 1-11 6-21 6-32-1z" fill="#73be54"/>
+  <path d="M376 99c10-8 22-8 33 2-11 5-22 4-33-2z" fill="#86c968"/>
+</svg>

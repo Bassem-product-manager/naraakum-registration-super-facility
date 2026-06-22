@@ -1,0 +1,33 @@
+.appointment-reschedule-notice {
+  align-items: center;
+  border: 1px solid #d9e9e9;
+  border-radius: 8px;
+  margin: 12px 0 0;
+  padding: 10px 12px;
+  background-color: #f5fbfb;
+}
+
+.appointment-reschedule-notice .notification-item__icon {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  color: #157f7f;
+}
+
+.appointment-reschedule-notice .notification-item__content {
+  width: calc(100% - 40px);
+}
+
+.appointment-reschedule-notice .notification-item__content h6,
+.appointment-reschedule-notice .notification-item__content p {
+  margin: 0;
+}
+
+.appointment-reschedule-notice .notification-item__content p {
+  margin-top: 4px;
+}
+
+.change-appointment-action[disabled] {
+  cursor: not-allowed;
+  opacity: 0.72;
+}

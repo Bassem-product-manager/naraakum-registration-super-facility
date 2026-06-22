@@ -1,0 +1,664 @@
+.monitoring-service-trigger {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.monitoring-service-trigger.is-nutrition {
+  background: linear-gradient(135deg, #239ea0 0%, #54b196 100%);
+  border-color: transparent;
+  color: #fff;
+}
+
+.monitoring-service-trigger.is-nutrition:hover {
+  color: #fff;
+}
+
+.monitoring-selection-stage[hidden],
+.monitoring-packages-stage[hidden] {
+  display: none !important;
+}
+
+.monitoring-step4-kicker,
+.monitoring-packages-stage-head span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--base-value) * 0.32) calc(var(--base-value) * 0.75);
+  border-radius: 999px;
+  background: rgba(35, 158, 160, 0.12);
+  color: #239ea0;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.monitoring-packages-stage {
+  border-radius: calc(var(--base-value) * 1);
+  border: 1px solid rgba(35, 158, 160, 0.12);
+  background:
+    radial-gradient(circle at top right, rgba(84, 177, 150, 0.14), transparent 42%),
+    linear-gradient(180deg, #f8fffd 0%, #eef8f6 100%);
+  padding: calc(var(--base-value) * 1);
+}
+
+.monitoring-packages-stage-head {
+  margin-bottom: calc(var(--base-value) * 0.8);
+  text-align: center;
+}
+
+.monitoring-packages-stage-head h3,
+.monitoring-step4-summary h3 {
+  margin: calc(var(--base-value) * 0.55) 0 calc(var(--base-value) * 0.3);
+  font-size: 1.55rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #123434;
+}
+
+.monitoring-packages-stage-head p,
+.monitoring-step4-summary > p {
+  margin: 0;
+  color: #648080;
+  font-size: 0.88rem;
+  line-height: 1.75;
+}
+
+.monitoring-step4-points {
+  display: grid;
+  gap: calc(var(--base-value) * 0.7);
+  margin-top: calc(var(--base-value) * 1);
+}
+
+.step4-point {
+  display: grid;
+  grid-template-columns: calc(var(--base-value) * 1.9) minmax(0, 1fr);
+  gap: calc(var(--base-value) * 0.65);
+  align-items: start;
+}
+
+.step4-point span {
+  width: calc(var(--base-value) * 1.9);
+  height: calc(var(--base-value) * 1.9);
+  border-radius: 999px;
+  background: #239ea0;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.step4-point p {
+  margin: 0;
+  color: #304949;
+  font-size: 0.92rem;
+  line-height: 1.8;
+}
+
+.wizard-package-grid {
+  display: grid;
+  gap: calc(var(--base-value) * 0.55);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.wizard-package-card input {
+  display: none;
+}
+
+.wizard-package-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: calc(var(--base-value) * 1);
+  border: 1px solid #d6ebeb;
+  background: #fff;
+  padding: calc(var(--base-value) * 0.75);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.wizard-package-panel:hover {
+  transform: translateY(-2px);
+  border-color: rgba(35, 158, 160, 0.28);
+  box-shadow: 0 18px 36px -28px rgba(35, 158, 160, 0.32);
+}
+
+.wizard-package-card input:checked + .wizard-package-panel {
+  border-color: #239ea0;
+  background: linear-gradient(180deg, rgba(35, 158, 160, 0.08), rgba(84, 177, 150, 0.12));
+  box-shadow: 0 18px 38px -26px rgba(35, 158, 160, 0.48);
+}
+
+.wizard-package-card.is-suggested .wizard-package-panel {
+  border-color: rgba(35, 158, 160, 0.42);
+}
+
+.wizard-package-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--base-value) * 0.22) calc(var(--base-value) * 0.62);
+  border-radius: 999px;
+  background: #edf7f7;
+  color: #239ea0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+.wizard-package-badge.is-popular {
+  background: #239ea0;
+  color: #fff;
+}
+
+.wizard-package-panel h4 {
+  margin: calc(var(--base-value) * 0.6) 0 calc(var(--base-value) * 0.3);
+  font-size: 1.02rem;
+  font-weight: 800;
+  color: #153737;
+  line-height: 1.45;
+}
+
+.wizard-package-panel p {
+  margin: 0;
+  color: #647f7f;
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+
+.wizard-package-panel ul {
+  margin: calc(var(--base-value) * 0.75) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: calc(var(--base-value) * 0.34);
+}
+
+.wizard-package-panel li {
+  position: relative;
+  padding-inline-start: calc(var(--base-value) * 0.82);
+  color: #244646;
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.wizard-package-panel li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 0.52rem;
+  width: 0.3rem;
+  height: 0.3rem;
+  border-radius: 999px;
+  background: #239ea0;
+}
+
+.wizard-package-action {
+  display: block;
+  margin-top: auto;
+  padding-top: calc(var(--base-value) * 0.7);
+  border-radius: calc(var(--base-value) * 0.62);
+  border: 1px solid #239ea0;
+  padding-inline: calc(var(--base-value) * 0.65);
+  padding-bottom: calc(var(--base-value) * 0.52);
+  text-align: center;
+  color: #239ea0;
+  font-weight: 700;
+  font-size: 0.82rem;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.wizard-package-card input:checked + .wizard-package-panel .wizard-package-action {
+  background: #239ea0;
+  color: #fff;
+}
+
+.monitoring-step4-summary {
+  display: grid;
+  gap: calc(var(--base-value) * 0.85);
+  border-radius: calc(var(--base-value) * 1);
+  border: 1px solid rgba(35, 158, 160, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(84, 177, 150, 0.18), transparent 42%),
+    linear-gradient(135deg, #f9fffe 0%, #eff8f6 100%);
+  padding: calc(var(--base-value) * 1.1);
+}
+
+.monitoring-step4-summary h3 {
+  font-size: 1.65rem;
+  margin-bottom: 0;
+}
+
+.selected-package-preview {
+  margin-top: calc(var(--base-value) * 0.25);
+  border-radius: calc(var(--base-value) * 0.85);
+  border: 1px solid #e0eded;
+  background: #f9fcfc;
+  padding: calc(var(--base-value) * 0.85);
+}
+
+.selected-package-preview span {
+  display: block;
+  color: #748989;
+  font-size: 0.82rem;
+  margin-bottom: calc(var(--base-value) * 0.18);
+}
+
+.selected-package-preview strong {
+  color: #123636;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.MonitoringNutritionFlow {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base-value) * 1.25);
+}
+
+.MonitoringNutritionFlow .flowHeader {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(var(--base-value) * 0.9);
+  padding: calc(var(--base-value) * 1.15);
+  background:
+    radial-gradient(circle at top right, rgba(84, 177, 150, 0.24), transparent 48%),
+    linear-gradient(135deg, #f8fffd 0%, #eef8f6 100%);
+  border: 1px solid rgba(35, 158, 160, 0.14);
+}
+
+.MonitoringNutritionFlow .flowHeader::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -2rem;
+  bottom: -2rem;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 999px;
+  background: rgba(35, 158, 160, 0.08);
+}
+
+.MonitoringNutritionFlow .flowHeader h3 {
+  margin-bottom: calc(var(--base-value) * 0.45);
+  font-size: 1.1rem;
+}
+
+.MonitoringNutritionFlow .flowHeader p {
+  margin: 0;
+  color: #607979;
+  font-size: 0.92rem;
+  line-height: 1.85;
+}
+
+.MonitoringNutritionProgress {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: calc(var(--base-value) * 0.4);
+  align-items: center;
+}
+
+.MonitoringNutritionProgress .progressItem {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.MonitoringNutritionProgress .progressItem:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-start: calc(-50% - (var(--base-value) * 0.2));
+  width: calc(100% + (var(--base-value) * 0.4));
+  height: 2px;
+  background: #dbe8e8;
+  transform: translateY(-50%);
+}
+
+.MonitoringNutritionProgress .progressNode {
+  position: relative;
+  z-index: 1;
+  width: calc(var(--base-value) * 2.1);
+  height: calc(var(--base-value) * 2.1);
+  border-radius: 999px;
+  border: 2px solid #d0dddd;
+  background: #fff;
+  color: #8b9a9a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.MonitoringNutritionProgress .progressItem.is-active .progressNode {
+  border-color: #239ea0;
+  background: #239ea0;
+  color: #fff;
+  box-shadow: 0 0 0 6px rgba(35, 158, 160, 0.14);
+}
+
+.MonitoringNutritionProgress .progressItem.is-done .progressNode {
+  border-color: #54b196;
+  background: #54b196;
+  color: #fff;
+}
+
+.MonitoringNutritionProgress .progressItem.is-done::before,
+.MonitoringNutritionProgress .progressItem.is-active::before {
+  background: linear-gradient(90deg, #54b196 0%, #239ea0 100%);
+}
+
+.nutrition-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--base-value) * 1);
+}
+
+.nutrition-step-title {
+  text-align: center;
+}
+
+.nutrition-step-title h3 {
+  margin-bottom: calc(var(--base-value) * 0.35);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.nutrition-step-title p {
+  margin: 0 auto;
+  max-width: 28rem;
+  color: #6c7e7e;
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.nutrition-choice-grid {
+  display: grid;
+  gap: calc(var(--base-value) * 0.75);
+}
+
+.nutrition-choice-grid.goal-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nutrition-choice-grid.goal-grid .nutrition-choice-card:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.nutrition-choice-grid.gender-grid,
+.nutrition-choice-grid.diet-grid,
+.nutrition-choice-grid.activity-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.nutrition-choice-card input {
+  display: none;
+}
+
+.nutrition-choice-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(var(--base-value) * 9.75);
+  height: 100%;
+  border-radius: calc(var(--base-value) * 0.85);
+  border: 1px solid #dde8e8;
+  padding: calc(var(--base-value) * 1);
+  background: #fff;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.nutrition-choice-panel:hover {
+  transform: translateY(-2px);
+  border-color: rgba(35, 158, 160, 0.3);
+  box-shadow: 0 18px 34px -26px rgba(35, 158, 160, 0.45);
+}
+
+.nutrition-choice-card input:checked + .nutrition-choice-panel {
+  border-color: #239ea0;
+  background: linear-gradient(180deg, rgba(35, 158, 160, 0.09), rgba(84, 177, 150, 0.12));
+  box-shadow: 0 20px 40px -28px rgba(35, 158, 160, 0.5);
+}
+
+.nutrition-choice-card input:checked + .nutrition-choice-panel .choiceTick {
+  background: #239ea0;
+  border-color: #239ea0;
+  color: #fff;
+}
+
+.choiceTick {
+  position: absolute;
+  top: calc(var(--base-value) * 0.55);
+  inset-inline-end: calc(var(--base-value) * 0.55);
+  width: calc(var(--base-value) * 1.65);
+  height: calc(var(--base-value) * 1.65);
+  border-radius: 999px;
+  border: 1px solid #cfdcdc;
+  background: #fff;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.choiceIcon {
+  width: calc(var(--base-value) * 4);
+  height: calc(var(--base-value) * 4);
+  border-radius: calc(var(--base-value) * 0.9);
+  background: linear-gradient(135deg, rgba(35, 158, 160, 0.12), rgba(84, 177, 150, 0.18));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--base-value) * 0.7);
+  margin-bottom: calc(var(--base-value) * 0.8);
+}
+
+.choiceIcon img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.choiceIconSvg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.choiceCopy h4 {
+  margin-bottom: calc(var(--base-value) * 0.25);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.choiceCopy p {
+  margin: 0;
+  color: #6a7f7f;
+  font-size: 0.9rem;
+  line-height: 1.75;
+}
+
+.nutrition-form-box {
+  border-radius: calc(var(--base-value) * 0.85);
+  background:
+    radial-gradient(circle at top left, rgba(84, 177, 150, 0.12), transparent 38%),
+    #f8fbfb;
+  border: 1px solid #e1eded;
+  padding: calc(var(--base-value) * 1);
+}
+
+.nutrition-form-box .form-label {
+  font-weight: 700;
+  color: #233939;
+}
+
+.nutrition-form-box .helper {
+  display: block;
+  color: #7c8e8e;
+  font-size: 0.82rem;
+  margin-top: calc(var(--base-value) * 0.2);
+}
+
+.nutrition-question-list {
+  display: grid;
+  gap: calc(var(--base-value) * 0.9);
+}
+
+.nutrition-question-block {
+  display: grid;
+  gap: calc(var(--base-value) * 0.45);
+  padding-bottom: calc(var(--base-value) * 0.75);
+  border-bottom: 1px solid rgba(35, 158, 160, 0.1);
+}
+
+.nutrition-question-block:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.nutrition-question-block h4 {
+  margin: 0;
+  color: #233939;
+  font-size: 0.95rem;
+  font-weight: 800;
+  line-height: 1.6;
+}
+
+.nutrition-pill-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: calc(var(--base-value) * 0.45);
+}
+
+.nutrition-pill-grid--compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.nutrition-pill-option input {
+  display: none;
+}
+
+.nutrition-pill-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--base-value) * 2.25);
+  border-radius: calc(var(--base-value) * 0.65);
+  border: 1px solid #d8e8e8;
+  background: #fff;
+  color: #335151;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.nutrition-pill-option input:checked + span {
+  border-color: #239ea0;
+  background: rgba(35, 158, 160, 0.12);
+  color: #148486;
+  box-shadow: inset 0 0 0 1px rgba(35, 158, 160, 0.16);
+}
+
+.nutrition-notes-field {
+  min-height: calc(var(--base-value) * 4.5);
+  resize: vertical;
+}
+
+.nutrition-final-questions[hidden],
+.nutrition-recommendation-view[hidden] {
+  display: none !important;
+}
+
+.nutrition-flow-actions {
+  display: flex;
+  gap: calc(var(--base-value) * 0.65);
+}
+
+.nutrition-flow-actions .btn {
+  flex: 1 1 0;
+}
+
+.nutrition-step-error {
+  display: none;
+  margin: 0;
+  padding: calc(var(--base-value) * 0.7) calc(var(--base-value) * 0.9);
+  border-radius: calc(var(--base-value) * 0.7);
+  background: #fff4f4;
+  color: #c34848;
+  font-size: 0.9rem;
+}
+
+.nutrition-step-error.is-visible {
+  display: block;
+}
+
+@media screen and (max-width: 1199px) {
+  .wizard-package-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .wizard-package-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .MonitoringNutritionProgress .progressNode {
+    width: calc(var(--base-value) * 1.8);
+    height: calc(var(--base-value) * 1.8);
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .nutrition-choice-grid.goal-grid,
+  .nutrition-choice-grid.gender-grid,
+  .nutrition-choice-grid.diet-grid,
+  .nutrition-choice-grid.activity-grid,
+  .nutrition-pill-grid,
+  .nutrition-pill-grid--compact {
+    grid-template-columns: 1fr;
+  }
+
+  .nutrition-choice-grid.goal-grid .nutrition-choice-card:nth-child(3) {
+    grid-column: auto;
+  }
+
+  .nutrition-choice-panel {
+    min-height: calc(var(--base-value) * 8.5);
+  }
+
+  .choiceIcon {
+    width: calc(var(--base-value) * 3.25);
+    height: calc(var(--base-value) * 3.25);
+  }
+
+  .nutrition-step-title h3 {
+    font-size: 1.25rem;
+  }
+}

@@ -1,0 +1,2631 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>منصة الخدمات الصحية | رعاية صحية منزلية | نرعاكم</title>
+    <meta name="description" content="Naraakum" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/images/site.webmanifest" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="assets/css/MainStyle.css" />
+    <link rel="stylesheet" href="assets/css/MonitoringNutritionFlow.css" />
+  </head>
+  <body>
+    <!-- Preloader Overlay -->
+    <div class="preloader"></div>
+    <!-- Start Navigation -->
+    <nav class="StickyNavigation" id="mainNav">
+      <div class="container">
+        <!-- Nav Side -->
+        <div class="navSide">
+          <!-- Logo Box -->
+          <div class="logoBox">
+            <button class="btn btn-secondary btn-icon btn-40 open-side-menu">
+              <i class="fi fi-rr-menu-burger"></i>
+            </button>
+            <a href="index.html" class="logo">
+              <img
+                class="logoIcon"
+                src="assets/images/logoIcon.svg"
+                alt="نرعاكم"
+              />
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+          </div>
+
+          <!-- Links Box -->
+          <div class="linksBox">
+            <a href="index.html" class="sideLogo">
+              <img class="logoName" src="assets/images/logo.svg" alt="نرعاكم" />
+            </a>
+
+            <ul>
+              <li><a href="index.html">الرئيسية</a></li>
+              <li><a href="#">الخدمات الطبية</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  مقدمو الرعاية
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">الأطباء/ الأخصائيون</a></li>
+                  <li><a href="#">المؤسسات الصحية</a></li>
+                </ul>
+              </li>
+
+              <li><a href="#">الأسئلة الشائعة</a></li>
+
+              <li>
+                <button class="drop-arrow" type="button">
+                  عن نرعاكم
+                  <i class="fi fi-rr-angle-small-down"></i>
+                </button>
+                <ul class="drop-menu">
+                  <li><a href="#">من نحن؟</a></li>
+                  <li><a href="#">المدونة</a></li>
+                  <li><a href="#">اخبار الشركة</a></li>
+                  <li><a href="#">اتصل بنا</a></li>
+                </ul>
+              </li>
+            </ul>
+
+            <div class="buttonsBox">
+              <a href="#" class="btn btn-outline-primary btn-36">
+                انضم كمقدم خدمة
+              </a>
+              <button
+                class="btn btn-light btn-36 btn-icon lang-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#countryModal"
+              >
+                <img src="assets/images/ar.jpg" alt="arabic" />
+                <span>السعودية</span>
+                <i class="fi fi-rr-caret-down text-grey"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Side Box -->
+        <div class="userSide">
+          <div class="dropdown">
+            <button
+              class="btn btn-primary btn-40 btn-icon dropdown-toggle login-dropdown-btn"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              data-bs-auto-close="outsideeee"
+            >
+              <i class="fi fi-sr-user"></i>
+
+              <span>تسجيل <i>الدخول</i></span>
+            </button>
+            <div class="dropdown-menu">
+              <div class="login-dropdown">
+                <p class="fsize-14 text-center mb-12">تسجيل الدخول كـ</p>
+                <div class="loginTypes">
+                  <!-- Login item -->
+                  <button
+                    class="btn loginTypeItem userColor"
+                    data-bs-toggle="modal"
+                    data-bs-target="#LoginModal"
+                  >
+                    <img
+                      src="assets/images/loginUserIcon.svg"
+                      alt="طالب خدمة"
+                    />
+                    <span>طالب خدمة</span>
+                  </button>
+                  <!-- Login item -->
+                  <a href="#" class="loginTypeItem providerColor">
+                    <img
+                      src="assets/images/loginProviderIcon.svg"
+                      alt="مقدم خدمة"
+                    />
+                    <span>مقدم خدمة</span>
+                  </a>
+                </div>
+                <a href="#" class="joinLink">انضم كطالب خدمة</a>
+                <a href="#" class="joinLink">انضم كمقدم خدمة</a>
+              </div>
+            </div>
+          </div>
+          <div class="userOptionsIcons">
+            <button
+              class="user-cart-icon"
+              data-bs-toggle="modal"
+              data-bs-target="#MainCartModal"
+            >
+              <span>4</span>
+              <i
+                class="fi fi-sr-shopping-cart"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                data-bs-title="السلة"
+              ></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="nav-backdrop"></div>
+    </nav>
+    <span class="navClear"></span>
+    <!-- End Navigation -->
+
+    <!--Breadcrumb -->
+    <header class="Breadcrumb">
+      <div class="container">
+        <!-- Title -->
+        <div class="row justify-content-between">
+          <div class="col-auto">
+            <div class="pagetitle">
+              <a href="index.html" class="btn btn-40 btn-icon">
+                <i class="fi fi-rr-arrow-small-right"></i>
+              </a>
+              <h2>المراقية عن بعد</h2>
+            </div>
+          </div>
+          <div class="col-auto">
+            <a href="#" class="btn btn-40 btn-icon text-white help-btn">
+              <i class="fi fi-rr-interrogation"></i>
+              <span>محتاج مساعده؟</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Page Container -->
+    <main class="insideMainPage">
+      <div class="container relativeConatiner">
+        <div class="row g-3">
+          <!-- Content Side ===============================-->
+          <aside class="col-lg-8">
+            <div class="confirmOrderSide h-100">
+              <div id="monitoringSelectorStage" class="monitoring-selection-stage">
+                <p class="bold fsize-18 mb-16">حدد نوع المراقبة</p>
+
+                <div class="surface-light-300 p-20 radius-12">
+                  <p class="fsize-16 mb-16">ارغب فى متابعة مستوى :</p>
+
+                  <div class="row g-3">
+                    <!-- monitoring-type-item -->
+                    <div class="col-md-3 col-6">
+                      <label class="monitoring-type-item">
+                        <input
+                          type="checkbox"
+                          id="monitoringBloodSugarOption"
+                          value="blood-sugar"
+                        />
+                        <div class="control-content">
+                          <img
+                            src="assets/images/Blood-sugar.svg"
+                            alt="Blood-sugar"
+                          />
+                          <h3>سكر الدم</h3>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- monitoring-type-item -->
+                    <div class="col-md-3 col-6">
+                      <label class="monitoring-type-item">
+                        <input
+                          type="checkbox"
+                          id="monitoringBloodPressureOption"
+                          value="blood-pressure"
+                        />
+                        <div class="control-content">
+                          <img
+                            src="assets/images/Blood-pressure.svg"
+                            alt="Blood-sugar"
+                          />
+                          <h3>ضغط الدم</h3>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- monitoring-type-item -->
+                    <div class="col-md-3 col-6">
+                      <label class="monitoring-type-item">
+                        <input
+                          type="checkbox"
+                          id="monitoringDietOption"
+                          value="diet"
+                        />
+                        <div class="control-content">
+                          <img src="assets/images/Diet.svg" alt="الوزن / النظام الغذائي" />
+                          <h3>الوزن / النظام الغذائي</h3>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- monitoring-type-item -->
+                    <div class="col-md-3 col-6">
+                      <label class="monitoring-type-item">
+                        <input
+                          type="checkbox"
+                          id="monitoringActivityOption"
+                          value="activity"
+                        />
+                        <div class="control-content">
+                          <img
+                            src="assets/images/Physical-activity.svg"
+                            alt="Physical-activity"
+                          />
+                          <h3>النشاط البدني</h3>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="monitoringPackagesStage" class="monitoring-packages-stage" hidden>
+                <div class="monitoring-packages-stage-head">
+                  <span>اختر الباكدج</span>
+                  <h3>الباكدجات المناسبة لهذه الخطة</h3>
+                  <p>اختر الباكدج التي تناسب مستوى الدعم الذي تحتاجه قبل بدء التخصيص التفصيلي.</p>
+                </div>
+
+                <div class="wizard-package-grid">
+                  <label class="wizard-package-card" data-package-card="free">
+                    <input type="radio" name="nutritionPackage" value="free" />
+                    <div class="wizard-package-panel">
+                      <span class="wizard-package-badge">باكدج مجانية</span>
+                      <h4>باكدج البداية المجانية</h4>
+                      <p>مدخل سريع للتعرف على احتياجك الغذائي قبل الانتقال إلى باكدجات المتابعة الكاملة.</p>
+                      <ul>
+                        <li>استشارة تغذية أولية مجانية</li>
+                        <li>تحديد الهدف المناسب للحالة</li>
+                        <li>توصيات غذائية أولية لمدة 3 أيام</li>
+                      </ul>
+                      <span class="wizard-package-action">اختر هذه الباكدج</span>
+                    </div>
+                  </label>
+
+                  <label class="wizard-package-card" data-package-card="balance">
+                    <input type="radio" name="nutritionPackage" value="balance" />
+                    <div class="wizard-package-panel">
+                      <span class="wizard-package-badge is-popular">الأكثر طلبًا</span>
+                      <h4>باكدج التوازن الذكي</h4>
+                      <p>باكدج مناسبة لمن يريد تنظيم غذائه اليومي مع متابعة عملية بدون تعقيد.</p>
+                      <ul>
+                        <li>استشارتان تغذية خلال الشهر</li>
+                        <li>خطة غذائية أسبوعية متجددة</li>
+                        <li>متابعة وزن وقياسات بشكل دوري</li>
+                      </ul>
+                      <span class="wizard-package-action">اختر هذه الباكدج</span>
+                    </div>
+                  </label>
+
+                  <label class="wizard-package-card" data-package-card="progress">
+                    <input type="radio" name="nutritionPackage" value="progress" />
+                    <div class="wizard-package-panel">
+                      <span class="wizard-package-badge">لخسارة الوزن</span>
+                      <h4>باكدج النزول المستمر</h4>
+                      <p>تركيز أعلى على خسارة الوزن بثبات مع تعديلات أسرع حسب الاستجابة والالتزام.</p>
+                      <ul>
+                        <li>3 استشارات تغذية علاجية</li>
+                        <li>مراجعة 3 تحاليل أو سونار حسب الحالة</li>
+                        <li>تحديث أسبوعي لمسار النزول</li>
+                      </ul>
+                      <span class="wizard-package-action">اختر هذه الباكدج</span>
+                    </div>
+                  </label>
+
+                  <label class="wizard-package-card" data-package-card="control">
+                    <input type="radio" name="nutritionPackage" value="control" />
+                    <div class="wizard-package-panel">
+                      <span class="wizard-package-badge">متابعة شهرية</span>
+                      <h4>باكدج التحكم الكامل</h4>
+                      <p>باكدج شاملة لمن يريد متابعة أقرب وقراءة أوضح للتطور الغذائي والصحي.</p>
+                      <ul>
+                        <li>4 استشارات تغذية خلال الشهر</li>
+                        <li>خطة غذائية وخيارات بديلة</li>
+                        <li>تقرير متابعة شهري شامل</li>
+                      </ul>
+                      <span class="wizard-package-action">اختر هذه الباكدج</span>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </aside>
+
+          <!--User Login Side  ==========================-->
+          <aside class="col-lg-4">
+            <div class="UserLoginSide">
+              <div class="wizard">
+                <!-- Login Step 1 ================================ -->
+                <div class="UserLoginWizard-step active">
+                  <h2 class="fsize-16 bold text-brand text-center mb-20">
+                    معلومات الاشتراك في الخدمة
+                  </h2>
+
+                  <div class="row g-1 mt-28">
+                    <div class="col-12">
+                      <label class="form-label">ضع رقم الجوال</label>
+                      <input
+                        placeholder="00 000 0000"
+                        type="tel"
+                        class="form-control form-control-48 phone-input"
+                        required
+                      />
+                      <p class="text-grey fsize-12">مثال : 5123543253</p>
+                    </div>
+                    <div class="col-12">
+                      <button
+                        type="button"
+                        onclick="moveStep(1)"
+                        class="btn btn-primary btn-48 w-100 mt-28"
+                      >
+                        تسجيل
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Login Step 2 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="row g-4">
+                    <div class="col-12">
+                      <button
+                        class="btn btn-icon btn-light"
+                        onclick="moveStep(-1)"
+                      >
+                        <i class="fi fi-rr-arrow-small-right"></i>
+                      </button>
+                    </div>
+
+                    <div class="col-12">
+                      <h3 class="fsize-16 bold">رمز التحقق</h3>
+                      <p class="fsize-14 text-grey mt-8">
+                        ادخل رمز التحقق المرسل إلى رقم
+                        <span class="bold text-brand"> 51623468753 </span>
+                        <button
+                          class="btn btn-28 btn-secondary"
+                          onclick="moveStep(-1)"
+                        >
+                          تعديل
+                        </button>
+                      </p>
+                    </div>
+
+                    <div class="col-12">
+                      <div class="digits-input-container d-flex gap-2 mt-8">
+                        <input
+                          required
+                          type="text"
+                          maxlength="1"
+                          class="digit-input form-control form-control-48"
+                          oninput="moveFocus(event, 0)"
+                          placeholder="-"
+                        />
+                        <input
+                          required
+                          type="text"
+                          maxlength="1"
+                          class="digit-input form-control form-control-48"
+                          oninput="moveFocus(event, 1)"
+                          placeholder="-"
+                          disabled
+                        />
+                        <input
+                          required
+                          type="text"
+                          maxlength="1"
+                          class="digit-input form-control form-control-48"
+                          oninput="moveFocus(event, 2)"
+                          placeholder="-"
+                          disabled
+                        />
+                        <input
+                          required
+                          type="text"
+                          maxlength="1"
+                          class="digit-input form-control form-control-48"
+                          oninput="moveFocus(event, 3)"
+                          placeholder="-"
+                          disabled
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <button
+                        type="button"
+                        onclick="moveStep(1)"
+                        class="btn btn-primary btn-48 w-100 mt-16"
+                      >
+                        التالى
+                      </button>
+
+                      <p class="text-grey fsize-14 text-center mt-12">
+                        بالنقر على التالي فقد وافقت على 
+                        <a href="#" class="text-brand">الشروط والأحكام</a> 
+                      </p>
+                    </div>
+
+                    <div class="col-12 text-center">
+                      <button
+                        class="btn btn-light btn-32"
+                        id="resendOtpBtn"
+                        disabled
+                      >
+                        يمكنك إعادة إرسال رمز جديد بعد
+                        <span class="text-brand">30 ثانية</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Login Step 3 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="row g-3">
+                    <div class="col-12">
+                      <h3 class="fsize-16 bold text-brand">إتمام التسجيل</h3>
+                    </div>
+                    <div class="col-12">
+                      <label class="form-label"
+                        >الاسم بالكامل
+                        <i class="text-grey"> (باللغة العربية)</i>
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control form-control-44"
+                        placeholder="ادخل الاسم"
+                      />
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">الجنس </label>
+                      <select
+                        class="form-select form-select-44"
+                        id="registrationGender"
+                      >
+                        <option>ذكر</option>
+                        <option>انثى</option>
+                      </select>
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">تاريخ الميلاد </label>
+                      <div class="datepickerInput">
+                        <input
+                          type="text"
+                          class="datepicker form-control form-control-44"
+                          id="registrationBirthDate"
+                          placeholder="--/--/----"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label"
+                        >البريد الإلكتروني
+                        <i class="text-grey"> (إختيارى)</i>
+                      </label>
+                      <input
+                        type="email"
+                        class="form-control form-control-44"
+                        placeholder="ادخل البريد الإلكتروني"
+                      />
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">كلمة المرور </label>
+                      <div class="password-input">
+                        <input
+                          type="password"
+                          class="form-control form-control-44"
+                          placeholder="Password"
+                          required
+                        />
+                        <i class="fi fi-sr-eye"></i>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label class="form-label">تأكيد كلمة المرور </label>
+                      <div class="password-input">
+                        <input
+                          type="password"
+                          class="form-control form-control-44"
+                          placeholder="Password"
+                          required
+                        />
+                        <i class="fi fi-sr-eye"></i>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="fsize-14 text-grey mt-12">
+                        <input
+                          type="checkbox"
+                          id="saudiCheckbox"
+                          class="form-check-input"
+                          onclick="toggleIdentity()"
+                        />
+                        انا مواطن سعودي (معفي من الضريبة)
+                      </label>
+
+                      <div class="identity-field" id="identityField">
+                        <input
+                          class="form-control form-control-44"
+                          type="text"
+                          id="identityNumber"
+                          placeholder="أدخل رقم الهوية"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <button
+                        type="button"
+                        onclick="moveStep(1)"
+                        class="btn btn-primary btn-48 w-100 mt-16"
+                      >
+                        إتمام التسجيل
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <!-- Login Step 4  ================================ -->
+                <div class="UserLoginWizard-step">
+                  <h2 class="fsize-16 bold text-brand text-center mb-20">
+                    إكمال إعداد الخطة
+                  </h2>
+
+                  <div class="col-12">
+                    <button
+                      type="button"
+                      id="monitoringServiceSubmit"
+                      onclick="moveStep(1)"
+                      class="btn btn-primary btn-48 w-100 mt-28 monitoring-service-trigger"
+                    >
+                      <span data-service-submit-label>التسجيل بالخدمة</span>
+                    </button>
+                    <p class="nutrition-step-error mt-12"></p>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 1 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-active"><div class="progressNode">1</div></div>
+                        <div class="progressItem"><div class="progressNode">2</div></div>
+                        <div class="progressItem"><div class="progressNode">3</div></div>
+                        <div class="progressItem"><div class="progressNode">4</div></div>
+                        <div class="progressItem"><div class="progressNode">5</div></div>
+                        <div class="progressItem"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>ما هو هدفك؟</h3>
+                        <p>
+                          اختر الهدف الأساسي لتخصيص السعرات وخطة الوجبات
+                          والمتابعة الأسبوعية بالشكل المناسب لك.
+                        </p>
+                      </div>
+
+                      <div class="nutrition-choice-grid goal-grid">
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionGoal" value="maintain" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg
+                                viewBox="0 0 64 64"
+                                aria-hidden="true"
+                                class="choiceIconSvg"
+                              >
+                                <rect x="12" y="10" width="40" height="44" rx="12" fill="#4a4f8e"></rect>
+                                <path d="M22 26c0-5.5 4.5-10 10-10s10 4.5 10 10" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path>
+                                <path d="M32 26l6-7" fill="none" stroke="#ffb84d" stroke-width="3.5" stroke-linecap="round"></path>
+                                <circle cx="32" cy="26" r="2.5" fill="#ffffff"></circle>
+                                <rect x="19" y="35" width="8" height="8" rx="4" fill="#31365f"></rect>
+                                <rect x="37" y="35" width="8" height="8" rx="4" fill="#31365f"></rect>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>الحفاظ على الوزن</h4>
+                              <p>تنظيم الوجبات والسعرات للحفاظ على ثبات صحي ومستقر.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionGoal" value="muscle-gain" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg
+                                viewBox="0 0 64 64"
+                                aria-hidden="true"
+                                class="choiceIconSvg"
+                              >
+                                <rect x="10" y="24" width="8" height="16" rx="3" fill="#1f86d9"></rect>
+                                <rect x="18" y="20" width="6" height="24" rx="3" fill="#7ec8ff"></rect>
+                                <rect x="40" y="20" width="6" height="24" rx="3" fill="#7ec8ff"></rect>
+                                <rect x="46" y="24" width="8" height="16" rx="3" fill="#1f86d9"></rect>
+                                <rect x="22" y="29" width="20" height="6" rx="3" fill="#ffc37a"></rect>
+                                <rect x="27" y="26" width="10" height="12" rx="4" fill="#ffb457"></rect>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>اكتساب العضلات</h4>
+                              <p>خطة أعلى في البروتين مع وجبات تدعم البناء العضلي.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionGoal" value="weight-loss" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg
+                                viewBox="0 0 64 64"
+                                aria-hidden="true"
+                                class="choiceIconSvg"
+                              >
+                                <rect x="16" y="12" width="32" height="38" rx="11" fill="#4a4f8e"></rect>
+                                <path d="M24 27c0-4.4 3.6-8 8-8s8 3.6 8 8" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path>
+                                <path d="M32 27l5-5" fill="none" stroke="#ffb84d" stroke-width="3.5" stroke-linecap="round"></path>
+                                <circle cx="32" cy="27" r="2.5" fill="#ffffff"></circle>
+                                <rect x="22" y="35" width="6" height="6" rx="3" fill="#31365f"></rect>
+                                <rect x="36" y="35" width="6" height="6" rx="3" fill="#31365f"></rect>
+                                <path d="M32 52V44" fill="none" stroke="#17a3a5" stroke-width="3.5" stroke-linecap="round"></path>
+                                <path d="M27 48l5 5 5-5" fill="none" stroke="#17a3a5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>خسارة الوزن</h4>
+                              <p>تقليل دهون تدريجي مع متابعة أوضح للوزن والالتزام.</p>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">التالي</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 2 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">2</div></div>
+                        <div class="progressItem"><div class="progressNode">3</div></div>
+                        <div class="progressItem"><div class="progressNode">4</div></div>
+                        <div class="progressItem"><div class="progressNode">5</div></div>
+                        <div class="progressItem"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>ما هو جنسك؟</h3>
+                        <p>اختيار الجنس يساعدنا على ضبط الاحتياج الغذائي والقياسات المرجعية بدقة أعلى.</p>
+                      </div>
+
+                      <div class="nutrition-choice-grid gender-grid">
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionGenderOption" value="ذكر" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <img src="assets/images/loginUserIcon.svg" alt="ذكر" />
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>ذكر</h4>
+                              <p>سنستخدمه لضبط الحسابات الأساسية للخطة والمتابعة.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionGenderOption" value="انثى" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <img src="assets/images/avatar.svg" alt="أنثى" />
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>أنثى</h4>
+                              <p>سنراعيه في حساب المؤشرات الأساسية وتصميم الوجبات.</p>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">التالي</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Nutrition Flow Step 3 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">2</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">3</div></div>
+                        <div class="progressItem"><div class="progressNode">4</div></div>
+                        <div class="progressItem"><div class="progressNode">5</div></div>
+                        <div class="progressItem"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>الملف الشخصي للخطة</h3>
+                        <p>راجع أو عدل تاريخ الميلاد والطول والوزن حتى تكون توصيات التغذية والمتابعة أدق.</p>
+                      </div>
+
+                      <div class="nutrition-form-box">
+                        <div class="row g-3">
+                          <div class="col-12">
+                            <label class="form-label">تاريخ الميلاد</label>
+                            <div class="datepickerInput">
+                              <input
+                                type="text"
+                                class="datepicker form-control form-control-44"
+                                id="nutritionBirthDate"
+                                placeholder="--/--/----"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label">الوزن / كغم</label>
+                            <input type="number" class="form-control form-control-44" id="nutritionWeight" placeholder="0" />
+                            <span class="helper">هذا الرقم يستخدم لتتبع النزول أو الثبات أسبوعيًا.</span>
+                          </div>
+                          <div class="col-md-6">
+                            <label class="form-label">الطول / سم</label>
+                            <input type="number" class="form-control form-control-44" id="nutritionHeight" placeholder="0" />
+                            <span class="helper">نستخدمه لحساب المؤشرات المرجعية وبناء خطة أكثر دقة.</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">التالي</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 4 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">2</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">3</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">4</div></div>
+                        <div class="progressItem"><div class="progressNode">5</div></div>
+                        <div class="progressItem"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>ما هو النظام الغذائي المفضل لديك؟</h3>
+                        <p>اختر الأسلوب الأقرب لك حتى نبني الوجبات والبدائل داخل الخطة بطريقة مناسبة.</p>
+                      </div>
+
+                      <div class="nutrition-choice-grid diet-grid">
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="balanced" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <circle cx="32" cy="32" r="20" fill="#ffffff" stroke="#17a3a5" stroke-width="4"></circle>
+                                <path d="M32 12a20 20 0 0 1 0 40" fill="#dff4ef"></path>
+                                <path d="M32 32L48 24" fill="none" stroke="#4a4f8e" stroke-width="4" stroke-linecap="round"></path>
+                                <path d="M32 32V12" fill="none" stroke="#4a4f8e" stroke-width="4" stroke-linecap="round"></path>
+                                <circle cx="32" cy="32" r="4" fill="#ffb457"></circle>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>نظام متوازن</h4>
+                              <p>يوزع البروتين والكربوهيدرات والدهون بشكل مناسب على اليوم.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="high-protein" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <ellipse cx="30" cy="34" rx="14" ry="12" fill="#ffb457"></ellipse>
+                                <circle cx="42" cy="22" r="7" fill="#ffd39b"></circle>
+                                <path d="M18 38c3 8 10 12 18 12 6 0 11-2 15-7" fill="none" stroke="#4a4f8e" stroke-width="4" stroke-linecap="round"></path>
+                                <path d="M43 29l6 6" fill="none" stroke="#17a3a5" stroke-width="4" stroke-linecap="round"></path>
+                                <path d="M23 21l4 5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>غني بالبروتين</h4>
+                              <p>مناسب لمن يريد الشبع الأعلى أو دعم الكتلة العضلية.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="low-carb" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <path d="M32 12c-7 7-10 14-10 22 0 8 4 15 10 18 6-3 10-10 10-18 0-8-3-15-10-22z" fill="#ff6b73"></path>
+                                <rect x="37" y="26" width="12" height="12" rx="2" fill="#dff4ef"></rect>
+                                <rect x="27" y="34" width="12" height="12" rx="2" fill="#bfe7ef"></rect>
+                                <path d="M17 18l30 30" fill="none" stroke="#17a3a5" stroke-width="4" stroke-linecap="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>قليل الكربوهيدرات</h4>
+                              <p>يقلل النشويات ويركز على بروتين وخضار ودهون صحية.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="vegetarian" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <path d="M44 16c-14 2-24 12-24 24 0 7 5 12 12 12 12 0 22-10 24-24 1-6-4-13-12-12z" fill="#54b196"></path>
+                                <path d="M24 40c8-8 16-14 24-18" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"></path>
+                                <path d="M20 48c2-7 7-13 15-18" fill="none" stroke="#2f8c73" stroke-width="4" stroke-linecap="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>نظام نباتي</h4>
+                              <p>يعتمد على مصادر نباتية مع بدائل بروتين مناسبة.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="dairy-free" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <path d="M26 14h12l4 8v28H22V22l4-8z" fill="#ffffff" stroke="#7ac4df" stroke-width="3"></path>
+                                <path d="M22 24h20" fill="none" stroke="#7ac4df" stroke-width="3"></path>
+                                <path d="M20 18l24 28" fill="none" stroke="#ff6b73" stroke-width="4" stroke-linecap="round"></path>
+                                <path d="M44 18L20 46" fill="none" stroke="#ff6b73" stroke-width="4" stroke-linecap="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>خالي من الألبان</h4>
+                              <p>بدائل خفيفة لمن يتجنب مشتقات الحليب أو لا يفضلها.</p>
+                            </div>
+                          </div>
+                        </label>
+
+                        <label class="nutrition-choice-card">
+                          <input type="radio" name="nutritionDietPreference" value="gluten-free" />
+                          <div class="nutrition-choice-panel">
+                            <span class="choiceTick">✓</span>
+                            <div class="choiceIcon">
+                              <svg viewBox="0 0 64 64" aria-hidden="true" class="choiceIconSvg">
+                                <path d="M32 14v36" fill="none" stroke="#d6a246" stroke-width="4" stroke-linecap="round"></path>
+                                <path d="M32 22c-6 0-10 4-10 8 6 0 10-4 10-8z" fill="#f3c46c"></path>
+                                <path d="M32 30c6 0 10 4 10 8-6 0-10-4-10-8z" fill="#f3c46c"></path>
+                                <path d="M32 34c-6 0-10 4-10 8 6 0 10-4 10-8z" fill="#f3c46c"></path>
+                                <path d="M32 42c6 0 10 4 10 8-6 0-10-4-10-8z" fill="#f3c46c"></path>
+                                <path d="M18 18l28 28" fill="none" stroke="#17a3a5" stroke-width="4" stroke-linecap="round"></path>
+                              </svg>
+                            </div>
+                            <div class="choiceCopy">
+                              <h4>خالي من الجلوتين</h4>
+                              <p>نبدل الحبوب والخبز بخيارات أخف مناسبة لاحتياجك.</p>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">التالي</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 5 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">2</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">3</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">4</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">5</div></div>
+                        <div class="progressItem"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>الحالة الصحية</h3>
+                        <p>نراعي الحالات الصحية والحساسية قبل بناء الخطة حتى تكون التوصيات مناسبة لك.</p>
+                      </div>
+
+                      <div class="nutrition-form-box nutrition-question-list">
+                        <div class="nutrition-question-block">
+                          <h4>هل لديك حالة صحية تؤثر على التغذية أو الوزن؟</h4>
+                          <div class="nutrition-pill-grid">
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="none" /><span>لا يوجد</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="diabetes" /><span>سكري</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="pressure" /><span>ضغط</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="thyroid" /><span>اضطرابات الغدة</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="pcos" /><span>تكيس المبايض</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionHealthCondition" value="other" /><span>أخرى</span></label>
+                          </div>
+                        </div>
+
+                        <div class="nutrition-question-block">
+                          <h4>هل تستخدم أدوية بشكل منتظم؟</h4>
+                          <div class="nutrition-pill-grid nutrition-pill-grid--compact">
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionMedicationUse" value="yes" /><span>نعم</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionMedicationUse" value="no" /><span>لا</span></label>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">التالي</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 6 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">2</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">3</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">4</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">5</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">6</div></div>
+                        <div class="progressItem"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div class="nutrition-step-title">
+                        <h3>عادات الطعام والتفضيلات</h3>
+                        <p>هذه التفاصيل تساعدنا على جعل الخطة قابلة للتطبيق في يومك الحقيقي.</p>
+                      </div>
+
+                      <div class="nutrition-form-box nutrition-question-list">
+                        <div class="nutrition-question-block">
+                          <label class="form-label" for="nutritionDislikedFoods">ما الأطعمة التي لا تفضلها؟</label>
+                          <input type="text" class="form-control form-control-44" id="nutritionDislikedFoods" placeholder="اكتب أكثر من اختيار، مثل: السمك، الباذنجان" />
+                        </div>
+
+                        <div class="nutrition-question-block">
+                          <h4>كم مرة تعتمد على المطاعم أو الأكل الجاهز أسبوعيًا؟</h4>
+                          <div class="nutrition-pill-grid">
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionRestaurantFrequency" value="rarely" /><span>نادرًا</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionRestaurantFrequency" value="1-2" /><span>1-2</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionRestaurantFrequency" value="3-5" /><span>3-5</span></label>
+                            <label class="nutrition-pill-option"><input type="radio" name="nutritionRestaurantFrequency" value="daily" /><span>يوميًا تقريبًا</span></label>
+                          </div>
+                        </div>
+
+                        <div class="nutrition-question-block">
+                          <h4>ما المشروبات التي تتناولها يوميًا؟</h4>
+                          <div class="nutrition-pill-grid">
+                            <label class="nutrition-pill-option"><input type="checkbox" name="nutritionDailyDrinks" value="water" /><span>ماء</span></label>
+                            <label class="nutrition-pill-option"><input type="checkbox" name="nutritionDailyDrinks" value="coffee" /><span>قهوة</span></label>
+                            <label class="nutrition-pill-option"><input type="checkbox" name="nutritionDailyDrinks" value="tea" /><span>شاي</span></label>
+                            <label class="nutrition-pill-option"><input type="checkbox" name="nutritionDailyDrinks" value="soda" /><span>مشروبات غازية</span></label>
+                            <label class="nutrition-pill-option"><input type="checkbox" name="nutritionDailyDrinks" value="juice" /><span>عصائر</span></label>
+                          </div>
+                        </div>
+
+                        <div class="nutrition-question-block">
+                          <label class="form-label" for="nutritionPlanNotes">هل يوجد شيء مهم تريد أن نراعيه في خطتك؟</label>
+                          <textarea class="form-control nutrition-notes-field" id="nutritionPlanNotes" rows="3" placeholder="حقل اختياري قصير"></textarea>
+                        </div>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48">عرض أنسب خطة</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Nutrition Flow Step 7 ================================ -->
+                <div class="UserLoginWizard-step">
+                  <div class="MonitoringNutritionFlow">
+                    <div class="flowHeader">
+                      <div class="MonitoringNutritionProgress">
+                        <div class="progressItem is-done"><div class="progressNode">1</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">2</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">3</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">4</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">5</div></div>
+                        <div class="progressItem is-done"><div class="progressNode">6</div></div>
+                        <div class="progressItem is-active"><div class="progressNode">7</div></div>
+                      </div>
+                    </div>
+
+                    <div class="nutrition-step-body">
+                      <div id="nutritionFinalQuestions" class="nutrition-final-questions">
+                        <div class="nutrition-step-title">
+                          <h3>النشاط والوجبات</h3>
+                          <p>أكمل هذه الأسئلة ثم سنعرض أنسب خطة لك داخل نفس الخطوة.</p>
+                        </div>
+
+                        <div class="nutrition-form-box nutrition-question-list">
+                          <div class="nutrition-question-block">
+                            <label class="form-label" for="nutritionTargetWeight">ما هو وزنك المستهدف؟</label>
+                            <input type="number" class="form-control form-control-44" id="nutritionTargetWeight" placeholder="مثال: 72" />
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <h4>ما مستوى نشاطك اليومي؟</h4>
+                            <div class="nutrition-pill-grid">
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionDailyActivityLevel" value="sedentary" /><span>قليل الحركة</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionDailyActivityLevel" value="light" /><span>نشاط خفيف</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionDailyActivityLevel" value="moderate" /><span>نشاط متوسط</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionDailyActivityLevel" value="high" /><span>نشاط عالٍ</span></label>
+                            </div>
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <h4>هل تمارس الرياضة؟</h4>
+                            <div class="nutrition-pill-grid nutrition-pill-grid--compact">
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionExercisePractice" value="yes" /><span>نعم</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionExercisePractice" value="no" /><span>لا</span></label>
+                            </div>
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <h4>ما نوع النشاط؟</h4>
+                            <div class="nutrition-pill-grid">
+                              <label class="nutrition-pill-option"><input type="checkbox" name="nutritionActivityType" value="walking" /><span>مشي</span></label>
+                              <label class="nutrition-pill-option"><input type="checkbox" name="nutritionActivityType" value="gym" /><span>جيم</span></label>
+                              <label class="nutrition-pill-option"><input type="checkbox" name="nutritionActivityType" value="running" /><span>جري</span></label>
+                              <label class="nutrition-pill-option"><input type="checkbox" name="nutritionActivityType" value="home" /><span>تمارين منزلية</span></label>
+                            </div>
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <label class="form-label" for="nutritionWeeklyActivityFrequency">كم مرة أسبوعيًا؟</label>
+                            <input type="number" min="0" max="14" class="form-control form-control-44" id="nutritionWeeklyActivityFrequency" placeholder="مثال: 3" />
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <h4>كم وجبة تتناول يوميًا؟</h4>
+                            <div class="nutrition-pill-grid nutrition-pill-grid--compact">
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionMealsPerDay" value="2" /><span>2</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionMealsPerDay" value="3" /><span>3</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionMealsPerDay" value="4+" /><span>4+</span></label>
+                            </div>
+                          </div>
+
+                          <div class="nutrition-question-block">
+                            <h4>هل تتناول سناك بين الوجبات؟</h4>
+                            <div class="nutrition-pill-grid nutrition-pill-grid--compact">
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionSnackFrequency" value="always" /><span>دائمًا</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionSnackFrequency" value="sometimes" /><span>أحيانًا</span></label>
+                              <label class="nutrition-pill-option"><input type="radio" name="nutritionSnackFrequency" value="rarely" /><span>نادرًا</span></label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="nutritionRecommendationView" class="nutrition-recommendation-view" hidden>
+                        <div class="monitoring-step4-summary">
+                        <span class="monitoring-step4-kicker">أنسب خطة لك</span>
+                        <h3 data-recommended-plan-title>خسارة الوزن</h3>
+                        <p data-recommended-plan-summary>
+                          ترشيح أولي يساعدك على بدء الخطة الأنسب حسب اختياراتك الحالية.
+                        </p>
+
+                        <div class="monitoring-step4-points">
+                          <div class="step4-point">
+                            <span>1</span>
+                            <p data-recommendation-reason="1">نقطة ترشيح أولى تظهر هنا.</p>
+                          </div>
+                          <div class="step4-point">
+                            <span>2</span>
+                            <p data-recommendation-reason="2">نقطة ترشيح ثانية تظهر هنا.</p>
+                          </div>
+                          <div class="step4-point">
+                            <span>3</span>
+                            <p data-recommendation-reason="3">نقطة ترشيح ثالثة تظهر هنا.</p>
+                          </div>
+                        </div>
+
+                        <div class="selected-package-preview">
+                          <span>الباكدج المختارة</span>
+                          <strong data-selected-package-label>اختر من الجانب الآخر</strong>
+                        </div>
+                        </div>
+                      </div>
+
+                      <p class="nutrition-step-error"></p>
+
+                      <div class="nutrition-flow-actions">
+                        <button type="button" onclick="moveStep(-1)" class="btn btn-light btn-48">السابق</button>
+                        <button type="button" onclick="moveStep(1)" class="btn btn-primary btn-48" data-final-step-action>عرض أنسب خطة</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <!-- Main Footer -->
+    <footer class="MainFooter">
+      <div class="container">
+        <!-- Footer Header -->
+        <div class="row">
+          <!-- Logo Box -->
+          <div class="col-lg-3 justify-content-center">
+            <div class="logoBox">
+              <a href="#">
+                <img src="assets/images/footerLogo.svg" alt="نرعاكم" />
+                <span>نرعاكم للرعاية الطبية المنزلية</span>
+              </a>
+              <div class="social-media-icons">
+                <a href="#"><i class="fi fi-brands-facebook"></i></a>
+                <a href="#"><i class="fi fi-brands-twitter-alt"></i></a>
+                <a href="#"><i class="fi fi-brands-tik-tok"></i></a>
+                <a href="#"><i class="fi fi-brands-instagram"></i></a>
+                <a href="#"><i class="fi fi-brands-youtube"></i></a>
+              </div>
+            </div>
+          </div>
+          <!-- Links -->
+          <div class="col-lg">
+            <div class="row">
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>نرعاكم</h2>
+                  <a href="#">من نحن؟</a>
+                  <a href="#">أخبار الشركة</a>
+                  <a href="#">المدونة</a>
+                  <a href="#">اتصل بنا</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>الاعضاء</h2>
+                  <a href="#">تسجيل العملاء</a>
+                  <a href="#">اطباء/مؤسسات</a>
+                  <a href="#">الأسئلة الشائعة</a>
+                  <a href="#">الخدمات الطبية</a>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="col">
+                <div class="footList">
+                  <h2>السياسات</h2>
+                  <a href="#">سياسة الخصوصية</a>
+                  <a href="#">سياسة الألغاء</a>
+                  <a href="#">الشروط والاحكام</a>
+                  <a href="#">حقوق المريض</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Join card -->
+          <div class="col-lg-3">
+            <div class="footerJoinCard">
+              <div class="cardContent">
+                <a href="#">انضم كمقدم خدمة صحية</a>
+                <p>متاح للأطباء والمؤسسات الصحية</p>
+                <a href="#" class="btn btn-primary btn-36">انضم الأن!</a>
+              </div>
+              <a href="#" class="cardImage">
+                <img
+                  src="assets/images/joinProviderIcon.svg"
+                  alt="انضم كمقدم خدمة صحية"
+                />
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- footer Certificates  -->
+        <div class="footerCertificateCard">
+          <div class="cardContent">
+            <div class="CertificateSide">
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/vat-verfied.png" alt="الرقم الضريبي" />
+                <figcaption>
+                  <i>الرقم الضريبي</i>
+                  <span>0000000000000</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/Ministry.png" alt="السجل التجارى" />
+                <figcaption>
+                  <i>السجل التجارى</i>
+                  <span>1010810544</span>
+                </figcaption>
+              </figure>
+
+              <!-- figure item -->
+              <figure>
+                <img src="assets/images/saudi.png" alt="موثوق لدي" />
+                <figcaption>
+                  <i>موثوق لدي</i>
+                  <span>المركز السعودى للاعمال</span>
+                </figcaption>
+              </figure>
+            </div>
+            <div class="paymentSide">
+              <p>طرق الدفع والمعاملات</p>
+              <div class="paymentsIcons">
+                <img src="assets/images/Pay_Visa.png" alt="Visa" />
+                <img src="assets/images/Pay_applePay.png" alt="applePay" />
+                <img src="assets/images/Pay_Mastercard.png" alt="Mastercard" />
+                <img src="assets/images/Pay_Mada.png" alt="Mada" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer CopyRights -->
+        <div class="row align-items-center justify-content-between">
+          <div class="col-md-auto">
+            <p class="fsize-14 text-white text-center text-md-start">
+              حقوق النشر © 2025 | شركة نرعاكم | كل الحقوق محفوظة
+            </p>
+          </div>
+          <div class="col-md-auto">
+            <div class="footerStoreIcons">
+              <a href="#">
+                <img src="assets/images/AppStore.png" alt="AppStore" />
+              </a>
+              <a href="#">
+                <img src="assets/images/GooglePlay.png" alt="GooglePlay" />
+              </a>
+              <a href="#">
+                <img src="assets/images/AppGallery.png" alt="AppGallery" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--All Modals**************************************************************** -->
+
+    <!-- Login Modal -->
+    <div
+      class="modal fade"
+      id="LoginModal"
+      tabindex="-1"
+      aria-labelledby="LoginModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="LoginModalLabel">تسجيل الدخول</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="loginModalBody">
+              <form action="">
+                <p class="fsize-14 text-grey">تسجيل الدخول بواسطة</p>
+                <ul
+                  class="nav nav-pills login-tabs"
+                  id="pills-tab"
+                  role="tablist"
+                >
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link active w-100"
+                      id="pills-mobile-number-tab"
+                      data-bs-target="#pills-mobile-number"
+                      aria-controls="pills-mobile-number"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="true"
+                    >
+                      رقم الجوال
+                    </button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button
+                      class="nav-link w-100"
+                      id="pills-email-address-tab"
+                      data-bs-target="#pills-email-address"
+                      aria-controls="pills-email-address"
+                      data-bs-toggle="pill"
+                      type="button"
+                      role="tab"
+                      aria-selected="false"
+                    >
+                      البريد الإلكتروني
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content mt-28" id="pills-tabContent">
+                  <div
+                    id="pills-mobile-number"
+                    aria-labelledby="pills-mobile-number-tab"
+                    class="tab-pane fade show active"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder="00 000 0000"
+                          type="tel"
+                          class="form-control form-control-44 phone-input"
+                          id="phone"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-mobile-number-->
+                  <div
+                    id="pills-email-address"
+                    aria-labelledby="pills-email-address-tab"
+                    class="tab-pane fade"
+                    role="tabpanel"
+                    tabindex="0"
+                  >
+                    <div class="row">
+                      <div class="col-12">
+                        <input
+                          placeholder=" البريد الإلكتروني"
+                          type="email"
+                          class="form-control form-control-44"
+                          required
+                        />
+                      </div>
+                      <div class="col-12 mt-12">
+                        <div class="password-input">
+                          <input
+                            type="password"
+                            class="form-control form-control-44"
+                            placeholder="كلمة المرور"
+                            required
+                          />
+                          <i class="fi fi-sr-eye"></i>
+                        </div>
+                      </div>
+
+                      <div class="col-12 mt-28">
+                        <div
+                          class="row align-items-center justify-content-between"
+                        >
+                          <div class="col-auto">
+                            <div class="form-check">
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="RememberMe2"
+                              />
+                              <label
+                                class="form-check-label text-grey"
+                                for="RememberMe2"
+                              >
+                                تذكرني
+                              </label>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a
+                              href="forget-password-1.html"
+                              class="fsize-14 text-brand"
+                              >فقدت كلمة المرور؟</a
+                            >
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-12 mt-24">
+                        <button
+                          type="submit"
+                          class="btn btn-44 btn-primary w-100"
+                        >
+                          تسجيل الدخول
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- / pills-email-address-->
+                </div>
+              </form>
+              <div class="OR"><span>او</span></div>
+
+              <div class="loginWithSocial">
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/google.svg" alt="google" />
+                  <span>الاستمرار بواسطة جوجل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/apple.svg" alt="Apple" />
+                  <span>الاستمرار بواسطة أبل</span>
+                </a>
+                <a href="#" class="btn btn-light btn-icon w-100 btn-40">
+                  <img src="assets/images/facebook.svg" alt="facebook" />
+                  <span>الاستمرار بواسطة فيسبوك</span>
+                </a>
+              </div>
+
+              <a
+                href="create-account-1.html"
+                class="fsize-14 semiBold mt-24 text-center d-block text-brand"
+              >
+                <span class="text-grey">ليس لديك حساب؟</span>
+                انضم كطالب خدمة
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Country Modal -->
+    <div
+      class="modal fade"
+      id="countryModal"
+      tabindex="-1"
+      aria-labelledby="countryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-sm bottom-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="countryModalLabel">
+              اختيار الدولة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <h2 class="fsize-14 bold text-center mb-12">اختر الدولة</h2>
+
+            <!-- Countries list -->
+            <ul id="Modal-countries-list">
+              <li>
+                <input type="radio" name="country" id="cn1" hidden checked />
+                <label for="cn1">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_SA.png" alt="sa"
+                    /></span>
+                    <p>السعودية (ر.س)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn2" hidden />
+                <label for="cn2">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_UAE.png" alt="UAE"
+                    /></span>
+                    <p>الأمارات (د.ا)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn3" hidden />
+                <label for="cn3">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_EG.png" alt="eg"
+                    /></span>
+                    <p>مصر (ج.م)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn4" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_KW.png" alt="kw"
+                    /></span>
+                    <p>الكويت (د.ك)</p>
+                  </div>
+                </label>
+              </li>
+
+              <li>
+                <input type="radio" name="country" id="cn5" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_QA.png" alt="qa"
+                    /></span>
+                    <p>قطر (ر.ق)</p>
+                  </div>
+                </label>
+              </li>
+              <li>
+                <input type="radio" name="country" id="cn6" hidden />
+                <label for="cn4">
+                  <div class="country-item">
+                    <span
+                      ><img src="assets/images/flag_jz.png" alt="jz"
+                    /></span>
+                    <p>الجزائر (د.ج)</p>
+                  </div>
+                </label>
+              </li>
+            </ul>
+          </div>
+
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary btn-40 w-100"
+              data-name="submit-country"
+            >
+              تطبيق
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Select patient Modal-->
+    <div
+      class="modal fade"
+      id="SelectPatientModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="SelectPatientModalLabel">
+              المستفيد من الخدمة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <ul class="nav nav-pills mb-20" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="pills-PatientsList-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-PatientsList"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-PatientsList"
+                  aria-selected="true"
+                >
+                  قائمة المستفيدين
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-AddNewPatient-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-AddNewPatient"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-AddNewPatient"
+                  aria-selected="false"
+                >
+                  إضافة مستفيد جديد
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="pills-tabContent">
+              <!-- Tab 1 -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-PatientsList"
+                role="tabpanel"
+                aria-labelledby="pills-PatientsList-tab"
+                tabindex="0"
+              >
+                <form>
+                  <p class="fsize-14 bold">
+                    اختر أحد المستفيدين المسجلين سابقًا
+                  </p>
+                  <div
+                    class="PatientsListContainer pl-12"
+                    style="max-height: 25rem; overflow: auto"
+                  >
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" checked />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">سرور محمد رشاد</p>
+                                <span> نفسي - ذكر - 34 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">احمد عبدالحليم</p>
+                                <span> الخال - ذكر - 44 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- PatientItem -->
+                    <div class="PatientItem mt-12">
+                      <label class="radio-item">
+                        <input type="radio" name="PatientItems" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">مصطفي احمد على</p>
+                                <span> صديق - ذكر - 34 عام </span>
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Tab 2 -->
+              <div
+                class="tab-pane fade"
+                id="pills-AddNewPatient"
+                role="tabpanel"
+                aria-labelledby="pills-AddNewPatient-tab"
+                tabindex="0"
+              >
+                <form>
+                  <div class="row g-2 gy-4">
+                    <div class="col-12">
+                      <label class="form-label"
+                        >الاسم بالكامل
+                        <i class="text-grey"> (باللغة العربية)</i>
+                      </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control form-control-44"
+                        placeholder="ادخل الاسم"
+                      />
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">صلة القرابة </label>
+                      <select class="form-select form-select-44">
+                        <option value="">اختر صلة القرابة</option>
+                        <option value="1">أب</option>
+                        <option value="2">الأم</option>
+                        <option value="3">ابن</option>
+                        <option value="4">زوجة</option>
+                        <option value="5">بنت</option>
+                        <option value="6">صديق</option>
+                        <option value="8">أخ</option>
+                        <option value="9">أخت</option>
+                      </select>
+                    </div>
+
+                    <div class="col-6">
+                      <label class="form-label">تاريخ الميلاد </label>
+                      <div class="datepickerInput">
+                        <input
+                          type="text"
+                          class="datepicker form-control form-control-44"
+                          placeholder="--/--/----"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الجنس </label>
+                      <select class="form-select form-select-44">
+                        <option>ذكر</option>
+                        <option>انثى</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الوزن / كغم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الطول /سم </label>
+                      <input
+                        type="number"
+                        class="form-control form-control-44"
+                        placeholder="0"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Patient Complaint Modal-->
+    <div
+      class="modal fade"
+      id="PatientComplaintModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="PatientComplaintModalLabel">
+              اضافة الشكوى المرضية (إختيارى)
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-12">
+                  <label class="form-label"> صف شكواك كتابة </label>
+                  <textarea
+                    class="form-control fsize-14"
+                    rows="3"
+                    placeholder="صف شكواك"
+                  ></textarea>
+
+                  <div class="OR"><span>او</span></div>
+                </div>
+
+                <div class="col-12 mt-24">
+                  <label class="form-label"> صف شكواك بالتسجيل الصوتي </label>
+
+                  <div class="voice-record-container">
+                    <audio src="" id="audioElement" controls></audio>
+                    <p id="isRecording">
+                      جارى التسجيل ..
+                      <img
+                        src="assets/images/record_animation.gif"
+                        alt="record"
+                      />
+                    </p>
+                    <div class="audio-buttons">
+                      <button type="button" class="btn" id="startRecording">
+                        <i class="fi fi-sr-microphone"></i>
+                        <span>بدء التسجيل</span>
+                      </button>
+                      <button type="button" class="btn" id="playRecording">
+                        <i class="fi fi-sr-play"></i>
+                        <span>استماع</span>
+                      </button>
+                      <button type="button" class="btn" id="stopRecording">
+                        <i class="fi fi-sr-stop"></i>
+                        <span>إيقاف</span>
+                      </button>
+                      <button type="button" class="btn" id="removeRecording">
+                        <i class="fi fi-sr-trash"></i>
+                        <span>حذف</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              إلغاء
+            </button>
+            <button class="btn btn-primary btn-44" data-bs-dismiss="modal">
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Upload Prescription Modal-->
+    <div
+      class="modal fade"
+      id="UploadPrescriptionModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="UploadPrescriptionModalLabel">
+              إرفاق صورة الوصفة الطبية
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <div
+              class="attachments-box p-0"
+              style="box-shadow: none !important"
+            >
+              <label class="attachments-label p-8" for="fileInput">
+                <i class="fi fi-rr-upload"></i>
+                <p>إرفاق صورة الوصفة الطبية</p>
+                <span>يمكنك اضافة ملف او اكثر </span>
+
+                <input type="file" id="fileInput" multiple />
+              </label>
+
+              <div class="file-list" id="fileList"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              إلغاء
+            </button>
+            <button class="btn btn-primary btn-44" data-bs-dismiss="modal">
+              حفظ
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- package Info Modal  -->
+    <div
+      class="modal fade"
+      id="PackageInfoModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="PackageInfoModalLabel">
+              تفاصيل الباقة
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <h3 class="fsize-14 bold mb-2">عن الباقة</h3>
+            <p class="fsize-14 mb-12">
+              يتمثل دور طاقمنا الطبى في مساعدة الأفراد الذين يحتاجون إلى عناية
+              طبية ولكنهم قد يواجهون صعوبة في الوصول إلى إعدادات الرعاية الصحية
+            </p>
+
+            <h3 class="fsize-14 bold mb-2 mt-16">المهمام المشمولة</h3>
+            <div class="p-12 surface-light-300 radius-12">
+              <ul class="p-20 pt-0 pb-0">
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مساعدة المريض في الأنشطة اليومية ، مثل الاستحمام وارتداء
+                  الملابس
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مراقبة العلامات الحيوية للمريض والإبلاغ عن أي تغييرات للطبيب
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  إعطاء الأدوية بالفم كما هو موصوف من قبل الطبيب
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  مرافقة المريض الي مواعيده الطبية
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  العناية بأنبوب التغذية والتنفس
+                </li>
+              </ul>
+            </div>
+
+            <h3 class="fsize-14 bold mb-2 mt-16">الشروط</h3>
+            <div class="p-12 surface-orange-50 radius-12">
+              <ul class="p-20 pt-0 pb-0">
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يلتزم العميل بتوفير غرفة خاصة للمرافقة الصحية ومهيئة لها
+                  بالكامل.
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يحق للعميل استبدال المرافقة الصحية في حال حدوث اي تقصير منها
+                </li>
+                <li class="fsize-14 mb-1" style="list-style: decimal">
+                  يلتزم العميل بإعطاء المرافقة الصحية يوم اجازه اسبوعياً ويكون
+                  اليوم باتفاق ما بين الطرفين.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-light btn-44" data-bs-dismiss="modal">
+              خروج
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Cart Modal  -->
+    <div class="modal fade" id="MainCartModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="MainCartModalLabel">السلة</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body p-0">
+            <div
+              class="servicesCart StickyCartBox"
+              style="
+                position: static !important ;
+                margin: 0px !important ;
+                border-radius: 0;
+              "
+            >
+              <div class="boxBody">
+                <!-- Cart Item -->
+                <div class="cartItem">
+                  <!-- Provider -->
+                  <div class="serviceProvider">
+                    <p>صيدلية صحة</p>
+                    <span> 10 أغسطس ، 08:30 م</span>
+                  </div>
+
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- shipping -->
+                  <div class="shippingCompany">
+                    <img src="assets/images/aramex.png" alt="aramex" />
+                    <div>
+                      <p>شحن ارامكس - التوصيل : اليوم</p>
+                      <span class="fsize-14 semiBold">20.00</span>
+                      <i class="icon-saudi_riyal text-grey"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Cart Item -->
+                <div class="cartItem">
+                  <!-- Provider -->
+                  <div class="serviceProvider">
+                    <p>صيدلية صحة</p>
+                    <span> 10 أغسطس ، 08:30 م</span>
+                  </div>
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- service item -->
+                  <div class="serviceItem">
+                    <div class="service">
+                      <button class="btn btn-40">
+                        <i class="fi fi-sr-trash"></i>
+                      </button>
+                      <div class="serviceInfo">
+                        <p class="fsize-14 semiBold">
+                          بينك بيبي ببرونه - 125 مل
+                        </p>
+                        <p>
+                          <span class="fsize-14 semiBold">20.00</span>
+                          <i class="icon-saudi_riyal text-grey"></i>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="quantity">
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-plus"
+                      ></button>
+                      <span>1</span>
+                      <button
+                        type="button"
+                        class="btn btn-28 btn-minus"
+                      ></button>
+                    </div>
+                  </div>
+                  <!-- shipping -->
+                  <div class="shippingCompany">
+                    <img src="assets/images/aramex.png" alt="aramex" />
+                    <div>
+                      <p>شحن ارامكس - التوصيل : اليوم</p>
+                      <span class="fsize-14 semiBold">20.00</span>
+                      <i class="icon-saudi_riyal text-grey"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Box Footer -->
+              <div class="boxFooter">
+                <div class="priceList">
+                  <div class="priceItem">
+                    <p>اجمالي الخدمات</p>
+                    <p>
+                      <span class="fsize-16">430.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>رسوم الشحن</p>
+                    <p>
+                      <span class="fsize-16">20.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>الضريبة (%15)</p>
+                    <p>
+                      <span class="fsize-16">00.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                  <div class="priceItem">
+                    <p>المجموع</p>
+                    <p>
+                      <span class="fsize-16 bold">450.00</span>
+                      <i class="icon-saudi_riyal"></i>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-light btn-40"
+              data-bs-dismiss="modal"
+            >
+              إلغاء
+            </button>
+
+            <a href="OrderSummary.html" class="btn btn-primary btn-40">
+              إتمام الطلب
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Select Medical Reports Modal-->
+    <div
+      class="modal fade"
+      id="MedicalReportsModal"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="MedicalReportsModalLabel">
+              إرفاق التقارير الطبية (إختياري)
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+
+          <div class="modal-body">
+            <ul class="nav nav-pills mb-20" id="pills-tab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="pills-MedicalReportList-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-MedicalReportList"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-files"
+                  aria-selected="true"
+                >
+                  قائمة التقارير
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="pills-AddMedicalReport-tab"
+                  data-bs-toggle="pill"
+                  data-bs-target="#pills-AddMedicalReport"
+                  type="button"
+                  role="tab"
+                  aria-controls="pills-AddMedicalReport"
+                  aria-selected="false"
+                >
+                  إضافة تقرير جديد
+                </button>
+              </li>
+            </ul>
+
+            <!-- Tabs content -->
+            <div class="tab-content" id="pills-tabContent">
+              <!-- Tab 1 -->
+              <div
+                class="tab-pane fade show active"
+                id="pills-MedicalReportList"
+                role="tabpanel"
+                aria-labelledby="pills-MedicalReportList-tab"
+                tabindex="0"
+              >
+                <p class="bold fsize-14 mb-2">يمكنك اختيار ملف واحد أو أكثر</p>
+                <form>
+                  <div
+                    class="ReportListContainer pl-12"
+                    style="max-height: 25rem; overflow: auto"
+                  >
+                    <!-- MedicalReportItem -->
+                    <div class="MedicalReportItem mt-12">
+                      <label class="checkbox-item radio-item">
+                        <input type="checkbox" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">اشعة على الصدر</p>
+                                <p class="fsize-14 text-grey">
+                                  نوع الملف : أشعة
+                                </p>
+                                <p class="fsize-14 text-grey">
+                                  تاريخ الإضافة : 10/10/2025
+                                </p>
+                                <a
+                                  href="#"
+                                  class="btn btn-32 btn-secondary mt-2"
+                                  >مشاهدة</a
+                                >
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- MedicalReportItem -->
+                    <div class="MedicalReportItem mt-12">
+                      <label class="checkbox-item radio-item">
+                        <input type="checkbox" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">اشعة على الصدر</p>
+                                <p class="fsize-14 text-grey">
+                                  نوع الملف : أشعة
+                                </p>
+                                <p class="fsize-14 text-grey">
+                                  تاريخ الإضافة : 10/10/2025
+                                </p>
+                                <a
+                                  href="#"
+                                  class="btn btn-32 btn-secondary mt-2"
+                                  >مشاهدة</a
+                                >
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+
+                    <!-- MedicalReportItem -->
+                    <div class="MedicalReportItem mt-12">
+                      <label class="checkbox-item radio-item">
+                        <input type="checkbox" id="" />
+                        <div class="custom-radio">
+                          <div>
+                            <figure>
+                              <figcaption>
+                                <p class="bold fsize-14">اشعة على الصدر</p>
+                                <p class="fsize-14 text-grey">
+                                  نوع الملف : أشعة
+                                </p>
+                                <p class="fsize-14 text-grey">
+                                  تاريخ الإضافة : 10/10/2025
+                                </p>
+                                <a
+                                  href="#"
+                                  class="btn btn-32 btn-secondary mt-2"
+                                  >مشاهدة</a
+                                >
+                              </figcaption>
+                            </figure>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Tab 2 -->
+              <div
+                class="tab-pane fade"
+                id="pills-AddMedicalReport"
+                role="tabpanel"
+                aria-labelledby="pills-AddMedicalReport-tab"
+                tabindex="0"
+              >
+                <form>
+                  <div class="row g-2 gy-4">
+                    <div class="col-12">
+                      <label class="form-label">اسم الملف </label>
+                      <input
+                        required
+                        type="text"
+                        class="form-control form-control-44"
+                        placeholder="ادخل اسم الملف"
+                      />
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label">نوع الملف </label>
+                      <select class="form-select form-select-44">
+                        <option selected hidden>اختر نوع الملف</option>
+                        <option value="1">الأشعة</option>
+                        <option value="2">التحاليل المخبرية</option>
+                        <option value="3">وصفة طبية</option>
+                        <option value="4">ملف اخر</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label">إرفاق الملف </label>
+                      <input
+                        type="file"
+                        class="form-control form-control-44"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Tab Footer -->
+                  <div class="tab-footer modal-footer mt-40 p-0">
+                    <button
+                      type="button"
+                      class="btn btn-light btn-40 mt-12"
+                      data-bs-dismiss="modal"
+                    >
+                      إلغاء
+                    </button>
+
+                    <button type="button" class="btn btn-primary btn-40 mt-12">
+                      حفظ
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Scripts**************************************************************** -->
+    <!-- Bootstrap ---------->
+    <script src="assets/js/Libraries/Bootstrap/jquery-3.4.1.min.js"></script>
+    <script src="assets/js/Libraries/Bootstrap/bootstrap.bundle.min.js"></script>
+    <!-- Preloader ---------->
+    <script src="assets/js/Components/Preloader.js"></script>
+    <!-- StickyNavigation --->
+    <script src="assets/js/Components/StickyNavigation.js"></script>
+    <!-- Countries Modal -->
+    <script src="assets/js/Components/Modals/CountriesModal.js"></script>
+    <!-- PhoneNumber -->
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flags.js"></script>
+    <script src="assets/js/Libraries/Forms/PhoneNumber/flagsOptions.js"></script>
+    <!-- showPassword -->
+    <script src="assets/js/Libraries/Forms/showPassword.js"></script>
+    <!-- OwlCarousel -------->
+    <script src="assets/js/Libraries/OwlCarousel/owlCarousel.min.js"></script>
+    <script src="assets/js/Libraries/OwlCarousel/owlCarouselOptions.js"></script>
+    <!-- Fav Icon -------->
+    <script src="assets/js/Components/FavIcon.js"></script>
+    <!-- Monitoring Nutrition Flow -------->
+    <script src="assets/js/Components/MonitoringNutritionFlow.js"></script>
+    <!-- digit input -------->
+    <script src="assets/js/Libraries/Forms/digit-input.js"></script>
+    <!-- DatePicker -->
+    <script src="assets/js/Libraries/Forms/DatePicker/datepicker.min.js"></script>
+    <script src="assets/js/Libraries/Forms/DatePicker/datepickerOptions.js"></script>
+    <!-- Voice Record -->
+    <script src="assets/js/Components/VoiceRecord.js"></script>
+    <!-- Prescription File -------->
+    <script src="assets/js/Libraries/Forms/FileUpload/PrescriptionFile.js"></script>
+  </body>
+</html>
