@@ -194,6 +194,11 @@
         color: #b42318;
         border-color: #ffc8c8;
       }
+      .fi-branch-status.suspended {
+        background: #f2f4f7;
+        color: #475467;
+        border-color: #d0d5dd;
+      }
       .fi-branch-meta {
         display: grid;
         grid-template-columns: 1fr;
@@ -1709,6 +1714,7 @@
           const s = (status || "").toLowerCase();
           if (s === "active") return "active";
           if (s === "under review") return "review";
+          if (s === "suspended") return "suspended";
           return "expired";
         };
 
@@ -1858,7 +1864,10 @@
         const branches = readBranches();
         strip.innerHTML = branches.map(branchCard).join("");
         if (countEl) countEl.textContent = String(branches.length);
-        setActive(strip.querySelector(".fi-branch-card"), branches[0]);
+        const initialBranchId = new URLSearchParams(window.location.search).get("branchId");
+        const initialBranch = branches.find((item) => String(item.id) === String(initialBranchId)) || branches[0];
+        const initialCard = Array.from(strip.querySelectorAll(".fi-branch-card")).find((card) => String(card.getAttribute("data-branch-id")) === String(initialBranch?.id || "")) || strip.querySelector(".fi-branch-card");
+        setActive(initialCard, initialBranch);
 
         strip.addEventListener("click", function (event) {
           const card = event.target.closest(".fi-branch-card");

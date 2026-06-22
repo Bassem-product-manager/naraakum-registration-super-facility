@@ -128,6 +128,11 @@
         color: #b42318;
         border-color: #ffc8c8;
       }
+      .branch-status.suspended {
+        background: #f2f4f7;
+        color: #475467;
+        border-color: #d0d5dd;
+      }
 
       .branch-phone {
         white-space: nowrap;
@@ -848,6 +853,7 @@
           const s = (status || "").toLowerCase();
           if (s === "active") return "active";
           if (s === "under review") return "review";
+          if (s === "suspended") return "suspended";
           return "expired";
         };
 
@@ -863,6 +869,7 @@
                   <i class="fi fi-rr-edit nk-edit-icon"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
+                  <li><a class="dropdown-item" href="facility-information.html?branchId=${encodeURIComponent(String(b.id))}">Facility Settings</a></li>
                   <li><a class="dropdown-item" href="EditBranches.html?id=${encodeURIComponent(String(b.id))}">Edit</a></li>
                   <li><a class="dropdown-item text-red" href="#" data-action="remove" data-id="${esc(b.id)}">Remove</a></li>
                 </ul>
